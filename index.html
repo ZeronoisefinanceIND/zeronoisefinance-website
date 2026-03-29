@@ -1664,7 +1664,8 @@ footer{
 <!-- ══════════════════════════════════════
      JAVASCRIPT
 ══════════════════════════════════════ -->
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js">
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+<script>
 
 /* ══════════════════════════════════════
    INTRO ANIMATION
@@ -1905,38 +1906,14 @@ function cwAsk(q){
   cwSend();
   if(!cwOpen) toggleChatWindow();
 }
-
-/* ══════════════════════════════════════
-   SIP CALCULATION FIX — always treat SIP as positive input
-   (apply negative internally for FV formula)
-══════════════════════════════════════ */
-// Patch calcSIP to ensure positive output regardless of sign of P
-const _origCalcSIP = calcSIP;
-// Override calcSIP inline — already uses -P in excelFV so no change needed
-// But we add absolute value guards on all calc inputs
-function calcSIPSafe(){
-  // All inputs are taken as absolute positive values
-  const pInput = document.getElementById('s_amt');
-  if(pInput && parseFloat(pInput.value) < 0) pInput.value = Math.abs(parseFloat(pInput.value));
-  calcSIP();
-}
-
-// Patch SU calc similarly
-function calcSUSafe(){
-  const pInput = document.getElementById('su_amt');
-  if(pInput && parseFloat(pInput.value) < 0) pInput.value = Math.abs(parseFloat(pInput.value));
-  calcSU();
-}
-
-// Ensure all financial inputs strip negatives on input
+/* Ensure all financial inputs strip negatives on input */
 document.querySelectorAll('.finput[type="number"]').forEach(function(inp){
   inp.addEventListener('input', function(){
-    if(this.value && parseFloat(this.value) < 0 && !this.classList.contains('allow-negative')){
+    if(this.value && parseFloat(this.value) < 0){
       this.value = Math.abs(parseFloat(this.value));
     }
   });
 });
-
 </script><script>
 /* ── SCROLL PROGRESS ── */
 window.addEventListener('scroll',()=>{
@@ -2482,8 +2459,7 @@ function submitContact(){
   const btn=event.currentTarget;
   btn.textContent='Message Sent ✓';
   btn.style.background='#1e7e4f';
-  setTimeout(()=>{
-  setTimeout(()=>{btn.textContent='Send Message →';btn.style.background=''},3000);
+  setTimeout(()=>{btn.textContent='Send Message →';btn.style.background='';},3000);
 }
 </script>
 
