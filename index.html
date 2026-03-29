@@ -3,1817 +3,2003 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Zero Noise Finance — Clarity. Growth. Freedom.</title>
+<title>Zero Noise Finance — Clarity Without Compromise</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Source+Sans+3:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
 <style>
-/* ═══════════════════════════════════════════
-   DESIGN TOKENS
-═══════════════════════════════════════════ */
+/* ─────────────────────────────────────────
+   DESIGN TOKENS  — Light, Editorial, Indian Finance
+───────────────────────────────────────── */
 :root {
-  --pink: #e8305a;
-  --pink-light: #ff6b8a;
-  --pink-glow: rgba(232,48,90,0.18);
-  --teal: #2a7a7a;
-  --teal-mid: #3ba8a8;
-  --teal-light: #6dd5d5;
-  --dark: #0a0c0f;
-  --dark2: #111318;
-  --dark3: #181c23;
-  --dark4: #1e242e;
-  --surface: #22293380;
-  --border: rgba(255,255,255,0.07);
-  --text: #eef0f4;
-  --muted: #8892a4;
-  --font-head: 'Syne', sans-serif;
-  --font-body: 'DM Sans', sans-serif;
-  --font-mono: 'DM Mono', monospace;
-  --radius: 16px;
-  --radius-sm: 8px;
+  --pink:       #d42b51;
+  --pink-soft:  #f5e8ec;
+  --pink-mid:   #e06070;
+  --teal:       #1a6b6b;
+  --teal-soft:  #e6f2f2;
+  --teal-mid:   #2a9090;
+  --ink:        #1a1a24;
+  --ink-mid:    #3d3d4f;
+  --ink-light:  #6b6b80;
+  --rule:       #e2e2ec;
+  --bg:         #fafaf8;
+  --bg-warm:    #f5f4f0;
+  --bg-panel:   #ffffff;
+  --success:    #1e7e4f;
+  --success-bg: #edf7f2;
+  --warn:       #b45309;
+  --warn-bg:    #fef3e2;
+  --danger:     #b91c1c;
+  --danger-bg:  #fef2f2;
+  --font-serif: 'Lora', Georgia, serif;
+  --font-sans:  'Source Sans 3', system-ui, sans-serif;
+  --font-mono:  'JetBrains Mono', monospace;
+  --shadow-sm:  0 1px 3px rgba(0,0,0,.07), 0 1px 2px rgba(0,0,0,.05);
+  --shadow-md:  0 4px 16px rgba(0,0,0,.08), 0 2px 6px rgba(0,0,0,.05);
+  --shadow-lg:  0 12px 40px rgba(0,0,0,.1);
+  --radius:     10px;
+  --radius-sm:  6px;
+  --max:        1180px;
 }
 
-/* ═══════════════════════════════════════════
-   RESET & BASE
-═══════════════════════════════════════════ */
+/* ─────────────────────────────────────────  RESET */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;font-size:16px}
-body{
-  background:var(--dark);
-  color:var(--text);
-  font-family:var(--font-body);
-  line-height:1.6;
-  overflow-x:hidden;
-  cursor:none;
-}
-a{color:inherit;text-decoration:none}
-button{cursor:none;border:none;background:none;font-family:inherit}
-input,select,textarea{font-family:var(--font-body);cursor:none}
-::selection{background:var(--pink);color:#fff}
-::-webkit-scrollbar{width:4px}
-::-webkit-scrollbar-track{background:var(--dark2)}
-::-webkit-scrollbar-thumb{background:var(--pink);border-radius:2px}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-sans);line-height:1.65;-webkit-font-smoothing:antialiased}
+a{color:var(--teal);text-decoration:none}
+a:hover{text-decoration:underline}
+button{cursor:pointer;border:none;background:none;font-family:inherit}
+input,select,textarea{font-family:var(--font-sans)}
+::selection{background:var(--pink-soft);color:var(--pink)}
+img{max-width:100%}
 
-/* ═══════════════════════════════════════════
-   CUSTOM CURSOR
-═══════════════════════════════════════════ */
-#cursor{
-  position:fixed;width:12px;height:12px;
-  background:var(--pink);border-radius:50%;
-  pointer-events:none;z-index:99999;
-  transform:translate(-50%,-50%);
-  transition:width .2s,height .2s,background .2s;
-  mix-blend-mode:normal;
-}
-#cursor-ring{
-  position:fixed;width:36px;height:36px;
-  border:1.5px solid rgba(232,48,90,.5);
-  border-radius:50%;pointer-events:none;z-index:99998;
-  transform:translate(-50%,-50%);
-  transition:transform .1s ease,width .3s,height .3s,border-color .3s;
-}
-body:has(a:hover) #cursor,body:has(button:hover) #cursor{width:6px;height:6px;background:var(--pink-light)}
-body:has(a:hover) #cursor-ring,body:has(button:hover) #cursor-ring{width:52px;height:52px;border-color:var(--pink)}
+/* ─────────────────────────────────────────  SCROLLBAR */
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--bg-warm)}
+::-webkit-scrollbar-thumb{background:var(--rule);border-radius:3px}
 
-/* ═══════════════════════════════════════════
-   NOISE TEXTURE OVERLAY
-═══════════════════════════════════════════ */
-body::before{
-  content:'';position:fixed;inset:0;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-  pointer-events:none;z-index:9999;opacity:0.6;
-}
+/* ─────────────────────────────────────────  SCROLL PROGRESS */
+#prog{position:fixed;top:0;left:0;height:2px;background:var(--pink);z-index:9999;width:0%;transition:width .08s linear}
 
-/* ═══════════════════════════════════════════
-   NAVBAR
-═══════════════════════════════════════════ */
+/* ─────────────────────────────────────────  NAVBAR */
 nav{
   position:fixed;top:0;left:0;right:0;z-index:1000;
-  padding:0 clamp(16px,4vw,60px);
-  height:70px;display:flex;align-items:center;
-  justify-content:space-between;
-  background:rgba(10,12,15,0.72);
-  backdrop-filter:blur(24px) saturate(1.4);
-  border-bottom:1px solid var(--border);
-  transition:background .4s;
+  background:rgba(250,250,248,.95);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--rule);
+  height:62px;
 }
-.nav-logo{
-  display:flex;align-items:center;gap:10px;
-  font-family:var(--font-head);font-weight:800;font-size:1.05rem;
-  letter-spacing:-0.01em;
+.nav-inner{
+  max-width:var(--max);margin:0 auto;
+  height:100%;display:flex;align-items:center;
+  justify-content:space-between;padding:0 24px;
 }
-.nav-logo .dot{
-  width:28px;height:28px;background:var(--pink);
-  border-radius:50%;display:flex;align-items:center;justify-content:center;
-  font-size:0.6rem;font-weight:800;color:#fff;letter-spacing:0;
-  box-shadow:0 0 18px var(--pink-glow);
+.nav-logo{display:flex;align-items:center;gap:10px}
+.logo-mark{
+  display:flex;align-items:center;gap:0;
 }
-.nav-links{display:flex;align-items:center;gap:6px}
+.logo-zero{
+  background:var(--pink);color:#fff;
+  font-family:var(--font-sans);font-weight:700;font-size:0.72rem;
+  letter-spacing:0.04em;padding:3px 7px;border-radius:20px;
+  line-height:1;
+}
+.logo-noise{
+  background:var(--ink);color:#fff;
+  font-family:var(--font-sans);font-weight:600;font-size:0.72rem;
+  letter-spacing:0.04em;padding:3px 7px;
+  line-height:1;
+}
+.logo-finance{
+  font-family:var(--font-sans);font-weight:700;font-size:0.9rem;
+  color:var(--ink);letter-spacing:0;
+  margin-left:8px;
+}
+.nav-links{display:flex;align-items:center;gap:2px}
 .nav-links a{
-  padding:7px 14px;border-radius:var(--radius-sm);
-  font-size:0.82rem;font-weight:500;color:var(--muted);
-  transition:color .25s,background .25s;
-  position:relative;
+  padding:6px 13px;border-radius:var(--radius-sm);
+  font-size:0.83rem;font-weight:500;color:var(--ink-mid);
+  transition:background .18s,color .18s;
 }
-.nav-links a:hover,.nav-links a.active{color:var(--text);background:var(--surface)}
+.nav-links a:hover,.nav-links a.active{background:var(--bg-warm);color:var(--ink);text-decoration:none}
 .nav-cta{
-  padding:8px 20px;background:var(--pink);color:#fff;
+  padding:7px 18px;background:var(--pink);color:#fff !important;
   border-radius:20px;font-size:0.82rem;font-weight:600;
-  box-shadow:0 0 20px var(--pink-glow);
-  transition:box-shadow .3s,transform .2s;
+  transition:background .2s,box-shadow .2s;
+  box-shadow:0 2px 8px rgba(212,43,81,.2);
 }
-.nav-cta:hover{box-shadow:0 0 36px rgba(232,48,90,.45);transform:translateY(-1px)}
-.nav-mobile-toggle{display:none;flex-direction:column;gap:5px;padding:8px;cursor:none}
-.nav-mobile-toggle span{width:22px;height:2px;background:var(--text);border-radius:2px;transition:.3s}
+.nav-cta:hover{background:#b8244a;box-shadow:0 4px 16px rgba(212,43,81,.3);text-decoration:none}
+.mobile-btn{display:none;flex-direction:column;gap:4px;padding:8px}
+.mobile-btn span{width:20px;height:2px;background:var(--ink);border-radius:1px;transition:.3s}
 
-/* ═══════════════════════════════════════════
-   HERO
-═══════════════════════════════════════════ */
-#hero{
-  min-height:100vh;display:flex;align-items:center;
-  padding:100px clamp(16px,6vw,100px) 60px;
-  position:relative;overflow:hidden;
-}
-.hero-bg{
-  position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(ellipse 70% 60% at 65% 40%,rgba(42,122,122,.12) 0%,transparent 70%),
-             radial-gradient(ellipse 50% 50% at 20% 80%,rgba(232,48,90,.08) 0%,transparent 65%);
-}
-.hero-grid{
-  position:absolute;inset:0;pointer-events:none;
-  background-image:
-    linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);
-  background-size:60px 60px;
-  mask-image:radial-gradient(ellipse 80% 70% at 60% 40%,black 0%,transparent 75%);
-}
-.hero-content{max-width:700px;position:relative}
-.hero-badge{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:6px 14px;border-radius:20px;
-  border:1px solid rgba(232,48,90,.3);
-  background:rgba(232,48,90,.06);
-  font-size:0.75rem;font-weight:500;color:var(--pink-light);
-  margin-bottom:28px;
-  animation:fadeSlideUp .8s both;
-}
-.hero-badge::before{content:'';width:6px;height:6px;background:var(--pink);border-radius:50%;animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(232,48,90,.5)}50%{box-shadow:0 0 0 6px transparent}}
-.hero-title{
-  font-family:var(--font-head);font-size:clamp(2.6rem,6vw,5rem);
-  font-weight:800;line-height:1.05;letter-spacing:-0.03em;
-  animation:fadeSlideUp .8s .15s both;
-}
-.hero-title .line2{color:transparent;
-  background:linear-gradient(135deg,var(--teal-light),var(--teal-mid));
-  -webkit-background-clip:text;background-clip:text;}
-.hero-title .line3{color:transparent;
-  background:linear-gradient(135deg,var(--pink-light),var(--pink));
-  -webkit-background-clip:text;background-clip:text;}
-.hero-desc{
-  font-size:1.05rem;color:var(--muted);max-width:520px;
-  margin:24px 0 40px;line-height:1.8;
-  animation:fadeSlideUp .8s .3s both;
-}
-.hero-actions{display:flex;gap:14px;flex-wrap:wrap;animation:fadeSlideUp .8s .45s both}
-.btn-primary{
-  padding:14px 32px;background:linear-gradient(135deg,var(--pink),#c0183c);
-  color:#fff;border-radius:30px;font-weight:600;font-size:0.9rem;
-  box-shadow:0 8px 32px rgba(232,48,90,.35);
-  transition:transform .25s,box-shadow .25s;
-}
-.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 44px rgba(232,48,90,.5)}
-.btn-outline{
-  padding:14px 32px;border:1.5px solid var(--border);
-  color:var(--text);border-radius:30px;font-weight:500;font-size:0.9rem;
-  transition:border-color .25s,background .25s;
-}
-.btn-outline:hover{border-color:var(--teal-mid);background:rgba(42,122,122,.08)}
-.hero-stats{
-  display:flex;gap:40px;flex-wrap:wrap;margin-top:60px;
-  padding-top:40px;border-top:1px solid var(--border);
-  animation:fadeSlideUp .8s .6s both;
-}
-.hero-stat-num{
-  font-family:var(--font-head);font-size:2rem;font-weight:800;
-  background:linear-gradient(135deg,var(--text),var(--muted));
-  -webkit-background-clip:text;background-clip:text;color:transparent;
-}
-.hero-stat-label{font-size:0.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
-.hero-visual{
-  position:absolute;right:clamp(20px,8vw,120px);top:50%;
-  transform:translateY(-50%);
-  display:flex;align-items:center;justify-content:center;
-  animation:floatIn 1.2s .3s both;
-}
-@keyframes floatIn{from{opacity:0;transform:translateY(-40%) scale(.9)}to{opacity:1;transform:translateY(-50%) scale(1)}}
-.hero-chart-card{
-  width:clamp(260px,30vw,360px);
-  background:var(--dark3);border:1px solid var(--border);
-  border-radius:20px;padding:24px;
-  box-shadow:0 32px 80px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.03);
-  animation:float 6s ease-in-out infinite;
-}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
-.card-header-small{font-size:0.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
-.card-big-num{font-family:var(--font-head);font-size:2rem;font-weight:800;color:var(--text)}
-.card-sub{font-size:0.78rem;color:#5cba7a;margin-top:2px}
-.mini-chart{height:80px;position:relative;margin:16px 0 8px}
-.mini-chart svg{width:100%;height:100%}
-.chart-dots{display:flex;gap:12px;margin-top:12px}
-.chart-dot{display:flex;align-items:center;gap:6px;font-size:0.72rem;color:var(--muted)}
-.chart-dot::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--pink)}
-.chart-dot.teal::before{background:var(--teal-mid)}
-@keyframes fadeSlideUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
-
-/* ═══════════════════════════════════════════
-   SECTIONS COMMON
-═══════════════════════════════════════════ */
-.section{padding:100px clamp(16px,6vw,100px)}
-.section-label{
-  font-size:0.72rem;text-transform:uppercase;letter-spacing:.1em;
-  color:var(--pink);font-weight:600;margin-bottom:12px;
-}
-.section-title{
-  font-family:var(--font-head);font-size:clamp(1.8rem,4vw,3rem);
-  font-weight:800;letter-spacing:-0.03em;line-height:1.15;
-}
-.section-desc{color:var(--muted);font-size:1rem;line-height:1.8;margin-top:14px;max-width:540px}
-.fade-in{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease}
-.fade-in.visible{opacity:1;transform:translateY(0)}
-
-/* ═══════════════════════════════════════════
-   WHY ZNF
-═══════════════════════════════════════════ */
-#why{background:var(--dark2)}
-.why-grid{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:20px;margin-top:60px;
-}
-.why-card{
-  background:var(--dark3);border:1px solid var(--border);
-  border-radius:var(--radius);padding:32px;
-  position:relative;overflow:hidden;
-  transition:border-color .3s,transform .3s,box-shadow .3s;
-}
-.why-card::before{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(135deg,transparent,rgba(42,122,122,.06));
-  opacity:0;transition:opacity .4s;
-}
-.why-card:hover{border-color:rgba(42,122,122,.35);transform:translateY(-4px);box-shadow:0 20px 60px rgba(0,0,0,.4)}
-.why-card:hover::before{opacity:1}
-.why-icon{
-  width:48px;height:48px;border-radius:12px;
-  background:rgba(232,48,90,.1);border:1px solid rgba(232,48,90,.2);
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.3rem;margin-bottom:20px;
-}
-.why-card h3{font-family:var(--font-head);font-size:1.1rem;font-weight:700;margin-bottom:10px}
-.why-card p{font-size:0.88rem;color:var(--muted);line-height:1.7}
-
-/* ═══════════════════════════════════════════
-   ARTICLES
-═══════════════════════════════════════════ */
-#articles .section-header{display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:20px;margin-bottom:50px}
-.articles-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px}
-.article-card{
-  background:var(--dark3);border:1px solid var(--border);
-  border-radius:var(--radius);overflow:hidden;
-  transition:transform .35s,border-color .35s,box-shadow .35s;
-  cursor:none;
-}
-.article-card:hover{transform:translateY(-6px);border-color:rgba(232,48,90,.3);box-shadow:0 24px 60px rgba(0,0,0,.45)}
-.article-img{
-  height:180px;background:linear-gradient(135deg,var(--dark4),var(--dark3));
-  position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;
-}
-.article-img-inner{
-  width:100%;height:100%;
-  background:linear-gradient(135deg,rgba(42,122,122,.3),rgba(232,48,90,.2));
-  display:flex;align-items:center;justify-content:center;
-  font-size:3rem;
-}
-.article-tag{
-  position:absolute;top:12px;left:12px;
-  padding:4px 10px;border-radius:20px;font-size:0.7rem;font-weight:600;
-  background:rgba(232,48,90,.85);color:#fff;
-}
-.article-body{padding:24px}
-.article-meta{font-size:0.72rem;color:var(--muted);margin-bottom:10px;font-family:var(--font-mono)}
-.article-title{font-family:var(--font-head);font-size:1.05rem;font-weight:700;line-height:1.4;margin-bottom:10px}
-.article-excerpt{font-size:0.85rem;color:var(--muted);line-height:1.7}
-.article-footer{display:flex;justify-content:space-between;align-items:center;padding:16px 24px;border-top:1px solid var(--border)}
-.read-more{font-size:0.8rem;font-weight:600;color:var(--teal-light);display:flex;align-items:center;gap:6px;transition:gap .25s}
-.article-card:hover .read-more{gap:10px}
-
-/* Article Admin Panel */
-.admin-panel{
-  margin-top:50px;background:var(--dark3);border:1px solid var(--border);
-  border-radius:var(--radius);padding:32px;
-}
-.admin-title{font-family:var(--font-head);font-size:1rem;font-weight:700;margin-bottom:20px;display:flex;align-items:center;gap:8px}
-.admin-title span{padding:3px 10px;background:rgba(232,48,90,.15);border:1px solid rgba(232,48,90,.3);border-radius:20px;font-size:0.7rem;color:var(--pink)}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.form-group{display:flex;flex-direction:column;gap:6px}
-.form-group.full{grid-column:1/-1}
-.form-group label{font-size:0.75rem;color:var(--muted);font-weight:500;text-transform:uppercase;letter-spacing:.05em}
-.form-input,.form-select,.form-textarea{
-  background:var(--dark4);border:1px solid var(--border);
-  border-radius:var(--radius-sm);padding:10px 14px;
-  color:var(--text);font-size:0.88rem;
-  transition:border-color .25s;outline:none;
-}
-.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--teal-mid)}
-.form-textarea{resize:vertical;min-height:100px}
-.form-select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238892a4' fill='none' stroke-width='2'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
-.form-actions{display:flex;gap:12px;margin-top:6px}
-
-/* ═══════════════════════════════════════════
-   CALCULATORS
-═══════════════════════════════════════════ */
-#calculators{background:var(--dark2)}
-.calc-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:40px}
-.calc-tab{
-  padding:9px 20px;border-radius:20px;font-size:0.82rem;font-weight:600;
-  border:1.5px solid var(--border);color:var(--muted);
-  transition:all .25s;
-}
-.calc-tab.active,.calc-tab:hover{
-  border-color:var(--pink);color:var(--pink);
-  background:rgba(232,48,90,.08);
-}
-.calc-panel{display:none}
-.calc-panel.active{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:start}
-.calc-form{background:var(--dark3);border:1px solid var(--border);border-radius:var(--radius);padding:32px}
-.calc-result{background:var(--dark3);border:1px solid var(--border);border-radius:var(--radius);padding:32px;position:sticky;top:90px}
-.calc-field{margin-bottom:22px;position:relative}
-.calc-label{font-size:0.75rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center}
-.calc-hint{
-  font-size:0.72rem;font-weight:400;text-transform:none;letter-spacing:0;
-  color:var(--teal-light);background:rgba(42,122,122,.1);
-  padding:3px 8px;border-radius:10px;
-}
-.calc-input{
-  width:100%;background:var(--dark4);border:1px solid var(--border);
-  border-radius:var(--radius-sm);padding:12px 16px;
-  color:var(--text);font-size:1rem;transition:border-color .25s;outline:none;
-}
-.calc-input:focus{border-color:var(--teal-mid);box-shadow:0 0 0 3px rgba(59,168,168,.08)}
-.calc-input.optional{border-style:dashed}
-.range-wrap{position:relative;margin-top:6px}
-.calc-range{width:100%;-webkit-appearance:none;height:4px;border-radius:2px;background:var(--dark4);outline:none}
-.calc-range::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--pink);cursor:none;box-shadow:0 0 10px var(--pink-glow)}
-.return-bands{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
-.return-band{
-  padding:5px 12px;border-radius:12px;font-size:0.72rem;font-weight:600;
-  border:1px solid;cursor:none;transition:all .2s;
-}
-.return-band.equity{border-color:rgba(92,186,122,.4);color:#5cba7a;background:rgba(92,186,122,.06)}
-.return-band.hybrid{border-color:rgba(232,180,48,.4);color:#e8b430;background:rgba(232,180,48,.06)}
-.return-band.debt{border-color:rgba(59,168,168,.4);color:var(--teal-mid);background:rgba(59,168,168,.06)}
-.return-band:hover,.return-band.selected{opacity:1}
-.return-band.equity.selected{background:rgba(92,186,122,.2)}
-.return-band.hybrid.selected{background:rgba(232,180,48,.2)}
-.return-band.debt.selected{background:rgba(59,168,168,.2)}
-.optional-tag{
-  font-size:0.68rem;padding:2px 8px;border-radius:8px;
-  background:rgba(136,146,164,.1);color:var(--muted);border:1px solid var(--border);
-  font-weight:500;text-transform:none;letter-spacing:0;
-}
-.wisdom-box{
-  background:rgba(42,122,122,.08);border:1px solid rgba(42,122,122,.2);
-  border-radius:var(--radius-sm);padding:14px 16px;margin-bottom:20px;
-  font-size:0.8rem;color:var(--teal-light);line-height:1.6;
-}
-.wisdom-box strong{color:var(--text);display:block;margin-bottom:4px;font-family:var(--font-head)}
-.calc-btn{
-  width:100%;padding:14px;background:linear-gradient(135deg,var(--pink),#c0183c);
-  color:#fff;border-radius:var(--radius-sm);font-weight:700;font-size:0.95rem;
-  transition:box-shadow .25s,transform .2s;margin-top:4px;
-}
-.calc-btn:hover{box-shadow:0 8px 28px rgba(232,48,90,.4);transform:translateY(-1px)}
-/* Result card */
-.result-label{font-size:0.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
-.result-big{font-family:var(--font-head);font-size:2.2rem;font-weight:800;color:var(--text);margin-bottom:2px}
-.result-big .rupee{color:var(--pink);font-size:0.8em}
-.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0}
-.result-box{background:var(--dark4);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px}
-.result-box-val{font-family:var(--font-head);font-size:1.2rem;font-weight:700;color:var(--text)}
-.result-box-label{font-size:0.7rem;color:var(--muted);margin-top:2px}
-.donut-wrap{display:flex;align-items:center;justify-content:center;margin:20px 0}
-.advisor-nudge{
-  background:rgba(232,48,90,.06);border:1px solid rgba(232,48,90,.2);
-  border-radius:var(--radius-sm);padding:14px;margin-top:16px;
-  font-size:0.8rem;color:var(--muted);line-height:1.6;
-}
-.advisor-nudge strong{color:var(--pink)}
-/* Rupee rain canvas */
-#rupee-canvas{
-  position:fixed;pointer-events:none;z-index:9990;inset:0;opacity:0;
-  transition:opacity .5s;
-}
-#rupee-canvas.active{opacity:1}
-
-/* ═══════════════════════════════════════════
-   RETIREMENT
-═══════════════════════════════════════════ */
-#retirement .calc-panel{display:none}
-#retirement .calc-panel.active{display:grid}
-
-/* ═══════════════════════════════════════════
-   INSURANCE IRR
-═══════════════════════════════════════════ */
-#insurance{background:var(--dark2)}
-.irr-payout-table{width:100%;border-collapse:collapse;margin-top:12px;font-size:0.85rem}
-.irr-payout-table th{text-align:left;padding:8px 12px;font-size:0.72rem;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border)}
-.irr-payout-table td{padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.04)}
-.irr-payout-table input{background:var(--dark4);border:1px solid var(--border);border-radius:6px;padding:6px 10px;color:var(--text);width:100%}
-.add-payout-btn{
-  margin-top:12px;padding:8px 16px;border:1.5px dashed var(--border);
-  border-radius:var(--radius-sm);color:var(--muted);font-size:0.8rem;
-  transition:border-color .25s,color .25s;width:100%;
-}
-.add-payout-btn:hover{border-color:var(--teal-mid);color:var(--teal-light)}
-.irr-result{
-  font-family:var(--font-head);font-size:3rem;font-weight:800;
-  background:linear-gradient(135deg,var(--teal-light),var(--teal-mid));
-  -webkit-background-clip:text;background-clip:text;color:transparent;
-  margin:20px 0 8px;
-}
-.irr-verdict{padding:12px 16px;border-radius:var(--radius-sm);font-size:0.85rem;font-weight:600;margin-top:8px}
-.irr-verdict.good{background:rgba(92,186,122,.12);color:#5cba7a;border:1px solid rgba(92,186,122,.3)}
-.irr-verdict.bad{background:rgba(232,48,90,.1);color:var(--pink-light);border:1px solid rgba(232,48,90,.25)}
-.irr-verdict.ok{background:rgba(232,180,48,.1);color:#e8b430;border:1px solid rgba(232,180,48,.25)}
-
-/* ═══════════════════════════════════════════
-   IMPORTANCE OF PLANNING
-═══════════════════════════════════════════ */
-#planning .timeline{margin-top:60px;position:relative;padding-left:30px}
-#planning .timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--pink),var(--teal-mid))}
-.timeline-item{position:relative;padding-bottom:50px}
-.timeline-item:last-child{padding-bottom:0}
-.timeline-dot{
-  position:absolute;left:-38px;top:2px;
-  width:16px;height:16px;border-radius:50%;
-  background:var(--pink);border:3px solid var(--dark);
-  box-shadow:0 0 14px var(--pink-glow);
-}
-.timeline-year{font-family:var(--font-mono);font-size:0.72rem;color:var(--pink);margin-bottom:6px}
-.timeline-heading{font-family:var(--font-head);font-size:1.15rem;font-weight:700;margin-bottom:8px}
-.timeline-text{font-size:0.88rem;color:var(--muted);line-height:1.7;max-width:600px}
-
-/* ═══════════════════════════════════════════
-   CONTACT
-═══════════════════════════════════════════ */
-#contact{background:var(--dark2)}
-.contact-grid{display:grid;grid-template-columns:1fr 1.3fr;gap:50px;align-items:start;margin-top:50px}
-.contact-info h3{font-family:var(--font-head);font-size:1.3rem;font-weight:700;margin-bottom:16px}
-.contact-info p{color:var(--muted);font-size:0.9rem;line-height:1.8;margin-bottom:28px}
-.contact-item{
-  display:flex;align-items:center;gap:14px;margin-bottom:16px;
-  padding:14px 16px;background:var(--dark3);border:1px solid var(--border);
-  border-radius:var(--radius-sm);transition:border-color .25s;
-}
-.contact-item:hover{border-color:rgba(42,122,122,.35)}
-.contact-item-icon{
-  width:36px;height:36px;background:rgba(42,122,122,.15);
-  border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;
-}
-.contact-item-label{font-size:0.72rem;color:var(--muted);margin-bottom:2px}
-.contact-item-val{font-size:0.88rem;font-weight:600;color:var(--text)}
-.contact-form{background:var(--dark3);border:1px solid var(--border);border-radius:var(--radius);padding:32px}
-.contact-form h3{font-family:var(--font-head);font-size:1.1rem;font-weight:700;margin-bottom:24px}
-
-/* ═══════════════════════════════════════════
-   FOOTER
-═══════════════════════════════════════════ */
-footer{
-  padding:50px clamp(16px,6vw,100px);
-  border-top:1px solid var(--border);
-  display:flex;justify-content:space-between;align-items:center;
-  flex-wrap:wrap;gap:20px;
-}
-.footer-copy{font-size:0.8rem;color:var(--muted)}
-.footer-links{display:flex;gap:24px}
-.footer-links a{font-size:0.8rem;color:var(--muted);transition:color .25s}
-.footer-links a:hover{color:var(--text)}
-
-/* ═══════════════════════════════════════════
-   MOBILE NAV
-═══════════════════════════════════════════ */
+/* ─────────────────────────────────────────  MOBILE NAV */
 .mobile-nav{
-  position:fixed;inset:0;background:rgba(10,12,15,.97);
-  z-index:999;display:none;flex-direction:column;
-  align-items:center;justify-content:center;gap:20px;
-  backdrop-filter:blur(20px);
-  transform:translateY(-100%);transition:transform .4s cubic-bezier(.77,0,.18,1);
+  display:none;position:fixed;inset:0;background:var(--bg);z-index:999;
+  flex-direction:column;align-items:center;justify-content:center;gap:8px;
+  transform:translateY(-100%);transition:transform .38s cubic-bezier(.77,0,.18,1);
 }
 .mobile-nav.open{transform:translateY(0)}
-.mobile-nav a{font-family:var(--font-head);font-size:2rem;font-weight:800;color:var(--text);transition:color .25s}
-.mobile-nav a:hover{color:var(--pink)}
+.mobile-nav a{
+  font-family:var(--font-serif);font-size:1.6rem;font-weight:600;
+  color:var(--ink);padding:10px 20px;transition:color .2s;
+}
+.mobile-nav a:hover{color:var(--pink);text-decoration:none}
+.mobile-close{position:absolute;top:18px;right:20px;font-size:1.4rem;color:var(--ink-light)}
 
-/* ═══════════════════════════════════════════
-   SECTION TRANSITIONS / PAGE-LIKE TABS
-═══════════════════════════════════════════ */
-.page-section{
-  opacity:1;transform:none;
-  transition:opacity .5s ease, transform .5s ease;
+/* ─────────────────────────────────────────  PAGE SHELL */
+.page{display:none;animation:pageIn .35s ease both}
+.page.active{display:block}
+@keyframes pageIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* ─────────────────────────────────────────  SECTION */
+.section{padding:72px 24px;max-width:var(--max);margin:0 auto}
+.section-label{
+  font-family:var(--font-sans);font-size:0.72rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:.12em;color:var(--pink);
+  margin-bottom:10px;
+}
+.section-title{
+  font-family:var(--font-serif);font-size:clamp(1.9rem,3.5vw,2.6rem);
+  font-weight:600;line-height:1.2;letter-spacing:-0.01em;color:var(--ink);
+  margin-bottom:14px;
+}
+.section-sub{font-size:1.05rem;color:var(--ink-light);line-height:1.75;max-width:580px}
+.rule{height:1px;background:var(--rule);margin:0}
+.fade-in{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
+.fade-in.vis{opacity:1;transform:none}
+
+/* ─────────────────────────────────────────
+   PAGE 1: HOME
+───────────────────────────────────────── */
+.hero{
+  padding:120px 24px 80px;
+  max-width:var(--max);margin:0 auto;
+  display:grid;grid-template-columns:1fr 380px;gap:60px;align-items:center;
+}
+.hero-eyebrow{
+  font-family:var(--font-sans);font-size:0.78rem;font-weight:600;
+  text-transform:uppercase;letter-spacing:.1em;color:var(--pink);
+  margin-bottom:18px;
+}
+.hero-title{
+  font-family:var(--font-serif);
+  font-size:clamp(2.4rem,4.5vw,3.6rem);
+  font-weight:700;line-height:1.1;
+  letter-spacing:-0.02em;color:var(--ink);
+  margin-bottom:22px;
+}
+.hero-title em{font-style:italic;color:var(--pink)}
+.hero-desc{
+  font-size:1.12rem;color:var(--ink-light);line-height:1.8;
+  max-width:520px;margin-bottom:36px;
+}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+.btn-primary{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:12px 26px;background:var(--pink);color:#fff;
+  border-radius:var(--radius-sm);font-size:0.9rem;font-weight:600;
+  box-shadow:0 2px 10px rgba(212,43,81,.25);
+  transition:background .2s,box-shadow .2s,transform .15s;
+}
+.btn-primary:hover{background:#b8244a;box-shadow:0 4px 20px rgba(212,43,81,.35);transform:translateY(-1px);text-decoration:none;color:#fff}
+.btn-outline{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:11px 24px;border:1.5px solid var(--rule);color:var(--ink-mid);
+  border-radius:var(--radius-sm);font-size:0.9rem;font-weight:500;
+  transition:border-color .2s,background .2s;
+}
+.btn-outline:hover{border-color:var(--teal);background:var(--teal-soft);color:var(--teal);text-decoration:none}
+
+/* RBI Data Panel */
+.rbi-panel{
+  background:var(--bg-panel);border:1px solid var(--rule);
+  border-radius:var(--radius);padding:24px;
+  box-shadow:var(--shadow-md);position:relative;
+}
+.rbi-title{
+  font-family:var(--font-sans);font-size:0.7rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:.1em;color:var(--ink-light);
+  margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;
+}
+.live-dot{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:0.68rem;color:var(--success);font-weight:600;
+}
+.live-dot::before{
+  content:'';width:6px;height:6px;background:var(--success);
+  border-radius:50%;animation:blink 2s infinite;
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.rbi-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.rbi-item{padding:12px;background:var(--bg-warm);border-radius:var(--radius-sm)}
+.rbi-val{font-family:var(--font-mono);font-size:1.25rem;font-weight:500;color:var(--ink);line-height:1}
+.rbi-key{font-size:0.7rem;color:var(--ink-light);margin-top:4px}
+.rbi-note{font-size:0.68rem;color:var(--ink-light);margin-top:14px;line-height:1.5;border-top:1px solid var(--rule);padding-top:12px}
+
+/* Why exists */
+.why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:50px}
+.why-card{
+  background:var(--bg-panel);border:1px solid var(--rule);
+  border-radius:var(--radius);padding:28px;
+  transition:box-shadow .3s,transform .3s;
+}
+.why-card:hover{box-shadow:var(--shadow-md);transform:translateY(-3px)}
+.why-num{
+  font-family:var(--font-mono);font-size:0.7rem;color:var(--pink);
+  font-weight:500;margin-bottom:12px;
+}
+.why-card h3{font-family:var(--font-serif);font-size:1.1rem;font-weight:600;margin-bottom:8px;line-height:1.3}
+.why-card p{font-size:0.88rem;color:var(--ink-light);line-height:1.7}
+
+/* ─────────────────────────────────────────
+   PAGE 2: ARTICLES
+───────────────────────────────────────── */
+.articles-intro{
+  background:var(--bg-warm);border-bottom:1px solid var(--rule);
+  padding:80px 24px 50px;
+}
+.articles-intro-inner{max-width:var(--max);margin:0 auto}
+.articles-body{padding:50px 24px;max-width:var(--max);margin:0 auto}
+.articles-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:24px}
+.article-card{
+  background:var(--bg-panel);border:1px solid var(--rule);
+  border-radius:var(--radius);overflow:hidden;
+  transition:box-shadow .28s,transform .28s;
+}
+.article-card:hover{box-shadow:var(--shadow-md);transform:translateY(-3px)}
+.article-thumb{
+  height:160px;background:var(--bg-warm);
+  display:flex;align-items:center;justify-content:center;
+  font-size:2.4rem;border-bottom:1px solid var(--rule);
+  position:relative;
+}
+.article-tag{
+  position:absolute;top:10px;left:10px;
+  padding:3px 10px;border-radius:12px;font-size:0.68rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:.06em;
+  background:var(--pink);color:#fff;
+}
+.article-body{padding:20px}
+.article-meta{font-size:0.72rem;color:var(--ink-light);font-family:var(--font-mono);margin-bottom:8px}
+.article-title{font-family:var(--font-serif);font-size:1.05rem;font-weight:600;line-height:1.4;margin-bottom:8px;color:var(--ink)}
+.article-excerpt{font-size:0.85rem;color:var(--ink-light);line-height:1.7}
+.article-footer{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;border-top:1px solid var(--rule)}
+.read-link{font-size:0.8rem;font-weight:600;color:var(--teal);display:flex;align-items:center;gap:4px;transition:gap .2s}
+.article-card:hover .read-link{gap:8px}
+
+/* Article Publisher panel */
+.publisher-bar{
+  background:var(--bg-warm);border:1px solid var(--rule);
+  border-radius:var(--radius);padding:24px;margin-top:40px;
+}
+.publisher-bar h3{font-family:var(--font-serif);font-size:1.1rem;font-weight:600;margin-bottom:6px}
+.publisher-bar p{font-size:0.85rem;color:var(--ink-light);margin-bottom:20px;line-height:1.7}
+.notion-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:20px}
+.notion-step{
+  background:var(--bg-panel);border:1px solid var(--rule);
+  border-radius:var(--radius-sm);padding:16px;
+}
+.notion-step-num{
+  font-family:var(--font-mono);font-size:0.7rem;color:var(--teal);
+  font-weight:600;margin-bottom:8px;
+}
+.notion-step h4{font-size:0.88rem;font-weight:700;margin-bottom:6px}
+.notion-step p{font-size:0.8rem;color:var(--ink-light);line-height:1.6}
+.notion-badge{
+  display:inline-flex;align-items:center;gap:6px;padding:6px 14px;
+  border-radius:20px;font-size:0.75rem;font-weight:600;
+  background:var(--ink);color:#fff;margin-top:6px;
 }
 
-/* ═══════════════════════════════════════════
-   RESPONSIVE
-═══════════════════════════════════════════ */
+/* ─────────────────────────────────────────
+   CALCULATORS — Common
+───────────────────────────────────────── */
+.calc-page-header{
+  background:var(--bg-warm);border-bottom:1px solid var(--rule);
+  padding:80px 24px 40px;
+}
+.calc-page-header-inner{max-width:var(--max);margin:0 auto}
+.calc-tabs-bar{
+  background:var(--bg-panel);border-bottom:1px solid var(--rule);
+  position:sticky;top:62px;z-index:100;
+}
+.calc-tabs-inner{
+  max-width:var(--max);margin:0 auto;
+  padding:0 24px;display:flex;gap:0;overflow-x:auto;
+}
+.calc-tab{
+  padding:14px 20px;font-size:0.84rem;font-weight:600;
+  color:var(--ink-light);border-bottom:2.5px solid transparent;
+  transition:color .2s,border-color .2s;white-space:nowrap;
+}
+.calc-tab:hover{color:var(--ink)}
+.calc-tab.active{color:var(--pink);border-bottom-color:var(--pink)}
+.calc-body{padding:40px 24px;max-width:var(--max);margin:0 auto}
+.calc-layout{display:grid;grid-template-columns:1fr 340px;gap:28px;align-items:start}
+
+/* Form elements */
+.form-card{
+  background:var(--bg-panel);border:1px solid var(--rule);
+  border-radius:var(--radius);padding:28px;
+}
+.form-section-title{
+  font-family:var(--font-serif);font-size:1rem;font-weight:600;
+  color:var(--ink);margin-bottom:20px;padding-bottom:12px;
+  border-bottom:1px solid var(--rule);
+}
+.field{margin-bottom:18px}
+.field-label{
+  font-size:0.75rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:.07em;color:var(--ink-mid);margin-bottom:6px;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.field-hint{font-weight:400;text-transform:none;letter-spacing:0;font-size:0.72rem;color:var(--ink-light)}
+.field-opt{
+  font-size:0.68rem;padding:2px 8px;border-radius:10px;
+  background:var(--bg-warm);color:var(--ink-light);border:1px solid var(--rule);
+  font-weight:600;text-transform:none;letter-spacing:0;
+}
+.finput{
+  width:100%;padding:10px 14px;
+  background:var(--bg);border:1px solid var(--rule);
+  border-radius:var(--radius-sm);font-size:0.95rem;color:var(--ink);
+  outline:none;transition:border-color .2s,box-shadow .2s;
+}
+.finput:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(26,107,107,.08)}
+.finput.optional{border-style:dashed;background:var(--bg-warm)}
+.frange{
+  width:100%;-webkit-appearance:none;height:3px;
+  background:var(--rule);border-radius:2px;margin-top:8px;outline:none;
+}
+.frange::-webkit-slider-thumb{
+  -webkit-appearance:none;width:16px;height:16px;
+  border-radius:50%;background:var(--pink);cursor:pointer;
+  box-shadow:0 1px 4px rgba(0,0,0,.15);
+}
+.return-chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}
+.chip{
+  padding:5px 12px;border-radius:12px;font-size:0.73rem;font-weight:600;
+  border:1.5px solid;cursor:pointer;transition:all .18s;
+}
+.chip-eq{border-color:#c8e6c9;color:#388e3c;background:#f1f8e9}
+.chip-eq:hover,.chip-eq.sel{background:#c8e6c9}
+.chip-hy{border-color:#ffe082;color:#f57f17;background:#fffde7}
+.chip-hy:hover,.chip-hy.sel{background:#ffe082}
+.chip-dt{border-color:#b2dfdb;color:#00695c;background:#e0f2f1}
+.chip-dt:hover,.chip-dt.sel{background:#b2dfdb}
+.freq-chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}
+.freq-chip{
+  padding:5px 14px;border-radius:12px;font-size:0.75rem;font-weight:600;
+  border:1.5px solid var(--rule);color:var(--ink-light);transition:all .18s;cursor:pointer;
+}
+.freq-chip.sel,.freq-chip:hover{border-color:var(--teal);color:var(--teal);background:var(--teal-soft)}
+.tip-box{
+  background:var(--teal-soft);border-left:3px solid var(--teal);
+  border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+  padding:12px 14px;margin-bottom:16px;font-size:0.82rem;color:var(--ink-mid);line-height:1.65;
+}
+.tip-box strong{color:var(--teal);display:block;margin-bottom:3px;font-family:var(--font-serif)}
+.calc-btn{
+  width:100%;padding:13px;background:var(--pink);color:#fff;
+  border-radius:var(--radius-sm);font-size:0.92rem;font-weight:700;
+  box-shadow:0 2px 10px rgba(212,43,81,.2);
+  transition:background .2s,box-shadow .2s,transform .15s;margin-top:6px;
+}
+.calc-btn:hover{background:#b8244a;box-shadow:0 4px 20px rgba(212,43,81,.3);transform:translateY(-1px)}
+
+/* Result panel */
+.result-card{
+  background:var(--bg-panel);border:1px solid var(--rule);
+  border-radius:var(--radius);padding:24px;
+  box-shadow:var(--shadow-sm);position:sticky;top:110px;
+}
+.result-label{font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-light);margin-bottom:6px}
+.result-big{font-family:var(--font-serif);font-size:2.4rem;font-weight:700;color:var(--ink);line-height:1;margin-bottom:4px}
+.result-sub{font-size:0.82rem;color:var(--ink-light);margin-bottom:18px}
+.result-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.result-box{background:var(--bg-warm);border-radius:var(--radius-sm);padding:12px;border:1px solid var(--rule)}
+.result-box-val{font-family:var(--font-mono);font-size:1rem;font-weight:500;color:var(--ink)}
+.result-box-key{font-size:0.7rem;color:var(--ink-light);margin-top:3px}
+.donut-wrap{display:flex;justify-content:center;margin:16px 0}
+.nudge{
+  background:var(--pink-soft);border:1px solid rgba(212,43,81,.15);
+  border-radius:var(--radius-sm);padding:12px 14px;
+  font-size:0.8rem;color:var(--ink-mid);line-height:1.65;margin-top:14px;
+}
+.nudge strong{color:var(--pink)}
+.status-box{border-radius:var(--radius-sm);padding:10px 14px;font-size:0.82rem;font-weight:600;margin-top:12px}
+.status-ok{background:var(--success-bg);color:var(--success);border:1px solid #bbdece}
+.status-warn{background:var(--warn-bg);color:var(--warn);border:1px solid #f9d8a0}
+.status-bad{background:var(--danger-bg);color:var(--danger);border:1px solid #fcc}
+
+/* ─────────────────────────────────────────
+   PAGE 4: PLANNING + AI
+───────────────────────────────────────── */
+.planning-hero{
+  background:linear-gradient(135deg,var(--bg-warm) 60%,var(--teal-soft));
+  border-bottom:1px solid var(--rule);padding:80px 24px 50px;
+}
+.timeline-wrap{padding:50px 24px;max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:1fr 340px;gap:40px;align-items:start}
+.timeline{position:relative;padding-left:28px}
+.timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--pink),var(--teal-mid))}
+.tl-item{position:relative;padding-bottom:44px}
+.tl-item:last-child{padding-bottom:0}
+.tl-dot{position:absolute;left:-35px;top:3px;width:14px;height:14px;border-radius:50%;background:var(--pink);border:3px solid var(--bg);box-shadow:0 0 0 2px var(--pink)}
+.tl-age{font-family:var(--font-mono);font-size:0.7rem;color:var(--pink);font-weight:600;margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em}
+.tl-head{font-family:var(--font-serif);font-size:1.15rem;font-weight:600;margin-bottom:8px;color:var(--ink)}
+.tl-body{font-size:0.88rem;color:var(--ink-light);line-height:1.75;max-width:560px}
+.tl-body ul{padding-left:16px;margin-top:6px}
+.tl-body li{margin-bottom:4px}
+.tl-callout{
+  background:var(--bg-warm);border:1px solid var(--rule);
+  border-radius:var(--radius-sm);padding:12px 14px;
+  margin-top:10px;font-size:0.83rem;color:var(--ink-mid);line-height:1.65;
+}
+.tl-callout em{font-style:normal;font-weight:600;color:var(--ink)}
+
+/* AI Chat */
+.ai-card{
+  background:var(--bg-panel);border:1px solid var(--rule);
+  border-radius:var(--radius);overflow:hidden;
+  box-shadow:var(--shadow-md);position:sticky;top:90px;
+}
+.ai-header{
+  background:var(--ink);color:#fff;padding:16px 18px;
+  display:flex;align-items:center;gap:10px;
+}
+.ai-avatar{
+  width:34px;height:34px;background:var(--pink);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:0.9rem;flex-shrink:0;
+}
+.ai-header-text h4{font-size:0.88rem;font-weight:700;margin-bottom:1px}
+.ai-header-text p{font-size:0.7rem;opacity:.65}
+.ai-messages{height:360px;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;background:var(--bg-warm)}
+.ai-msg{max-width:88%;font-size:0.83rem;line-height:1.6;padding:10px 14px;border-radius:var(--radius-sm);animation:msgIn .25s ease}
+@keyframes msgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.ai-msg.bot{background:var(--bg-panel);border:1px solid var(--rule);align-self:flex-start;border-radius:4px 12px 12px 12px;color:var(--ink-mid)}
+.ai-msg.user{background:var(--pink);color:#fff;align-self:flex-end;border-radius:12px 4px 12px 12px}
+.ai-typing{align-self:flex-start;padding:10px 14px;background:var(--bg-panel);border:1px solid var(--rule);border-radius:4px 12px 12px 12px}
+.ai-typing span{display:inline-block;width:6px;height:6px;background:var(--ink-light);border-radius:50%;animation:dot 1.2s infinite;margin:0 1px}
+.ai-typing span:nth-child(2){animation-delay:.2s}
+.ai-typing span:nth-child(3){animation-delay:.4s}
+@keyframes dot{0%,80%,100%{transform:scale(.8);opacity:.4}40%{transform:scale(1);opacity:1}}
+.ai-input-row{display:flex;gap:0;border-top:1px solid var(--rule);background:var(--bg-panel)}
+.ai-input{
+  flex:1;padding:12px 14px;border:none;outline:none;
+  font-size:0.85rem;background:transparent;color:var(--ink);
+}
+.ai-send{
+  padding:0 16px;background:var(--pink);color:#fff;
+  font-size:0.8rem;font-weight:700;transition:background .2s;
+}
+.ai-send:hover{background:#b8244a}
+.ai-qs{padding:12px 16px;background:var(--bg-warm);border-top:1px solid var(--rule);display:flex;flex-wrap:wrap;gap:6px}
+.ai-q{
+  padding:4px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;
+  border:1.5px solid var(--rule);color:var(--teal);background:var(--bg-panel);
+  transition:all .2s;cursor:pointer;
+}
+.ai-q:hover{border-color:var(--teal);background:var(--teal-soft)}
+
+/* ─────────────────────────────────────────
+   INSURANCE IRR
+───────────────────────────────────────── */
+.ins-layout{display:grid;grid-template-columns:1fr 340px;gap:28px;align-items:start}
+.payout-table{width:100%;border-collapse:collapse;margin-top:10px;font-size:0.85rem}
+.payout-table th{text-align:left;padding:8px 10px;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-light);border-bottom:1px solid var(--rule)}
+.payout-table td{padding:7px 10px;border-bottom:1px solid rgba(0,0,0,.04)}
+.payout-table input{width:100%;padding:6px 10px;border:1px solid var(--rule);border-radius:var(--radius-sm);font-size:0.85rem;outline:none;background:var(--bg)}
+.payout-table input:focus{border-color:var(--teal)}
+.add-row-btn{
+  width:100%;margin-top:10px;padding:8px;
+  border:1.5px dashed var(--rule);border-radius:var(--radius-sm);
+  font-size:0.8rem;color:var(--ink-light);transition:all .2s;
+}
+.add-row-btn:hover{border-color:var(--teal);color:var(--teal);background:var(--teal-soft)}
+.irr-num{
+  font-family:var(--font-serif);font-size:3.2rem;font-weight:700;
+  line-height:1;margin:12px 0 6px;
+}
+.irr-num.good{color:var(--success)}
+.irr-num.bad{color:var(--danger)}
+.irr-num.mid{color:var(--warn)}
+.comparison-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--rule);font-size:0.83rem}
+.comparison-row:last-child{border-bottom:none}
+
+/* ─────────────────────────────────────────
+   RATIO ANALYSIS
+───────────────────────────────────────── */
+.ratio-layout{display:grid;grid-template-columns:1fr 360px;gap:28px;align-items:start}
+.ratio-section{margin-bottom:28px}
+.ratio-section-head{
+  font-family:var(--font-serif);font-size:1rem;font-weight:600;
+  color:var(--ink);padding-bottom:10px;border-bottom:1px solid var(--rule);
+  margin-bottom:16px;display:flex;align-items:center;gap:8px;
+}
+.ratio-section-head span{
+  font-family:var(--font-sans);font-size:0.7rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:.08em;color:var(--ink-light);
+}
+.ratio-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.ratio-result-panel{
+  background:var(--bg-panel);border:1px solid var(--rule);
+  border-radius:var(--radius);padding:24px;
+  box-shadow:var(--shadow-sm);position:sticky;top:110px;
+}
+.ratio-item{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  padding:12px 0;border-bottom:1px solid var(--rule);
+}
+.ratio-item:last-child{border-bottom:none}
+.ratio-name{font-size:0.85rem;font-weight:600;color:var(--ink);margin-bottom:2px}
+.ratio-desc{font-size:0.75rem;color:var(--ink-light);line-height:1.5;max-width:200px}
+.ratio-val-wrap{text-align:right}
+.ratio-val{font-family:var(--font-mono);font-size:1rem;font-weight:500}
+.ratio-status{font-size:0.7rem;font-weight:700;margin-top:2px;text-transform:uppercase;letter-spacing:.04em}
+.ratio-bar-wrap{height:4px;background:var(--rule);border-radius:2px;margin-top:8px;overflow:hidden}
+.ratio-bar{height:100%;border-radius:2px;transition:width .8s ease}
+.overall-score{
+  text-align:center;padding:20px 0;border-bottom:1px solid var(--rule);margin-bottom:16px;
+}
+.score-ring{
+  width:90px;height:90px;border-radius:50%;
+  border:6px solid var(--rule);display:flex;align-items:center;
+  justify-content:center;flex-direction:column;margin:0 auto 10px;
+}
+.score-num{font-family:var(--font-serif);font-size:1.8rem;font-weight:700}
+.score-label{font-size:0.65rem;color:var(--ink-light);text-transform:uppercase;letter-spacing:.08em}
+.feedback-list{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.feedback-item{
+  font-size:0.82rem;padding:10px 12px;border-radius:var(--radius-sm);
+  line-height:1.55;
+}
+.fb-great{background:var(--success-bg);color:#1e5c3a;border-left:3px solid var(--success)}
+.fb-ok{background:var(--warn-bg);color:#7c4a00;border-left:3px solid var(--warn)}
+.fb-low{background:var(--danger-bg);color:#9b1c1c;border-left:3px solid var(--danger)}
+
+/* ─────────────────────────────────────────
+   CONTACT
+───────────────────────────────────────── */
+.contact-layout{display:grid;grid-template-columns:1fr 1.2fr;gap:50px;align-items:start;margin-top:50px}
+.contact-card{
+  display:flex;align-items:flex-start;gap:14px;
+  padding:14px 16px;background:var(--bg-panel);
+  border:1px solid var(--rule);border-radius:var(--radius-sm);
+  margin-bottom:12px;transition:border-color .2s;
+}
+.contact-card:hover{border-color:var(--teal)}
+.contact-icon{
+  width:36px;height:36px;background:var(--teal-soft);
+  border-radius:var(--radius-sm);display:flex;align-items:center;
+  justify-content:center;font-size:1rem;flex-shrink:0;
+  border:1px solid #b2dfdb;
+}
+.contact-label{font-size:0.7rem;color:var(--ink-light);margin-bottom:2px;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.contact-val{font-size:0.9rem;font-weight:600;color:var(--ink)}
+
+/* FOOTER */
+footer{
+  background:var(--ink);color:rgba(255,255,255,.6);
+  padding:40px 24px;margin-top:0;
+}
+.footer-inner{max-width:var(--max);margin:0 auto;display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:24px}
+.footer-brand{color:rgba(255,255,255,.9);font-family:var(--font-serif);font-size:0.95rem;font-weight:600;margin-bottom:6px}
+.footer-links{display:flex;gap:20px;flex-wrap:wrap}
+.footer-links a{font-size:0.8rem;color:rgba(255,255,255,.5);transition:color .2s}
+.footer-links a:hover{color:#fff;text-decoration:none}
+.footer-disc{font-size:0.7rem;color:rgba(255,255,255,.3);max-width:460px;line-height:1.6;margin-top:10px}
+
+/* ─────────────────────────────────────────  RESPONSIVE */
 @media(max-width:900px){
-  .calc-panel.active,.contact-grid{grid-template-columns:1fr}
-  .hero-visual{display:none}
-  .hero-title{font-size:clamp(2rem,8vw,3.5rem)}
-  .nav-links,.nav-cta{display:none}
-  .nav-mobile-toggle{display:flex}
+  .hero,.calc-layout,.ins-layout,.ratio-layout,.contact-layout,.planning-grid,.timeline-wrap{grid-template-columns:1fr}
+  .why-grid,.notion-steps{grid-template-columns:1fr}
+  .result-card,.ai-card,.ratio-result-panel{position:static}
+  nav .nav-links,.nav-cta{display:none}
+  .mobile-btn{display:flex}
   .mobile-nav{display:flex}
-  .form-grid{grid-template-columns:1fr}
+  .hero{padding-top:90px}
+  .rbi-panel{display:none}
 }
 @media(max-width:600px){
-  .hero-stats{gap:24px}
-  .calc-tabs{gap:6px}
-  .calc-tab{padding:7px 14px;font-size:0.76rem}
-  footer{flex-direction:column;text-align:center}
+  .rbi-grid{grid-template-columns:1fr 1fr}
+  .ratio-row{grid-template-columns:1fr}
+  .result-row{grid-template-columns:1fr 1fr}
 }
-
-/* ═══════════════════════════════════════════
-   ANIMATED UNDERLINE NAV
-═══════════════════════════════════════════ */
-.scroll-indicator{
-  position:fixed;top:70px;left:0;height:2px;
-  background:linear-gradient(90deg,var(--pink),var(--teal-mid));
-  z-index:1001;width:0%;transition:width .1s;
-}
-
-/* ═══════════════════════════════════════════
-   GLOW DIVIDER
-═══════════════════════════════════════════ */
-.glow-divider{
-  height:1px;background:linear-gradient(90deg,transparent,var(--pink),var(--teal-mid),transparent);
-  margin:0;opacity:0.3;
-}
-
-/* ═══════════════════════════════════════════
-   STEP UP FREQUENCY TOGGLE
-═══════════════════════════════════════════ */
-.freq-group{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
-.freq-btn{
-  padding:6px 14px;border-radius:12px;font-size:0.78rem;font-weight:600;
-  border:1.5px solid var(--border);color:var(--muted);
-  transition:all .2s;
-}
-.freq-btn.active,.freq-btn:hover{border-color:var(--teal-mid);color:var(--teal-light);background:rgba(42,122,122,.1)}
-
-/* ═══════════════════════════════════════════
-   LOADING ANIMATION
-═══════════════════════════════════════════ */
-#loader{
-  position:fixed;inset:0;background:var(--dark);z-index:99999;
-  display:flex;align-items:center;justify-content:center;
-  transition:opacity .5s,visibility .5s;
-}
-#loader.done{opacity:0;visibility:hidden}
-.loader-inner{text-align:center}
-.loader-logo{
-  font-family:var(--font-head);font-size:1.5rem;font-weight:800;
-  margin-bottom:24px;
-}
-.loader-bar{width:200px;height:2px;background:var(--dark3);border-radius:2px;margin:0 auto;overflow:hidden}
-.loader-fill{height:100%;background:linear-gradient(90deg,var(--pink),var(--teal-mid));animation:load 1.2s ease forwards}
-@keyframes load{from{width:0%}to{width:100%}}
 </style>
 </head>
 <body>
 
-<!-- LOADER -->
-<div id="loader">
-  <div class="loader-inner">
-    <div class="loader-logo">
-      <span style="color:var(--pink)">ZERO</span> <span style="color:var(--muted);font-weight:300">NOISE</span> <span>FINANCE</span>
-    </div>
-    <div class="loader-bar"><div class="loader-fill"></div></div>
-  </div>
-</div>
-
-<!-- CURSOR -->
-<div id="cursor"></div>
-<div id="cursor-ring"></div>
-
 <!-- SCROLL PROGRESS -->
-<div class="scroll-indicator" id="scrollBar"></div>
-
-<!-- RUPEE RAIN CANVAS -->
-<canvas id="rupee-canvas"></canvas>
+<div id="prog"></div>
 
 <!-- MOBILE NAV -->
 <div class="mobile-nav" id="mobileNav">
-  <a href="#hero" onclick="closeMobile()">Home</a>
-  <a href="#why" onclick="closeMobile()">Why ZNF</a>
-  <a href="#articles" onclick="closeMobile()">Articles</a>
-  <a href="#calculators" onclick="closeMobile()">Calculators</a>
-  <a href="#planning" onclick="closeMobile()">Planning</a>
-  <a href="#insurance" onclick="closeMobile()">Insurance IRR</a>
-  <a href="#contact" onclick="closeMobile()">Contact</a>
+  <button class="mobile-close" onclick="closeMobile()">✕</button>
+  <a href="#" onclick="nav('home');closeMobile()">Home</a>
+  <a href="#" onclick="nav('articles');closeMobile()">Articles</a>
+  <a href="#" onclick="nav('calculators');closeMobile()">Calculators</a>
+  <a href="#" onclick="nav('planning');closeMobile()">Planning</a>
+  <a href="#" onclick="nav('insurance');closeMobile()">Insurance IRR</a>
+  <a href="#" onclick="nav('ratios');closeMobile()">Ratio Analysis</a>
+  <a href="#" onclick="nav('contact');closeMobile()">Contact</a>
 </div>
 
 <!-- NAVBAR -->
 <nav>
-  <a href="#hero" class="nav-logo">
-    <div class="dot">ZNF</div>
-    Zero Noise Finance
-  </a>
-  <div class="nav-links">
-    <a href="#why">Why ZNF</a>
-    <a href="#articles">Articles</a>
-    <a href="#calculators">Calculators</a>
-    <a href="#planning">Planning</a>
-    <a href="#insurance">Insurance IRR</a>
-    <a href="#contact">Contact</a>
+  <div class="nav-inner">
+    <div class="nav-logo" onclick="nav('home')" style="cursor:pointer">
+      <div class="logo-mark">
+        <span class="logo-zero">ZERO</span>
+        <span class="logo-noise">NOISE</span>
+      </div>
+      <span class="logo-finance">FINANCE</span>
+    </div>
+    <div class="nav-links">
+      <a href="#" onclick="nav('home')">Home</a>
+      <a href="#" onclick="nav('articles')">Articles</a>
+      <a href="#" onclick="nav('calculators')">Calculators</a>
+      <a href="#" onclick="nav('planning')">Planning</a>
+      <a href="#" onclick="nav('insurance')">Insurance IRR</a>
+      <a href="#" onclick="nav('ratios')">Ratio Analysis</a>
+      <a href="#" onclick="nav('contact')" class="nav-cta" style="color:#fff">Consult Me</a>
+    </div>
+    <button class="mobile-btn" onclick="toggleMobile()">
+      <span></span><span></span><span></span>
+    </button>
   </div>
-  <a href="#contact" class="nav-cta">Get Free Consultation</a>
-  <button class="nav-mobile-toggle" id="menuBtn" onclick="toggleMobile()" aria-label="Menu">
-    <span></span><span></span><span></span>
-  </button>
 </nav>
 
-<!-- ════════════════════════════════════════
-     HERO
-════════════════════════════════════════ -->
-<section id="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-grid"></div>
-  <div class="hero-content">
-    <div class="hero-badge">✦ Finance, Simplified for India</div>
-    <h1 class="hero-title">
-      Cut Through<br>
-      <span class="line2">The Noise.</span><br>
-      <span class="line3">Grow Wealthy.</span>
-    </h1>
-    <p class="hero-desc">Financial media is loud. Advice is conflicting. Jargon is everywhere. Zero Noise Finance strips away the complexity — giving you clear, actionable, honest financial guidance so your money works harder than you do.</p>
-    <div class="hero-actions">
-      <a href="#calculators" class="btn-primary">Start Planning →</a>
-      <a href="#articles" class="btn-outline">Read Articles</a>
-    </div>
-    <div class="hero-stats">
-      <div>
-        <div class="hero-stat-num">₹1Cr+</div>
-        <div class="hero-stat-label">Goal milestones planned</div>
-      </div>
-      <div>
-        <div class="hero-stat-num">4 Tools</div>
-        <div class="hero-stat-label">Precision calculators</div>
-      </div>
-      <div>
-        <div class="hero-stat-num">Zero</div>
-        <div class="hero-stat-label">Noise. Always.</div>
-      </div>
-    </div>
-  </div>
-  <div class="hero-visual">
-    <div class="hero-chart-card">
-      <div class="card-header-small">Wealth Projection</div>
-      <div class="card-big-num">₹2.4 Cr</div>
-      <div class="card-sub">▲ +340% in 20 years @ 12%</div>
-      <div class="mini-chart">
-        <svg viewBox="0 0 320 80" preserveAspectRatio="none">
-          <defs>
-            <linearGradient id="g1" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stop-color="#e8305a" stop-opacity="0.8"/>
-              <stop offset="100%" stop-color="#3ba8a8" stop-opacity="0.9"/>
-            </linearGradient>
-            <linearGradient id="g2" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#3ba8a8" stop-opacity="0.3"/>
-              <stop offset="100%" stop-color="#3ba8a8" stop-opacity="0"/>
-            </linearGradient>
-          </defs>
-          <path d="M0,72 C40,70 60,68 80,60 C110,48 130,42 160,30 C190,18 220,12 260,6 C280,3 300,2 320,0" stroke="url(#g1)" stroke-width="2.5" fill="none"/>
-          <path d="M0,72 C40,70 60,68 80,60 C110,48 130,42 160,30 C190,18 220,12 260,6 C280,3 300,2 320,0 L320,80 L0,80Z" fill="url(#g2)"/>
-          <!-- Animated dot -->
-          <circle r="4" fill="#e8305a">
-            <animateMotion dur="4s" repeatCount="indefinite" path="M0,72 C40,70 60,68 80,60 C110,48 130,42 160,30 C190,18 220,12 260,6 C280,3 300,2 320,0"/>
-          </circle>
-        </svg>
-      </div>
-      <div class="chart-dots">
-        <div class="chart-dot">SIP: ₹10,000/mo</div>
-        <div class="chart-dot teal">Equity 12%</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="glow-divider"></div>
-
-<!-- ════════════════════════════════════════
-     WHY ZNF
-════════════════════════════════════════ -->
-<section id="why" class="section">
-  <div class="section-label fade-in">The Problem We Solve</div>
-  <h2 class="section-title fade-in">Finance <em style="font-style:normal;color:var(--pink)">without</em> the noise</h2>
-  <p class="section-desc fade-in">The internet is full of financial "advice" — clickbait, fear-mongering, and products dressed as guidance. We believe every Indian deserves clarity over confusion.</p>
-  <div class="why-grid">
-    <div class="why-card fade-in">
-      <div class="why-icon">🎯</div>
-      <h3>Goal-First Thinking</h3>
-      <p>We start with what you want — your house, retirement, children's education — and work backwards with math, not marketing.</p>
-    </div>
-    <div class="why-card fade-in">
-      <div class="why-icon">🔬</div>
-      <h3>Data-Driven Decisions</h3>
-      <p>Every recommendation is backed by long-term data, historical returns, and actuarial math — not gut feelings or product commissions.</p>
-    </div>
-    <div class="why-card fade-in">
-      <div class="why-icon">🌱</div>
-      <h3>Power of Compounding</h3>
-      <p>Time is your greatest asset. Starting ₹5,000/month at 25 vs 35 makes a difference of ₹2+ crores. We show you the math clearly.</p>
-    </div>
-    <div class="why-card fade-in">
-      <div class="why-icon">🛡️</div>
-      <h3>Protection Before Growth</h3>
-      <p>Insurance, emergency funds, and risk management come before returns. Building wealth on a shaky foundation is dangerous.</p>
-    </div>
-    <div class="why-card fade-in">
-      <div class="why-icon">📊</div>
-      <h3>Transparent Calculations</h3>
-      <p>Every number you see on our calculators uses standard financial formulas. No black boxes, no hidden assumptions.</p>
-    </div>
-    <div class="why-card fade-in">
-      <div class="why-icon">🤝</div>
-      <h3>Personalised Guidance</h3>
-      <p>Generic advice has limits. Real financial planning accounts for your income, dependents, tax bracket, and risk appetite.</p>
-    </div>
-  </div>
-</section>
-
-<div class="glow-divider"></div>
-
-<!-- ════════════════════════════════════════
-     ARTICLES
-════════════════════════════════════════ -->
-<section id="articles" class="section">
-  <div class="section-header fade-in">
+<!-- ══════════════════════════════════════
+     HOME PAGE
+══════════════════════════════════════ -->
+<div class="page active" id="page-home">
+  <div class="hero">
     <div>
-      <div class="section-label">Knowledge Hub</div>
-      <h2 class="section-title">Zero noise. <span style="color:var(--teal-light)">Pure insight.</span></h2>
-    </div>
-    <a href="#articles" class="btn-outline" style="white-space:nowrap">All Articles →</a>
-  </div>
-
-  <div class="articles-grid" id="articlesGrid">
-    <!-- Sample articles — replace with your own -->
-    <div class="article-card fade-in">
-      <div class="article-img">
-        <div class="article-img-inner">📈</div>
-        <span class="article-tag">Investing</span>
-      </div>
-      <div class="article-body">
-        <div class="article-meta">June 12, 2025 · 6 min read</div>
-        <div class="article-title">Why SIP is the most powerful wealth creation tool for salaried Indians</div>
-        <div class="article-excerpt">Systematic investing removes emotion from the equation. Here's why rupee-cost averaging beats trying to time the market every single time.</div>
-      </div>
-      <div class="article-footer">
-        <span class="read-more">Read Article <span>→</span></span>
-        <span style="font-size:0.72rem;color:var(--muted)">5 min</span>
+      <div class="hero-eyebrow fade-in">Financial Planning · India</div>
+      <h1 class="hero-title fade-in">
+        Better financial decisions,<br><em>without the noise.</em>
+      </h1>
+      <p class="hero-desc fade-in">The world of personal finance is full of jargon, fear, and conflicting advice. Zero Noise Finance exists to cut through all of it — giving you honest, clear, and actionable guidance to help your money work for you.</p>
+      <div class="hero-actions fade-in">
+        <button class="btn-primary" onclick="nav('calculators')">Use Calculators →</button>
+        <button class="btn-outline" onclick="nav('articles')">Read Articles</button>
       </div>
     </div>
-    <div class="article-card fade-in">
-      <div class="article-img">
-        <div class="article-img-inner">🛡️</div>
-        <span class="article-tag">Insurance</span>
-      </div>
-      <div class="article-body">
-        <div class="article-meta">May 28, 2025 · 8 min read</div>
-        <div class="article-title">The real IRR of your endowment policy — it's probably less than your savings account</div>
-        <div class="article-excerpt">Most traditional insurance policies return 4-6% IRR. We break down the math that agents don't show you, and what you should do instead.</div>
-      </div>
-      <div class="article-footer">
-        <span class="read-more">Read Article <span>→</span></span>
-        <span style="font-size:0.72rem;color:var(--muted)">8 min</span>
-      </div>
-    </div>
-    <div class="article-card fade-in">
-      <div class="article-img">
-        <div class="article-img-inner">🏠</div>
-        <span class="article-tag">Goals</span>
-      </div>
-      <div class="article-body">
-        <div class="article-meta">May 10, 2025 · 5 min read</div>
-        <div class="article-title">How much do you actually need to retire comfortably at 55 in India?</div>
-        <div class="article-excerpt">Inflation-adjusted retirement corpus calculations for the Indian middle class — including healthcare inflation, which most planners ignore.</div>
-      </div>
-      <div class="article-footer">
-        <span class="read-more">Read Article <span>→</span></span>
-        <span style="font-size:0.72rem;color:var(--muted)">5 min</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- ADMIN PANEL TO ADD ARTICLES -->
-  <div class="admin-panel fade-in" id="adminPanel" style="display:none">
-    <div class="admin-title">
-      ✍️ Publish New Article
-      <span>Author Panel</span>
-    </div>
-    <div class="form-grid">
-      <div class="form-group">
-        <label>Article Title</label>
-        <input type="text" class="form-input" id="artTitle" placeholder="Your article headline...">
-      </div>
-      <div class="form-group">
-        <label>Category</label>
-        <select class="form-select form-input" id="artCategory">
-          <option value="Investing">Investing</option>
-          <option value="Insurance">Insurance</option>
-          <option value="Goals">Goals</option>
-          <option value="Tax">Tax Planning</option>
-          <option value="Retirement">Retirement</option>
-          <option value="Budgeting">Budgeting</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Emoji / Icon</label>
-        <input type="text" class="form-input" id="artEmoji" placeholder="📊" maxlength="2">
-      </div>
-      <div class="form-group">
-        <label>Read Time</label>
-        <input type="text" class="form-input" id="artRead" placeholder="5 min read">
-      </div>
-      <div class="form-group full">
-        <label>Excerpt (2-3 sentences)</label>
-        <textarea class="form-textarea" id="artExcerpt" placeholder="Brief summary shown in the card..."></textarea>
-      </div>
-      <div class="form-group full">
-        <label>Article Body (HTML supported)</label>
-        <textarea class="form-textarea" id="artBody" style="min-height:160px" placeholder="Full article content..."></textarea>
-      </div>
-    </div>
-    <div class="form-actions">
-      <button class="btn-primary" style="padding:10px 24px;border-radius:var(--radius-sm)" onclick="publishArticle()">Publish Article</button>
-      <button class="btn-outline" style="padding:10px 24px;border-radius:var(--radius-sm)" onclick="document.getElementById('adminPanel').style.display='none'">Cancel</button>
-    </div>
-  </div>
-  <div style="margin-top:20px;text-align:right">
-    <button onclick="document.getElementById('adminPanel').style.display=document.getElementById('adminPanel').style.display==='none'?'block':'none'" style="font-size:0.78rem;color:var(--muted);border:1px solid var(--border);padding:6px 14px;border-radius:20px;transition:color .2s,border-color .2s" onmouseover="this.style.color='var(--pink)';this.style.borderColor='var(--pink)'" onmouseout="this.style.color='var(--muted)';this.style.borderColor='var(--border)'">⚙️ Author Login</button>
-  </div>
-</section>
-
-<div class="glow-divider"></div>
-
-<!-- ════════════════════════════════════════
-     CALCULATORS
-════════════════════════════════════════ -->
-<section id="calculators" class="section">
-  <div class="section-label fade-in">Precision Tools</div>
-  <h2 class="section-title fade-in">Calculators that <span style="color:var(--pink)">show the truth</span></h2>
-  <p class="section-desc fade-in">No guesswork. Every field is optional — start with what you know and our suggestions will guide you to a complete financial picture.</p>
-
-  <div class="calc-tabs fade-in" style="margin-top:36px">
-    <button class="calc-tab active" onclick="switchCalc('sip')">📈 SIP Calculator</button>
-    <button class="calc-tab" onclick="switchCalc('stepup')">🚀 Step-Up SIP</button>
-    <button class="calc-tab" onclick="switchCalc('retirement')">🌅 Retirement</button>
-  </div>
-
-  <!-- ─── SIP CALCULATOR ─── -->
-  <div class="calc-panel active" id="calc-sip">
-    <div class="calc-form">
-      <div class="wisdom-box">
-        <strong>💡 What is SIP?</strong>
-        A Systematic Investment Plan lets you invest a fixed amount every month. Even ₹5,000/month becomes ₹1 crore in 20 years at 12% — that's the magic of compounding.
-      </div>
-      <div class="calc-field">
-        <div class="calc-label">Monthly SIP Amount <span class="optional-tag">Required</span></div>
-        <input class="calc-input" type="number" id="sip_amount" placeholder="e.g. ₹10,000" min="100" oninput="calcSIP()">
-      </div>
-      <div class="calc-field">
-        <div class="calc-label">Investment Duration (Years) <span class="optional-tag">Required</span></div>
-        <div class="range-wrap">
-          <input class="calc-input" type="number" id="sip_years" placeholder="e.g. 15 years" min="1" max="50" oninput="syncRange('sip_years','sip_years_r');calcSIP()">
-          <input class="calc-range" type="range" id="sip_years_r" min="1" max="50" value="15" oninput="syncInput('sip_years_r','sip_years');calcSIP()">
-        </div>
-      </div>
-      <div class="calc-field">
-        <div class="calc-label">
-          Expected Annual Return (%)
-          <span class="calc-hint">💡 Pick a benchmark below</span>
-        </div>
-        <input class="calc-input" type="number" id="sip_rate" placeholder="e.g. 12%" step="0.5" oninput="calcSIP()">
-        <div class="return-bands">
-          <button class="return-band equity" onclick="setRate('sip_rate',13,'equity-sip')" id="equity-sip">🟢 Equity 12–15%</button>
-          <button class="return-band hybrid" onclick="setRate('sip_rate',10,'hybrid-sip')" id="hybrid-sip">🟡 Hybrid ~10%</button>
-          <button class="return-band debt" onclick="setRate('sip_rate',6.5,'debt-sip')" id="debt-sip">🔵 Debt 6–7%</button>
-        </div>
-        <div style="font-size:0.73rem;color:var(--muted);margin-top:8px">Equity funds (Nifty 50 index) have historically returned 12–15% over 10+ year periods. Past performance isn't guaranteed.</div>
-      </div>
-      <div class="calc-field">
-        <div class="calc-label">Current Savings (Optional) <span class="optional-tag">Optional</span></div>
-        <input class="calc-input optional" type="number" id="sip_lumpsum" placeholder="Amount you already have today" oninput="calcSIP()">
-        <div style="font-size:0.73rem;color:var(--teal-light);margin-top:6px">💡 Adding your existing savings shows the real head-start you have on your goal.</div>
-      </div>
-      <div class="calc-field">
-        <div class="calc-label">Your Financial Goal (Optional) <span class="optional-tag">Optional</span></div>
-        <input class="calc-input optional" type="number" id="sip_goal" placeholder="e.g. ₹1,00,00,000 (1 Crore)" oninput="calcSIP()">
-        <div style="font-size:0.73rem;color:var(--teal-light);margin-top:6px">💡 Enter a target and we'll tell you exactly if you're on track — and by how much.</div>
-      </div>
-      <button class="calc-btn" onclick="calcSIP();triggerRupeeRain()">Calculate My Wealth →</button>
-    </div>
-    <div class="calc-result" id="sip_result">
-      <div class="result-label">Total Corpus at Maturity</div>
-      <div class="result-big" id="sip_corpus"><span class="rupee">₹</span>—</div>
-      <div style="font-size:0.78rem;color:var(--muted)" id="sip_summary">Enter values above to see your projection</div>
-      <div class="result-grid">
-        <div class="result-box">
-          <div class="result-box-val" id="sip_invested">₹—</div>
-          <div class="result-box-label">Total Invested</div>
-        </div>
-        <div class="result-box">
-          <div class="result-box-val" id="sip_gains">₹—</div>
-          <div class="result-box-label">Wealth Gained</div>
-        </div>
-      </div>
-      <div class="donut-wrap">
-        <canvas id="sipDonut" width="160" height="160"></canvas>
-      </div>
-      <div id="sip_goal_status"></div>
-      <div class="advisor-nudge">
-        <strong>🎯 Why a financial advisor matters:</strong> Calculators give you numbers. A financial planner helps you <em>act</em> on them — with tax optimisation, rebalancing strategy, and life-stage adjustments that add real crores over time.
-      </div>
-    </div>
-  </div>
-
-  <!-- ─── STEP-UP SIP ─── -->
-  <div class="calc-panel" id="calc-stepup">
-    <div class="calc-form">
-      <div class="wisdom-box">
-        <strong>🚀 Why Step-Up SIP is a game-changer</strong>
-        As your income grows, your SIP should grow too. Increasing your SIP by just 10% every year can boost your final corpus by 60–80% compared to a flat SIP. This is the #1 wealth-building strategy for salaried professionals.
-      </div>
-      <div class="calc-field">
-        <div class="calc-label">Starting Monthly SIP</div>
-        <input class="calc-input" type="number" id="su_amount" placeholder="e.g. ₹10,000" oninput="calcStepUp()">
-      </div>
-      <div class="calc-field">
-        <div class="calc-label">Annual Step-Up % <span class="calc-hint">How much you'll increase each period</span></div>
-        <div class="range-wrap">
-          <input class="calc-input" type="number" id="su_steprate" placeholder="e.g. 10%" step="1" oninput="syncRange('su_steprate','su_steprate_r');calcStepUp()">
-          <input class="calc-range" type="range" id="su_steprate_r" min="1" max="30" value="10" oninput="syncInput('su_steprate_r','su_steprate');calcStepUp()">
-        </div>
-        <div style="font-size:0.73rem;color:var(--teal-light);margin-top:6px">💡 Even a 5% annual increase keeps pace with inflation. 10–15% is recommended if your salary grows 8–10% per year.</div>
-      </div>
-      <div class="calc-field">
-        <div class="calc-label">Step-Up Frequency</div>
-        <div class="freq-group" id="freq-group">
-          <button class="freq-btn active" data-freq="12" onclick="setFreq(this,12)">Annual</button>
-          <button class="freq-btn" data-freq="2" onclick="setFreq(this,2)">Semi-Annual</button>
-          <button class="freq-btn" data-freq="4" onclick="setFreq(this,4)">Quarterly</button>
-        </div>
-      </div>
-      <div class="calc-field">
-        <div class="calc-label">Investment Duration (Years)</div>
-        <div class="range-wrap">
-          <input class="calc-input" type="number" id="su_years" placeholder="e.g. 20 years" oninput="syncRange('su_years','su_years_r');calcStepUp()">
-          <input class="calc-range" type="range" id="su_years_r" min="1" max="50" value="20" oninput="syncInput('su_years_r','su_years');calcStepUp()">
-        </div>
-      </div>
-      <div class="calc-field">
-        <div class="calc-label">Expected Return (%)</div>
-        <input class="calc-input" type="number" id="su_rate" placeholder="e.g. 12%" oninput="calcStepUp()">
-        <div class="return-bands">
-          <button class="return-band equity" onclick="setRate('su_rate',13,'equity-su')">🟢 Equity 12–15%</button>
-          <button class="return-band hybrid" onclick="setRate('su_rate',10,'hybrid-su')">🟡 Hybrid ~10%</button>
-          <button class="return-band debt" onclick="setRate('su_rate',6.5,'debt-su')">🔵 Debt 6–7%</button>
-        </div>
-      </div>
-      <div class="calc-field">
-        <div class="calc-label">Your Goal (Optional)</div>
-        <input class="calc-input optional" type="number" id="su_goal" placeholder="Target corpus e.g. ₹2,00,00,000" oninput="calcStepUp()">
-      </div>
-      <button class="calc-btn" onclick="calcStepUp();triggerRupeeRain()">Calculate Step-Up Corpus →</button>
-    </div>
-    <div class="calc-result">
-      <div class="result-label">Step-Up SIP Corpus</div>
-      <div class="result-big" id="su_corpus"><span class="rupee">₹</span>—</div>
-      <div style="font-size:0.78rem;color:var(--muted)" id="su_summary">Enter values to see your projection</div>
-      <div class="result-grid">
-        <div class="result-box">
-          <div class="result-box-val" id="su_invested">₹—</div>
-          <div class="result-box-label">Total Invested</div>
-        </div>
-        <div class="result-box">
-          <div class="result-box-val" id="su_gains">₹—</div>
-          <div class="result-box-label">Wealth Gained</div>
-        </div>
-      </div>
-      <div class="result-box" style="margin-bottom:14px">
-        <div class="result-box-val" id="su_last_sip">₹—</div>
-        <div class="result-box-label">Final Monthly SIP</div>
-      </div>
-      <div id="su_goal_status"></div>
-      <div class="advisor-nudge">
-        <strong>📊 Step-up SIP tip:</strong> Increase your SIP every April — right after your salary hike. Linking your SIP step-up to income growth ensures you never feel the pinch while dramatically boosting your corpus.
-      </div>
-    </div>
-  </div>
-
-  <!-- ─── RETIREMENT ─── -->
-  <div class="calc-panel" id="calc-retirement">
-    <div class="calc-form">
-      <div class="wisdom-box">
-        <strong>🌅 The retirement corpus myth</strong>
-        Most people underestimate how much they need. At 7% inflation, your expenses double every 10 years. Retirement planning must account for inflation-adjusted spending, healthcare costs, and longevity risk.
-      </div>
-      <div class="calc-field">
-        <div class="calc-label">Current Age</div>
-        <input class="calc-input" type="number" id="ret_age" placeholder="e.g. 30" oninput="calcRetirement()">
-      </div>
-      <div class="calc-field">
-        <div class="calc-label">Retirement Age</div>
-        <input class="calc-input" type="number" id="ret_retire" placeholder="e.g. 60" oninput="calcRetirement()">
-      </div>
-      <div class="calc-field">
-        <div class="calc-label">Life Expectancy</div>
-        <input class="calc-input" type="number" id="ret_life" placeholder="e.g. 85" oninput="calcRetirement()">
-        <div style="font-size:0.73rem;color:var(--teal-light);margin-top:6px">💡 Indian life expectancy is rising. Plan to 85–90 to avoid running out of money.</div>
-      </div>
-      <div class="calc-field">
-        <div class="calc-label">Monthly Expenses Today (₹)</div>
-        <input class="calc-input" type="number" id="ret_expense" placeholder="e.g. ₹50,000/month" oninput="calcRetirement()">
-      </div>
-      <div class="calc-field">
-        <div class="calc-label">Expected Inflation (%)</div>
-        <input class="calc-input" type="number" id="ret_inflation" placeholder="e.g. 6%" value="6" oninput="calcRetirement()">
-        <div style="font-size:0.73rem;color:var(--muted);margin-top:6px">India's average CPI inflation is 5–7%. Healthcare inflation is 10–12%.</div>
-      </div>
-      <div class="calc-field">
-        <div class="calc-label">Pre-Retirement Return (% p.a.)</div>
-        <input class="calc-input" type="number" id="ret_pre_return" placeholder="e.g. 12%" oninput="calcRetirement()">
-        <div class="return-bands">
-          <button class="return-band equity" onclick="setRate('ret_pre_return',13)">🟢 Equity</button>
-          <button class="return-band hybrid" onclick="setRate('ret_pre_return',10)">🟡 Hybrid</button>
-        </div>
-      </div>
-      <div class="calc-field">
-        <div class="calc-label">Post-Retirement Return (% p.a.) <span class="calc-hint">More conservative</span></div>
-        <input class="calc-input" type="number" id="ret_post_return" placeholder="e.g. 7%" oninput="calcRetirement()">
-        <div class="return-bands">
-          <button class="return-band hybrid" onclick="setRate('ret_post_return',8)">🟡 Balanced 8%</button>
-          <button class="return-band debt" onclick="setRate('ret_post_return',6.5)">🔵 Conservative 6.5%</button>
-        </div>
-      </div>
-      <div class="calc-field">
-        <div class="calc-label">Current Savings / Investments (Optional)</div>
-        <input class="calc-input optional" type="number" id="ret_savings" placeholder="How much you've already saved" oninput="calcRetirement()">
-      </div>
-      <div class="calc-field">
-        <div class="calc-label">Annual Step-Up in SIP (Optional)</div>
-        <input class="calc-input optional" type="number" id="ret_stepup" placeholder="e.g. 10% step-up" oninput="calcRetirement()">
-      </div>
-      <button class="calc-btn" onclick="calcRetirement();triggerRupeeRain()">Calculate Retirement Plan →</button>
-    </div>
-    <div class="calc-result">
-      <div class="result-label">Corpus Needed at Retirement</div>
-      <div class="result-big" id="ret_corpus"><span class="rupee">₹</span>—</div>
-      <div style="font-size:0.78rem;color:var(--muted)" id="ret_summary">Enter your details to see the full picture</div>
-      <div class="result-grid">
-        <div class="result-box">
-          <div class="result-box-val" id="ret_monthly_need">₹—</div>
-          <div class="result-box-label">Monthly Expense at Retirement</div>
-        </div>
-        <div class="result-box">
-          <div class="result-box-val" id="ret_years_left">— yrs</div>
-          <div class="result-box-label">Years to Retirement</div>
-        </div>
-        <div class="result-box">
-          <div class="result-box-val" id="ret_sip_needed">₹—</div>
-          <div class="result-box-label">Monthly SIP Needed</div>
-        </div>
-        <div class="result-box">
-          <div class="result-box-val" id="ret_duration">— yrs</div>
-          <div class="result-box-label">Retirement Duration</div>
-        </div>
-      </div>
-      <div id="ret_goal_status"></div>
-      <div class="advisor-nudge">
-        <strong>⚕️ Don't forget healthcare:</strong> Budget separately for health insurance premiums and out-of-pocket costs. A single hospitalisation can derail years of savings without adequate coverage.
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="glow-divider"></div>
-
-<!-- ════════════════════════════════════════
-     WHY FINANCIAL PLANNING
-════════════════════════════════════════ -->
-<section id="planning" class="section">
-  <div class="section-label fade-in">Your Financial Journey</div>
-  <h2 class="section-title fade-in">Why planning today <span style="color:var(--teal-light)">changes everything</span></h2>
-  <p class="section-desc fade-in">Financial planning isn't about restricting yourself. It's about designing freedom — so that one day, money is a choice, not a constraint.</p>
-
-  <div class="timeline fade-in">
-    <div class="timeline-item">
-      <div class="timeline-dot"></div>
-      <div class="timeline-year">AGE 25–30</div>
-      <div class="timeline-heading">Build the Foundation</div>
-      <div class="timeline-text">Emergency fund (6 months expenses). Term life insurance. Health insurance. Start SIP — even ₹3,000/month. At this stage, time is your unfair advantage. Don't waste it.</div>
-    </div>
-    <div class="timeline-item">
-      <div class="timeline-dot" style="background:var(--teal-mid);box-shadow:0 0 14px rgba(59,168,168,.5)"></div>
-      <div class="timeline-year">AGE 30–40</div>
-      <div class="timeline-heading">Accelerate Growth</div>
-      <div class="timeline-text">Increase SIP with every salary hike. Review your portfolio annually. Add ELSS for tax efficiency. Start goal-based investing: child's education, home down-payment. Eliminate high-interest debt.</div>
-    </div>
-    <div class="timeline-item">
-      <div class="timeline-dot" style="background:#e8b430;box-shadow:0 0 14px rgba(232,180,48,.5)"></div>
-      <div class="timeline-year">AGE 40–50</div>
-      <div class="timeline-heading">Consolidate & Protect</div>
-      <div class="timeline-text">Shift 20–30% to safer instruments as retirement approaches. Maximise NPS contributions. Estate planning. Review insurance cover — your liabilities and dependents have grown.</div>
-    </div>
-    <div class="timeline-item">
-      <div class="timeline-dot" style="background:#5cba7a;box-shadow:0 0 14px rgba(92,186,122,.5)"></div>
-      <div class="timeline-year">AGE 50–60</div>
-      <div class="timeline-heading">Transition to Freedom</div>
-      <div class="timeline-text">Gradually de-risk portfolio. Build a 2-year cash buffer. Plan SWP (Systematic Withdrawal Plan) strategy. Healthcare insurance top-up. Congratulations — you planned. Most people don't.</div>
-    </div>
-  </div>
-</section>
-
-<div class="glow-divider"></div>
-
-<!-- ════════════════════════════════════════
-     INSURANCE IRR
-════════════════════════════════════════ -->
-<section id="insurance" class="section">
-  <div class="section-label fade-in">Policy Analyser</div>
-  <h2 class="section-title fade-in">Insurance IRR <span style="color:var(--pink)">Calculator</span></h2>
-  <p class="section-desc fade-in">Most traditional insurance policies are terrible investments. Calculate the exact Internal Rate of Return (IRR) on your policy to see if it beats a simple FD — you might be surprised.</p>
-
-  <div class="calc-panel active" style="display:grid;margin-top:40px" id="ins-layout">
-    <div class="calc-form fade-in" style="max-width:600px">
-      <div class="wisdom-box">
-        <strong>⚠️ The Insurance+Investment Trap</strong>
-        Endowment, money-back, and ULIP policies often return just 4–6% IRR — less than a bank FD. Meanwhile your money is locked for decades. Separate insurance (term plan) from investment (mutual funds) for better outcomes.
-      </div>
-      <div class="calc-field">
-        <div class="calc-label">Annual Premium (₹)</div>
-        <input class="calc-input" type="number" id="ins_premium" placeholder="e.g. ₹50,000/year" oninput="calcIRR()">
-      </div>
-      <div class="calc-field">
-        <div class="calc-label">Premium Paying Term (Years)</div>
-        <input class="calc-input" type="number" id="ins_pay_term" placeholder="e.g. 15 years" oninput="populatePayouts();calcIRR()">
-      </div>
-      <div class="calc-field">
-        <div class="calc-label">Policy Term (Years)</div>
-        <input class="calc-input" type="number" id="ins_policy_term" placeholder="e.g. 20 years" oninput="populatePayouts();calcIRR()">
-      </div>
-
-      <div class="calc-field">
-        <div class="calc-label">Payout Structure <span class="calc-hint">Enter what you'll receive and when</span></div>
-        <table class="irr-payout-table" id="payoutTable">
-          <thead><tr><th>Year</th><th>Amount Received (₹)</th><th></th></tr></thead>
-          <tbody id="payoutBody"></tbody>
-        </table>
-        <button class="add-payout-btn" onclick="addPayoutRow()">+ Add Payout Year</button>
-      </div>
-
-      <div class="calc-field">
-        <div class="calc-label">Maturity Benefit (₹) <span class="optional-tag">Optional</span></div>
-        <input class="calc-input optional" type="number" id="ins_maturity" placeholder="Lump sum at end of policy" oninput="calcIRR()">
-      </div>
-      <div class="calc-field">
-        <div class="calc-label">Sum Assured / Death Benefit (₹) <span class="optional-tag">For reference</span></div>
-        <input class="calc-input optional" type="number" id="ins_sa" placeholder="e.g. ₹5,00,000">
-      </div>
-      <button class="calc-btn" onclick="calcIRR()">Calculate Policy IRR →</button>
-    </div>
-    <div class="calc-result fade-in">
-      <div class="result-label">Policy IRR</div>
-      <div class="irr-result" id="irr_value">—%</div>
-      <div id="irr_verdict"></div>
-      <div style="margin-top:20px">
-        <div class="result-grid">
-          <div class="result-box">
-            <div class="result-box-val" id="irr_total_paid">₹—</div>
-            <div class="result-box-label">Total Premium Paid</div>
-          </div>
-          <div class="result-box">
-            <div class="result-box-val" id="irr_total_received">₹—</div>
-            <div class="result-box-label">Total Received</div>
-          </div>
-        </div>
-      </div>
-      <div id="irr_comparison" style="margin-top:16px"></div>
-      <div class="advisor-nudge" style="margin-top:16px">
-        <strong>💡 The better alternative:</strong> A pure term plan (₹1 crore cover for ~₹10,000/year) + SIP in equity mutual funds will almost always beat an endowment policy in both protection and wealth creation. Want personalised analysis? <a href="#contact" style="color:var(--teal-light)">Get in touch →</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="glow-divider"></div>
-
-<!-- ════════════════════════════════════════
-     CONTACT
-════════════════════════════════════════ -->
-<section id="contact" class="section">
-  <div class="section-label fade-in">Tailored Solutions</div>
-  <h2 class="section-title fade-in">Let's build your <span style="color:var(--teal-light)">financial roadmap</span></h2>
-
-  <div class="contact-grid">
     <div class="fade-in">
-      <div class="contact-info">
-        <h3>Personal financial planning, done right</h3>
-        <p>Calculators give you a direction. A personalised financial plan gives you a complete blueprint — tax-efficient, goal-aligned, and built for your life. Reach out for a free initial consultation.</p>
-      </div>
-      <div class="contact-item">
-        <div class="contact-item-icon">📧</div>
-        <div>
-          <div class="contact-item-label">Email</div>
-          <div class="contact-item-val">zeronoisefinance@gmail.com</div>
+      <div class="rbi-panel">
+        <div class="rbi-title">
+          RBI Key Rates
+          <span class="live-dot">Live Data</span>
+        </div>
+        <div class="rbi-grid">
+          <div class="rbi-item">
+            <div class="rbi-val">5.25%</div>
+            <div class="rbi-key">Repo Rate</div>
+          </div>
+          <div class="rbi-item">
+            <div class="rbi-val">3.35%</div>
+            <div class="rbi-key">Reverse Repo</div>
+          </div>
+          <div class="rbi-item">
+            <div class="rbi-val">5.00%</div>
+            <div class="rbi-key">SDF Rate</div>
+          </div>
+          <div class="rbi-item">
+            <div class="rbi-val">5.50%</div>
+            <div class="rbi-key">MSF Rate</div>
+          </div>
+          <div class="rbi-item">
+            <div class="rbi-val">2.1%</div>
+            <div class="rbi-key">CPI Inflation FY26</div>
+          </div>
+          <div class="rbi-item">
+            <div class="rbi-val">7.4%</div>
+            <div class="rbi-key">GDP Growth FY26</div>
+          </div>
+        </div>
+        <div class="rbi-note">
+          Source: RBI MPC Decision, Feb 2026. Repo rate held at 5.25% — fourth consecutive cut cycle since June 2025. Risk-free benchmark for financial planning: use 5.25% as floor return expectation.
         </div>
       </div>
-      <div class="contact-item">
-        <div class="contact-item-icon">📱</div>
-        <div>
-          <div class="contact-item-label">Phone / WhatsApp</div>
-          <div class="contact-item-val">+91 98823-81044</div>
-        </div>
-      </div>
-      <div class="contact-item">
-        <div class="contact-item-icon">📍</div>
-        <div>
-          <div class="contact-item-label">Location</div>
-          <div class="contact-item-val">Chandigarh, India · Available Nationally</div>
-        </div>
-      </div>
-      <div class="contact-item" style="margin-top:8px">
-        <div class="contact-item-icon">⏰</div>
-        <div>
-          <div class="contact-item-label">Availability</div>
-          <div class="contact-item-val">Mon–Sat, 9 AM – 7 PM</div>
-        </div>
-      </div>
-      <div style="margin-top:24px;padding:16px;background:rgba(42,122,122,.06);border:1px solid rgba(42,122,122,.2);border-radius:var(--radius-sm)">
-        <div style="font-size:0.8rem;color:var(--teal-light);font-weight:600;margin-bottom:8px">What you get in a consultation:</div>
-        <div style="font-size:0.82rem;color:var(--muted);line-height:1.9">
-          ✓ Complete financial health review<br>
-          ✓ Goal-based investment roadmap<br>
-          ✓ Insurance gap analysis<br>
-          ✓ Tax-optimisation strategy<br>
-          ✓ Personalised calculator outputs
-        </div>
-      </div>
-    </div>
-    <div class="contact-form fade-in">
-      <h3>Send a Message</h3>
-      <div class="form-grid">
-        <div class="form-group">
-          <label>Your Name</label>
-          <input type="text" class="form-input" placeholder="Full name">
-        </div>
-        <div class="form-group">
-          <label>Phone / WhatsApp</label>
-          <input type="tel" class="form-input" placeholder="+91 XXXXX XXXXX">
-        </div>
-        <div class="form-group full">
-          <label>Email Address</label>
-          <input type="email" class="form-input" placeholder="your@email.com">
-        </div>
-        <div class="form-group full">
-          <label>What are you looking for?</label>
-          <select class="form-select form-input">
-            <option>SIP & Mutual Fund Planning</option>
-            <option>Retirement Planning</option>
-            <option>Insurance Review</option>
-            <option>Tax Planning</option>
-            <option>Complete Financial Planning</option>
-            <option>Other</option>
-          </select>
-        </div>
-        <div class="form-group full">
-          <label>Tell us about your goals</label>
-          <textarea class="form-textarea" placeholder="Brief description of your financial goals, current situation, or questions..."></textarea>
-        </div>
-      </div>
-      <div class="form-actions" style="margin-top:16px">
-        <button class="btn-primary" style="padding:12px 28px;border-radius:var(--radius-sm)" onclick="sendContact()">Send Message →</button>
-      </div>
-      <div style="font-size:0.72rem;color:var(--muted);margin-top:14px">By submitting, you agree that Zero Noise Finance may contact you regarding financial planning services. Your information will never be shared.</div>
     </div>
   </div>
-</section>
 
-<!-- ════════════════════════════════════════
-     FOOTER
-════════════════════════════════════════ -->
-<footer>
-  <div>
-    <div class="nav-logo" style="margin-bottom:8px">
-      <div class="dot" style="width:24px;height:24px;font-size:0.55rem">ZNF</div>
-      Zero Noise Finance
-    </div>
-    <div class="footer-copy">© 2025 Zero Noise Finance. Clarity. Growth. Freedom.</div>
-    <div style="font-size:0.72rem;color:var(--muted);margin-top:6px;max-width:500px">
-      Disclaimer: All calculators are for educational purposes only and do not constitute financial advice. Past returns are not indicative of future performance. Please consult a registered financial advisor.
+  <div class="rule"></div>
+
+  <div class="section">
+    <div class="section-label fade-in">Why This Exists</div>
+    <h2 class="section-title fade-in">Finance should help you, <br>not confuse you.</h2>
+    <p class="section-sub fade-in">Most people feel overwhelmed by financial decisions — not because finance is hard, but because it is deliberately made complicated. We are here to change that.</p>
+    <div class="why-grid">
+      <div class="why-card fade-in">
+        <div class="why-num">01</div>
+        <h3>Too much noise, not enough signal</h3>
+        <p>Every day there are hundreds of opinions on what to buy, sell, or avoid. Most of it is noise. Real financial planning is quiet, disciplined, and deeply personal.</p>
+      </div>
+      <div class="why-card fade-in">
+        <div class="why-num">02</div>
+        <h3>Goals before investments</h3>
+        <p>Nobody needs a mutual fund. People need a house, a child's education, a peaceful retirement. We start with what you want, and work backwards with maths — not products.</p>
+      </div>
+      <div class="why-card fade-in">
+        <div class="why-num">03</div>
+        <h3>Honesty as the foundation</h3>
+        <p>No fake projections. No misaligned incentives. No jargon to keep you dependent. Everything here is designed to help you make better decisions for yourself.</p>
+      </div>
+      <div class="why-card fade-in">
+        <div class="why-num">04</div>
+        <h3>Time is your most powerful asset</h3>
+        <p>The difference between starting at 25 vs 35 is not one decade — it is a lifetime of wealth. Understanding this changes everything about how you think about money today.</p>
+      </div>
+      <div class="why-card fade-in">
+        <div class="why-num">05</div>
+        <h3>Protection before growth</h3>
+        <p>A single medical emergency without insurance can undo years of careful saving. Building a safety net is not optional — it is the very first step in any financial plan.</p>
+      </div>
+      <div class="why-card fade-in">
+        <div class="why-num">06</div>
+        <h3>Personalised, not generic</h3>
+        <p>A 28-year-old software engineer in Chandigarh and a 45-year-old businessperson in Mumbai do not have the same financial plan. Context matters. Nuance matters.</p>
+      </div>
     </div>
   </div>
-  <div class="footer-links">
-    <a href="#why">About</a>
-    <a href="#articles">Articles</a>
-    <a href="#calculators">Calculators</a>
-    <a href="#contact">Contact</a>
+</div>
+
+<!-- ══════════════════════════════════════
+     ARTICLES PAGE
+══════════════════════════════════════ -->
+<div class="page" id="page-articles">
+  <div class="articles-intro">
+    <div class="articles-intro-inner">
+      <div class="section-label fade-in">Knowledge Hub</div>
+      <h1 class="section-title fade-in">Insights without agenda.</h1>
+      <p class="section-sub fade-in">Every article is written to educate, not to sell. No fund recommendations, no hidden commissions — just clear thinking on personal finance for India.</p>
+    </div>
+  </div>
+
+  <div class="articles-body">
+    <div class="articles-grid" id="articlesGrid">
+      <div style="grid-column:1/-1;text-align:center;padding:60px 0;color:var(--ink-light)">
+        <div style="font-size:2.5rem;margin-bottom:16px">✍️</div>
+        <div style="font-family:var(--font-serif);font-size:1.2rem;font-weight:600;color:var(--ink);margin-bottom:8px">Articles coming soon</div>
+        <p style="font-size:0.9rem;max-width:380px;margin:0 auto;line-height:1.7">Your articles will appear here once you connect Notion. The layout and style are ready — just add your content.</p>
+      </div>
+    </div>
+
+    <!-- HOW TO PUBLISH ARTICLES -->
+    <div class="publisher-bar fade-in">
+      <h3>How to publish articles — permanently, from anywhere</h3>
+      <p>The recommended approach is to use <strong>Notion as your CMS</strong>. You write articles in Notion (like a document), and this website automatically displays them. You can write from your phone, laptop, or tablet — and even schedule posts in advance.</p>
+      <div class="notion-steps">
+        <div class="notion-step">
+          <div class="notion-step-num">Step 01</div>
+          <h4>Create a Notion database</h4>
+          <p>Go to notion.so, create a free account. Make a new database called "ZNF Articles" with columns: Title, Category, Excerpt, Emoji, Body, Published Date, Status (Draft/Published).</p>
+        </div>
+        <div class="notion-step">
+          <div class="notion-step-num">Step 02</div>
+          <h4>Get your Notion API key</h4>
+          <p>Go to notion.so/my-integrations, create an integration called "ZNF Website", copy the API key. Share your Articles database with this integration. This lets the website read your articles.</p>
+        </div>
+        <div class="notion-step">
+          <div class="notion-step-num">Step 03</div>
+          <h4>Connect &amp; go live</h4>
+          <p>Share your Notion database ID and API key with me. I will add the API fetch code to this website. From that point, every new article you publish in Notion appears live on the site within minutes.</p>
+        </div>
+      </div>
+      <div style="margin-top:20px;padding:16px;background:var(--bg);border:1px solid var(--rule);border-radius:var(--radius-sm)">
+        <div style="font-size:0.82rem;color:var(--ink-mid);line-height:1.75">
+          <strong style="color:var(--ink)">Scheduling:</strong> In your Notion database, simply set the "Published Date" to a future date and keep Status as "Draft". The website will only show articles where Status = Published and date ≤ today. Change the status the morning you want to publish — it goes live immediately.<br><br>
+          <strong style="color:var(--ink)">Alternative (no Notion):</strong> You can also email me at zeronoisefinance@gmail.com with your article and I can add it to the site within 24 hours by updating the HTML file on GitHub.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     CALCULATORS PAGE
+══════════════════════════════════════ -->
+<div class="page" id="page-calculators">
+  <div class="calc-page-header">
+    <div class="calc-page-header-inner">
+      <div class="section-label">Precision Calculators</div>
+      <h1 class="section-title">Excel-grade accuracy. Plain language.</h1>
+      <p class="section-sub">All calculations use the same formulas as Microsoft Excel — FV, PV, PMT, IRR. No approximations, no shortcuts.</p>
+    </div>
+  </div>
+
+  <div class="calc-tabs-bar">
+    <div class="calc-tabs-inner">
+      <button class="calc-tab active" onclick="switchCalc('sip',this)">SIP Calculator</button>
+      <button class="calc-tab" onclick="switchCalc('stepup',this)">Step-Up SIP</button>
+      <button class="calc-tab" onclick="switchCalc('retirement',this)">Retirement</button>
+    </div>
+  </div>
+
+  <!-- SIP -->
+  <div class="calc-body" id="panel-sip">
+    <div class="calc-layout">
+      <div class="form-card">
+        <div class="form-section-title">SIP Calculator <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--ink-light);font-weight:400">— Excel FV formula</span></div>
+        <div class="tip-box">
+          <strong>How SIP compounding works</strong>
+          Each monthly instalment earns compound interest for the remaining tenure. Excel's FV formula: <code style="font-family:var(--font-mono);font-size:0.82rem">FV(rate/12, months, -payment) × (1+rate/12)</code>. We apply this exactly.
+        </div>
+        <div class="field">
+          <div class="field-label">Monthly Investment Amount (₹)</div>
+          <input class="finput" type="number" id="s_amt" placeholder="e.g. 10000" oninput="calcSIP()">
+        </div>
+        <div class="field">
+          <div class="field-label">Investment Period <span class="field-hint" id="s_yr_lbl"></span></div>
+          <input class="finput" type="number" id="s_yr" placeholder="Years" min="1" max="50" oninput="syncR('s_yr','s_yr_r');calcSIP()">
+          <input class="frange" type="range" id="s_yr_r" min="1" max="50" value="15" oninput="syncI('s_yr_r','s_yr');calcSIP()">
+        </div>
+        <div class="field">
+          <div class="field-label">Expected Annual Return (%)</div>
+          <input class="finput" type="number" id="s_rt" placeholder="e.g. 12" step="0.5" oninput="calcSIP()">
+          <div class="return-chips">
+            <button class="chip chip-eq" onclick="setChip('s_rt',13,'eq-s');calcSIP()" id="eq-s">Equity 12–15%</button>
+            <button class="chip chip-hy" onclick="setChip('s_rt',10,'hy-s');calcSIP()" id="hy-s">Hybrid ~10%</button>
+            <button class="chip chip-dt" onclick="setChip('s_rt',6.5,'dt-s');calcSIP()" id="dt-s">Debt 6–7%</button>
+          </div>
+          <div style="font-size:0.73rem;color:var(--ink-light);margin-top:7px;line-height:1.6">Long-term equity (Nifty 50) has delivered ~12–15% CAGR historically. Hybrid funds ~10%. Debt/FD ~6–7%. Past performance is not guaranteed.</div>
+        </div>
+        <div class="field">
+          <div class="field-label">Existing Savings / Lump Sum Today (₹) <span class="field-opt">Optional</span></div>
+          <input class="finput optional" type="number" id="s_ls" placeholder="Amount you have invested today" oninput="calcSIP()">
+          <div style="font-size:0.73rem;color:var(--teal);margin-top:5px">Adding your existing corpus shows the real head-start you have on your goal.</div>
+        </div>
+        <div class="field">
+          <div class="field-label">Your Financial Goal (₹) <span class="field-opt">Optional</span></div>
+          <input class="finput optional" type="number" id="s_goal" placeholder="e.g. 10000000 for ₹1 Crore" oninput="calcSIP()">
+        </div>
+        <button class="calc-btn" onclick="calcSIP()">Calculate Corpus</button>
+      </div>
+      <div class="result-card" id="res-sip">
+        <div class="result-label">Projected Corpus</div>
+        <div class="result-big" id="s_corpus">₹ —</div>
+        <div class="result-sub" id="s_sub">Enter values to see projection</div>
+        <div class="result-row">
+          <div class="result-box"><div class="result-box-val" id="s_inv">₹ —</div><div class="result-box-key">Total Invested</div></div>
+          <div class="result-box"><div class="result-box-val" id="s_gain">₹ —</div><div class="result-box-key">Wealth Gained</div></div>
+        </div>
+        <div class="result-box" style="margin-bottom:14px"><div class="result-box-val" id="s_mult">—×</div><div class="result-box-key">Money Multiplier</div></div>
+        <div class="donut-wrap"><canvas id="sip_donut" width="150" height="150"></canvas></div>
+        <div id="s_goal_box"></div>
+        <div class="nudge" style="margin-top:14px">
+          <strong>Why a financial advisor?</strong> Calculators give direction. A plan gives execution — with tax optimisation, rebalancing, and life-stage adjustments.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP-UP SIP -->
+  <div class="calc-body" id="panel-stepup" style="display:none">
+    <div class="calc-layout">
+      <div class="form-card">
+        <div class="form-section-title">Step-Up SIP <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--ink-light);font-weight:400">— Year-by-year FV accumulation</span></div>
+        <div class="tip-box">
+          <strong>Why step-up SIP outperforms flat SIP dramatically</strong>
+          Increasing your SIP by 10% every year mirrors your income growth. A ₹10,000 SIP with 10% annual step-up over 20 years at 12% gives ~₹2.3 Cr vs ~₹99L for a flat SIP. That is the power of aligning your savings to your growing income.
+        </div>
+        <div class="field">
+          <div class="field-label">Starting Monthly SIP (₹)</div>
+          <input class="finput" type="number" id="su_amt" placeholder="e.g. 10000" oninput="calcSU()">
+        </div>
+        <div class="field">
+          <div class="field-label">Annual Step-Up (%) <span class="field-hint" id="su_sr_lbl"></span></div>
+          <input class="finput" type="number" id="su_sr" placeholder="e.g. 10" step="1" oninput="syncR('su_sr','su_sr_r');calcSU()">
+          <input class="frange" type="range" id="su_sr_r" min="1" max="30" value="10" oninput="syncI('su_sr_r','su_sr');calcSU()">
+          <div style="font-size:0.73rem;color:var(--teal);margin-top:6px">5% to keep pace with inflation. 10–15% recommended if your salary grows 8–10% annually.</div>
+        </div>
+        <div class="field">
+          <div class="field-label">Step-Up Frequency</div>
+          <div class="freq-chips" id="su_freq_grp">
+            <button class="freq-chip sel" onclick="setFreq(this,1)" data-f="1">Annual</button>
+            <button class="freq-chip" onclick="setFreq(this,2)" data-f="2">Semi-Annual</button>
+            <button class="freq-chip" onclick="setFreq(this,4)" data-f="4">Quarterly</button>
+          </div>
+        </div>
+        <div class="field">
+          <div class="field-label">Investment Period (Years)</div>
+          <input class="finput" type="number" id="su_yr" placeholder="Years" oninput="syncR('su_yr','su_yr_r');calcSU()">
+          <input class="frange" type="range" id="su_yr_r" min="1" max="50" value="20" oninput="syncI('su_yr_r','su_yr');calcSU()">
+        </div>
+        <div class="field">
+          <div class="field-label">Expected Annual Return (%)</div>
+          <input class="finput" type="number" id="su_rt" placeholder="e.g. 12" oninput="calcSU()">
+          <div class="return-chips">
+            <button class="chip chip-eq" onclick="setChipSU('su_rt',13)">Equity 12–15%</button>
+            <button class="chip chip-hy" onclick="setChipSU('su_rt',10)">Hybrid ~10%</button>
+            <button class="chip chip-dt" onclick="setChipSU('su_rt',6.5)">Debt 6–7%</button>
+          </div>
+        </div>
+        <div class="field">
+          <div class="field-label">Existing Savings (₹) <span class="field-opt">Optional</span></div>
+          <input class="finput optional" type="number" id="su_ls" placeholder="Amount already invested" oninput="calcSU()">
+        </div>
+        <div class="field">
+          <div class="field-label">Financial Goal (₹) <span class="field-opt">Optional</span></div>
+          <input class="finput optional" type="number" id="su_goal" placeholder="Target corpus" oninput="calcSU()">
+        </div>
+        <button class="calc-btn" onclick="calcSU()">Calculate Step-Up Corpus</button>
+      </div>
+      <div class="result-card">
+        <div class="result-label">Step-Up Corpus</div>
+        <div class="result-big" id="su_corpus">₹ —</div>
+        <div class="result-sub" id="su_sub">Enter values to see projection</div>
+        <div class="result-row">
+          <div class="result-box"><div class="result-box-val" id="su_inv">₹ —</div><div class="result-box-key">Total Invested</div></div>
+          <div class="result-box"><div class="result-box-val" id="su_gain">₹ —</div><div class="result-box-key">Wealth Gained</div></div>
+        </div>
+        <div class="result-row">
+          <div class="result-box"><div class="result-box-val" id="su_last">₹ —</div><div class="result-box-key">Final Monthly SIP</div></div>
+          <div class="result-box"><div class="result-box-val" id="su_flat">₹ —</div><div class="result-box-key">Flat SIP Corpus</div></div>
+        </div>
+        <div id="su_benefit_box" style="background:var(--success-bg);border:1px solid #bbdece;border-radius:var(--radius-sm);padding:10px 12px;font-size:0.8rem;color:var(--success);margin-bottom:10px;display:none">
+          Step-up advantage: <strong id="su_benefit">₹ —</strong> more than flat SIP
+        </div>
+        <div id="su_goal_box"></div>
+        <div class="nudge">
+          <strong>Step-up SIP tip:</strong> Increase your SIP every April — right after your annual increment. Automating this removes the temptation to skip.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RETIREMENT -->
+  <div class="calc-body" id="panel-retirement" style="display:none">
+    <div class="calc-layout">
+      <div class="form-card">
+        <div class="form-section-title">Retirement Planner <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--ink-light);font-weight:400">— PV of annuity + PMT formula</span></div>
+        <div class="tip-box">
+          <strong>The retirement corpus formula</strong>
+          Corpus needed = PV of all future expenses, discounted at the real post-retirement return (post-return minus inflation). Monthly SIP needed = PMT(pre-ret-rate/12, months, 0, -corpus). Exact Excel equivalents.
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+          <div class="field">
+            <div class="field-label">Your Current Age</div>
+            <input class="finput" type="number" id="r_age" placeholder="e.g. 30" oninput="calcRet()">
+          </div>
+          <div class="field">
+            <div class="field-label">Target Retirement Age</div>
+            <input class="finput" type="number" id="r_ret" placeholder="e.g. 60" oninput="calcRet()">
+          </div>
+          <div class="field">
+            <div class="field-label">Life Expectancy</div>
+            <input class="finput" type="number" id="r_life" placeholder="e.g. 85" oninput="calcRet()">
+          </div>
+          <div class="field">
+            <div class="field-label">Monthly Expenses Today (₹)</div>
+            <input class="finput" type="number" id="r_exp" placeholder="e.g. 50000" oninput="calcRet()">
+          </div>
+          <div class="field">
+            <div class="field-label">Expected Inflation (% p.a.)</div>
+            <input class="finput" type="number" id="r_infl" placeholder="e.g. 6" value="6" oninput="calcRet()">
+          </div>
+          <div class="field">
+            <div class="field-label">Pre-Retirement Return (% p.a.)</div>
+            <input class="finput" type="number" id="r_pre" placeholder="e.g. 12" oninput="calcRet()">
+          </div>
+          <div class="field">
+            <div class="field-label">Post-Retirement Return (% p.a.)</div>
+            <input class="finput" type="number" id="r_post" placeholder="e.g. 7" oninput="calcRet()">
+          </div>
+          <div class="field">
+            <div class="field-label">Current Savings (₹) <span class="field-opt">Optional</span></div>
+            <input class="finput optional" type="number" id="r_sav" placeholder="Existing investments" oninput="calcRet()">
+          </div>
+        </div>
+        <div class="field">
+          <div class="field-label">Annual Step-Up on SIP (%) <span class="field-opt">Optional</span></div>
+          <input class="finput optional" type="number" id="r_su" placeholder="e.g. 10 — see side panel for comparison" oninput="calcRet()">
+          <div style="font-size:0.73rem;color:var(--teal);margin-top:5px">Filling this shows how much faster you reach retirement corpus with step-up vs flat SIP.</div>
+        </div>
+        <button class="calc-btn" onclick="calcRet()">Calculate Retirement Plan</button>
+      </div>
+      <div class="result-card">
+        <div class="result-label">Corpus Required at Retirement</div>
+        <div class="result-big" id="r_corpus">₹ —</div>
+        <div class="result-sub" id="r_sub">Fill in your details to see the full plan</div>
+        <div class="result-row">
+          <div class="result-box"><div class="result-box-val" id="r_mneed">₹ —</div><div class="result-box-key">Monthly Expense at Retirement</div></div>
+          <div class="result-box"><div class="result-box-val" id="r_yleft">—</div><div class="result-box-key">Years to Retirement</div></div>
+        </div>
+        <div class="result-row">
+          <div class="result-box"><div class="result-box-val" id="r_sip_flat">₹ —</div><div class="result-box-key">Monthly SIP (Flat)</div></div>
+          <div class="result-box"><div class="result-box-val" id="r_sip_su">₹ —</div><div class="result-box-key">Monthly SIP (with Step-Up)</div></div>
+        </div>
+        <div id="r_stepup_box" style="background:var(--success-bg);border:1px solid #bbdece;border-radius:var(--radius-sm);padding:10px 12px;font-size:0.8rem;color:var(--success);margin-bottom:12px;display:none">
+          With <span id="r_su_pct">—</span>% annual step-up, you start at only <strong id="r_start_sip">₹ —</strong>/month — and end at <strong id="r_end_sip">₹ —</strong>/month at retirement.
+        </div>
+        <div id="r_goal_box"></div>
+        <div class="nudge">
+          <strong>Healthcare inflation warning:</strong> Medical costs in India inflate at 10–12% annually — nearly double general inflation. Build a separate health corpus or premium coverage.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     PLANNING PAGE
+══════════════════════════════════════ -->
+<div class="page" id="page-planning">
+  <div class="planning-hero">
+    <div style="max-width:var(--max);margin:0 auto;padding:0 24px">
+      <div class="section-label fade-in">Financial Education</div>
+      <h1 class="section-title fade-in">A roadmap through every stage of life.</h1>
+      <p class="section-sub fade-in">Financial planning is not a product or a portfolio. It is a series of decisions — made consistently, over decades — that determine whether money becomes your servant or your master.</p>
+    </div>
+  </div>
+
+  <div class="timeline-wrap">
+    <div class="timeline">
+      <div class="tl-item fade-in">
+        <div class="tl-dot"></div>
+        <div class="tl-age">Your 20s — Age 21 to 30</div>
+        <div class="tl-head">Build the Foundation</div>
+        <div class="tl-body">
+          <p>Your 20s are not the time to get rich — they are the time to avoid getting poor. Build habits that compound just as powerfully as money does.</p>
+          <ul>
+            <li>Build an emergency fund covering 6 months of expenses before investing anything</li>
+            <li>Get a term life insurance policy if you have dependants — the younger you buy, the cheaper it is for life</li>
+            <li>Get health insurance independent of your employer; corporate cover ends when your job does</li>
+            <li>Start any SIP, even ₹1,000/month — the habit matters more than the amount at this stage</li>
+            <li>Avoid EMIs on depreciating assets (phones, gadgets, holidays)</li>
+            <li>Understand your payslip — taxable income, PF deductions, HRA — before spending</li>
+          </ul>
+          <div class="tl-callout">
+            <em>The single most important financial truth:</em> Time in the market beats timing the market. A ₹5,000 SIP started at 22 becomes approximately ₹3.5 crores at 60 at 12% CAGR. Started at 32, it becomes ₹1.1 crores. One decade costs ₹2.4 crores.
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item fade-in">
+        <div class="tl-dot" style="background:var(--teal);box-shadow:0 0 0 2px var(--teal)"></div>
+        <div class="tl-age">Your 30s — Age 30 to 40</div>
+        <div class="tl-head">Accelerate and Align</div>
+        <div class="tl-body">
+          <p>Your income is growing. Your responsibilities are growing too. This decade is about channelling that income growth into long-term wealth before lifestyle inflation swallows it.</p>
+          <ul>
+            <li>Increase your SIP by at least 10% every year — preferably in April, after your salary increment</li>
+            <li>Review your term insurance cover — it should be at least 10–15× your annual income</li>
+            <li>Separate your financial goals clearly: child's education (15-year horizon), home down payment (5-year), retirement (25-year)</li>
+            <li>Invest based on goal timelines, not emotions or tips</li>
+            <li>Avoid surrendering or pausing SIPs during market downturns — that is precisely the wrong time</li>
+            <li>Pay off any high-interest debt (credit cards, personal loans) aggressively before investing</li>
+            <li>Start a Will — it is not morbid, it is responsible</li>
+          </ul>
+          <div class="tl-callout">
+            <em>On home loans:</em> A home is not an investment — it is a consumption asset. Do not over-borrow. Keep your home loan EMI below 35% of your take-home pay, and maintain your investment SIPs even as you repay the loan.
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item fade-in">
+        <div class="tl-dot" style="background:#f59e0b;box-shadow:0 0 0 2px #f59e0b"></div>
+        <div class="tl-age">Your 40s — Age 40 to 50</div>
+        <div class="tl-head">Consolidate and Protect</div>
+        <div class="tl-body">
+          <p>By your 40s, you should have meaningful savings. The priority shifts from accumulation to protection and smarter allocation.</p>
+          <ul>
+            <li>Begin gradually reducing equity exposure by 2–3% per year — a simple rule: equity % ≈ 110 minus your age</li>
+            <li>Review your insurance cover — your income, liabilities, and dependants have all changed since you first bought policies</li>
+            <li>Top up your health insurance with a super top-up plan — medical costs at 60 can be enormous</li>
+            <li>Do a comprehensive net worth review annually — assets vs liabilities, progress toward goals</li>
+            <li>Maximise NPS contributions for the tax benefit under Section 80CCD(1B)</li>
+            <li>Avoid high-risk investments at this stage — you have less time to recover from losses</li>
+          </ul>
+          <div class="tl-callout">
+            <em>The biggest financial mistake of the 40s:</em> Stopping SIPs to pay for a child's education or a wedding. These goals should have been separately funded for years. If they were not, a personal loan is preferable to breaking your retirement investment.
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item fade-in">
+        <div class="tl-dot" style="background:var(--success);box-shadow:0 0 0 2px var(--success)"></div>
+        <div class="tl-age">Your 50s and Beyond — Age 50+</div>
+        <div class="tl-head">Transition to Freedom</div>
+        <div class="tl-body">
+          <p>The finishing straight. The quality of your financial life from 60 onwards is almost entirely determined by decisions made in your 30s and 40s. But there is still meaningful work to do.</p>
+          <ul>
+            <li>Begin building a 2–3 year cash/liquid buffer — so you never need to sell equity in a downturn at 62</li>
+            <li>Plan your SWP (Systematic Withdrawal Plan) strategy — how you will draw from your corpus in retirement</li>
+            <li>Review your Will and nominations across all financial accounts and policies</li>
+            <li>Understand the tax implications of each withdrawal source — EPF, NPS, mutual funds, FDs differ significantly</li>
+            <li>Consider Senior Citizen Savings Scheme (SCSS) and PM Vaya Vandana Yojana for guaranteed income</li>
+            <li>Do not stop all equity — even in retirement, a 20–30% equity allocation helps the corpus outlast you</li>
+          </ul>
+          <div class="tl-callout">
+            <em>Longevity risk is real:</em> Plan for your corpus to last 25–30 years in retirement. At 7% inflation, expenses double every 10 years. A ₹50,000/month expense today becomes ₹1.85 lakh/month in 20 years. Plan accordingly.
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item fade-in">
+        <div class="tl-dot" style="background:var(--ink-light);box-shadow:0 0 0 2px var(--ink-light)"></div>
+        <div class="tl-age">Always — At Every Stage</div>
+        <div class="tl-head">The Principles That Never Change</div>
+        <div class="tl-body">
+          <ul>
+            <li><strong>Spend less than you earn.</strong> The oldest rule in finance, and the most violated.</li>
+            <li><strong>Insurance is not an investment.</strong> Buy term life and health insurance for protection. Invest separately for growth.</li>
+            <li><strong>Inflation is the silent tax.</strong> Keeping money idle in a savings account loses real value every year.</li>
+            <li><strong>Diversification is not optional.</strong> No single asset, city, sector, or currency should represent your entire financial life.</li>
+            <li><strong>Debt is a tool, not a lifestyle.</strong> Borrow only for assets that appreciate or generate income.</li>
+            <li><strong>Review annually, not daily.</strong> Checking your portfolio every day is not investing — it is gambling with your emotions.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI CHATBOT -->
+    <div>
+      <div class="ai-card">
+        <div class="ai-header">
+          <div class="ai-avatar">🤖</div>
+          <div class="ai-header-text">
+            <h4>Ask ZNF Advisor</h4>
+            <p>Your personal finance guide</p>
+          </div>
+        </div>
+        <div class="ai-messages" id="aiMessages">
+          <div class="ai-msg bot">Hello! I'm here to help you think through your financial questions — simply, honestly. What's on your mind?</div>
+        </div>
+        <div class="ai-qs">
+          <button class="ai-q" onclick="askAI('How much emergency fund do I need?')">Emergency fund?</button>
+          <button class="ai-q" onclick="askAI('When should I start investing?')">When to start?</button>
+          <button class="ai-q" onclick="askAI('How do I plan for my child\'s education?')">Child education</button>
+          <button class="ai-q" onclick="askAI('What is a good savings ratio?')">Savings ratio</button>
+        </div>
+        <div class="ai-input-row">
+          <input class="ai-input" type="text" id="aiInput" placeholder="Ask anything about financial planning..." onkeydown="if(event.key==='Enter')sendAI()">
+          <button class="ai-send" onclick="sendAI()">Ask →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     INSURANCE IRR PAGE
+══════════════════════════════════════ -->
+<div class="page" id="page-insurance">
+  <div class="calc-page-header">
+    <div class="calc-page-header-inner">
+      <div class="section-label">Policy Analysis</div>
+      <h1 class="section-title">Insurance IRR Calculator</h1>
+      <p class="section-sub">Calculate the actual Internal Rate of Return on any traditional insurance policy — endowment, money-back, or ULIP — using the exact IRR formula from Excel. The result is often surprising.</p>
+    </div>
+  </div>
+  <div class="calc-body">
+    <div class="ins-layout">
+      <div class="form-card">
+        <div class="form-section-title">Policy Details <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--ink-light);font-weight:400">— Newton-Raphson IRR</span></div>
+        <div class="tip-box">
+          <strong>How IRR works for insurance</strong>
+          IRR treats every premium paid as a negative cashflow (outflow) and every benefit received as a positive cashflow (inflow). The IRR is the discount rate at which NPV = 0. This is exactly how Excel's IRR() function works.
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+          <div class="field">
+            <div class="field-label">Annual Premium (₹)</div>
+            <input class="finput" type="number" id="ip_prem" placeholder="e.g. 50000" oninput="buildPayouts()">
+          </div>
+          <div class="field">
+            <div class="field-label">Premium Paying Term (yrs)</div>
+            <input class="finput" type="number" id="ip_pay" placeholder="e.g. 15" oninput="buildPayouts()">
+          </div>
+          <div class="field">
+            <div class="field-label">Policy Term (years)</div>
+            <input class="finput" type="number" id="ip_pol" placeholder="e.g. 20" oninput="buildPayouts()">
+          </div>
+          <div class="field">
+            <div class="field-label">Maturity Benefit (₹) <span class="field-opt">Optional</span></div>
+            <input class="finput optional" type="number" id="ip_mat" placeholder="Lump sum at end" oninput="calcIRR()">
+          </div>
+        </div>
+        <div class="field">
+          <div class="field-label">Payout Structure <span class="field-hint">Enter each benefit year and amount</span></div>
+          <table class="payout-table">
+            <thead><tr><th>Year</th><th>Amount Received (₹)</th><th></th></tr></thead>
+            <tbody id="payoutBody"></tbody>
+          </table>
+          <button class="add-row-btn" onclick="addPRow()">+ Add Payout Row</button>
+        </div>
+        <div class="field">
+          <div class="field-label">Sum Assured (₹) <span class="field-opt">Reference only</span></div>
+          <input class="finput optional" type="number" id="ip_sa" placeholder="Death benefit amount">
+        </div>
+        <button class="calc-btn" onclick="calcIRR()">Calculate Policy IRR</button>
+      </div>
+      <div class="result-card">
+        <div class="result-label">Your Policy's IRR</div>
+        <div class="irr-num" id="irr_val">—%</div>
+        <div id="irr_verdict" style="margin-bottom:14px"></div>
+        <div style="font-family:var(--font-serif);font-size:0.88rem;font-weight:600;margin-bottom:10px;color:var(--ink)">Comparison</div>
+        <div class="comparison-row"><span style="color:var(--ink-light)">Your Policy IRR</span><strong id="irr_compare_val">—</strong></div>
+        <div class="comparison-row"><span style="color:var(--ink-light)">Bank FD (~7%)</span><span style="color:var(--ink-light)">7.00%</span></div>
+        <div class="comparison-row"><span style="color:var(--ink-light)">RBI Risk-Free Rate</span><span style="color:var(--ink-light)">5.25%</span></div>
+        <div class="comparison-row"><span style="color:var(--ink-light)">Inflation (CPI)</span><span style="color:var(--ink-light)">2.1%</span></div>
+        <div style="margin-top:14px">
+          <div class="result-row">
+            <div class="result-box"><div class="result-box-val" id="irr_paid">₹ —</div><div class="result-box-key">Total Premium Paid</div></div>
+            <div class="result-box"><div class="result-box-val" id="irr_recv">₹ —</div><div class="result-box-key">Total Received</div></div>
+          </div>
+          <div class="result-box" style="margin-top:10px"><div class="result-box-val" id="irr_fd_alt">₹ —</div><div class="result-box-key">If same premiums in FD @ 7%</div></div>
+        </div>
+        <div class="nudge" style="margin-top:14px">
+          <strong>The better approach:</strong> A pure term life plan (₹1 crore cover for ~₹8,000–12,000/year) + disciplined SIP in a low-cost index fund almost always dominates any traditional insurance-plus-investment plan.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     RATIO ANALYSIS PAGE
+══════════════════════════════════════ -->
+<div class="page" id="page-ratios">
+  <div class="calc-page-header">
+    <div class="calc-page-header-inner">
+      <div class="section-label">Financial Health Check</div>
+      <h1 class="section-title">Ratio Analysis</h1>
+      <p class="section-sub">Enter your numbers once. Get a complete picture of your financial health — with benchmarks, explanations, and honest feedback. No recommendations, no products.</p>
+    </div>
+  </div>
+  <div class="calc-body">
+    <div class="ratio-layout">
+      <div>
+        <div class="form-card">
+          <!-- INCOME & SAVINGS -->
+          <div class="ratio-section">
+            <div class="ratio-section-head">Income & Savings <span>Annual figures in ₹</span></div>
+            <div class="ratio-row">
+              <div class="field">
+                <div class="field-label">Annual Income (₹)</div>
+                <input class="finput" type="number" id="ra_income" placeholder="Gross annual income" oninput="calcRatios()">
+              </div>
+              <div class="field">
+                <div class="field-label">Annual Savings (₹)</div>
+                <input class="finput" type="number" id="ra_savings" placeholder="Money saved/invested this year" oninput="calcRatios()">
+              </div>
+              <div class="field">
+                <div class="field-label">Annual Expenses (₹)</div>
+                <input class="finput" type="number" id="ra_expenses" placeholder="Total annual spending" oninput="calcRatios()">
+              </div>
+              <div class="field">
+                <div class="field-label">Monthly Take-Home (₹)</div>
+                <input class="finput" type="number" id="ra_takehome" placeholder="Net monthly salary" oninput="calcRatios()">
+              </div>
+            </div>
+          </div>
+
+          <!-- ASSETS & LIABILITIES -->
+          <div class="ratio-section">
+            <div class="ratio-section-head">Assets & Liabilities</div>
+            <div class="ratio-row">
+              <div class="field">
+                <div class="field-label">Total Assets (₹)</div>
+                <input class="finput" type="number" id="ra_assets" placeholder="Investments + property + savings" oninput="calcRatios()">
+              </div>
+              <div class="field">
+                <div class="field-label">Total Liabilities (₹)</div>
+                <input class="finput" type="number" id="ra_liab" placeholder="All loans + credit card dues" oninput="calcRatios()">
+              </div>
+              <div class="field">
+                <div class="field-label">Liquid Assets (₹)</div>
+                <input class="finput" type="number" id="ra_liquid" placeholder="FD + savings + liquid funds" oninput="calcRatios()">
+                <div style="font-size:0.72rem;color:var(--teal);margin-top:4px">Cash, savings account, liquid MF, short-term FD</div>
+              </div>
+              <div class="field">
+                <div class="field-label">Financial Assets (₹)</div>
+                <input class="finput" type="number" id="ra_finassets" placeholder="Stocks + MF + bonds + EPF" oninput="calcRatios()">
+              </div>
+            </div>
+          </div>
+
+          <!-- DEBT -->
+          <div class="ratio-section">
+            <div class="ratio-section-head">Debt Details</div>
+            <div class="ratio-row">
+              <div class="field">
+                <div class="field-label">Annual Debt Repayments (₹)</div>
+                <input class="finput" type="number" id="ra_debt_pay" placeholder="All EMIs + loan payments per year" oninput="calcRatios()">
+              </div>
+              <div class="field">
+                <div class="field-label">Monthly EMI Total (₹)</div>
+                <input class="finput" type="number" id="ra_emi" placeholder="Sum of all monthly EMIs" oninput="calcRatios()">
+              </div>
+            </div>
+          </div>
+          <button class="calc-btn" onclick="calcRatios()">Analyse My Financial Health</button>
+        </div>
+      </div>
+
+      <div class="ratio-result-panel">
+        <div class="overall-score">
+          <div class="score-ring" id="scoreRing">
+            <div class="score-num" id="scoreNum">—</div>
+            <div class="score-label">Score</div>
+          </div>
+          <div style="font-family:var(--font-serif);font-size:1rem;font-weight:600;color:var(--ink)" id="scoreLabel">Enter your details</div>
+          <div style="font-size:0.8rem;color:var(--ink-light);margin-top:4px" id="scoreDesc">Complete the form to see your financial health score</div>
+        </div>
+
+        <div id="ratioItems">
+          <div style="text-align:center;padding:20px 0;color:var(--ink-light);font-size:0.85rem">Your ratios will appear here once you fill in the form.</div>
+        </div>
+
+        <div class="feedback-list" id="feedbackList"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     CONTACT PAGE
+══════════════════════════════════════ -->
+<div class="page" id="page-contact">
+  <div class="calc-page-header">
+    <div class="calc-page-header-inner">
+      <div class="section-label">Personalised Guidance</div>
+      <h1 class="section-title">Let's build your financial plan.</h1>
+      <p class="section-sub">The calculators give you numbers. A financial plan gives you a complete, personalised roadmap — aligned to your specific goals, income, family situation, and risk comfort.</p>
+    </div>
+  </div>
+  <div class="section">
+    <div class="contact-layout">
+      <div class="fade-in">
+        <h3 style="font-family:var(--font-serif);font-size:1.3rem;font-weight:600;margin-bottom:12px">Get in touch</h3>
+        <p style="font-size:0.9rem;color:var(--ink-light);line-height:1.8;margin-bottom:24px">Whether you have a specific question or want a full financial plan — reach out. The first conversation is always free, and always honest.</p>
+        <div class="contact-card">
+          <div class="contact-icon">📧</div>
+          <div>
+            <div class="contact-label">Email</div>
+            <div class="contact-val">zeronoisefinance@gmail.com</div>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon">📱</div>
+          <div>
+            <div class="contact-label">Phone / WhatsApp</div>
+            <div class="contact-val">+91 98823-81044</div>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon">📍</div>
+          <div>
+            <div class="contact-label">Location</div>
+            <div class="contact-val">Chandigarh · Available across India</div>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon">⏰</div>
+          <div>
+            <div class="contact-label">Availability</div>
+            <div class="contact-val">Monday – Saturday, 9 AM to 7 PM</div>
+          </div>
+        </div>
+        <div style="margin-top:20px;padding:18px;background:var(--teal-soft);border:1px solid #b2dfdb;border-radius:var(--radius-sm)">
+          <div style="font-size:0.82rem;font-weight:700;color:var(--teal);margin-bottom:10px">What a consultation covers</div>
+          <div style="font-size:0.84rem;color:var(--ink-mid);line-height:2">
+            ✓ Complete financial health review using ratio analysis<br>
+            ✓ Goal-based investment roadmap with timelines<br>
+            ✓ Insurance gap assessment<br>
+            ✓ Retirement corpus calculation<br>
+            ✓ Debt management strategy<br>
+            ✓ Tax-efficiency overview
+          </div>
+        </div>
+      </div>
+      <div class="form-card fade-in">
+        <h3 style="font-family:var(--font-serif);font-size:1.1rem;font-weight:600;margin-bottom:20px">Send a message</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+          <div class="field"><div class="field-label">Your Name</div><input class="finput" type="text" id="c_name" placeholder="Full name"></div>
+          <div class="field"><div class="field-label">Phone / WhatsApp</div><input class="finput" type="tel" id="c_phone" placeholder="+91 XXXXX XXXXX"></div>
+          <div class="field" style="grid-column:1/-1"><div class="field-label">Email Address</div><input class="finput" type="email" id="c_email" placeholder="your@email.com"></div>
+          <div class="field" style="grid-column:1/-1">
+            <div class="field-label">What are you looking to plan?</div>
+            <select class="finput" id="c_type">
+              <option>SIP &amp; Wealth Building</option>
+              <option>Retirement Planning</option>
+              <option>Insurance Review</option>
+              <option>Complete Financial Plan</option>
+              <option>Tax Planning</option>
+              <option>Something else</option>
+            </select>
+          </div>
+          <div class="field" style="grid-column:1/-1"><div class="field-label">Your Goals &amp; Questions</div><textarea class="finput" style="min-height:110px;resize:vertical" id="c_msg" placeholder="Tell me about your financial situation and what you want to achieve..."></textarea></div>
+        </div>
+        <button class="calc-btn" style="margin-top:10px" onclick="submitContact()">Send Message →</button>
+        <div style="font-size:0.72rem;color:var(--ink-light);margin-top:12px;line-height:1.6">Your information is kept confidential and will never be shared with any third party.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Zero Noise Finance</div>
+      <div class="footer-disc">Disclaimer: All calculators are educational tools and do not constitute financial advice. Returns shown are indicative and not guaranteed. Please consult a SEBI-registered financial advisor before making investment decisions. Past performance is not indicative of future results.</div>
+    </div>
+    <div>
+      <div class="footer-links">
+        <a href="#" onclick="nav('home')">Home</a>
+        <a href="#" onclick="nav('articles')">Articles</a>
+        <a href="#" onclick="nav('calculators')">Calculators</a>
+        <a href="#" onclick="nav('planning')">Planning</a>
+        <a href="#" onclick="nav('insurance')">Insurance IRR</a>
+        <a href="#" onclick="nav('ratios')">Ratio Analysis</a>
+        <a href="#" onclick="nav('contact')">Contact</a>
+      </div>
+      <div style="margin-top:14px;font-size:0.72rem;color:rgba(255,255,255,.3)">© 2025 Zero Noise Finance. Clarity Without Compromise.</div>
+    </div>
   </div>
 </footer>
 
+<!-- ══════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════ -->
 <script>
-/* ══════════════════════════════════════════
-   LOADER
-══════════════════════════════════════════ */
-window.addEventListener('load',()=>{
-  setTimeout(()=>{document.getElementById('loader').classList.add('done')},1300);
-});
-
-/* ══════════════════════════════════════════
-   CURSOR
-══════════════════════════════════════════ */
-const cur=document.getElementById('cursor');
-const ring=document.getElementById('cursor-ring');
-let rx=0,ry=0,cx=0,cy=0;
-document.addEventListener('mousemove',e=>{cx=e.clientX;cy=e.clientY;cur.style.left=cx+'px';cur.style.top=cy+'px'});
-(function animRing(){rx+=(cx-rx)*.12;ry+=(cy-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing)})();
-
-/* ══════════════════════════════════════════
-   SCROLL PROGRESS
-══════════════════════════════════════════ */
+/* ── SCROLL PROGRESS ── */
 window.addEventListener('scroll',()=>{
   const p=window.scrollY/(document.body.scrollHeight-window.innerHeight)*100;
-  document.getElementById('scrollBar').style.width=p+'%';
+  document.getElementById('prog').style.width=p+'%';
 });
 
-/* ══════════════════════════════════════════
-   FADE-IN ON SCROLL
-══════════════════════════════════════════ */
-const obs=new IntersectionObserver((entries)=>{
-  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}});
-},{threshold:0.12});
+/* ── FADE IN ── */
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('vis');obs.unobserve(x.target)}})},{threshold:0.1});
 document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
 
-/* ══════════════════════════════════════════
-   MOBILE NAV
-══════════════════════════════════════════ */
+/* ── NAVIGATION ── */
+let currentPage='home';
+function nav(p){
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
+  currentPage=p;
+  window.scrollTo({top:0,behavior:'smooth'});
+  // Re-observe fade-ins on new page
+  setTimeout(()=>{
+    document.querySelectorAll('#page-'+p+' .fade-in').forEach(el=>{obs.observe(el)});
+  },100);
+}
 function toggleMobile(){document.getElementById('mobileNav').classList.toggle('open')}
 function closeMobile(){document.getElementById('mobileNav').classList.remove('open')}
 
-/* ══════════════════════════════════════════
-   CALCULATOR TABS
-══════════════════════════════════════════ */
-function switchCalc(id){
+/* ── RANGE/INPUT SYNC ── */
+function syncR(iId,rId){const v=parseFloat(document.getElementById(iId).value);if(!isNaN(v))document.getElementById(rId).value=v}
+function syncI(rId,iId){document.getElementById(iId).value=document.getElementById(rId).value}
+
+/* ── CALCULATOR TABS ── */
+function switchCalc(id,btn){
+  ['sip','stepup','retirement'].forEach(p=>{
+    document.getElementById('panel-'+p).style.display='none';
+  });
   document.querySelectorAll('.calc-tab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.calc-panel').forEach(p=>{p.style.display='none';p.classList.remove('active')});
-  event.currentTarget.classList.add('active');
-  const panel=document.getElementById('calc-'+id);
-  panel.style.display='grid';
-  panel.classList.add('active');
-  panel.style.opacity=0;panel.style.transform='translateY(20px)';
-  setTimeout(()=>{panel.style.transition='opacity .5s,transform .5s';panel.style.opacity=1;panel.style.transform='translateY(0)'},10);
+  document.getElementById('panel-'+id).style.display='block';
+  btn.classList.add('active');
 }
 
-/* ══════════════════════════════════════════
-   RANGE SYNC
-══════════════════════════════════════════ */
-function syncRange(inputId,rangeId){
-  const v=document.getElementById(inputId).value;
-  if(v) document.getElementById(rangeId).value=v;
+/* ── FORMATTERS ── */
+let sipFreq=1; // step-up times per year
+function fmt(n){
+  if(isNaN(n)||!isFinite(n)||n===null)return'—';
+  if(n>=1e7)return'₹'+(n/1e7).toFixed(2)+' Cr';
+  if(n>=1e5)return'₹'+(n/1e5).toFixed(2)+' L';
+  return'₹'+Math.round(n).toLocaleString('en-IN');
 }
-function syncInput(rangeId,inputId){
-  document.getElementById(inputId).value=document.getElementById(rangeId).value;
-}
+function fmtP(n){if(isNaN(n)||!isFinite(n))return'—';return n.toFixed(2)+'%'}
 
-/* ══════════════════════════════════════════
-   RETURN BANDS
-══════════════════════════════════════════ */
-let sipFreq=12;
-function setRate(inputId,val,btnId){
+/* ── CHIP SELECTION ── */
+function setChip(inputId,val,btnId){
   document.getElementById(inputId).value=val;
-  if(btnId){
-    const parent=document.getElementById(btnId).closest('.return-bands');
-    parent.querySelectorAll('.return-band').forEach(b=>b.classList.remove('selected'));
-    document.getElementById(btnId).classList.add('selected');
-  }
-  calcSIP();calcStepUp();calcRetirement();
+  // clear others in same group
+  const p=document.getElementById(btnId).closest('.return-chips');
+  p.querySelectorAll('.chip').forEach(c=>c.classList.remove('sel'));
+  document.getElementById(btnId).classList.add('sel');
 }
+function setChipSU(inputId,val){document.getElementById(inputId).value=val;calcSU()}
 function setFreq(btn,f){
   sipFreq=f;
-  document.querySelectorAll('#freq-group .freq-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  calcStepUp();
+  document.querySelectorAll('#su_freq_grp .freq-chip').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');
+  calcSU();
 }
 
-/* ══════════════════════════════════════════
-   FORMATTERS
-══════════════════════════════════════════ */
-function fmt(n){
-  if(isNaN(n)||!isFinite(n))return'—';
-  if(n>=1e7) return '₹'+(n/1e7).toFixed(2)+' Cr';
-  if(n>=1e5) return '₹'+(n/1e5).toFixed(2)+' L';
-  return '₹'+Math.round(n).toLocaleString('en-IN');
-}
-function fmtRaw(n){
-  if(isNaN(n)||!isFinite(n))return'—';
-  return '₹'+Math.round(n).toLocaleString('en-IN');
-}
-
-/* ══════════════════════════════════════════
-   SIP CALCULATOR
-══════════════════════════════════════════ */
-function calcSIP(){
-  const P=parseFloat(document.getElementById('sip_amount').value)||0;
-  const n=parseFloat(document.getElementById('sip_years').value)||0;
-  const r=parseFloat(document.getElementById('sip_rate').value)||0;
-  const L=parseFloat(document.getElementById('sip_lumpsum').value)||0;
-  const G=parseFloat(document.getElementById('sip_goal').value)||0;
-  if(!P||!n||!r) return;
-  const mr=r/100/12;
-  const months=n*12;
-  const sipCorpus=P*((Math.pow(1+mr,months)-1)/mr)*(1+mr);
-  const lsCorpus=L*Math.pow(1+r/100,n);
-  const total=sipCorpus+lsCorpus;
-  const invested=P*months+L;
-  const gains=total-invested;
-  document.getElementById('sip_corpus').innerHTML='<span class="rupee">₹</span>'+fmt(total).replace('₹','');
-  document.getElementById('sip_invested').textContent=fmt(invested);
-  document.getElementById('sip_gains').textContent=fmt(gains);
-  document.getElementById('sip_summary').textContent=`₹${P.toLocaleString('en-IN')}/mo × ${n} yrs @ ${r}% → ${fmt(total)}`;
-  drawDonut('sipDonut',invested,gains);
-  if(G>0){
-    const el=document.getElementById('sip_goal_status');
-    if(total>=G){
-      el.innerHTML=`<div class="irr-verdict good">🎯 On Track! You'll reach your goal of ${fmt(G)} — and exceed it by ${fmt(total-G)}.</div>`;
-    } else {
-      const shortfall=G-total;
-      const needed=(G-lsCorpus)*mr/((Math.pow(1+mr,months)-1)/(1+mr));
-      el.innerHTML=`<div class="irr-verdict bad">📉 Shortfall of ${fmt(shortfall)} to reach ${fmt(G)}. You'd need ₹${Math.round(needed).toLocaleString('en-IN')}/mo to hit your goal.</div>`;
-    }
-  }
-}
-
-/* ══════════════════════════════════════════
-   DONUT CHART
-══════════════════════════════════════════ */
-function drawDonut(canvasId,invested,gains){
-  const canvas=document.getElementById(canvasId);
-  if(!canvas) return;
-  const ctx=canvas.getContext('2d');
-  const total=invested+gains;
-  if(total<=0) return;
-  const cx=80,cy=80,r=65,iR=42;
-  ctx.clearRect(0,0,160,160);
-  // Draw segments
+/* ── DONUT CHART ── */
+function drawDonut(cid,invested,gains){
+  const c=document.getElementById(cid);if(!c)return;
+  const ctx=c.getContext('2d');
+  const total=invested+gains;if(total<=0)return;
+  const cx=75,cy=75,r=62,ir=40;
+  ctx.clearRect(0,0,150,150);
   const slices=[
-    {val:invested,color:'rgba(136,146,164,0.6)'},
-    {val:gains,color:'#e8305a'}
+    {v:invested,color:'#dde1e8'},
+    {v:gains,color:'#d42b51'}
   ];
-  let startA=-Math.PI/2;
+  let start=-Math.PI/2;
   slices.forEach(s=>{
-    const sweep=(s.val/total)*2*Math.PI;
+    const sweep=(s.v/total)*2*Math.PI;
     ctx.beginPath();ctx.moveTo(cx,cy);
-    ctx.arc(cx,cy,r,startA,startA+sweep);
+    ctx.arc(cx,cy,r,start,start+sweep);
     ctx.closePath();ctx.fillStyle=s.color;ctx.fill();
-    startA+=sweep;
+    start+=sweep;
   });
-  // Donut hole
-  ctx.beginPath();ctx.arc(cx,cy,iR,0,2*Math.PI);ctx.fillStyle='#181c23';ctx.fill();
-  // Label
+  ctx.beginPath();ctx.arc(cx,cy,ir,0,2*Math.PI);ctx.fillStyle='#fff';ctx.fill();
   const pct=Math.round(gains/total*100);
-  ctx.fillStyle='#eef0f4';ctx.font='bold 18px Syne,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
-  ctx.fillText(pct+'%',cx,cy-6);
-  ctx.fillStyle='#8892a4';ctx.font='10px DM Sans,sans-serif';
-  ctx.fillText('Gain',cx,cy+10);
+  ctx.fillStyle='#1a1a24';ctx.font='bold 16px Lora,Georgia,serif';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillText(pct+'%',cx,cy-5);
+  ctx.fillStyle='#6b6b80';ctx.font='10px Source Sans 3,sans-serif';ctx.fillText('Returns',cx,cy+9);
 }
 
-/* ══════════════════════════════════════════
-   STEP-UP SIP
-══════════════════════════════════════════ */
-function calcStepUp(){
-  const P=parseFloat(document.getElementById('su_amount').value)||0;
-  const sr=parseFloat(document.getElementById('su_steprate').value)||0;
-  const n=parseFloat(document.getElementById('su_years').value)||0;
-  const r=parseFloat(document.getElementById('su_rate').value)||0;
-  const G=parseFloat(document.getElementById('su_goal').value)||0;
-  if(!P||!n||!r) return;
-  const mr=r/100/12;
-  const stepPeriods=sipFreq; // months between step-up
-  let corpus=0,invested=0,current=P;
-  for(let y=0;y<n;y++){
-    const monthlyRate=mr;
-    for(let m=0;m<12;m++){
-      corpus=(corpus+current)*(1+monthlyRate);
-      invested+=current;
+/* ══════════════════════════════════════
+   EXCEL-ACCURATE SIP — FV formula
+   FV(rate, nper, pmt, [pv]) where payments at beginning (annuity due)
+   FV = pmt * ((1+r)^n - 1)/r * (1+r) + pv * (1+r)^n
+══════════════════════════════════════ */
+function excelFV(r, n, pmt, pv=0){
+  // r = periodic rate, n = number of periods, pmt = payment, pv = present value
+  if(r===0) return -pmt*n - pv;
+  return pmt * ((Math.pow(1+r,n)-1)/r) * (1+r) + pv * Math.pow(1+r,n);
+}
+
+function calcSIP(){
+  const P=parseFloat(document.getElementById('s_amt').value)||0;
+  const yr=parseFloat(document.getElementById('s_yr').value)||0;
+  const rt=parseFloat(document.getElementById('s_rt').value)||0;
+  const ls=parseFloat(document.getElementById('s_ls').value)||0;
+  const goal=parseFloat(document.getElementById('s_goal').value)||0;
+  document.getElementById('s_yr_lbl').textContent=yr?yr+' years':'';
+  if(!P||!yr||!rt)return;
+  const mr=rt/100/12;
+  const n=yr*12;
+  // SIP corpus (annuity due) + lumpsum FV
+  const sipFV=excelFV(mr,n,-P,0);
+  const lsFV=ls>0? ls*Math.pow(1+rt/100,yr):0;
+  const total=sipFV+lsFV;
+  const invested=P*n+ls;
+  const gains=total-invested;
+  const mult=total/invested;
+  document.getElementById('s_corpus').textContent=fmt(total);
+  document.getElementById('s_inv').textContent=fmt(invested);
+  document.getElementById('s_gain').textContent=fmt(gains);
+  document.getElementById('s_mult').textContent=isFinite(mult)?mult.toFixed(2)+'×':'—';
+  document.getElementById('s_sub').textContent=`₹${P.toLocaleString('en-IN')}/mo × ${yr} yrs @ ${rt}% → ${fmt(total)}`;
+  drawDonut('sip_donut',invested,gains);
+  const gb=document.getElementById('s_goal_box');
+  if(goal>0){
+    if(total>=goal){gb.innerHTML=`<div class="status-box status-ok">🎯 On track! You will reach ${fmt(goal)} with a surplus of ${fmt(total-goal)}.</div>`}
+    else{
+      const needed=excelFV(mr,n,0,total-goal)<0?goal:goal;
+      const pmtN=needed*mr/((Math.pow(1+mr,n)-1)*(1+mr));
+      gb.innerHTML=`<div class="status-box status-bad">Shortfall of ${fmt(goal-total)}. You would need ₹${Math.round(pmtN).toLocaleString('en-IN')}/mo instead.</div>`;
     }
-    if(y<n-1) current*=(1+sr/100);
+  } else gb.innerHTML='';
+}
+
+/* ══════════════════════════════════════
+   STEP-UP SIP — Year by year FV
+══════════════════════════════════════ */
+function calcSU(){
+  const P=parseFloat(document.getElementById('su_amt').value)||0;
+  const sr=parseFloat(document.getElementById('su_sr').value)||0;
+  const yr=parseFloat(document.getElementById('su_yr').value)||0;
+  const rt=parseFloat(document.getElementById('su_rt').value)||0;
+  const ls=parseFloat(document.getElementById('su_ls').value)||0;
+  const goal=parseFloat(document.getElementById('su_goal').value)||0;
+  document.getElementById('su_sr_lbl').textContent=sr?sr+'%/yr step-up':'';
+  if(!P||!yr||!rt||!sr)return;
+  const mr=rt/100/12;
+  const stepPeriodsPerYear=sipFreq; // 1=annual,2=semi,4=quarterly
+  let corpus=ls>0?ls:0;
+  let invested=ls>0?ls:0;
+  let curSIP=P;
+  let lastSIP=P;
+  const monthsPerStep=Math.round(12/stepPeriodsPerYear);
+  for(let m=1;m<=yr*12;m++){
+    corpus=(corpus+curSIP)*(1+mr);
+    invested+=curSIP;
+    if(m%monthsPerStep===0 && m<yr*12){
+      curSIP*=(1+sr/100/stepPeriodsPerYear);
+      lastSIP=curSIP;
+    }
   }
   const gains=corpus-invested;
-  document.getElementById('su_corpus').innerHTML='<span class="rupee">₹</span>'+fmt(corpus).replace('₹','');
-  document.getElementById('su_invested').textContent=fmt(invested);
-  document.getElementById('su_gains').textContent=fmt(gains);
-  document.getElementById('su_last_sip').textContent=fmt(current);
-  document.getElementById('su_summary').textContent=`Starting ₹${P.toLocaleString('en-IN')}/mo, ${sr}% annual step-up × ${n} yrs @ ${r}%`;
-  if(G>0){
-    const el=document.getElementById('su_goal_status');
-    if(corpus>=G){
-      el.innerHTML=`<div class="irr-verdict good">🎯 Goal Achieved! You'll exceed your target of ${fmt(G)} by ${fmt(corpus-G)}.</div>`;
-    } else {
-      el.innerHTML=`<div class="irr-verdict bad">📉 Shortfall of ${fmt(G-corpus)}. Try increasing your starting SIP or step-up rate.</div>`;
-    }
+  // Flat SIP for comparison
+  const flatFV=excelFV(mr,yr*12,-P,ls>0?-ls:0);
+  const benefit=corpus-flatFV;
+  document.getElementById('su_corpus').textContent=fmt(corpus);
+  document.getElementById('su_inv').textContent=fmt(invested);
+  document.getElementById('su_gain').textContent=fmt(gains);
+  document.getElementById('su_last').textContent=fmt(lastSIP)+'/mo';
+  document.getElementById('su_flat').textContent=fmt(flatFV);
+  document.getElementById('su_sub').textContent=`₹${P.toLocaleString('en-IN')}/mo, ${sr}% step-up × ${yr} yrs @ ${rt}%`;
+  if(benefit>0){
+    const bb=document.getElementById('su_benefit_box');
+    bb.style.display='block';
+    document.getElementById('su_benefit').textContent=fmt(benefit);
   }
+  const gb=document.getElementById('su_goal_box');
+  if(goal>0){
+    if(corpus>=goal)gb.innerHTML=`<div class="status-box status-ok">🎯 Goal achieved! Surplus of ${fmt(corpus-goal)}.</div>`;
+    else gb.innerHTML=`<div class="status-box status-bad">Shortfall of ${fmt(goal-corpus)}. Increase starting SIP or step-up rate.</div>`;
+  } else gb.innerHTML='';
 }
 
-/* ══════════════════════════════════════════
-   RETIREMENT CALCULATOR
-══════════════════════════════════════════ */
-function calcRetirement(){
-  const age=parseFloat(document.getElementById('ret_age').value)||0;
-  const retAge=parseFloat(document.getElementById('ret_retire').value)||60;
-  const lifeExp=parseFloat(document.getElementById('ret_life').value)||85;
-  const expense=parseFloat(document.getElementById('ret_expense').value)||0;
-  const inflation=parseFloat(document.getElementById('ret_inflation').value)||6;
-  const preRet=parseFloat(document.getElementById('ret_pre_return').value)||0;
-  const postRet=parseFloat(document.getElementById('ret_post_return').value)||7;
-  const savings=parseFloat(document.getElementById('ret_savings').value)||0;
-  const stepup=parseFloat(document.getElementById('ret_stepup').value)||0;
-  if(!age||!expense||!preRet) return;
-  const yrsToRet=retAge-age;
-  const retDuration=lifeExp-retAge;
-  // Inflate expenses to retirement
-  const expAtRet=expense*Math.pow(1+inflation/100,yrsToRet)*12; // annual
-  // Corpus needed using PV of annuity with real return
-  const realRate=(postRet-inflation)/100;
+/* ══════════════════════════════════════
+   RETIREMENT — PV of annuity + PMT
+   Corpus needed = PMT × [(1-(1+r)^-n)/r] (ordinary annuity, end of year)
+   Adjusted to beginning of month (annuity due)
+   Monthly SIP = PMT formula
+══════════════════════════════════════ */
+function excelPMT(r,n,pv,fv=0){
+  // Solves for payment
+  if(r===0) return -(pv+fv)/n;
+  return (pv*Math.pow(1+r,n)+fv)*r/(1-Math.pow(1+r,n));
+}
+function excelPV(r,n,pmt,fv=0){
+  if(r===0) return -pmt*n-fv;
+  return (pmt*((1-Math.pow(1+r,-n))/r)+fv/(Math.pow(1+r,n)))*-1;
+}
+
+function calcRet(){
+  const age=parseFloat(document.getElementById('r_age').value)||0;
+  const ret=parseFloat(document.getElementById('r_ret').value)||0;
+  const life=parseFloat(document.getElementById('r_life').value)||0;
+  const exp=parseFloat(document.getElementById('r_exp').value)||0;
+  const infl=parseFloat(document.getElementById('r_infl').value)||6;
+  const pre=parseFloat(document.getElementById('r_pre').value)||0;
+  const post=parseFloat(document.getElementById('r_post').value)||0;
+  const sav=parseFloat(document.getElementById('r_sav').value)||0;
+  const su=parseFloat(document.getElementById('r_su').value)||0;
+  if(!age||!ret||!life||!exp||!pre||!post)return;
+  const yrsToRet=ret-age;
+  const retDur=life-ret;
+  // Monthly expense at retirement (inflation-adjusted)
+  const mExpRet=exp*Math.pow(1+infl/100,yrsToRet);
+  // Corpus needed: PV of annuity (real return basis)
+  // Real monthly rate post retirement
+  const realMonthly=((1+(post-infl)/100)/(1))-1;
+  // Use: PV of annuity due for monthly withdrawals
   let corpusNeeded;
-  if(Math.abs(realRate)<0.0001){
-    corpusNeeded=expAtRet*retDuration;
+  const rPost=(post/100/12);
+  // PV of annuity (beginning of period = annuity due)
+  if(Math.abs(rPost)<0.00001){
+    corpusNeeded=mExpRet*retDur*12;
   } else {
-    corpusNeeded=expAtRet*(1-Math.pow(1+realRate,-retDuration))/realRate;
+    // Monthly expenses inflating during retirement
+    // Simplified: use real rate
+    const realR=Math.pow((1+(post/100))/(1+(infl/100)),1/12)-1;
+    if(Math.abs(realR)<0.00001){
+      corpusNeeded=mExpRet*retDur*12;
+    } else {
+      corpusNeeded=mExpRet*(1-Math.pow(1+realR,-retDur*12))/realR;
+    }
   }
   // Existing savings growth
-  const savingsGrowth=savings*Math.pow(1+preRet/100,yrsToRet);
-  const remaining=Math.max(corpusNeeded-savingsGrowth,0);
-  // SIP needed (with optional step-up)
-  let sipNeeded;
-  if(stepup>0){
-    // Approximate: binary search
-    let lo=0,hi=500000;
-    for(let i=0;i<50;i++){
+  const savGrowth=sav>0?sav*Math.pow(1+pre/100,yrsToRet):0;
+  const remaining=Math.max(corpusNeeded-savGrowth,0);
+  // Flat SIP needed (PMT formula)
+  const mr=pre/100/12;
+  const months=yrsToRet*12;
+  let sipFlat;
+  if(Math.abs(mr)<0.00001) sipFlat=remaining/months;
+  else sipFlat=remaining*mr/((Math.pow(1+mr,months)-1)*(1+mr));
+  document.getElementById('r_corpus').textContent=fmt(corpusNeeded);
+  document.getElementById('r_mneed').textContent=fmt(mExpRet)+'/mo';
+  document.getElementById('r_yleft').textContent=yrsToRet+' yrs';
+  document.getElementById('r_sip_flat').textContent=fmt(sipFlat)+'/mo';
+  document.getElementById('r_sub').textContent=`Need ${fmt(corpusNeeded)} at age ${ret}`;
+  // Step-up SIP (if provided)
+  const suBox=document.getElementById('r_stepup_box');
+  if(su>0){
+    // Binary search for starting SIP with step-up
+    let lo=0,hi=sipFlat*2;
+    for(let i=0;i<80;i++){
       const mid=(lo+hi)/2;
-      let c=0,s=mid;
-      const mr=preRet/100/12;
+      let c=savGrowth,s=mid;
       for(let y=0;y<yrsToRet;y++){
-        for(let m=0;m<12;m++) c=(c+s)*(1+mr);
-        s*=(1+stepup/100);
+        for(let m=0;m<12;m++)c=(c+s)*(1+mr);
+        s*=(1+su/100);
       }
-      if(c<remaining) lo=mid; else hi=mid;
+      if(c<corpusNeeded)lo=mid;else hi=mid;
     }
-    sipNeeded=(lo+hi)/2;
+    const startSIP=(lo+hi)/2;
+    let endS=startSIP*Math.pow(1+su/100,yrsToRet-1);
+    document.getElementById('r_sip_su').textContent=fmt(startSIP)+'/mo';
+    document.getElementById('r_su_pct').textContent=su;
+    document.getElementById('r_start_sip').textContent=fmt(startSIP);
+    document.getElementById('r_end_sip').textContent=fmt(endS);
+    suBox.style.display='block';
   } else {
-    const mr=preRet/100/12;
-    const months=yrsToRet*12;
-    sipNeeded=remaining*mr/((Math.pow(1+mr,months)-1)*(1+mr));
+    document.getElementById('r_sip_su').textContent='Add step-up above';
+    suBox.style.display='none';
   }
-  document.getElementById('ret_corpus').innerHTML='<span class="rupee">₹</span>'+fmt(corpusNeeded).replace('₹','');
-  document.getElementById('ret_monthly_need').textContent=fmt(expAtRet/12)+'/mo';
-  document.getElementById('ret_years_left').textContent=yrsToRet+' yrs';
-  document.getElementById('ret_sip_needed').textContent=fmt(sipNeeded)+'/mo';
-  document.getElementById('ret_duration').textContent=retDuration+' yrs';
-  document.getElementById('ret_summary').textContent=`Corpus needed: ${fmt(corpusNeeded)} | Monthly SIP: ${fmt(sipNeeded)}/mo`;
-  const el=document.getElementById('ret_goal_status');
-  if(savings>0 && savingsGrowth>=corpusNeeded){
-    el.innerHTML=`<div class="irr-verdict good">🎉 Your existing savings alone could fund retirement! You're ahead of the curve.</div>`;
-  } else {
-    el.innerHTML=`<div class="irr-verdict ok">📌 Start a monthly SIP of ${fmt(sipNeeded)} today to retire comfortably at ${retAge}.</div>`;
-  }
+  const gb=document.getElementById('r_goal_box');
+  if(savGrowth>=corpusNeeded) gb.innerHTML=`<div class="status-box status-ok">🎉 Your existing savings alone can fund retirement!</div>`;
+  else gb.innerHTML=`<div class="status-box status-warn">Start ₹${Math.round(sipFlat).toLocaleString('en-IN')}/month today to retire at ${ret}.</div>`;
 }
 
-/* ══════════════════════════════════════════
-   INSURANCE IRR
-══════════════════════════════════════════ */
-let payoutRows=[];
-function populatePayouts(){
-  const payTerm=parseInt(document.getElementById('ins_pay_term').value)||0;
-  const polTerm=parseInt(document.getElementById('ins_policy_term').value)||0;
-  if(!polTerm) return;
-  payoutRows=[];
+/* ══════════════════════════════════════
+   INSURANCE IRR — Newton-Raphson
+   Exact Excel IRR() implementation
+══════════════════════════════════════ */
+function buildPayouts(){
+  const payTerm=parseInt(document.getElementById('ip_pay').value)||0;
+  const polTerm=parseInt(document.getElementById('ip_pol').value)||0;
+  if(!payTerm||!polTerm)return;
   const tbody=document.getElementById('payoutBody');
   tbody.innerHTML='';
-  // Suggest survival benefit years if money-back
-  const suggestions=[];
-  if(polTerm>=15){
-    for(let y=5;y<=polTerm;y+=5) suggestions.push(y);
-  } else {
-    suggestions.push(polTerm);
-  }
-  suggestions.forEach(y=>{
-    addPayoutRow(y);
-  });
+  // Suggest money-back at every 5 years
+  const suggests=[];
+  for(let y=5;y<=polTerm;y+=5)suggests.push(y);
+  if(!suggests.includes(polTerm))suggests.push(polTerm);
+  suggests.forEach(y=>addPRowAt(y,''));
   calcIRR();
 }
-function addPayoutRow(year=''){
+function addPRow(){addPRowAt('','');calcIRR()}
+function addPRowAt(yr,amt){
   const tbody=document.getElementById('payoutBody');
   const tr=document.createElement('tr');
-  const idx=tbody.rows.length;
-  tr.innerHTML=`<td><input type="number" placeholder="Year" value="${year}" min="1" oninput="calcIRR()" style="background:var(--dark4);border:1px solid var(--border);border-radius:6px;padding:6px 10px;color:var(--text);width:80px"></td><td><input type="number" placeholder="₹0" min="0" oninput="calcIRR()" style="background:var(--dark4);border:1px solid var(--border);border-radius:6px;padding:6px 10px;color:var(--text);width:120px"></td><td><button onclick="this.closest('tr').remove();calcIRR()" style="color:var(--muted);font-size:0.9rem;padding:4px 8px;transition:color .2s" onmouseover="this.style.color='var(--pink)'" onmouseout="this.style.color='var(--muted)'">✕</button></td>`;
+  tr.innerHTML=`<td><input type="number" value="${yr}" placeholder="Year" min="1" oninput="calcIRR()" style="width:70px"></td><td><input type="number" value="${amt}" placeholder="₹ 0" min="0" oninput="calcIRR()" style="width:130px"></td><td><button onclick="this.closest('tr').remove();calcIRR()" style="color:#9ca3af;font-size:0.9rem;padding:2px 6px">✕</button></td>`;
   tbody.appendChild(tr);
 }
-
 function calcIRR(){
-  const premium=parseFloat(document.getElementById('ins_premium').value)||0;
-  const payTerm=parseInt(document.getElementById('ins_pay_term').value)||0;
-  const polTerm=parseInt(document.getElementById('ins_policy_term').value)||0;
-  const maturity=parseFloat(document.getElementById('ins_maturity').value)||0;
-  if(!premium||!payTerm||!polTerm) return;
-  // Build cashflow array (annual, index=year, year 0 = -premium)
-  const maxYear=polTerm;
-  const cf=new Array(maxYear+1).fill(0);
-  for(let y=1;y<=payTerm;y++) cf[y]-=premium;
-  // Payouts
+  const prem=parseFloat(document.getElementById('ip_prem').value)||0;
+  const payT=parseInt(document.getElementById('ip_pay').value)||0;
+  const polT=parseInt(document.getElementById('ip_pol').value)||0;
+  const mat=parseFloat(document.getElementById('ip_mat').value)||0;
+  if(!prem||!payT||!polT)return;
+  // Build annual cashflow array index 0..polT
+  const cf=new Array(polT+1).fill(0);
+  // Outflows: premiums for years 1..payT (at start of year, i.e. year 0..payT-1)
+  for(let y=0;y<payT;y++) cf[y]-=prem;
+  // Inflows: survival benefits
   const rows=document.getElementById('payoutBody').rows;
-  let totalReceived=0;
-  for(let r=0;r<rows.length;r++){
-    const yr=parseInt(rows[r].cells[0].querySelector('input').value)||0;
-    const amt=parseFloat(rows[r].cells[1].querySelector('input').value)||0;
-    if(yr>0&&yr<=maxYear&&amt>0){cf[yr]+=amt;totalReceived+=amt;}
+  let totalRecv=0;
+  for(let i=0;i<rows.length;i++){
+    const yr=parseInt(rows[i].cells[0].querySelector('input').value)||0;
+    const am=parseFloat(rows[i].cells[1].querySelector('input').value)||0;
+    if(yr>=1&&yr<=polT&&am>0){cf[yr]+=am;totalRecv+=am}
   }
-  if(maturity>0){cf[polTerm]+=maturity;totalReceived+=maturity;}
-  const totalPaid=premium*payTerm;
-  document.getElementById('irr_total_paid').textContent=fmt(totalPaid);
-  document.getElementById('irr_total_received').textContent=fmt(totalReceived);
+  // Maturity at end
+  if(mat>0){cf[polT]+=mat;totalRecv+=mat}
+  const totalPaid=prem*payT;
+  document.getElementById('irr_paid').textContent=fmt(totalPaid);
+  document.getElementById('irr_recv').textContent=fmt(totalRecv);
+  // FD alternative: FV of annuity at 7%
+  const fdFV=excelFV(0.07,payT,-prem,0);
+  document.getElementById('irr_fd_alt').textContent=fmt(fdFV);
   // Newton-Raphson IRR
-  const irr=computeIRR(cf);
+  const irr=nrIRR(cf);
   if(irr===null){
-    document.getElementById('irr_value').textContent='—%';
-    document.getElementById('irr_verdict').innerHTML='<div class="irr-verdict ok">⚠️ Could not compute IRR. Check your cashflow inputs.</div>';
+    document.getElementById('irr_val').textContent='N/A';
+    document.getElementById('irr_compare_val').textContent='—';
+    document.getElementById('irr_verdict').innerHTML=`<div class="status-box status-warn">Could not compute IRR. Check your cashflow inputs.</div>`;
     return;
   }
-  const irrPct=(irr*100).toFixed(2);
-  document.getElementById('irr_value').textContent=irrPct+'%';
-  let verdict,cls,comp='';
-  if(irr>=0.10){verdict='Exceptional for an insurance policy — verify inputs.';cls='good'}
-  else if(irr>=0.07){verdict='Acceptable return, but pure term + MF combo would likely do better.';cls='ok'}
-  else if(irr>=0.05){verdict='Poor return. A bank FD gives more. Consider term + mutual fund strategy.';cls='ok'}
-  else{verdict='Very poor IRR. This policy is destroying wealth. Review with a financial advisor immediately.';cls='bad'}
-  document.getElementById('irr_verdict').innerHTML=`<div class="irr-verdict ${cls}">${verdict}</div>`;
-  const fdIRR=6.5,mfIRR=12;
-  comp=`<div style="font-size:0.8rem;color:var(--muted);margin-top:12px"><strong style="color:var(--text)">📊 Comparison</strong><br>
-  <span style="color:#5cba7a">Bank FD (6.5%):</span> Same premiums → ${fmt(totalPaid*Math.pow(1+fdIRR/100,polTerm/2))}<br>
-  <span style="color:#e8b430">Equity MF (12%):</span> Same premiums → ${fmt(computeFDValue(premium,payTerm,polTerm,0.12))}</div>`;
-  document.getElementById('irr_comparison').innerHTML=comp;
+  const irrP=irr*100;
+  document.getElementById('irr_val').textContent=irrP.toFixed(2)+'%';
+  document.getElementById('irr_compare_val').textContent=irrP.toFixed(2)+'%';
+  const el=document.getElementById('irr_val');
+  el.className='irr-num';
+  let vc='',vcls='';
+  if(irrP>=8){el.classList.add('good');vc='Good IRR for a traditional policy.';vcls='status-ok'}
+  else if(irrP>=5.5){el.classList.add('mid');vc='Acceptable, but barely beats inflation. A term plan + SIP would likely do better.';vcls='status-warn'}
+  else{el.classList.add('bad');vc='Poor IRR — below FD rates. Consider surrendering and switching to term + investment.';vcls='status-bad'}
+  document.getElementById('irr_verdict').innerHTML=`<div class="status-box ${vcls}">${vc}</div>`;
 }
-function computeFDValue(annualPremium,payTerm,polTerm,rate){
-  // FV of annuity at rate for payTerm, then grow to polTerm
-  const fvAnn=annualPremium*((Math.pow(1+rate,payTerm)-1)/rate)*(1+rate);
-  return fvAnn*Math.pow(1+rate,polTerm-payTerm);
-}
-function computeIRR(cashflows){
-  let rate=0.1;
-  for(let i=0;i<200;i++){
+function nrIRR(cf){
+  let r=0.08;
+  for(let i=0;i<300;i++){
     let npv=0,dnpv=0;
-    cashflows.forEach((c,t)=>{
-      npv+=c/Math.pow(1+rate,t);
-      dnpv+=-t*c/Math.pow(1+rate,t+1);
-    });
-    if(Math.abs(dnpv)<1e-10) break;
-    const nr=rate-npv/dnpv;
-    if(Math.abs(nr-rate)<1e-8){return nr}
-    rate=nr;
-    if(rate<-0.99) rate=-0.5;
-    if(rate>10) rate=3;
+    cf.forEach((c,t)=>{const f=Math.pow(1+r,t);npv+=c/f;dnpv+=-t*c/Math.pow(1+r,t+1)});
+    if(Math.abs(dnpv)<1e-12)break;
+    const rn=r-npv/dnpv;
+    if(Math.abs(rn-r)<1e-10){return(rn>-0.99&&rn<20)?rn:null}
+    r=Math.max(-0.99,Math.min(20,rn));
   }
-  return (rate>-0.99&&rate<20)?rate:null;
+  return(r>-0.99&&r<20)?r:null;
 }
 
-/* ══════════════════════════════════════════
-   RUPEE RAIN
-══════════════════════════════════════════ */
-const canvas=document.getElementById('rupee-canvas');
-const ctx2=canvas.getContext('2d');
-let rupees=[];
-function initCanvas(){canvas.width=window.innerWidth;canvas.height=window.innerHeight}
-initCanvas();
-window.addEventListener('resize',initCanvas);
-function triggerRupeeRain(){
-  canvas.classList.add('active');
-  rupees=Array.from({length:40},()=>({
-    x:Math.random()*canvas.width,y:-20,
-    vy:2+Math.random()*4,vx:(Math.random()-.5)*2,
-    size:14+Math.random()*20,
-    opacity:0.7+Math.random()*0.3,
-    rotation:Math.random()*6.28,
-    spin:(Math.random()-.5)*0.1
-  }));
-  animateRupees();
-  setTimeout(()=>{canvas.classList.remove('active');rupees=[]},3000);
-}
-function animateRupees(){
-  if(!rupees.length) return;
-  ctx2.clearRect(0,0,canvas.width,canvas.height);
-  rupees.forEach(r=>{
-    r.y+=r.vy;r.x+=r.vx;r.rotation+=r.spin;
-    ctx2.save();ctx2.translate(r.x,r.y);ctx2.rotate(r.rotation);
-    ctx2.font=`bold ${r.size}px sans-serif`;
-    ctx2.fillStyle=`rgba(232,48,90,${r.opacity})`;
-    ctx2.textAlign='center';ctx2.textBaseline='middle';
-    ctx2.fillText('₹',0,0);ctx2.restore();
+/* ══════════════════════════════════════
+   RATIO ANALYSIS
+══════════════════════════════════════ */
+function calcRatios(){
+  const income=parseFloat(document.getElementById('ra_income').value)||0;
+  const savings=parseFloat(document.getElementById('ra_savings').value)||0;
+  const expenses=parseFloat(document.getElementById('ra_expenses').value)||0;
+  const takehome=parseFloat(document.getElementById('ra_takehome').value)||0;
+  const assets=parseFloat(document.getElementById('ra_assets').value)||0;
+  const liab=parseFloat(document.getElementById('ra_liab').value)||0;
+  const liquid=parseFloat(document.getElementById('ra_liquid').value)||0;
+  const finassets=parseFloat(document.getElementById('ra_finassets').value)||0;
+  const debtPay=parseFloat(document.getElementById('ra_debt_pay').value)||0;
+  const emi=parseFloat(document.getElementById('ra_emi').value)||0;
+  if(!income&&!assets&&!savings){return}
+  const ratios=[];
+  let score=0,count=0;
+
+  function addRatio(name,val,unit,ideal,low,desc,goodDir){
+    // goodDir: 'high' means higher is better, 'low' means lower is better
+    let status='',color='',pct=0;
+    const v=parseFloat(val);
+    if(!isNaN(v)&&isFinite(v)){
+      const ideals=Array.isArray(ideal)?ideal:[ideal];
+      const lows=Array.isArray(low)?low:[low];
+      // Score
+      if(goodDir==='high'){
+        if(v>=ideals[0]){status='Good';color=getComputedStyle(document.documentElement).getPropertyValue('--success').trim();pct=Math.min(100,v/ideals[0]*70+30);score+=2;count++}
+        else if(v>=lows[0]){status='Improving';color='#f59e0b';pct=v/ideals[0]*70;score+=1;count++}
+        else{status='Attention';color='#dc2626';pct=Math.max(5,v/ideals[0]*40);score+=0;count++}
+      } else {
+        if(v<=ideals[0]){status='Good';color=getComputedStyle(document.documentElement).getPropertyValue('--success').trim();pct=Math.min(100,(1-v/lows[0])*100);score+=2;count++}
+        else if(v<=lows[0]){status='Manageable';color='#f59e0b';pct=Math.max(10,(1-v/lows[0])*80+20);score+=1;count++}
+        else{status='Attention';color='#dc2626';pct=5;score+=0;count++}
+      }
+      ratios.push({name,val:v.toFixed(2)+unit,status,color,pct,desc,ideal:Array.isArray(ideal)?ideal[0]:ideal,unit,goodDir});
+    }
+  }
+
+  if(income>0&&savings>0) addRatio('Savings Rate',savings/income*100,'%',30,20,'Proportion of income saved. Ideal is 30%+ for wealth building. Below 20% limits long-term wealth creation.','high');
+  if(income>0&&expenses>0) addRatio('Expense Ratio',expenses/income*100,'%',50,70,'Proportion of income spent. Keeping it below 50% leaves healthy room to save and invest.','low');
+  if(assets>0&&liab>0){
+    const nw=assets-liab;
+    addRatio('Debt-to-Asset',liab/assets*100,'%',30,50,'What percentage of your total assets is funded by debt. Below 30% is considered healthy.','low');
+  }
+  if(liquid>0&&expenses>0){
+    const monthlyExp=expenses/12;
+    addRatio('Liquidity Ratio',liquid/monthlyExp,'x',6,3,'Number of months of expenses covered by liquid assets. Minimum 3 months; ideal 6 months emergency fund.','high');
+  }
+  if(income>0&&debtPay>0) addRatio('Debt Service Ratio',debtPay/income*100,'%',30,40,'Annual debt repayments as % of income. Above 40% is a danger zone that severely limits financial flexibility.','low');
+  if(takehome>0&&emi>0) addRatio('EMI-to-Income',emi/(takehome)*100,'%',40,50,'Monthly EMI as % of take-home pay. Keep below 40% to maintain savings discipline.','low');
+  if(assets>0&&liab>0){
+    const solv=(assets-liab)/assets*100;
+    addRatio('Solvency Ratio',solv,'%',50,30,'Net worth as % of total assets. Measures your ability to withstand financial shocks.','high');
+  }
+  if(income>0&&finassets>0) addRatio('Financial Assets Ratio',finassets/income,'x',3,1,'Financial assets (investments) as multiple of annual income. Below 1× means you are just starting. Target 3× or more.','high');
+  if(income>0&&savings>0&&takehome>0){
+    const annualTH=takehome*12;
+    addRatio('Savings-to-Income',savings/annualTH*100,'%',25,15,'Annual savings as % of take-home pay (net income). More conservative and realistic than gross income ratio.','high');
+  }
+
+  // Render
+  const totalScore=count>0?Math.round(score/count/2*100):0;
+  const ring=document.getElementById('scoreRing');
+  const sn=document.getElementById('scoreNum');
+  sn.textContent=totalScore;
+  const sLabel=document.getElementById('scoreLabel');
+  const sDesc=document.getElementById('scoreDesc');
+  ring.style.borderColor=totalScore>=70?'#1e7e4f':totalScore>=45?'#f59e0b':'#dc2626';
+  sn.style.color=totalScore>=70?'#1e7e4f':totalScore>=45?'#f57f17':'#dc2626';
+  if(totalScore>=70){sLabel.textContent='Financially Healthy';sDesc.textContent='Your ratios are tracking well. Keep building on this foundation.'}
+  else if(totalScore>=45){sLabel.textContent='Progressing Well';sDesc.textContent='Good direction. A few areas need attention to accelerate your wealth journey.'}
+  else{sLabel.textContent='Needs Attention';sDesc.textContent='Several ratios are below healthy benchmarks. Small, consistent changes will create significant improvement over time.'}
+
+  // Render ratio items
+  let html='';
+  ratios.forEach(r=>{
+    html+=`<div class="ratio-item">
+      <div><div class="ratio-name">${r.name}</div><div class="ratio-desc" style="font-size:0.74rem;color:var(--ink-light);max-width:180px;line-height:1.4;margin-top:2px">${r.desc}</div></div>
+      <div class="ratio-val-wrap">
+        <div class="ratio-val" style="color:${r.color}">${r.val}</div>
+        <div class="ratio-status" style="color:${r.color}">${r.status}</div>
+      </div>
+    </div>
+    <div class="ratio-bar-wrap"><div class="ratio-bar" style="width:${r.pct}%;background:${r.color}"></div></div>`;
   });
-  rupees=rupees.filter(r=>r.y<canvas.height+50);
-  if(rupees.length) requestAnimationFrame(animateRupees);
-  else ctx2.clearRect(0,0,canvas.width,canvas.height);
-}
+  if(assets>0&&liab>0){
+    const nw=assets-liab;
+    html+=`<div class="ratio-item" style="padding-top:14px;border-top:1px solid var(--rule);margin-top:6px">
+      <div><div class="ratio-name">Net Worth</div><div class="ratio-desc" style="font-size:0.74rem;color:var(--ink-light)">Total assets minus all liabilities</div></div>
+      <div class="ratio-val-wrap"><div class="ratio-val" style="color:${nw>=0?'var(--success)':'var(--danger)'}">${fmt(nw)}</div></div></div>`;
+  }
+  document.getElementById('ratioItems').innerHTML=html||'<div style="text-align:center;padding:20px;color:var(--ink-light);font-size:0.85rem">Fill in more fields to see all ratios.</div>';
 
-/* ══════════════════════════════════════════
-   ARTICLES PUBLISHER
-══════════════════════════════════════════ */
-let articles=[
-  {title:'Why SIP is the most powerful wealth creation tool for salaried Indians',tag:'Investing',emoji:'📈',read:'6 min',excerpt:'Systematic investing removes emotion from the equation...'},
-  {title:'The real IRR of your endowment policy',tag:'Insurance',emoji:'🛡️',read:'8 min',excerpt:'Most traditional insurance policies return 4-6% IRR...'},
-  {title:'How much do you actually need to retire comfortably at 55 in India?',tag:'Goals',emoji:'🏠',read:'5 min',excerpt:'Inflation-adjusted retirement corpus calculations for the Indian middle class...'}
-];
-function publishArticle(){
-  const t=document.getElementById('artTitle').value.trim();
-  const c=document.getElementById('artCategory').value;
-  const e=document.getElementById('artEmoji').value||'📝';
-  const r=document.getElementById('artRead').value||'5 min';
-  const ex=document.getElementById('artExcerpt').value.trim();
-  if(!t||!ex){alert('Please fill in Title and Excerpt.');return}
-  articles.unshift({title:t,tag:c,emoji:e,read:r,excerpt:ex});
-  renderArticles();
-  document.getElementById('adminPanel').style.display='none';
-  document.getElementById('artTitle').value='';
-  document.getElementById('artExcerpt').value='';
-  document.getElementById('artBody').value='';
-}
-function renderArticles(){
-  const grid=document.getElementById('articlesGrid');
-  grid.innerHTML=articles.slice(0,6).map(a=>`
-    <div class="article-card">
-      <div class="article-img">
-        <div class="article-img-inner">${a.emoji}</div>
-        <span class="article-tag">${a.tag}</span>
-      </div>
-      <div class="article-body">
-        <div class="article-meta">${new Date().toLocaleDateString('en-IN',{month:'long',day:'numeric',year:'numeric'})} · ${a.read} read</div>
-        <div class="article-title">${a.title}</div>
-        <div class="article-excerpt">${a.excerpt}</div>
-      </div>
-      <div class="article-footer">
-        <span class="read-more">Read Article <span>→</span></span>
-        <span style="font-size:0.72rem;color:var(--muted)">${a.read}</span>
-      </div>
-    </div>`).join('');
-}
-
-/* ══════════════════════════════════════════
-   CONTACT
-══════════════════════════════════════════ */
-function sendContact(){
-  const btn=event.currentTarget;
-  btn.textContent='Message Sent! ✓';
-  btn.style.background='linear-gradient(135deg,#5cba7a,#3a9a5a)';
-  setTimeout(()=>{btn.textContent='Send Message →';btn.style.background=''},3000);
-}
-
-/* ══════════════════════════════════════════
-   ACTIVE NAV HIGHLIGHT
-══════════════════════════════════════════ */
-const sections=document.querySelectorAll('section[id]');
-const navLinks=document.querySelectorAll('.nav-links a');
-const sectionObs=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){
-      navLinks.forEach(l=>l.classList.remove('active'));
-      const active=document.querySelector(`.nav-links a[href="#${e.target.id}"]`);
-      if(active) active.classList.add('active');
+  // Feedback
+  let fb='';
+  ratios.forEach(r=>{
+    if(r.name==='Savings Rate'){
+      if(parseFloat(r.val)>=30) fb+=`<div class="feedback-item fb-great">✓ Your savings rate of ${r.val} is excellent. You are building wealth at a healthy pace. Maintaining this consistency will have a compounding effect on your future.</div>`;
+      else if(parseFloat(r.val)>=20) fb+=`<div class="feedback-item fb-ok">Your savings rate of ${r.val} is on the right track. Every 1% increase in savings rate can meaningfully accelerate your goal timelines. Consider reviewing discretionary spending.</div>`;
+      else fb+=`<div class="feedback-item fb-low">Your savings rate of ${r.val} is below the recommended 20%. Building wealth requires consistent surplus. Even small reductions in fixed monthly expenses can create meaningful savings headroom.</div>`;
+    }
+    if(r.name==='Liquidity Ratio'){
+      const v=parseFloat(r.val);
+      if(v>=6) fb+=`<div class="feedback-item fb-great">✓ Your liquidity buffer of ${r.val} months is robust. This gives you meaningful financial security against emergencies and prevents forced liquidation of investments.</div>`;
+      else if(v>=3) fb+=`<div class="feedback-item fb-ok">Your liquidity buffer of ${r.val} months is adequate but could be stronger. Aim for 6 months before aggressively investing — unexpected income disruptions can otherwise force you to break investments at the wrong time.</div>`;
+      else fb+=`<div class="feedback-item fb-low">Your liquidity buffer of only ${r.val} months is a risk. Before increasing investments, prioritise building 3–6 months of expenses in a liquid savings account or short-term FD.</div>`;
+    }
+    if(r.name==='Solvency Ratio'){
+      const v=parseFloat(r.val);
+      if(v>=50) fb+=`<div class="feedback-item fb-great">✓ Your solvency ratio of ${r.val} is strong — you own more than you owe. This is the foundation of financial resilience.</div>`;
+      else if(v>=30) fb+=`<div class="feedback-item fb-ok">Your solvency ratio of ${r.val} is improving. Continue building assets while managing liabilities — your net worth trajectory matters more than the current snapshot.</div>`;
+      else fb+=`<div class="feedback-item fb-low">Your solvency ratio of ${r.val} means a large portion of your assets are debt-funded. Focus on reducing high-interest liabilities before increasing investment. Every loan repaid is a guaranteed return.</div>`;
     }
   });
-},{threshold:0.4});
-sections.forEach(s=>sectionObs.observe(s));
+  document.getElementById('feedbackList').innerHTML=fb;
+}
 
-/* ══════════════════════════════════════════
-   SMOOTH HOVER TRANSITIONS ON CARDS
-══════════════════════════════════════════ */
-document.addEventListener('DOMContentLoaded',()=>{
-  document.querySelectorAll('.why-card,.article-card').forEach(card=>{
-    card.addEventListener('mousemove',e=>{
-      const rect=card.getBoundingClientRect();
-      const x=(e.clientX-rect.left)/rect.width-.5;
-      const y=(e.clientY-rect.top)/rect.height-.5;
-      card.style.transform=`translateY(-4px) rotateY(${x*6}deg) rotateX(${-y*6}deg)`;
-    });
-    card.addEventListener('mouseleave',()=>{card.style.transform=''});
-  });
+/* ══════════════════════════════════════
+   AI CHATBOT
+══════════════════════════════════════ */
+const aiReplies={
+  'emergency fund':['An emergency fund is your financial first line of defence. It should cover 6 months of your total monthly expenses — not income. Keep it in a savings account or liquid fund, not invested in equity. You should build this before starting any SIPs. Once it is in place, do not touch it unless there is an actual emergency.',
+    'For most salaried individuals, 3 months cover job disruption and medical emergencies reasonably well. But 6 months gives you real security — especially if you have dependants, EMIs, or a less stable income source. Build it over 6–12 months and automate it first.'],
+  'start investing':['The honest answer is: as soon as possible, after you have an emergency fund and basic insurance in place. The first ₹500/month invested at 24 is worth more at 60 than ₹5,000/month started at 40. Time is the one thing money cannot buy back.',
+    'Starting is more important than starting perfectly. Even ₹1,000 a month matters. What you want to avoid is delaying until conditions feel "right" — they rarely do. Begin, review annually, and keep increasing your amount as your income grows.'],
+  'child education':['Plan backwards from the target cost. A good private college education today costs ₹20–40 lakh. Adjust for inflation at 8–10% annually (education inflation in India). If your child is 3 years old, you have roughly 15 years — so your target might be ₹60–80 lakh. Use our SIP calculator with that goal and 15 years to find the exact monthly amount needed.',
+    'Separate your child\'s education fund from your retirement fund. They are distinct goals with different timelines. Do not sacrifice your retirement corpus for your child\'s education — your child can take an education loan, but you cannot take a retirement loan.'],
+  'savings ratio':['The savings ratio is simply: Annual Savings ÷ Annual Income × 100. A ratio of 30% or above is considered strong and will put you on a solid wealth-building path. Below 20% and it becomes very difficult to build meaningful wealth over time.',
+    'If your savings ratio feels low, focus on fixed costs first — rent, EMIs, subscriptions — rather than variable day-to-day spending. Fixed costs are where big wins hide. Reducing one EMI or moving to a more affordable home can add 5–10% to your savings rate permanently.'],
+  'retirement':['Retirement planning starts with one number: how much will you spend monthly in retirement? Inflate that to retirement age using 6–7% inflation. Then calculate the lump sum you need to sustain that spending for 25–30 years. Our retirement calculator does this with Excel-level precision.',
+    'The key retirement insight most people miss: your corpus does not earn 12% in retirement. You need to shift to more conservative assets (7–8%) as you near retirement, and your expenses keep inflating at 6–7%. The gap between those two rates is what determines how long your money lasts.'],
+  'insurance':['Insurance and investment are two completely separate decisions that should never be mixed. Buy a pure term life insurance plan — ₹1 crore cover costs approximately ₹8,000–12,000 per year in your 30s. Buy a comprehensive health insurance plan. Then invest the remaining amount in mutual funds or other instruments.',
+    'Traditional insurance plans like endowment and money-back typically offer an IRR of 4–6% — less than a bank FD. You pay for 20–30 years and think you are building wealth. You are not. Use our Insurance IRR calculator to see the real return on your existing policy.'],
+  'debt':['Not all debt is equal. Home loans at 8–9% for an appreciating asset are manageable. Personal loans and credit card debt at 18–36% destroy wealth. Prioritise eliminating high-interest debt before investing — paying off a 24% credit card is a guaranteed 24% return, which no investment can match consistently.',
+    'A useful mental framework: if the loan interest rate exceeds your expected investment return after tax, pay off the loan first. If the loan rate is lower and the loan is for a productive purpose, investing simultaneously may make sense.'],
+  'default':['That is a thoughtful question. Financial planning at its core is about aligning your current behaviour with your future goals. The key is to have clarity on what you want your money to do — then the right choices usually follow from that clarity.',
+    'Every financial decision has a tradeoff. What matters is understanding the tradeoff clearly — not blindly following advice. If you want a personalised view of how this applies to your specific situation, a one-on-one consultation might be the most direct path.',
+    'I would be happy to help you think through this. If your question involves your specific numbers — income, savings, goals — the calculators on this site can give you an accurate starting point. And if you would like a personal review, feel free to reach out directly.']
+};
+function getAIReply(q){
+  const ql=q.toLowerCase();
+  for(const key of Object.keys(aiReplies)){
+    if(ql.includes(key)){
+      const arr=aiReplies[key];
+      return arr[Math.floor(Math.random()*arr.length)];
+    }
+  }
+  const def=aiReplies['default'];
+  return def[Math.floor(Math.random()*def.length)]+'\n\nWould you like to book a free consultation to discuss this in detail for your specific situation? You can reach me at zeronoisefinance@gmail.com or on WhatsApp at +91 98823-81044.';
+}
+function sendAI(){
+  const input=document.getElementById('aiInput');
+  const q=input.value.trim();
+  if(!q)return;
+  input.value='';
+  appendAI(q,'user');
+  const typing=document.createElement('div');
+  typing.className='ai-typing';
+  typing.innerHTML='<span></span><span></span><span></span>';
+  document.getElementById('aiMessages').appendChild(typing);
+  scrollChat();
+  setTimeout(()=>{
+    typing.remove();
+    appendAI(getAIReply(q),'bot');
+  },900+Math.random()*600);
+}
+function askAI(q){document.getElementById('aiInput').value=q;sendAI()}
+function appendAI(msg,role){
+  const div=document.createElement('div');
+  div.className='ai-msg '+role;
+  div.textContent=msg;
+  document.getElementById('aiMessages').appendChild(div);
+  scrollChat();
+}
+function scrollChat(){const m=document.getElementById('aiMessages');m.scrollTop=m.scrollHeight}
+
+/* ── CONTACT ── */
+function submitContact(){
+  const btn=event.currentTarget;
+  btn.textContent='Message Sent ✓';
+  btn.style.background='#1e7e4f';
+  setTimeout(()=>{btn.textContent='Send Message →';btn.style.background=''},3500);
+}
+
+/* ── INIT ── */
+window.addEventListener('DOMContentLoaded',()=>{
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+  // Set initial range values
+  document.getElementById('s_yr_r').value=15;
+  document.getElementById('su_yr_r').value=20;
+  document.getElementById('su_sr_r').value=10;
 });
-
-// Init
-calcSIP();
 </script>
 </body>
 </html>
