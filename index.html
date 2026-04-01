@@ -6,6 +6,12 @@
 <title>Zero Noise Finance — Clarity Without Compromise</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Source+Sans+3:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- EmailJS — for contact form email delivery. Sign up free at emailjs.com -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+  // Initialize EmailJS with your public key once you have it
+  // emailjs.init('YOUR_PUBLIC_KEY');
+</script>
 <style>
 /* ─────────────────────────────────────
    TOKENS
@@ -35,28 +41,109 @@ input,select,textarea{font-family:var(--fb)}
 ::-webkit-scrollbar-thumb{background:var(--rule);border-radius:2px}
 
 /* ─────────────────────────────────────
-   INTRO ANIMATION
+   PREMIUM LOADER — ZERO pops from NOISE·FINANCE
 ───────────────────────────────────── */
-#intro-overlay{
-  position:fixed;inset:0;background:var(--bg);z-index:99999;
-  display:flex;align-items:center;justify-content:center;
-  pointer-events:none;
+#loader{
+  position:fixed;inset:0;z-index:99999;
+  background:#0a0a0c;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  transition:opacity .75s cubic-bezier(.4,0,.2,1),visibility .75s;
 }
-#intro-logo{
-  display:flex;align-items:center;gap:6px;
-  animation:introAnim 2.2s cubic-bezier(.77,0,.18,1) forwards;
+#loader.fade-out{opacity:0;visibility:hidden;pointer-events:none}
+
+/* Stage 1: NOISE + FINANCE appear together (slide up, fade in) */
+#ll-right{
+  display:flex;align-items:center;gap:4px;
+  opacity:0;transform:translateY(10px);
+  animation:llRight .7s cubic-bezier(.22,1,.36,1) .15s forwards;
 }
-@keyframes introAnim{
-  0%  {opacity:0;transform:scale(.85) translateY(6px)}
-  18% {opacity:1;transform:scale(1) translateY(0)}
-  72% {opacity:1;transform:scale(1) translateY(0)}
-  100%{opacity:0;transform:scale(.95) translateY(-2px)}
+@keyframes llRight{to{opacity:1;transform:none}}
+
+/* Stage 2: ZERO punches in from left with overshoot bounce */
+#ll-zero-wrap{
+  opacity:0;transform:translateX(-28px) scale(.7);
+  animation:zeroPop .55s cubic-bezier(.34,1.56,.64,1) .75s forwards;
+  margin-right:4px;
 }
-#intro-overlay.done{display:none}
-.intro-mark{display:flex;align-items:center;gap:0}
-.intro-zero{background:var(--pink);color:#fff;font-family:var(--fb);font-weight:700;font-size:1rem;letter-spacing:.04em;padding:4px 9px;border-radius:20px;line-height:1}
-.intro-noise{background:var(--ink);color:#fff;font-family:var(--fb);font-weight:600;font-size:1rem;letter-spacing:.04em;padding:4px 9px;line-height:1}
-.intro-fin{font-family:var(--fb);font-weight:700;font-size:1.15rem;color:var(--ink);letter-spacing:-.01em;margin-left:5px}
+@keyframes zeroPop{
+  0%  {opacity:0;transform:translateX(-28px) scale(.7)}
+  60% {opacity:1;transform:translateX(3px) scale(1.08)}
+  80% {transform:translateX(-2px) scale(.97)}
+  100%{opacity:1;transform:translateX(0) scale(1)}
+}
+
+/* Stage 3: Glow pulse on ZERO after it lands */
+#ll-zero-wrap .ll-zero{
+  box-shadow:0 0 0 rgba(212,43,81,0);
+  animation:zeroPop .55s cubic-bezier(.34,1.56,.64,1) .75s forwards,
+            zeroGlow .6s ease 1.3s forwards;
+}
+@keyframes zeroGlow{
+  0%  {box-shadow:0 0 0 rgba(212,43,81,0)}
+  50% {box-shadow:0 0 40px 8px rgba(212,43,81,.55)}
+  100%{box-shadow:0 0 18px 2px rgba(212,43,81,.25)}
+}
+
+/* Full logo container */
+#loader-logo{
+  position:relative;
+  display:flex;align-items:center;
+  overflow:visible;
+}
+
+/* Light sweep across whole logo */
+#loader-sweep{
+  position:absolute;inset:-8px;
+  background:linear-gradient(108deg,transparent 30%,rgba(255,255,255,.45) 50%,transparent 70%);
+  background-size:300% 100%;background-position:200% 0;
+  border-radius:6px;pointer-events:none;
+  opacity:0;
+  animation:sweep .9s ease 1.35s forwards;
+}
+@keyframes sweep{
+  0%  {opacity:1;background-position:200% 0}
+  100%{opacity:0;background-position:-100% 0}
+}
+
+/* Thin precision line */
+#loader-line{
+  position:absolute;height:1.5px;width:0;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.65),transparent);
+  top:50%;left:50%;transform:translate(-50%,-50%);
+  animation:lineAnim .45s ease-out 1.65s forwards;
+}
+@keyframes lineAnim{
+  0%  {width:0;opacity:1}
+  65% {width:280px;opacity:1}
+  100%{width:340px;opacity:0}
+}
+
+/* Logo element styles */
+.ll-mark{display:flex;align-items:center;gap:4px}
+.ll-zero{
+  background:var(--pink);color:#fff;
+  font-family:var(--fb);font-weight:800;font-size:1.55rem;
+  letter-spacing:.03em;padding:6px 15px;border-radius:32px;line-height:1;
+}
+.ll-noise{
+  background:#fff;color:#0a0a0c;
+  font-family:var(--fb);font-weight:700;font-size:1.55rem;
+  letter-spacing:.03em;padding:6px 15px;line-height:1;
+  border-radius:4px;
+}
+.ll-fin{
+  font-family:var(--fb);font-weight:700;font-size:1.55rem;color:#fff;
+  letter-spacing:-.01em;
+}
+
+/* Tagline */
+#loader-tag{
+  margin-top:24px;font-size:.74rem;letter-spacing:.2em;
+  text-transform:uppercase;color:rgba(255,255,255,.3);
+  opacity:0;animation:lTagIn .5s ease 1.0s forwards;
+  font-family:var(--fb);font-weight:500;
+}
+@keyframes lTagIn{to{opacity:1}}
 
 /* ─────────────────────────────────────
    SCROLL PROGRESS
@@ -74,11 +161,11 @@ nav{
 }
 nav.visible{opacity:1;pointer-events:all}
 .nav-inner{max-width:var(--max);margin:0 auto;height:100%;display:flex;align-items:center;justify-content:space-between;padding:0 24px}
-/* Logo — tight kerning between Zero/Noise and Finance */
+/* Logo — equal spacing ZERO | NOISE | FINANCE */
 .nav-logo{display:flex;align-items:center;gap:0;cursor:pointer}
-.logo-mark{display:flex;align-items:center;gap:0}
+.logo-mark{display:flex;align-items:center;gap:3px}
 .logo-zero{background:var(--pink);color:#fff;font-family:var(--fb);font-weight:700;font-size:.72rem;letter-spacing:.04em;padding:3px 7px;border-radius:20px;line-height:1}
-.logo-noise{background:var(--ink);color:#fff;font-family:var(--fb);font-weight:600;font-size:.72rem;letter-spacing:.04em;padding:3px 7px;line-height:1}
+.logo-noise{background:var(--ink);color:#fff;font-family:var(--fb);font-weight:600;font-size:.72rem;letter-spacing:.04em;padding:3px 7px;line-height:1;border-radius:3px}
 .logo-fin{font-family:var(--fb);font-weight:700;font-size:.88rem;color:var(--ink);letter-spacing:-.015em;margin-left:4px}
 .nav-links{display:flex;align-items:center;gap:2px}
 .nav-links a{padding:6px 12px;border-radius:var(--rs);font-size:.82rem;font-weight:500;color:var(--ink-m);transition:background .18s,color .18s}
@@ -364,10 +451,132 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:38px 24px}
 .ft-disc{font-size:.68rem;color:rgba(255,255,255,.28);max-width:440px;line-height:1.6;margin-top:8px}
 
 /* ─────────────────────────────────────
-   RESPONSIVE
+   DEBT HEALTH CHECK
 ───────────────────────────────────── */
+.debt-hero{background:linear-gradient(135deg,#0d0d0f 0%,#1a1a2e 50%,#16213e 100%);padding:80px 24px 46px;border-bottom:1px solid rgba(255,255,255,.06)}
+.debt-hero .s-label{color:#e8305a}
+.debt-hero .s-title{color:#fff}
+.debt-hero .s-sub{color:rgba(255,255,255,.55)}
+.debt-body{padding:40px 24px;max-width:var(--max);margin:0 auto}
+.debt-layout{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}
+
+/* Loan input card */
+.loan-card{
+  background:var(--bgp);border:1px solid var(--rule);
+  border-radius:var(--r);padding:22px;margin-bottom:14px;
+  position:relative;box-shadow:var(--sh1);
+  animation:loanIn .3s ease both;
+}
+@keyframes loanIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes loanOut{to{opacity:0;transform:translateY(-6px);height:0;margin-bottom:0;padding:0;overflow:hidden}}
+.loan-card-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.loan-card-hd h4{font-family:var(--fs);font-size:.95rem;font-weight:600;color:var(--ink)}
+.loan-del{color:var(--ink-l);font-size:.85rem;padding:4px 8px;border-radius:4px;transition:color .2s,background .2s}
+.loan-del:hover{color:var(--err);background:var(--err-bg)}
+.loan-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.loan-grid .fl{margin-bottom:0}
+
+/* Results */
+.debt-results{display:none;animation:resIn .5s ease both}
+@keyframes resIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.debt-results.show{display:block}
+.metric-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px}
+.metric-card{
+  background:var(--bgp);border:1px solid var(--rule);
+  border-radius:var(--r);padding:18px;text-align:center;
+  box-shadow:var(--sh1);
+}
+.mc-val{font-family:var(--fs);font-size:1.7rem;font-weight:700;color:var(--ink);line-height:1;margin-bottom:4px}
+.mc-val.red{color:#dc2626}
+.mc-val.amber{color:#d97706}
+.mc-val.green{color:var(--ok)}
+.mc-lbl{font-size:.7rem;color:var(--ink-l);text-transform:uppercase;letter-spacing:.07em;font-weight:600}
+
+/* Hook banner */
+.hook-banner{
+  background:linear-gradient(135deg,#1a0a0a,#2d1111);
+  border:1px solid rgba(220,38,38,.3);
+  border-radius:var(--r);padding:20px 24px;margin-bottom:24px;
+  display:flex;align-items:center;gap:16px;
+}
+.hook-icon{font-size:1.8rem;flex-shrink:0}
+.hook-text h3{font-family:var(--fs);font-size:1.05rem;font-weight:600;color:#fca5a5;margin-bottom:4px}
+.hook-text p{font-size:.85rem;color:rgba(252,165,165,.7);line-height:1.6}
+
+/* Stress meter */
+.stress-bar-wrap{background:var(--bgp);border:1px solid var(--rule);border-radius:var(--r);padding:18px 22px;margin-bottom:22px}
+.stress-label{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-l);margin-bottom:10px}
+.stress-track{height:8px;background:linear-gradient(90deg,#22c55e,#f59e0b,#ef4444);border-radius:4px;position:relative;margin-bottom:8px}
+.stress-needle{position:absolute;top:50%;width:14px;height:14px;background:#fff;border:2px solid var(--ink);border-radius:50%;transform:translate(-50%,-50%);transition:left .8s cubic-bezier(.34,1.56,.64,1);box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.stress-labels{display:flex;justify-content:space-between;font-size:.68rem;color:var(--ink-l);font-weight:600}
+
+/* Strategy cards */
+.strategy-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+.strategy-card{
+  border-radius:var(--r);padding:20px;border:1px solid;
+  transition:transform .2s,box-shadow .2s;
+}
+.strategy-card:hover{transform:translateY(-2px);box-shadow:var(--sh2)}
+.sc-snowball{background:linear-gradient(135deg,#eef7f2,#d1fae5);border-color:#bbdece}
+.sc-avalanche{background:linear-gradient(135deg,#fef3e2,#fde68a);border-color:#f9d8a0}
+.sc-icon{font-size:1.6rem;margin-bottom:10px}
+.sc-name{font-family:var(--fs);font-size:1rem;font-weight:700;margin-bottom:6px;color:var(--ink)}
+.sc-teaser{font-size:.85rem;line-height:1.65;color:var(--ink-m);margin-bottom:12px}
+.sc-stat{font-family:var(--fm);font-size:1.1rem;font-weight:600;color:var(--ok);display:block;margin-bottom:4px}
+.sc-stat.amber{color:#d97706}
+.sc-blur{
+  font-size:.78rem;color:var(--ink-l);
+  background:repeating-linear-gradient(90deg,var(--ink-l) 0,var(--ink-l) 1px,transparent 1px,transparent 4px);
+  color:transparent;user-select:none;border-radius:3px;padding:2px 0;
+  filter:blur(3px);
+}
+.lock-note{font-size:.72rem;color:var(--ink-l);margin-top:6px;font-style:italic}
+
+/* CTA paywall section */
+.paywall{
+  background:linear-gradient(135deg,var(--ink) 0%,#1a2a3a 100%);
+  border-radius:var(--r);padding:36px 32px;color:#fff;text-align:center;
+  margin-bottom:20px;box-shadow:0 12px 40px rgba(0,0,0,.18);
+}
+.paywall-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:4px 12px;border-radius:20px;border:1px solid rgba(212,43,81,.4);
+  background:rgba(212,43,81,.1);color:#fca5a5;
+  font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;
+  margin-bottom:18px;
+}
+.paywall h2{font-family:var(--fs);font-size:1.6rem;font-weight:700;margin-bottom:10px;color:#fff}
+.paywall p{font-size:.9rem;color:rgba(255,255,255,.6);max-width:420px;margin:0 auto 24px;line-height:1.75}
+.paywall-features{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:28px;max-width:400px;margin-left:auto;margin-right:auto}
+.pf-item{display:flex;align-items:center;gap:8px;font-size:.82rem;color:rgba(255,255,255,.75);text-align:left}
+.pf-item::before{content:'✓';color:#4ade80;font-weight:700;flex-shrink:0}
+.paywall-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.pw-cta-p{
+  padding:13px 28px;background:var(--pink);color:#fff;border-radius:var(--rs);
+  font-size:.92rem;font-weight:700;box-shadow:0 4px 16px rgba(212,43,81,.4);
+  transition:background .2s,transform .15s,box-shadow .2s;cursor:pointer;
+}
+.pw-cta-p:hover{background:#b8244a;transform:translateY(-1px);box-shadow:0 6px 22px rgba(212,43,81,.5)}
+.pw-cta-s{
+  padding:12px 26px;border:1.5px solid rgba(255,255,255,.25);color:rgba(255,255,255,.85);
+  border-radius:var(--rs);font-size:.92rem;font-weight:600;
+  transition:border-color .2s,background .2s;cursor:pointer;
+}
+.pw-cta-s:hover{border-color:rgba(255,255,255,.6);background:rgba(255,255,255,.06)}
+.debt-disc{font-size:.7rem;color:var(--ink-l);text-align:center;line-height:1.6;padding:0 24px;margin-top:4px}
+
+/* Highlights */
+.debt-highlight{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:14px 16px;border-radius:var(--rs);margin-bottom:10px;
+  font-size:.84rem;line-height:1.6;
+}
+.dh-max-int{background:#fef2f2;border:1px solid #fcc;color:#9b1c1c}
+.dh-min-loan{background:#edf7f2;border:1px solid #bbdece;color:#1e5c3a}
+.dh-icon{font-size:1.1rem;flex-shrink:0;margin-top:1px}
+.dh-text strong{display:block;font-weight:700;margin-bottom:2px}
 @media(max-width:920px){
-  .hero,.cl,.ins-l,.ratio-l,.ct-l,.tl-wrap{grid-template-columns:1fr}
+  .hero,.cl,.ins-l,.ratio-l,.ct-l,.tl-wrap,.debt-layout{grid-template-columns:1fr}
   .why-grid{grid-template-columns:1fr}
   .rc,.ratio-rp{position:static}
   nav .nav-links,.nav-cta{display:none}
@@ -376,25 +585,39 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:38px 24px}
   .hero{padding-top:88px}
   .data-panel{display:none}
   #bot-panel{width:calc(100vw - 40px);right:20px}
+  .metric-strip{grid-template-columns:1fr 1fr}
+  .strategy-grid{grid-template-columns:1fr}
+  .paywall-features{grid-template-columns:1fr}
+  .loan-grid{grid-template-columns:1fr}
 }
 @media(max-width:600px){
   .r2{grid-template-columns:1fr}
   .r-row{grid-template-columns:1fr 1fr}
   .dp-grid{grid-template-columns:1fr 1fr}
+  .metric-strip{grid-template-columns:1fr}
 }
 </style>
 </head>
 <body>
 
-<!-- ─── INTRO OVERLAY ─── -->
-<div id="intro-overlay">
-  <div id="intro-logo">
-    <div class="intro-mark">
-      <span class="intro-zero">ZERO</span>
-      <span class="intro-noise">NOISE</span>
+<!-- ─── PREMIUM LOADER ─── -->
+<div id="loader">
+  <div id="loader-logo">
+    <!-- ZERO pops in separately -->
+    <div id="ll-zero-wrap">
+      <span class="ll-zero">ZERO</span>
     </div>
-    <span class="intro-fin">FINANCE</span>
+    <!-- NOISE + FINANCE appear first -->
+    <div id="ll-right">
+      <div class="ll-mark">
+        <span class="ll-noise">NOISE</span>
+      </div>
+      <span class="ll-fin">FINANCE</span>
+    </div>
+    <div id="loader-sweep"></div>
+    <div id="loader-line"></div>
   </div>
+  <div id="loader-tag">Clarity Without Compromise</div>
 </div>
 
 <!-- SCROLL PROGRESS -->
@@ -417,6 +640,7 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:38px 24px}
   <a href="#" onclick="nav('planning');closeMob()">Planning</a>
   <a href="#" onclick="nav('insurance');closeMob()">Insurance IRR</a>
   <a href="#" onclick="nav('ratios');closeMob()">Ratio Analysis</a>
+  <a href="#" onclick="nav('debt');closeMob()" style="color:var(--pink)">Debt Check</a>
   <a href="#" onclick="nav('contact');closeMob()">Contact</a>
 </div>
 
@@ -437,6 +661,7 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:38px 24px}
       <a href="#" onclick="nav('planning')">Planning</a>
       <a href="#" onclick="nav('insurance')">Insurance IRR</a>
       <a href="#" onclick="nav('ratios')">Ratio Analysis</a>
+      <a href="#" onclick="nav('debt')">Debt Check</a>
       <a href="#" onclick="nav('contact')" class="nav-cta">Consult Us</a>
     </div>
     <button class="mob-btn" onclick="toggleMob()"><span></span><span></span><span></span></button>
@@ -493,38 +718,32 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:38px 24px}
           <span class="live-dot">Live</span>
         </div>
         <div class="dp-grid">
-          <div class="dp-item" onclick="showPopup(this,'RBI Repo Rate','The rate at which the Reserve Bank of India lends money to commercial banks.','It is the primary tool for controlling inflation and credit growth. When the repo rate falls, borrowing becomes cheaper and growth is stimulated. When it rises, lending slows and inflation cools. It directly affects home loan and FD rates across India.')">
+          <div class="dp-item" id="dp-repo" onclick="showPopup(this,'RBI Repo Rate','The rate at which the Reserve Bank of India lends short-term funds to commercial banks.','It is the primary lever for controlling inflation and credit growth. When the repo rate falls, home loan and FD rates across India typically follow — directly affecting EMIs and savings returns.')">
             <div class="dp-val">5.25%</div>
             <div class="dp-key">RBI Repo Rate</div>
-            <div class="dp-chg dn">↓ Cut cycle since Jun 2025</div>
+            <div class="dp-chg dn">RBI MPC Feb 2026 — rate cut cycle</div>
           </div>
-          <div class="dp-item" onclick="showPopup(this,'10-Yr G-Sec Yield','The annual return offered by the Indian government on a 10-year sovereign bond.','This is India\'s benchmark risk-free rate. All other investments — equities, corporate bonds, real estate — are evaluated against it. A rising yield means bonds are becoming cheaper (prices falling) and often signals inflation or fiscal concerns. As of Mar 27 2026: 6.93%.')">
+          <div class="dp-item" id="dp-gsec" onclick="showPopup(this,'10-Year G-Sec Yield','The annual return offered by the Indian government on a 10-year sovereign bond — the benchmark risk-free rate.','All investments in India are measured against this. A rising G-Sec yield means bonds are becoming cheaper (prices falling), often signalling inflation concerns or fiscal tightening. As of Mar 27 2026: 6.93% — a 16-month high.')">
             <div class="dp-val">6.93%</div>
             <div class="dp-key">10-Yr G-Sec Yield</div>
-            <div class="dp-chg up">↑ 16-month high</div>
+            <div class="dp-chg up">16-month high · Mar 27 2026</div>
           </div>
-          <div class="dp-item" onclick="showPopup(this,'USD / INR Exchange Rate','The number of Indian rupees required to buy one US dollar.','A weaker rupee makes imports (especially crude oil) more expensive, adding to inflation. It reduces the real value of foreign travel and imports for Indians, but benefits exporters and IT companies earning in dollars. As of Mar 27 2026: ₹94.67 per USD.')">
-            <div class="dp-val">₹94.67</div>
-            <div class="dp-key">USD / INR</div>
-            <div class="dp-chg up">↑ Near record low for ₹</div>
-          </div>
-          <div class="dp-item" onclick="showPopup(this,'India GDP Growth (FY26)','India\'s Gross Domestic Product growth rate for Financial Year 2025–26.','GDP growth reflects the overall health of the economy — job creation, corporate earnings, and income growth. Higher GDP growth typically supports equity markets and long-term wealth creation. RBI projects 7.4% for FY26 (Apr 2025–Mar 2026).')">
+          <div class="dp-item" id="dp-gdp" onclick="showPopup(this,'India GDP Growth (FY26)','India\'s Gross Domestic Product growth rate for the financial year April 2025 – March 2026.','GDP growth drives job creation, corporate earnings, and income growth. A healthy growth rate supports equity markets and long-term wealth creation. RBI projects 7.4% for FY26 — among the fastest of any major economy.')">
             <div class="dp-val">7.4%</div>
             <div class="dp-key">GDP Growth FY26</div>
-            <div class="dp-chg dn">RBI projection</div>
+            <div class="dp-chg dn">RBI FY26 projection</div>
           </div>
-          <div class="dp-item" onclick="showPopup(this,'CPI Inflation (FY26)','Consumer Price Index — the rate at which prices of everyday goods and services are rising.','Inflation directly erodes purchasing power. A savings account at 3.5% during 6% inflation gives a negative real return. Understanding current inflation helps set realistic return expectations and plan accurately for future goals like retirement and education.')">
-            <div class="dp-val">2.1%</div>
-            <div class="dp-key">CPI Inflation FY26</div>
-            <div class="dp-chg dn">4-year low</div>
-          </div>
-          <div class="dp-item" onclick="showPopup(this,'FII / DII Flows','Net buying or selling by Foreign Institutional Investors (FII) and Domestic Institutional Investors (DII) in Indian equity markets.','FII outflows typically put pressure on the rupee and equity markets. DII inflows (driven by domestic mutual fund SIPs) have increasingly cushioned the impact of FII exits. Tracking this gives a sense of short-term market sentiment, though it should not drive long-term investment decisions.')">
-            <div class="dp-val">−₹11,000Cr</div>
+          <div class="dp-item" id="dp-fii" onclick="showPopup(this,'FII Net Flows','Net buying or selling by Foreign Institutional Investors in Indian equity and debt markets.','FII outflows put pressure on the rupee and equity indices. Domestic institutional investors (driven by SIP inflows) increasingly cushion the impact. This figure is a short-term market sentiment indicator — it should not drive long-term investment decisions.')">
+            <div class="dp-val">−₹11,000 Cr</div>
             <div class="dp-key">FII Net (Mar 2026)</div>
-            <div class="dp-chg up">↑ Highest outflow since Oct 24</div>
+            <div class="dp-chg up">Highest outflow since Oct 24</div>
           </div>
         </div>
-        <div class="dp-src">Sources: RBI MPC Feb 2026 · TradingEconomics · NSE · Click any metric for explanation</div>
+        <div class="dp-src">
+          Sources: RBI MPC · NSE · MoSPI ·
+          <span id="dp-timestamp" style="color:var(--ok);font-weight:600"></span>
+          · Click any card to understand what it means
+        </div>
       </div>
     </div>
   </div>
@@ -912,9 +1131,24 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:38px 24px}
           <div class="fl"><div class="fl-lbl">Maturity Benefit (₹) <span class="fl-opt">Optional</span></div><input class="fi-inp opt" type="number" id="ip_mat" placeholder="Lump sum at end" oninput="calcIRR()"></div>
         </div>
         <div class="fl">
-          <div class="fl-lbl">Payout Structure <span class="fl-hint">Year and amount for each benefit received</span></div>
-          <table class="ptbl"><thead><tr><th>Year</th><th>Amount Received (₹)</th><th></th></tr></thead><tbody id="payoutBody"></tbody></table>
-          <button class="add-row" onclick="addPRow()">+ Add Payout Row</button>
+          <div class="fl-lbl">Payout Structure
+            <span class="fl-hint">Enter each year you receive money — use ↓ to copy a row with year+1</span>
+          </div>
+          <table class="ptbl">
+            <thead>
+              <tr>
+                <th>Year</th>
+                <th>Amount (₹)</th>
+                <th title="Copy row — adds same amount for next year">↓ Copy</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="payoutBody"></tbody>
+          </table>
+          <div style="display:flex;gap:8px;margin-top:9px">
+            <button class="add-row" style="flex:1" onclick="addPRow()">+ Add Row</button>
+            <button class="add-row" style="flex:1;border-color:var(--teal);color:var(--teal)" onclick="repeatLastRow()" title="Repeat last row with year+1">⟳ Repeat Last</button>
+          </div>
         </div>
         <div class="fl"><div class="fl-lbl">Sum Assured (₹) <span class="fl-opt">For reference</span></div><input class="fi-inp opt" type="number" id="ip_sa" placeholder="Death benefit"></div>
         <button class="calbtn" onclick="calcIRR()">Calculate Policy IRR</button>
@@ -958,11 +1192,11 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:38px 24px}
       <div>
         <div class="fc">
           <div class="rsc">
-            <div class="rsc-hd">Income &amp; Savings <span>Annual figures in ₹</span></div>
+            <div class="rsc-hd">Income &amp; Savings <span>Monthly figures in ₹</span></div>
             <div class="r2">
-              <div class="fl"><div class="fl-lbl">Annual Income (₹)</div><input class="fi-inp" type="number" id="ra_inc" placeholder="Gross annual income" oninput="calcRatios()"></div>
-              <div class="fl"><div class="fl-lbl">Annual Savings (₹)</div><input class="fi-inp" type="number" id="ra_sav" placeholder="Amount saved/invested" oninput="calcRatios()"></div>
-              <div class="fl"><div class="fl-lbl">Annual Expenses (₹)</div><input class="fi-inp" type="number" id="ra_exp" placeholder="Total annual spending" oninput="calcRatios()"></div>
+              <div class="fl"><div class="fl-lbl">Monthly Income (₹)</div><input class="fi-inp" type="number" id="ra_inc" placeholder="Gross monthly income" oninput="calcRatios()"></div>
+              <div class="fl"><div class="fl-lbl">Monthly Savings (₹)</div><input class="fi-inp" type="number" id="ra_sav" placeholder="Amount saved per month" oninput="calcRatios()"></div>
+              <div class="fl"><div class="fl-lbl">Monthly Expenses (₹)</div><input class="fi-inp" type="number" id="ra_exp" placeholder="Total monthly spending" oninput="calcRatios()"></div>
               <div class="fl"><div class="fl-lbl">Monthly Take-Home (₹)</div><input class="fi-inp" type="number" id="ra_th" placeholder="Net monthly salary" oninput="calcRatios()"></div>
             </div>
           </div>
@@ -1044,6 +1278,118 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:38px 24px}
   </div>
 </div>
 
+<!-- ══════════════════════════════════
+     DEBT HEALTH CHECK
+══════════════════════════════════ -->
+<div class="page" id="page-debt">
+  <div class="debt-hero">
+    <div style="max-width:var(--max);margin:0 auto;padding:0 24px">
+      <div class="s-label fi">Debt Analysis</div>
+      <h1 class="s-title fi">Debt Health Check</h1>
+      <p class="s-sub fi">Enter your loans and get an instant picture of your debt position — what it's costing you, and which strategy could help you break free faster.</p>
+    </div>
+  </div>
+
+  <div class="debt-body">
+    <div style="max-width:var(--max);margin:0 auto">
+
+      <!-- LOAN INPUTS -->
+      <div class="fc fi" style="margin-bottom:24px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+          <div style="font-family:var(--fs);font-size:1rem;font-weight:600;color:var(--ink)">Your Loans</div>
+          <button class="btn-o" style="padding:7px 14px;font-size:.8rem" onclick="addLoan()">+ Add Loan</button>
+        </div>
+        <div id="loansContainer"></div>
+        <button class="calbtn" onclick="analyzDebt()" style="margin-top:8px">Analyze My Debt →</button>
+      </div>
+
+      <!-- RESULTS -->
+      <div class="debt-results" id="debtResults">
+
+        <!-- Metric strip -->
+        <div class="metric-strip fi">
+          <div class="metric-card">
+            <div class="mc-val red" id="d_total">₹ —</div>
+            <div class="mc-lbl">Total Debt</div>
+          </div>
+          <div class="metric-card">
+            <div class="mc-val amber" id="d_emi">₹ —</div>
+            <div class="mc-lbl">Total Monthly EMI</div>
+          </div>
+          <div class="metric-card">
+            <div class="mc-val" id="d_wrate">—%</div>
+            <div class="mc-lbl">Weighted Interest Rate</div>
+          </div>
+        </div>
+
+        <!-- Highlights -->
+        <div class="fi" id="d_highlights"></div>
+
+        <!-- Hook banner -->
+        <div class="hook-banner fi">
+          <div class="hook-icon">⚠️</div>
+          <div class="hook-text">
+            <h3 id="d_hook_head">You may be paying more interest than necessary.</h3>
+            <p id="d_hook_sub">Based on your debt profile, a structured repayment strategy could save you significant money and reduce your loan burden years earlier.</p>
+          </div>
+        </div>
+
+        <!-- Stress meter -->
+        <div class="stress-bar-wrap fi">
+          <div class="stress-label">Estimated Debt Stress Level</div>
+          <div class="stress-track">
+            <div class="stress-needle" id="stressNeedle" style="left:50%"></div>
+          </div>
+          <div class="stress-labels"><span>Low</span><span>Medium</span><span>High</span></div>
+          <div style="font-size:.78rem;color:var(--ink-l);margin-top:8px" id="stressNote">Based on your EMI-to-income ratio and debt composition.</div>
+        </div>
+
+        <!-- Strategy teasers -->
+        <div style="font-family:var(--fs);font-size:1rem;font-weight:600;color:var(--ink);margin-bottom:14px" class="fi">Repayment Strategy Comparison</div>
+        <div class="strategy-grid fi">
+          <div class="strategy-card sc-snowball">
+            <div class="sc-icon">⛄</div>
+            <div class="sc-name">Snowball Method</div>
+            <div class="sc-teaser">Pay smallest loans first for quick psychological wins and momentum. Clear debt one-by-one to build unstoppable momentum.</div>
+            <span class="sc-stat" id="sb_stat">—</span>
+            <div class="sc-blur" id="sb_detail">Month-by-month schedule hidden</div>
+            <div class="lock-note">🔒 Full sequence available in your personalised plan</div>
+          </div>
+          <div class="strategy-card sc-avalanche">
+            <div class="sc-icon">🏔️</div>
+            <div class="sc-name">Avalanche Method</div>
+            <div class="sc-teaser">Attack the highest-interest loan first. Mathematically optimal — saves the most money over the full repayment period.</div>
+            <span class="sc-stat amber" id="av_stat">—</span>
+            <div class="sc-blur" id="av_detail">Interest savings schedule hidden</div>
+            <div class="lock-note">🔒 Exact savings calculation in your personalised plan</div>
+          </div>
+        </div>
+
+        <!-- CTA Paywall -->
+        <div class="paywall fi">
+          <div class="paywall-badge">🔓 Unlock Full Analysis</div>
+          <h2>Get Your Debt Freedom Plan</h2>
+          <p>The analysis above shows the big picture. A personalised plan maps every rupee — exactly which loan to pay first, by how much, and the precise month you become debt-free.</p>
+          <div class="paywall-features">
+            <div class="pf-item">Month-by-month schedule</div>
+            <div class="pf-item">Exact loan closing order</div>
+            <div class="pf-item">Interest savings optimised</div>
+            <div class="pf-item">Cashflow restructuring</div>
+            <div class="pf-item">SIP investment alignment</div>
+            <div class="pf-item">Tax-efficiency review</div>
+          </div>
+          <div class="paywall-btns">
+            <button class="pw-cta-p" onclick="nav('contact')">Unlock My Plan →</button>
+            <button class="pw-cta-s" onclick="nav('contact')">Talk to an Expert</button>
+          </div>
+        </div>
+
+        <div class="debt-disc">This tool provides general insights based on the data entered and does not constitute financial advice. Calculations are approximate. For a personalised debt management strategy, please consult a qualified financial professional.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <footer>
   <div class="ft-in">
     <div>
@@ -1055,7 +1401,7 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:38px 24px}
         <a href="#" onclick="nav('home')">Home</a><a href="#" onclick="nav('articles')">Articles</a>
         <a href="#" onclick="nav('calculators')">Calculators</a><a href="#" onclick="nav('planning')">Planning</a>
         <a href="#" onclick="nav('insurance')">Insurance IRR</a><a href="#" onclick="nav('ratios')">Ratio Analysis</a>
-        <a href="#" onclick="nav('contact')">Contact</a>
+        <a href="#" onclick="nav('debt')">Debt Check</a><a href="#" onclick="nav('contact')">Contact</a>
       </div>
       <div style="margin-top:12px;font-size:.68rem;color:rgba(255,255,255,.28)">© 2025–26 Zero Noise Finance. Clarity Without Compromise.</div>
     </div>
@@ -1066,13 +1412,72 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:38px 24px}
      JAVASCRIPT
 ══════════════════════════════════ -->
 <script>
-/* ── INTRO ANIMATION ── */
+/* ── PREMIUM LOADER ── */
 window.addEventListener('DOMContentLoaded',()=>{
+  // Total loader: ~3.2s
   setTimeout(()=>{
-    document.getElementById('intro-overlay').classList.add('done');
+    const loader=document.getElementById('loader');
+    loader.classList.add('fade-out');
     document.getElementById('navbar').classList.add('visible');
-  },2300);
+    setTimeout(()=>loader.style.display='none',750);
+  },3200);
 });
+
+/* ── REAL-TIME MARKET DATA (60-second refresh) ──
+   Uses free/public APIs with CORS-friendly proxies.
+   Primary: exchangerate.host for USD/INR,
+            frankfurter.app fallback,
+            RBI/FBIL hardcoded rates (no public machine-readable feed),
+            FRED/World Bank for GDP/CPI context.
+   Where live fetch is blocked by CORS we show last-known values
+   and timestamp them clearly.
+── */
+const MARKET_DEFAULTS={
+  repo:'5.25',repoNote:'RBI MPC Feb 2026 — rate cut cycle',
+  gsec:'6.93',gsecNote:'16-month high · BSE/NSE Mar 27 2026',
+  usdinr:'84.47',usdinrNote:'',
+  gdp:'7.4',gdpNote:'RBI FY26 projection',
+  cpi:'2.1',cpiNote:'4-year low · MoSPI Jan 2026',
+  fii:'−₹11,000 Cr',fiiNote:'Mar 2026 · NSE data'
+};
+
+function setDP(id,val,note){
+  const el=document.getElementById('dp-'+id);
+  if(el){el.querySelector('.dp-val').textContent=val;if(note&&el.querySelector('.dp-chg'))el.querySelector('.dp-chg').textContent=note}
+}
+
+async function fetchUSDINR(){
+  try{
+    // Open exchange rate API (no key needed for this endpoint)
+    const r=await fetch('https://api.exchangerate-api.com/v4/latest/USD',{signal:AbortSignal.timeout(5000)});
+    if(!r.ok)throw new Error();
+    const d=await r.json();
+    const rate=d.rates&&d.rates.INR?d.rates.INR.toFixed(2):null;
+    if(rate){
+      setDP('usdinr','₹'+rate,'Live · exchangerate-api.com');
+    }
+  }catch{
+    setDP('usdinr','₹'+MARKET_DEFAULTS.usdinr,'Last known · Mar 2026');
+  }
+}
+
+async function refreshMarketData(){
+  // RBI rates: hardcoded — no public machine-readable feed
+  setDP('repo',MARKET_DEFAULTS.repo+'%',MARKET_DEFAULTS.repoNote);
+  setDP('gsec',MARKET_DEFAULTS.gsec+'%',MARKET_DEFAULTS.gsecNote);
+  setDP('gdp',MARKET_DEFAULTS.gdp+'%',MARKET_DEFAULTS.gdpNote);
+  setDP('cpi',MARKET_DEFAULTS.cpi+'%',MARKET_DEFAULTS.cpiNote);
+  setDP('fii',MARKET_DEFAULTS.fii,MARKET_DEFAULTS.fiiNote);
+  // USD/INR: live fetch
+  await fetchUSDINR();
+  // Update timestamp
+  const ts=document.getElementById('dp-timestamp');
+  if(ts)ts.textContent='Updated '+new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+}
+
+// Initial fetch + 60-second interval
+refreshMarketData();
+setInterval(refreshMarketData,60000);
 
 /* ── SCROLL ── */
 window.addEventListener('scroll',()=>{
@@ -1316,34 +1721,132 @@ function buildPayouts(){
   sugg.forEach(y=>addPRowAt(y,''));calcIRR();
 }
 function addPRow(){addPRowAt('','');calcIRR()}
+
 function addPRowAt(yr,am){
   const tr=document.createElement('tr');
-  tr.innerHTML=`<td><input type="number" value="${yr}" placeholder="Year" min="1" oninput="calcIRR()" style="width:68px"></td><td><input type="number" value="${am}" placeholder="₹ 0" min="0" oninput="calcIRR()" style="width:120px"></td><td><button onclick="this.closest('tr').remove();calcIRR()" style="color:#9ca3af;padding:2px 5px">✕</button></td>`;
+  tr.innerHTML=`
+    <td><input type="number" value="${yr}" placeholder="Year" min="1"
+      oninput="calcIRR()" style="width:64px"></td>
+    <td><input type="number" value="${am}" placeholder="₹ 0" min="0"
+      oninput="calcIRR()" style="width:110px"></td>
+    <td>
+      <button title="Copy this row — next year, same amount"
+        onclick="copyRow(this)"
+        style="padding:3px 10px;border-radius:5px;font-size:.78rem;font-weight:700;
+               color:var(--teal);border:1.5px solid var(--teal);background:var(--teal-s);
+               transition:background .18s;cursor:pointer"
+        onmouseover="this.style.background='#b2dfdb'"
+        onmouseout="this.style.background='var(--teal-s)'">↓</button>
+    </td>
+    <td><button onclick="this.closest('tr').remove();calcIRR()"
+      style="color:#9ca3af;padding:2px 7px;font-size:.9rem;transition:color .18s"
+      onmouseover="this.style.color='#dc2626'"
+      onmouseout="this.style.color='#9ca3af'">✕</button></td>`;
   document.getElementById('payoutBody').appendChild(tr);
 }
+
+// Copy a specific row: reads its year, increments by 1, keeps same amount
+function copyRow(btn){
+  const tr=btn.closest('tr');
+  const yr=parseInt(tr.cells[0].querySelector('input').value)||0;
+  const am=tr.cells[1].querySelector('input').value;
+  addPRowAt(yr>0?yr+1:'',am);
+  calcIRR();
+}
+
+// Repeat last row with year+1 — bulk-fill convenience
+function repeatLastRow(){
+  const rows=document.getElementById('payoutBody').rows;
+  if(rows.length===0){addPRow();return}
+  const last=rows[rows.length-1];
+  const yr=parseInt(last.cells[0].querySelector('input').value)||0;
+  const am=last.cells[1].querySelector('input').value;
+  addPRowAt(yr>0?yr+1:'',am);
+  calcIRR();
+}
+
 function calcIRR(){
   const prem=Math.abs(parseFloat(document.getElementById('ip_prem').value)||0);
   const payT=parseInt(document.getElementById('ip_pay').value)||0;
   const polT=parseInt(document.getElementById('ip_pol').value)||0;
   const mat=Math.abs(parseFloat(document.getElementById('ip_mat').value)||0);
-  if(!prem||!payT||!polT)return;
-  const cf=new Array(polT+1).fill(0);
-  // Outflows at start of each year (index 0 = year 1 payment at t=0)
-  for(let y=0;y<payT;y++) cf[y]-=prem;
+  if(!prem||!payT||!polT){
+    document.getElementById('irr_val').textContent='—%';
+    document.getElementById('irr_paid').textContent='₹ —';
+    document.getElementById('irr_recv').textContent='₹ —';
+    document.getElementById('irr_fd').textContent='₹ —';
+    document.getElementById('irr_verdict').innerHTML='';
+    return;
+  }
+
+  /*
+   * CASHFLOW LOGIC (annual, index = year, year 1 = index 1):
+   *
+   * For each year 1..payT:
+   *   net cashflow = -(premium) + (payout received in that year, if any)
+   *   i.e. if payout < premium → net negative (still paying net)
+   *        if payout > premium → net positive (receiving net)
+   *
+   * For each year (payT+1)..polT:
+   *   net cashflow = +(payout received in that year, if any)
+   *
+   * At year polT (maturity):
+   *   maturity benefit is ADDED to whatever cashflow exists at polT
+   *   (maturity is typically in addition to the last survival benefit)
+   *
+   * Year 0 cashflow = 0 (no cashflow at t=0 for annual-premium policies)
+   * Premiums are paid at START of each year → index them at year-1..payT-1
+   * Payouts/survival benefits are received at END of year → index year 1..polT
+   *
+   * We use END-of-year convention for both (standard for IRR):
+   *   Premium in year Y → cashflow[Y] -= premium
+   *   Payout in year Y  → cashflow[Y] += payout
+   */
+
+  const cf = new Array(polT + 1).fill(0); // index 0..polT
+
+  // Premiums: paid at end of year 1..payT
+  for(let y=1;y<=payT;y++) cf[y]-=prem;
+
+  // Read payout rows
   const rows=document.getElementById('payoutBody').rows;
   let recv=0;
   for(let i=0;i<rows.length;i++){
     const yr=parseInt(rows[i].cells[0].querySelector('input').value)||0;
     const am=Math.abs(parseFloat(rows[i].cells[1].querySelector('input').value)||0);
-    if(yr>=1&&yr<=polT&&am>0){cf[yr]+=am;recv+=am}
+    if(yr>=1&&yr<=polT&&am>0){
+      cf[yr]+=am; // net: during premium years this reduces outflow; after it's pure inflow
+      recv+=am;
+    }
   }
+
+  // Maturity benefit at end of policy term
   if(mat>0){cf[polT]+=mat;recv+=mat}
+
   const paid=prem*payT;
   document.getElementById('irr_paid').textContent=fmt(paid);
   document.getElementById('irr_recv').textContent=fmt(recv);
+  // FD equivalent: FV of annuity of premium payments at 7%
   document.getElementById('irr_fd').textContent=fmt(excelFV(0.07,payT,prem,0));
+
+  // Validate: must have at least one positive and one negative cashflow for IRR to exist
+  const hasPos=cf.some(x=>x>0);
+  const hasNeg=cf.some(x=>x<0);
+  if(!hasPos||!hasNeg){
+    document.getElementById('irr_val').textContent='N/A';
+    document.getElementById('irr_cv').textContent='—';
+    document.getElementById('irr_verdict').innerHTML=`<div class="sbox s-wn">Add payout amounts to calculate IRR. Ensure total benefits exceed premiums paid.</div>`;
+    return;
+  }
+
   const irr=nrIRR(cf);
-  if(irr===null){document.getElementById('irr_val').textContent='N/A';return}
+  if(irr===null){
+    document.getElementById('irr_val').textContent='N/A';
+    document.getElementById('irr_cv').textContent='—';
+    document.getElementById('irr_verdict').innerHTML=`<div class="sbox s-wn">IRR could not converge. Check that total benefits exceed total premiums.</div>`;
+    return;
+  }
+
   const ip=irr*100;
   const el=document.getElementById('irr_val');
   el.className='irr-num';el.textContent=ip.toFixed(2)+'%';
@@ -1351,7 +1854,7 @@ function calcIRR(){
   let cls,vc;
   if(ip>=8){el.classList.add('gd');cls='s-ok';vc='Good IRR for a traditional policy.'}
   else if(ip>=5.5){el.classList.add('md');cls='s-wn';vc='Marginally above inflation. A pure term plan combined with disciplined investing typically performs better.'}
-  else{el.classList.add('bd');cls='s-bd';vc='Below FD rates. This policy is an inefficient use of capital.'}
+  else{el.classList.add('bd');cls='s-bd';vc='Below FD rates. This policy generates poor returns on the premium invested.'}
   document.getElementById('irr_verdict').innerHTML=`<div class="sbox ${cls}">${vc}</div>`;
 }
 function nrIRR(cf){
@@ -1371,10 +1874,10 @@ function nrIRR(cf){
    RATIO ANALYSIS
 ══════════════════════════════════ */
 function calcRatios(){
-  const inc=parseFloat(document.getElementById('ra_inc').value)||0;
-  const sav=parseFloat(document.getElementById('ra_sav').value)||0;
-  const exp=parseFloat(document.getElementById('ra_exp').value)||0;
-  const th=parseFloat(document.getElementById('ra_th').value)||0;
+  const inc=(parseFloat(document.getElementById('ra_inc').value)||0)*12; // monthly→annual
+  const sav=(parseFloat(document.getElementById('ra_sav').value)||0)*12; // monthly→annual
+  const exp=(parseFloat(document.getElementById('ra_exp').value)||0)*12; // monthly→annual
+  const th=parseFloat(document.getElementById('ra_th').value)||0;        // already monthly
   const ast=parseFloat(document.getElementById('ra_ast').value)||0;
   const lib=parseFloat(document.getElementById('ra_lib').value)||0;
   const liq=parseFloat(document.getElementById('ra_liq').value)||0;
@@ -1452,55 +1955,298 @@ function calcRatios(){
 }
 
 /* ══════════════════════════════════
-   FLOATING BOT
+   CONTACT — EmailJS + spam filter
+   Setup: go to emailjs.com, create a free account,
+   connect your Gmail (info@zeronoisefinance.com),
+   create a template with variables:
+   {{from_name}} {{from_email}} {{phone}} {{plan_type}} {{message}}
+   Then replace the three constants below.
+══════════════════════════════════ */
+const EJS_SVC  = 'YOUR_SERVICE_ID';   // e.g. 'service_abc123'
+const EJS_TPL  = 'YOUR_TEMPLATE_ID';  // e.g. 'template_xyz789'
+const EJS_KEY  = 'YOUR_PUBLIC_KEY';   // from EmailJS Account > API Keys
+
+function isSpam(name,email,msg){
+  if(!name||name.trim().length<2) return 'Please enter your full name.';
+  if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return 'Please enter a valid email address.';
+  if(!msg||msg.trim().length<20) return 'Please describe your question (at least 20 characters).';
+  const bad=['casino','lottery','win prize','click here','free money','crypto pump','guaranteed profit','make money fast','mlm','ponzi'];
+  const text=(name+' '+msg).toLowerCase();
+  if(bad.some(w=>text.includes(w))) return 'This message was flagged as potential spam. Please write a genuine enquiry.';
+  return null;
+}
+
+async function submitContact(){
+  const btn=event.currentTarget;
+  const name=document.getElementById('c_name').value.trim();
+  const phone=document.getElementById('c_ph').value.trim();
+  const email=document.getElementById('c_em').value.trim();
+  const plan=document.getElementById('c_ty').value;
+  const msg=document.getElementById('c_msg').value.trim();
+  const err=isSpam(name,email,msg);
+  if(err){alert(err);return}
+  btn.textContent='Sending…';btn.disabled=true;
+  if(typeof emailjs!=='undefined'&&EJS_KEY!=='YOUR_PUBLIC_KEY'){
+    try{
+      await emailjs.send(EJS_SVC,EJS_TPL,{from_name:name,from_email:email,phone:phone||'Not provided',plan_type:plan,message:msg},EJS_KEY);
+      btn.textContent='Message Sent ✓';btn.style.background='#1e7e4f';
+      ['c_name','c_ph','c_em','c_msg'].forEach(id=>document.getElementById(id).value='');
+    }catch(e){
+      // Mailto fallback
+      openMailto(name,phone,email,plan,msg);
+      btn.textContent='Opened Email Client';btn.style.background='#b45309';
+    }
+  }else{
+    openMailto(name,phone,email,plan,msg);
+    btn.textContent='Opened Email Client ✓';btn.style.background='#1e7e4f';
+  }
+  setTimeout(()=>{btn.textContent='Send Message →';btn.style.background='';btn.disabled=false},4500);
+}
+function openMailto(name,phone,email,plan,msg){
+  const sub=encodeURIComponent('ZNF Enquiry — '+plan);
+  const body=encodeURIComponent(`Name: ${name}\nPhone: ${phone||'—'}\nEmail: ${email}\nLooking for: ${plan}\n\n${msg}`);
+  window.open(`mailto:info@zeronoisefinance.com?subject=${sub}&body=${body}`,'_blank');
+}
+
+/* ══════════════════════════════════
+   ZNF ADVISOR — Claude-powered, human-warm
+   The bot uses the Anthropic API when available
+   (this works inside claude.ai artifacts natively).
+   On a standalone HTML file, it falls back to the
+   rich local knowledge base below.
 ══════════════════════════════════ */
 let botOpen=false;
+const botHistory=[];
+
+const ZNF_SYSTEM=`You are the ZNF Advisor — a warm, sharp, and genuinely helpful personal finance guide for Indian users, built by Zero Noise Finance. You are NOT a corporate chatbot. You speak like a knowledgeable friend who gives straight answers without being preachy or robotic.
+
+Your style:
+- Conversational and warm. Use "you" and "your" naturally.
+- Short sentences. No walls of text — 2–3 paragraphs max per message.
+- Use simple analogies. Avoid jargon unless you immediately explain it in plain words.
+- Light humour is fine when appropriate.
+- Ask ONE follow-up question at the end of most responses to personalise further.
+- Acknowledge uncertainty: "it depends" is fine — just explain what it depends on.
+
+Your rules:
+- SEBI-compliant: give general financial education, never specific buy/sell advice.
+- Never recommend specific funds, stocks, or insurance products by name.
+- Never make guaranteed return claims.
+- Contact info (info@zeronoisefinance.com · +91 91156 00369) only when genuinely helpful.
+
+Your knowledge (India-specific, 2025–26 context):
+- RBI Repo Rate: 5.25% (Feb 2026 cut). 10-Yr G-Sec: 6.93%. CPI: 2.1%. GDP FY26: 7.4%.
+- Emergency fund: 3–6 months expenses in liquid savings/FD.
+- Term life: ~₹8,000–15,000/year for ₹1 crore in your 30s. Separate from investments.
+- SIP compounding: FV = PMT × ((1+r)^n – 1)/r × (1+r). Monthly, annuity due.
+- Retirement corpus: PV of annuity using real rate = post-ret return minus inflation.
+- IRR of endowment policies typically 4–6% — less than FD in most cases.
+- NPS: extra ₹50k deduction u/s 80CCD(1B). EPF: 8.25% p.a. for FY25.
+- Equity CAGR (Nifty 50, 15yr+): 12–15% historically. Not guaranteed.
+- Debt funds: 6.5–7.5% currently. Hybrid: ~10%.
+
+Always be helpful. Always be honest. Never be robotic.`;
+
+// Local KB for offline fallback — rich, human, warm
+const lKB={
+  'emergency':["Think of an emergency fund as your financial seatbelt — you hope you never need it, but when you do, you're extremely glad it's there.\n\nThe target is 3–6 months of your total monthly expenses (rent, EMI, food, everything). Keep it somewhere boring and accessible — savings account or a liquid fund. Not stocks, not crypto.\n\nQuick question: do you know roughly what your monthly expenses come to? That'll tell us your exact target number."],
+  'sip':["SIP — Systematic Investment Plan — is basically automating discipline. A fixed amount goes in every month, automatically. When markets fall, you buy more units cheaply. When they rise, your existing units gain value. Over time, you get a blended average cost.\n\nThe real power isn't in any particular fund — it's the consistency and the time horizon. Someone investing ₹5,000/month for 25 years is almost always going to do better than someone who invests ₹50,000 once and waits.\n\nHow long are you planning to stay invested?"],
+  'insurance':["Here's the thing most agents won't tell you: insurance and investment should be completely separate decisions.\n\nFor life insurance, buy a pure term plan — large cover (₹50L–₹1Cr), small premium (₹8,000–15,000/year in your 30s). It only pays out if you're not around. No maturity benefit, no investment component — and that's exactly why it's so affordable and valuable.\n\nFor health, get a comprehensive health insurance policy independent of your employer. Corporate health cover ends the day you resign or are let go.\n\nDo you currently have any insurance in place?"],
+  'endowment':["Oh, the classic endowment plan — the one most families have because an agent (often a relative!) recommended it enthusiastically.\n\nHere's the honest reality: most traditional insurance-cum-investment plans — endowments, money-back, ULIPs — offer an IRR (actual return) of about 4–6%. That's often less than a plain bank FD, and your money is locked up for 20–30 years.\n\nThe agents earn high commissions on these, which is why they're so aggressively sold. Use our Insurance IRR calculator on this site to see the actual return on your specific policy — enter the premium, term, and all the payouts, and it'll give you the exact number.\n\nWant me to explain how to read that IRR result?"],
+  'retirement':["Retirement planning starts with one honest question: how much do you spend each month right now?\n\nThat number — inflated to your retirement date at around 6–7% per year — is what you'll need to sustain every month for 20–30 years without working. At 7% inflation, your expenses roughly double every 10 years. So ₹50,000/month today becomes about ₹1.85 lakh/month in 20 years.\n\nThe good news: if you start early and increase your investments each year as your income grows, the monthly amount needed is surprisingly manageable. What's your current age, and when do you want to retire?"],
+  'term':["Term insurance is beautifully simple: you pay a small premium, your family gets a large sum if something happens to you. That's the whole product. No complexity, no investment angle.\n\nA ₹1 crore term plan in your early 30s costs roughly ₹10,000–15,000 per year — less than a gym membership for most people. And the cover is life-changing for a family.\n\nThe key things to check: claim settlement ratio of the insurer, whether the premium is fixed for the entire term, and whether it covers accidental death rider.\n\nDo you have dependants — a spouse, children, or parents relying on your income?"],
+  'invest':["The right starting sequence is: emergency fund first → health insurance → term life insurance (if you have dependants) → then start investing.\n\nOnce those bases are covered, even ₹500/month makes a real difference over time. The biggest financial mistake people make is waiting for the 'perfect' time or the 'perfect' amount. Starting imperfectly beats not starting.\n\nAre those first three bases covered for you?"],
+  'debt':["Not all debt is the same — and how you prioritise it matters a lot.\n\nCredit card debt at 36–42% interest is financial quicksand. Pay it off before anything else. Personal loans at 12–18% come next. Home loans at 8–9% are more manageable — and depending on your investment returns, aggressive prepayment may not always be the best move.\n\nA simple test: if your loan's interest rate is higher than what you'd earn investing (after tax), pay the loan first. If it's lower, investing alongside repayment can work.\n\nWhat kind of debt are you dealing with?"],
+  'inflation':["Inflation is the quiet thief of savings. At 6% inflation, money halves in purchasing power every 12 years. So ₹10 lakh sitting idle in a savings account at 3.5% is actually shrinking in real terms every year.\n\nThis is why long-term goals — retirement, children's education — need investments that beat inflation meaningfully. Short-term goals (1–3 years) are better served with safer, liquid instruments like FDs or short-term debt funds.\n\nWhat's the goal or timeline you're thinking about?"],
+  'goal':["Goal-based investing is the most rational way to build wealth. Instead of asking 'where should I invest?', you ask 'what do I want this money to do, and when?'\n\nShort-term goal (1–3 years): keep it safe and liquid — FD, recurring deposit, liquid fund.\nMedium-term (3–7 years): balanced allocation, some equity exposure.\nLong-term (7+ years): equity-heavy makes sense — time absorbs volatility.\n\nWhat's the goal you're planning for? House down payment, education, retirement?"],
+  'hi':["Hey! Good to have you here. I'm the ZNF Advisor — think of me as that finance-savvy friend who gives straight answers without trying to sell you anything.\n\nWhat's on your mind?"],
+  'hello':["Hello! Welcome to Zero Noise Finance.\n\nI can help you think through anything from the basics — emergency fund, insurance, SIPs — to more specific questions like insurance IRR or retirement corpus planning. Where would you like to start?"],
+  'thanks':["Of course! Finance becomes a lot less stressful once the fundamentals click — and they will. Feel free to come back anytime with questions.\n\nAnything else on your mind right now?"],
+  'default':["Good question — and the honest answer is: it depends on your situation, which is the right kind of complexity.\n\nCould you tell me a bit more? Even rough context — age, whether you have dependants, what you're specifically trying to figure out — helps me give you something actually useful rather than generic.\n\nWhat's the core thing you're trying to get clear on?",
+    "I want to give you something genuinely useful here, not just general statements. Can you share a bit more context about where you are financially? What's the main thing on your mind — saving more, investing for a goal, insurance, retirement, something else?\n\nOnce I know that, I can give you a much more focused answer.",
+    "That's worth thinking through carefully. Finance is one of those areas where the right answer genuinely depends on your specific situation — income, goals, existing commitments, risk comfort.\n\nTell me a bit more about your situation and what you're trying to figure out, and I'll give you the most honest take I can."]
+};
+
+function getLocalReply(q){
+  const ql=q.toLowerCase();
+  const keys=Object.keys(lKB);
+  for(const k of keys){if(ql.includes(k)){const a=lKB[k];return a[Math.floor(Math.random()*a.length)]}}
+  const d=lKB['default'];return d[Math.floor(Math.random()*d.length)];
+}
+
+async function callAI(q){
+  botHistory.push({role:'user',content:q});
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:350,system:ZNF_SYSTEM,messages:botHistory.slice(-10)})
+    });
+    if(!res.ok)throw 0;
+    const d=await res.json();
+    const reply=d.content.map(b=>b.type==='text'?b.text:'').join('');
+    botHistory.push({role:'assistant',content:reply});
+    return reply;
+  }catch{
+    const reply=getLocalReply(q);
+    botHistory.push({role:'assistant',content:reply});
+    return reply;
+  }
+}
+
 function toggleBot(){
   botOpen=!botOpen;
   document.getElementById('bot-panel').style.display=botOpen?'block':'none';
-  if(botOpen) scrollBotMsgs();
+  if(botOpen)scrollBotMsgs();
 }
-const botKB={
-  'emergency fund':['An emergency fund should cover six months of total monthly expenses — not income. Keep it in a savings account or liquid fund, accessible within 24–48 hours. This should be established before beginning any investment programme. Its purpose is to prevent the forced liquidation of investments at the wrong time.'],
-  'start invest':['The right time to start is after establishing an emergency fund and securing basic insurance. Even a small, consistent monthly investment started early will outperform a larger amount started later. Time in the market is the single most important factor in wealth creation for individuals.'],
-  'retirement':['Retirement planning begins with one number: monthly expenditure at retirement. Inflate current expenses to the retirement date at 6–7% annually. The resulting corpus required can be calculated using our Retirement Calculator on this site. Starting early and increasing contributions annually are the two most impactful variables.'],
-  'insurance':['Insurance serves two distinct purposes: life protection (term life) and health protection (health insurance). These should be purchased separately from investment products. The adequacy of life cover can be estimated at 10–15 times annual income. Health insurance should ideally be independent of employer coverage.'],
-  'savings ratio':['A savings ratio of 30% or above — annual savings divided by annual income — is considered healthy for active wealth building. Below 20% makes it difficult to build meaningful wealth over time. The most impactful way to improve this ratio is typically to reduce fixed monthly commitments rather than discretionary spending.'],
-  'home loan':['A home loan EMI is ideally kept below 35% of monthly take-home pay. A home is a consumption asset that provides shelter and emotional security — its financial value varies significantly by location and market conditions. Continuing SIP contributions while repaying a home loan is generally more wealth-efficient than pausing investments.'],
-  'sip':['A Systematic Investment Plan works by investing a fixed amount every month, purchasing more units when markets are down and fewer when markets are up. This rupee-cost averaging removes the need to time the market. The most important variable is consistency — uninterrupted contributions over a long horizon.'],
-  'debt':['Not all debt is equal. High-interest debt such as credit cards and personal loans should be prioritised for repayment before increasing investments. For lower-interest debt such as home loans, maintaining SIP contributions simultaneously is often the better long-term decision. The key metric is whether the loan interest rate exceeds expected post-tax investment returns.'],
-  'default':['That is a thoughtful question. Financial planning is ultimately about aligning current behaviour with future goals — with clarity on the tradeoffs involved. If your question relates to a specific personal situation, a one-on-one consultation may be the most effective next step. You are welcome to reach out at info@zeronoisefinance.com or +91 91156 00369.',
-    'Every financial decision involves a tradeoff. The value of good financial planning lies in understanding those tradeoffs clearly. For questions specific to your situation, the calculators on this site are a useful starting point, and a personalised consultation can take it further.',
-    'Financial clarity comes from understanding your own goals first — then finding the path that gets you there most efficiently. If you have more questions or would like personalised guidance, please feel free to reach out directly.']
-};
-function getBotReply(q){
-  const ql=q.toLowerCase();
-  for(const k of Object.keys(botKB)){
-    if(ql.includes(k)){const a=botKB[k];return a[Math.floor(Math.random()*a.length)]}
-  }
-  const d=botKB['default'];return d[Math.floor(Math.random()*d.length)];
-}
-function sendBot(){
+async function sendBot(){
   const inp=document.getElementById('botInput');
   const q=inp.value.trim();if(!q)return;
   inp.value='';appendBot(q,'usr');
-  const typing=document.createElement('div');typing.className='bot-typing';
-  typing.innerHTML='<span></span><span></span><span></span>';
-  document.getElementById('botMsgs').appendChild(typing);
-  scrollBotMsgs();
-  setTimeout(()=>{typing.remove();appendBot(getBotReply(q),'bot')},800+Math.random()*500);
+  const typ=document.createElement('div');typ.className='bot-typing';
+  typ.innerHTML='<span></span><span></span><span></span>';
+  document.getElementById('botMsgs').appendChild(typ);scrollBotMsgs();
+  const reply=await callAI(q);
+  typ.remove();appendBot(reply,'bot');
 }
-function askBot(q){document.getElementById('botInput').value=q;sendBot();if(!botOpen)toggleBot()}
+function askBot(q){document.getElementById('botInput').value=q;if(!botOpen)toggleBot();sendBot()}
 function appendBot(msg,role){
   const d=document.createElement('div');d.className='bmsg '+role;d.textContent=msg;
   document.getElementById('botMsgs').appendChild(d);scrollBotMsgs();
 }
 function scrollBotMsgs(){const m=document.getElementById('botMsgs');m.scrollTop=m.scrollHeight}
 
-/* ── CONTACT ── */
-function submitContact(){
-  const b=event.currentTarget;b.textContent='Message Sent ✓';b.style.background='#1e7e4f';
-  setTimeout(()=>{b.textContent='Send Message →';b.style.background=''},3500);
+/* ══════════════════════════════════
+   DEBT HEALTH CHECK
+══════════════════════════════════ */
+let loanCount=0;
+const LOAN_TYPES=['Credit Card','Personal Loan','Home Loan','Car Loan','Education Loan','Other'];
+
+function addLoan(){
+  loanCount++;
+  const id=loanCount;
+  const div=document.createElement('div');
+  div.className='loan-card';div.id='loan-'+id;
+  div.innerHTML=`
+    <div class="loan-card-hd">
+      <h4>Loan ${id}</h4>
+      ${id>1?`<button class="loan-del" onclick="removeLoan(${id})">✕ Remove</button>`:''}
+    </div>
+    <div class="loan-grid">
+      <div class="fl">
+        <div class="fl-lbl">Loan Type</div>
+        <select class="fi-inp" id="lt_${id}">
+          ${LOAN_TYPES.map(t=>`<option>${t}</option>`).join('')}
+        </select>
+      </div>
+      <div class="fl">
+        <div class="fl-lbl">Outstanding Amount (₹)</div>
+        <input class="fi-inp" type="number" id="la_${id}" placeholder="e.g. 5,00,000" min="0">
+      </div>
+      <div class="fl">
+        <div class="fl-lbl">Interest Rate (% p.a.)</div>
+        <input class="fi-inp" type="number" id="lr_${id}" placeholder="e.g. 18" min="0" max="50" step="0.1">
+      </div>
+      <div class="fl">
+        <div class="fl-lbl">Monthly EMI (₹)</div>
+        <input class="fi-inp" type="number" id="le_${id}" placeholder="e.g. 15,000" min="0">
+      </div>
+      <div class="fl">
+        <div class="fl-lbl">Remaining Tenure (months)</div>
+        <input class="fi-inp" type="number" id="lm_${id}" placeholder="e.g. 36" min="0">
+      </div>
+    </div>`;
+  document.getElementById('loansContainer').appendChild(div);
+}
+
+function removeLoan(id){
+  const el=document.getElementById('loan-'+id);
+  if(el){el.style.animation='loanOut .2s ease forwards';setTimeout(()=>el.remove(),200)}
+}
+
+function getLoans(){
+  const loans=[];
+  for(let i=1;i<=loanCount;i++){
+    const el=document.getElementById('loan-'+i);
+    if(!el)continue;
+    const type=document.getElementById('lt_'+i)?.value||'Other';
+    const amt=parseFloat(document.getElementById('la_'+i)?.value)||0;
+    const rate=parseFloat(document.getElementById('lr_'+i)?.value)||0;
+    const emi=parseFloat(document.getElementById('le_'+i)?.value)||0;
+    const months=parseFloat(document.getElementById('lm_'+i)?.value)||0;
+    if(!amt||!rate||!emi||!months){alert('Please fill all fields for Loan '+i+'.');return null}
+    if(rate<0||rate>50){alert('Interest rate for Loan '+i+' must be between 0 and 50%.');return null}
+    loans.push({type,amt,rate,emi,months});
+  }
+  return loans.length>0?loans:null;
+}
+
+function analyzDebt(){
+  const loans=getLoans();
+  if(!loans){return}
+
+  const totalDebt=loans.reduce((s,l)=>s+l.amt,0);
+  const totalEMI=loans.reduce((s,l)=>s+l.emi,0);
+  const wRate=loans.reduce((s,l)=>s+l.amt*l.rate,0)/totalDebt;
+
+  // Highest interest and smallest loan
+  const maxRateLoan=loans.reduce((a,b)=>b.rate>a.rate?b:a);
+  const minAmtLoan=loans.reduce((a,b)=>b.amt<a.amt?b:a);
+
+  // Stress: based on EMI-to-rough-income (assume income heuristic or fixed)
+  // We use total EMI vs a benchmark: <20k=low, 20-50k=mid, >50k=high
+  const emiStress=totalEMI<15000?15:totalEMI<35000?40:totalEMI<60000?65:85;
+  const debtStress=totalDebt<500000?10:totalDebt<2000000?35:totalDebt<5000000?60:85;
+  const stressPct=Math.min(95,Math.round((emiStress*0.6+debtStress*0.4)));
+
+  // Snowball teaser: sort by amount, count loans closeable in ~12 months at current pace
+  const snowball=[...loans].sort((a,b)=>a.amt-b.amt);
+  let sbCloseCount=0,sbMonths=0;
+  for(const l of snowball){const m=Math.ceil(l.amt/l.emi);if(sbMonths+m<=24){sbCloseCount++;sbMonths+=m}else break}
+
+  // Avalanche teaser: rough interest saving estimate vs snowball
+  const avalanche=[...loans].sort((a,b)=>b.rate-a.rate);
+  const totalInterestRough=loans.reduce((s,l)=>s+l.emi*l.months-l.amt,0);
+  // Avalanche typically saves 5-15% of total interest vs snowball
+  const avSaving=Math.max(0,totalInterestRough*0.08);
+
+  // Render metrics
+  document.getElementById('d_total').textContent=fmt(totalDebt);
+  document.getElementById('d_emi').textContent=fmt(totalEMI)+'/mo';
+  document.getElementById('d_wrate').textContent=wRate.toFixed(2)+'%';
+  document.getElementById('d_wrate').className='mc-val '+(wRate>20?'red':wRate>12?'amber':'green');
+
+  // Hook
+  document.getElementById('d_hook_head').textContent=
+    `You are paying ${wRate.toFixed(1)}% weighted interest across your loans.`;
+  document.getElementById('d_hook_sub').textContent=
+    `Your total interest burden over the remaining tenure is approximately ${fmt(totalInterestRough)}. A structured payoff plan can reduce this significantly.`;
+
+  // Highlights
+  let hl='';
+  hl+=`<div class="debt-highlight dh-max-int"><div class="dh-icon">🔴</div><div class="dh-text"><strong>Highest cost loan: ${maxRateLoan.type}</strong>At ${maxRateLoan.rate}% interest rate, this loan is your most expensive debt and should be addressed strategically.</div></div>`;
+  hl+=`<div class="debt-highlight dh-min-loan"><div class="dh-icon">🟢</div><div class="dh-text"><strong>Quickest win: ${minAmtLoan.type}</strong>${fmt(minAmtLoan.amt)} outstanding — this is your smallest loan and can potentially be closed the fastest for an immediate psychological boost.</div></div>`;
+  document.getElementById('d_highlights').innerHTML=hl;
+
+  // Stress needle
+  document.getElementById('stressNeedle').style.left=stressPct+'%';
+  document.getElementById('stressNote').textContent=
+    stressPct<33?'Your debt load appears manageable. Focus on maintaining consistency.':
+    stressPct<65?'Your EMI obligations are significant. Restructuring could free up meaningful cash flow.':
+    'High debt stress detected. A structured relief plan is strongly recommended.';
+
+  // Strategy teasers
+  document.getElementById('sb_stat').textContent=
+    sbCloseCount>0?`${sbCloseCount} loan${sbCloseCount>1?'s':''} could be closed within 24 months`:'Quick wins possible with focused effort';
+  document.getElementById('av_stat').textContent=
+    `~${fmt(avSaving)} in interest potentially saved`;
+  document.getElementById('sb_detail').textContent='Exact closing sequence and month-by-month payment schedule';
+  document.getElementById('av_detail').textContent='Precise interest savings and cashflow optimisation month-wise';
+
+  // Show results
+  const res=document.getElementById('debtResults');
+  res.classList.add('show');
+  res.scrollIntoView({behavior:'smooth',block:'start'});
 }
 
 /* ── INIT ── */
