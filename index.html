@@ -1184,51 +1184,113 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:38px 24px}
     <div class="calc-hdr-in">
       <div class="s-label">Financial Health Check</div>
       <h1 class="s-title">Ratio Analysis</h1>
-      <p class="s-sub">Enter your numbers to receive a complete picture of financial health — with benchmarks, explanations, and honest feedback. No product recommendations.</p>
+      <p class="s-sub">Enter your numbers — monthly and annual — to get a complete picture of your financial health. Each section evaluates independently. No conversions, no estimates.</p>
     </div>
   </div>
   <div class="cbody">
-    <div class="ratio-l">
-      <div>
-        <div class="fc">
-          <div class="rsc">
-            <div class="rsc-hd">Income &amp; Savings <span>Monthly figures in ₹</span></div>
-            <div class="r2">
-              <div class="fl"><div class="fl-lbl">Monthly Income (₹)</div><input class="fi-inp" type="number" id="ra_inc" placeholder="Gross monthly income" oninput="calcRatios()"></div>
-              <div class="fl"><div class="fl-lbl">Monthly Savings (₹)</div><input class="fi-inp" type="number" id="ra_sav" placeholder="Amount saved per month" oninput="calcRatios()"></div>
-              <div class="fl"><div class="fl-lbl">Monthly Expenses (₹)</div><input class="fi-inp" type="number" id="ra_exp" placeholder="Total monthly spending" oninput="calcRatios()"></div>
-              <div class="fl"><div class="fl-lbl">Monthly Take-Home (₹)</div><input class="fi-inp" type="number" id="ra_th" placeholder="Net monthly salary" oninput="calcRatios()"></div>
+
+    <!-- TAB TOGGLE -->
+    <div style="display:flex;gap:8px;margin-bottom:28px;border-bottom:1px solid var(--rule);padding-bottom:0">
+      <button class="ctab active" id="rtab-m" onclick="switchRatioTab('m')">Monthly Analysis</button>
+      <button class="ctab" id="rtab-a" onclick="switchRatioTab('a')">Annual Analysis</button>
+    </div>
+
+    <!-- ── MONTHLY PANEL ── -->
+    <div id="rpanel-m">
+      <div class="ratio-l">
+        <div>
+          <div class="fc">
+            <!-- Monthly Income -->
+            <div class="rsc">
+              <div class="rsc-hd">Monthly Income &amp; Spending <span>All figures per month in ₹</span></div>
+              <div class="r2">
+                <div class="fl"><div class="fl-lbl">Monthly Gross Income (₹)</div><input class="fi-inp" type="number" id="rm_inc" placeholder="e.g. 80,000" oninput="calcRatiosM()"></div>
+                <div class="fl"><div class="fl-lbl">Monthly Take-Home (₹)</div><input class="fi-inp" type="number" id="rm_th" placeholder="Net after tax &amp; deductions" oninput="calcRatiosM()"></div>
+                <div class="fl"><div class="fl-lbl">Monthly Savings (₹)</div><input class="fi-inp" type="number" id="rm_sav" placeholder="Invested + parked this month" oninput="calcRatiosM()"></div>
+                <div class="fl"><div class="fl-lbl">Monthly Expenses (₹)</div><input class="fi-inp" type="number" id="rm_exp" placeholder="Total monthly outgoings" oninput="calcRatiosM()"></div>
+              </div>
             </div>
-          </div>
-          <div class="rsc">
-            <div class="rsc-hd">Assets &amp; Liabilities</div>
-            <div class="r2">
-              <div class="fl"><div class="fl-lbl">Total Assets (₹)</div><input class="fi-inp" type="number" id="ra_ast" placeholder="Investments + property + savings" oninput="calcRatios()"></div>
-              <div class="fl"><div class="fl-lbl">Total Liabilities (₹)</div><input class="fi-inp" type="number" id="ra_lib" placeholder="All loans + dues" oninput="calcRatios()"></div>
-              <div class="fl"><div class="fl-lbl">Liquid Assets (₹)</div><input class="fi-inp" type="number" id="ra_liq" placeholder="Cash, FD, savings, liquid MF" oninput="calcRatios()"></div>
-              <div class="fl"><div class="fl-lbl">Financial Assets (₹)</div><input class="fi-inp" type="number" id="ra_fin" placeholder="Stocks + MF + bonds + EPF" oninput="calcRatios()"></div>
+            <!-- Monthly Debt -->
+            <div class="rsc">
+              <div class="rsc-hd">Monthly Debt Obligations</div>
+              <div class="r2">
+                <div class="fl"><div class="fl-lbl">Total Monthly EMI (₹)</div><input class="fi-inp" type="number" id="rm_emi" placeholder="Sum of all loan EMIs" oninput="calcRatiosM()"></div>
+                <div class="fl"><div class="fl-lbl">Monthly Rent (₹) <span class="fl-opt">Optional</span></div><input class="fi-inp opt" type="number" id="rm_rent" placeholder="If renting" oninput="calcRatiosM()"></div>
+              </div>
             </div>
-          </div>
-          <div class="rsc">
-            <div class="rsc-hd">Debt Details</div>
-            <div class="r2">
-              <div class="fl"><div class="fl-lbl">Annual Debt Repayments (₹)</div><input class="fi-inp" type="number" id="ra_dp" placeholder="Total EMI payments per year" oninput="calcRatios()"></div>
-              <div class="fl"><div class="fl-lbl">Monthly EMI Total (₹)</div><input class="fi-inp" type="number" id="ra_emi" placeholder="Sum of all monthly EMIs" oninput="calcRatios()"></div>
+            <!-- Assets (same for both) -->
+            <div class="rsc">
+              <div class="rsc-hd">Assets &amp; Liabilities <span>Point-in-time totals in ₹</span></div>
+              <div class="r2">
+                <div class="fl"><div class="fl-lbl">Total Assets (₹)</div><input class="fi-inp" type="number" id="rm_ast" placeholder="Investments + property + savings" oninput="calcRatiosM()"></div>
+                <div class="fl"><div class="fl-lbl">Total Liabilities (₹)</div><input class="fi-inp" type="number" id="rm_lib" placeholder="All outstanding loans" oninput="calcRatiosM()"></div>
+                <div class="fl"><div class="fl-lbl">Liquid Assets (₹)</div><input class="fi-inp" type="number" id="rm_liq" placeholder="Cash + savings + liquid MF" oninput="calcRatiosM()"></div>
+                <div class="fl"><div class="fl-lbl">Financial Assets (₹)</div><input class="fi-inp" type="number" id="rm_fin" placeholder="Stocks + MF + EPF + bonds" oninput="calcRatiosM()"></div>
+              </div>
             </div>
+            <button class="calbtn" onclick="calcRatiosM()">Analyse Monthly Health</button>
           </div>
-          <button class="calbtn" onclick="calcRatios()">Analyse Financial Health</button>
         </div>
-      </div>
-      <div class="ratio-rp">
-        <div style="text-align:center;padding:16px 0 18px;border-bottom:1px solid var(--rule);margin-bottom:14px">
-          <div class="score-ring" id="scoreRing"><div class="score-n" id="scoreN">—</div><div class="score-k">Score</div></div>
-          <div style="font-family:var(--fs);font-size:.97rem;font-weight:600;color:var(--ink)" id="scoreLabel">Enter your details</div>
-          <div style="font-size:.78rem;color:var(--ink-l);margin-top:3px" id="scoreDesc">Complete the form to see your financial health score</div>
+        <div class="ratio-rp">
+          <div style="text-align:center;padding:14px 0 16px;border-bottom:1px solid var(--rule);margin-bottom:12px">
+            <div class="score-ring" id="scoreRingM"><div class="score-n" id="scoreNM">—</div><div class="score-k">Score</div></div>
+            <div style="font-family:var(--fs);font-size:.95rem;font-weight:600;color:var(--ink)" id="scoreLabelM">Enter monthly figures</div>
+            <div style="font-size:.76rem;color:var(--ink-l);margin-top:3px" id="scoreDescM">Complete the form to see your monthly financial health</div>
+          </div>
+          <div id="ratioItemsM"><div style="text-align:center;padding:16px 0;color:var(--ink-l);font-size:.82rem">Your monthly ratios will appear here.</div></div>
+          <div id="feedbackListM"></div>
         </div>
-        <div id="ratioItems"><div style="text-align:center;padding:18px 0;color:var(--ink-l);font-size:.83rem">Your ratios will appear here.</div></div>
-        <div id="feedbackList"></div>
       </div>
     </div>
+
+    <!-- ── ANNUAL PANEL ── -->
+    <div id="rpanel-a" style="display:none">
+      <div class="ratio-l">
+        <div>
+          <div class="fc">
+            <!-- Annual Income -->
+            <div class="rsc">
+              <div class="rsc-hd">Annual Income &amp; Savings <span>All figures per year in ₹</span></div>
+              <div class="r2">
+                <div class="fl"><div class="fl-lbl">Annual Gross Income (₹)</div><input class="fi-inp" type="number" id="ra_inc" placeholder="Total annual income (CTC or gross)" oninput="calcRatiosA()"></div>
+                <div class="fl"><div class="fl-lbl">Annual Take-Home (₹)</div><input class="fi-inp" type="number" id="ra_th" placeholder="Net annual after tax" oninput="calcRatiosA()"></div>
+                <div class="fl"><div class="fl-lbl">Annual Savings (₹)</div><input class="fi-inp" type="number" id="ra_sav" placeholder="Total invested/saved this year" oninput="calcRatiosA()"></div>
+                <div class="fl"><div class="fl-lbl">Annual Expenses (₹)</div><input class="fi-inp" type="number" id="ra_exp" placeholder="Total annual spending" oninput="calcRatiosA()"></div>
+              </div>
+            </div>
+            <!-- Annual Debt -->
+            <div class="rsc">
+              <div class="rsc-hd">Annual Debt Repayments</div>
+              <div class="r2">
+                <div class="fl"><div class="fl-lbl">Total Annual EMI Paid (₹)</div><input class="fi-inp" type="number" id="ra_dp" placeholder="All loan repayments per year" oninput="calcRatiosA()"></div>
+                <div class="fl"><div class="fl-lbl">Annual Rent Paid (₹) <span class="fl-opt">Optional</span></div><input class="fi-inp opt" type="number" id="ra_rent" placeholder="If renting" oninput="calcRatiosA()"></div>
+              </div>
+            </div>
+            <!-- Assets -->
+            <div class="rsc">
+              <div class="rsc-hd">Assets &amp; Liabilities <span>Point-in-time totals in ₹</span></div>
+              <div class="r2">
+                <div class="fl"><div class="fl-lbl">Total Assets (₹)</div><input class="fi-inp" type="number" id="ra_ast" placeholder="Investments + property + savings" oninput="calcRatiosA()"></div>
+                <div class="fl"><div class="fl-lbl">Total Liabilities (₹)</div><input class="fi-inp" type="number" id="ra_lib" placeholder="All outstanding loans" oninput="calcRatiosA()"></div>
+                <div class="fl"><div class="fl-lbl">Liquid Assets (₹)</div><input class="fi-inp" type="number" id="ra_liq" placeholder="Cash + savings + liquid MF" oninput="calcRatiosA()"></div>
+                <div class="fl"><div class="fl-lbl">Financial Assets (₹)</div><input class="fi-inp" type="number" id="ra_fin" placeholder="Stocks + MF + EPF + bonds" oninput="calcRatiosA()"></div>
+              </div>
+            </div>
+            <button class="calbtn" onclick="calcRatiosA()">Analyse Annual Health</button>
+          </div>
+        </div>
+        <div class="ratio-rp">
+          <div style="text-align:center;padding:14px 0 16px;border-bottom:1px solid var(--rule);margin-bottom:12px">
+            <div class="score-ring" id="scoreRingA"><div class="score-n" id="scoreNA">—</div><div class="score-k">Score</div></div>
+            <div style="font-family:var(--fs);font-size:.95rem;font-weight:600;color:var(--ink)" id="scoreLabelA">Enter annual figures</div>
+            <div style="font-size:.76rem;color:var(--ink-l);margin-top:3px" id="scoreDescA">Complete the form to see your annual financial health</div>
+          </div>
+          <div id="ratioItemsA"><div style="text-align:center;padding:16px 0;color:var(--ink-l);font-size:.82rem">Your annual ratios will appear here.</div></div>
+          <div id="feedbackListA"></div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -1871,108 +1933,159 @@ function nrIRR(cf){
 }
 
 /* ══════════════════════════════════
-   RATIO ANALYSIS
+   RATIO ANALYSIS — tab switch
 ══════════════════════════════════ */
-function calcRatios(){
-  const inc=(parseFloat(document.getElementById('ra_inc').value)||0)*12; // monthly→annual
-  const sav=(parseFloat(document.getElementById('ra_sav').value)||0)*12; // monthly→annual
-  const exp=(parseFloat(document.getElementById('ra_exp').value)||0)*12; // monthly→annual
-  const th=parseFloat(document.getElementById('ra_th').value)||0;        // already monthly
-  const ast=parseFloat(document.getElementById('ra_ast').value)||0;
-  const lib=parseFloat(document.getElementById('ra_lib').value)||0;
-  const liq=parseFloat(document.getElementById('ra_liq').value)||0;
-  const fin=parseFloat(document.getElementById('ra_fin').value)||0;
-  const dp=parseFloat(document.getElementById('ra_dp').value)||0;
-  const emi=parseFloat(document.getElementById('ra_emi').value)||0;
-  if(!inc&&!ast&&!sav)return;
-  const ratios=[];let score=0,cnt=0;
-  function add(name,val,unit,ideal,low,desc,dir){
-    const v=parseFloat(val);if(isNaN(v)||!isFinite(v))return;
-    let st,col,pct;
-    if(dir==='h'){
-      if(v>=ideal){st='Strong';col='#1e7e4f';pct=Math.min(100,v/ideal*60+40);score+=2;cnt++}
-      else if(v>=low){st='Improving';col='#b45309';pct=v/ideal*70;score+=1;cnt++}
-      else{st='Needs attention';col='#b91c1c';pct=Math.max(5,v/ideal*35);cnt++}
-    }else{
-      if(v<=ideal){st='Strong';col='#1e7e4f';pct=Math.min(100,(1-v/low)*100);score+=2;cnt++}
-      else if(v<=low){st='Manageable';col='#b45309';pct=Math.max(10,(1-v/low)*70+15);score+=1;cnt++}
-      else{st='Needs attention';col='#b91c1c';pct=5;cnt++}
-    }
-    ratios.push({name,val:v.toFixed(2)+unit,st,col,pct,desc});
+function switchRatioTab(t){
+  document.getElementById('rpanel-m').style.display=t==='m'?'block':'none';
+  document.getElementById('rpanel-a').style.display=t==='a'?'block':'none';
+  document.getElementById('rtab-m').classList.toggle('active',t==='m');
+  document.getElementById('rtab-a').classList.toggle('active',t==='a');
+}
+
+/* ── Shared ratio builder ── */
+function buildRatio(name,val,unit,ideal,low,desc,dir){
+  const v=parseFloat(val);
+  if(isNaN(v)||!isFinite(v))return null;
+  let st,col,pct,sc;
+  if(dir==='h'){
+    if(v>=ideal){st='Strong';col='#1e7e4f';pct=Math.min(100,v/ideal*60+40);sc=2}
+    else if(v>=low){st='Improving';col='#b45309';pct=v/ideal*70;sc=1}
+    else{st='Needs attention';col='#b91c1c';pct=Math.max(5,v/ideal*35);sc=0}
+  }else{
+    if(v<=ideal){st='Strong';col='#1e7e4f';pct=Math.min(100,(1-v/low)*100);sc=2}
+    else if(v<=low){st='Manageable';col:'#b45309';pct=Math.max(10,(1-v/low)*70+15);sc=1}
+    else{st='Needs attention';col='#b91c1c';pct=5;sc=0}
   }
-  if(inc>0&&sav>0) add('Savings Rate',sav/inc*100,'%',30,20,'Annual savings as % of gross income. 30% or above supports strong wealth building.','h');
-  if(inc>0&&exp>0) add('Expense Ratio',exp/inc*100,'%',50,70,'Annual expenses as % of income. Keeping this below 50% leaves healthy surplus.','l');
-  if(liq>0&&exp>0) add('Liquidity Ratio',liq/(exp/12),'x',6,3,'Months of expenses covered by liquid assets. Target: 6 months minimum.','h');
-  if(inc>0&&dp>0) add('Debt Service Ratio',dp/inc*100,'%',30,40,'Annual debt repayments as % of income. Above 40% limits financial flexibility significantly.','l');
-  if(th>0&&emi>0) add('EMI-to-Income',emi/th*100,'%',40,50,'Monthly EMI as % of take-home pay. Below 40% allows disciplined savings to continue.','l');
-  if(ast>0&&lib>0){
-    add('Solvency Ratio',(ast-lib)/ast*100,'%',50,30,'Net worth as % of total assets. Measures resilience against financial shocks.','h');
-    add('Leverage Ratio',lib/ast*100,'%',30,50,'Total liabilities as % of total assets. Lower is healthier.','l');
-  }
-  if(inc>0&&fin>0) add('Financial Assets Ratio',fin/inc,'x',3,1,'Invested assets as multiple of annual income. Target 3× or above for meaningful wealth.','h');
-  if(th>0&&sav>0) add('Savings-to-Take-Home',sav/(th*12)*100,'%',25,15,'Annual savings as % of net take-home — a more practical savings measure.','h');
+  return{name,val:v.toFixed(2)+unit,st,col,pct,sc,desc};
+}
+
+/* ── Shared renderer ── */
+function renderRatios(ratios,ast,lib,ringId,numId,labelId,descId,itemsId,fbId){
+  let score=0,cnt=0;
+  ratios.forEach(r=>{if(r&&r.sc!=null){score+=r.sc;cnt++}});
   const total=cnt>0?Math.round(score/cnt/2*100):0;
-  const ring=document.getElementById('scoreRing');
-  const sn=document.getElementById('scoreN');
+  const ring=document.getElementById(ringId),sn=document.getElementById(numId);
   sn.textContent=total;
   ring.style.borderColor=total>=70?'#1e7e4f':total>=45?'#f59e0b':'#dc2626';
   sn.style.color=total>=70?'#1e7e4f':total>=45?'#f57f17':'#dc2626';
-  const sl=document.getElementById('scoreLabel'),sd=document.getElementById('scoreDesc');
-  if(total>=70){sl.textContent='Financially Healthy';sd.textContent='Your ratios are tracking well. Consistency from here will compound powerfully.'}
-  else if(total>=45){sl.textContent='Progressing Well';sd.textContent='Good direction. A few areas have room for improvement.'}
-  else{sl.textContent='Foundation Building';sd.textContent='Several ratios are below healthy benchmarks. Small, sustained changes create significant improvement over time.'}
+  const sl=document.getElementById(labelId),sd=document.getElementById(descId);
+  if(total>=70){sl.textContent='Financially Healthy';sd.textContent='Your ratios are tracking well. Keep building on this.'}
+  else if(total>=45){sl.textContent='Progressing Well';sd.textContent='Good direction. A few areas have room to strengthen.'}
+  else{sl.textContent='Foundation Building';sd.textContent='Several ratios are below benchmarks. Small consistent changes compound powerfully.'}
   let html='';
-  ratios.forEach(r=>{
+  ratios.filter(Boolean).forEach(r=>{
     html+=`<div class="ratio-item"><div><div class="ri-name">${r.name}</div><div class="ri-desc">${r.desc}</div></div><div><div class="ri-val" style="color:${r.col}">${r.val}</div><div class="ri-st" style="color:${r.col}">${r.st}</div></div></div><div class="rb-wrap"><div class="rb-fill" style="width:${r.pct}%;background:${r.col}"></div></div>`;
   });
-  if(ast>0&&lib>0){
+  if(ast>0&&lib>=0){
     const nw=ast-lib;
-    html+=`<div class="ratio-item" style="padding-top:12px;border-top:2px solid var(--rule);margin-top:4px"><div><div class="ri-name">Net Worth</div><div class="ri-desc">Total assets minus all liabilities</div></div><div><div class="ri-val" style="color:${nw>=0?'var(--ok)':'var(--err)'}">${fmt(nw)}</div></div></div>`;
+    html+=`<div class="ratio-item" style="padding-top:11px;border-top:2px solid var(--rule);margin-top:4px"><div><div class="ri-name">Net Worth</div><div class="ri-desc">Total assets minus all liabilities</div></div><div><div class="ri-val" style="color:${nw>=0?'var(--ok)':'var(--err)'}">${fmt(nw)}</div></div></div>`;
   }
-  document.getElementById('ratioItems').innerHTML=html||'<div style="text-align:center;padding:16px;color:var(--ink-l);font-size:.83rem">Fill in more fields to see all ratios.</div>';
-  // Feedback
+  document.getElementById(itemsId).innerHTML=html||'<div style="text-align:center;padding:14px;color:var(--ink-l);font-size:.82rem">Fill in more fields to see ratios.</div>';
   let fb='';
-  ratios.forEach(r=>{
-    if(r.name==='Savings Rate'){
-      const v=parseFloat(r.val);
-      if(v>=30)fb+=`<div class="fb-item fb-g">Your savings rate of ${r.val} is strong. Maintaining this consistently will have a compounding effect on your long-term wealth.</div>`;
-      else if(v>=20)fb+=`<div class="fb-item fb-o">A savings rate of ${r.val} is a solid foundation. Each additional percentage point saved accelerates goal timelines meaningfully.</div>`;
-      else fb+=`<div class="fb-item fb-b">A savings rate of ${r.val} limits long-term wealth creation. Reviewing fixed monthly commitments often yields the most impactful savings gains.</div>`;
+  ratios.filter(Boolean).forEach(r=>{
+    const v=parseFloat(r.val);
+    if(r.name.includes('Savings Rate')){
+      if(v>=30)fb+=`<div class="fb-item fb-g">Savings rate of ${r.val} is strong — this consistency compounds powerfully over time.</div>`;
+      else if(v>=20)fb+=`<div class="fb-item fb-o">Savings rate of ${r.val} is a solid start. Each extra % saved meaningfully shortens goal timelines.</div>`;
+      else fb+=`<div class="fb-item fb-b">Savings rate of ${r.val} is below recommended. Reviewing fixed commitments is the fastest way to improve this.</div>`;
     }
     if(r.name==='Liquidity Ratio'){
-      const v=parseFloat(r.val);
-      if(v>=6)fb+=`<div class="fb-item fb-g">A liquidity buffer of ${r.val} months is excellent — this prevents forced liquidation of investments during emergencies.</div>`;
-      else if(v>=3)fb+=`<div class="fb-item fb-o">A ${r.val}-month buffer is adequate. Strengthening to 6 months before increasing investments provides important stability.</div>`;
-      else fb+=`<div class="fb-item fb-b">A buffer of only ${r.val} months is a financial risk. Prioritising this before other investment goals is advisable.</div>`;
+      if(v>=6)fb+=`<div class="fb-item fb-g">A ${r.val}-month liquidity buffer is excellent — investments are protected from emergency disruption.</div>`;
+      else if(v>=3)fb+=`<div class="fb-item fb-o">A ${r.val}-month buffer is adequate. Strengthening to 6 months adds meaningful security.</div>`;
+      else fb+=`<div class="fb-item fb-b">Only ${r.val} months of liquid cover — a financial risk. Building this should take priority.</div>`;
     }
     if(r.name==='Solvency Ratio'){
-      const v=parseFloat(r.val);
-      if(v>=50)fb+=`<div class="fb-item fb-g">A solvency ratio of ${r.val} is strong — you own significantly more than you owe. This is the foundation of financial resilience.</div>`;
-      else fb+=`<div class="fb-item fb-o">Building assets while systematically reducing liabilities will improve this ratio and your overall financial resilience over time.</div>`;
+      if(v>=50)fb+=`<div class="fb-item fb-g">Solvency ratio of ${r.val} — you own significantly more than you owe. Strong foundation.</div>`;
+      else fb+=`<div class="fb-item fb-o">Building assets while reducing liabilities will steadily improve overall financial resilience.</div>`;
     }
   });
-  document.getElementById('feedbackList').innerHTML=fb;
+  document.getElementById(fbId).innerHTML=fb;
 }
 
+/* ── MONTHLY RATIO CALCULATOR ──
+   All inputs are per-month. Zero backend conversions.
+── */
+function calcRatiosM(){
+  const inc =parseFloat(document.getElementById('rm_inc').value)||0;
+  const th  =parseFloat(document.getElementById('rm_th').value)||0;
+  const sav =parseFloat(document.getElementById('rm_sav').value)||0;
+  const exp =parseFloat(document.getElementById('rm_exp').value)||0;
+  const emi =parseFloat(document.getElementById('rm_emi').value)||0;
+  const rent=parseFloat(document.getElementById('rm_rent').value)||0;
+  const ast =parseFloat(document.getElementById('rm_ast').value)||0;
+  const lib =parseFloat(document.getElementById('rm_lib').value)||0;
+  const liq =parseFloat(document.getElementById('rm_liq').value)||0;
+  const fin =parseFloat(document.getElementById('rm_fin').value)||0;
+  if(!inc&&!th&&!ast)return;
+  const R=buildRatio;
+  const ratios=[
+    inc>0&&sav>0     ? R('Monthly Savings Rate',sav/inc*100,'%',30,20,'Monthly savings as % of gross monthly income. 30%+ builds wealth meaningfully.','h') : null,
+    inc>0&&exp>0     ? R('Monthly Expense Ratio',exp/inc*100,'%',50,70,'Monthly expenses as % of income. Below 50% keeps a healthy surplus for goals.','l') : null,
+    th>0&&emi>0      ? R('EMI-to-Take-Home',emi/th*100,'%',35,50,'Monthly EMI as % of take-home. Keep below 35% to maintain savings discipline.','l') : null,
+    th>0&&(emi+rent)>0 ? R('Housing Burden',(emi+rent)/th*100,'%',40,55,'EMI + rent as % of take-home. Above 55% leaves dangerously little for savings.','l') : null,
+    liq>0&&exp>0     ? R('Liquidity Ratio',liq/exp,'x',6,3,'Months of expenses covered by liquid assets. Target: 6 months minimum.','h') : null,
+    th>0&&sav>0      ? R('Savings-to-Take-Home',sav/th*100,'%',25,15,'Monthly savings as % of monthly take-home. A practical real-income savings metric.','h') : null,
+    ast>0&&lib>0     ? R('Solvency Ratio',(ast-lib)/ast*100,'%',50,30,'Net worth as % of total assets. Core measure of financial resilience.','h') : null,
+    ast>0&&lib>0     ? R('Leverage Ratio',lib/ast*100,'%',30,50,'Total liabilities as % of total assets. Lower = stronger financially.','l') : null,
+    inc>0&&fin>0     ? R('Financial Assets Ratio',fin/(inc*12),'x',3,1,'Financial assets vs annual equivalent income. Target 3× or above.','h') : null,
+  ];
+  renderRatios(ratios,ast,lib,'scoreRingM','scoreNM','scoreLabelM','scoreDescM','ratioItemsM','feedbackListM');
+}
+
+/* ── ANNUAL RATIO CALCULATOR ──
+   All inputs are per-year. Zero backend conversions.
+── */
+function calcRatiosA(){
+  const inc =parseFloat(document.getElementById('ra_inc').value)||0;
+  const th  =parseFloat(document.getElementById('ra_th').value)||0;
+  const sav =parseFloat(document.getElementById('ra_sav').value)||0;
+  const exp =parseFloat(document.getElementById('ra_exp').value)||0;
+  const dp  =parseFloat(document.getElementById('ra_dp').value)||0;
+  const rent=parseFloat(document.getElementById('ra_rent').value)||0;
+  const ast =parseFloat(document.getElementById('ra_ast').value)||0;
+  const lib =parseFloat(document.getElementById('ra_lib').value)||0;
+  const liq =parseFloat(document.getElementById('ra_liq').value)||0;
+  const fin =parseFloat(document.getElementById('ra_fin').value)||0;
+  if(!inc&&!th&&!ast)return;
+  const R=buildRatio;
+  const ratios=[
+    inc>0&&sav>0  ? R('Annual Savings Rate',sav/inc*100,'%',30,20,'Annual savings as % of gross annual income. 30%+ supports strong wealth accumulation.','h') : null,
+    inc>0&&exp>0  ? R('Annual Expense Ratio',exp/inc*100,'%',50,70,'Annual expenses as % of annual income. Below 50% leaves meaningful room for goals.','l') : null,
+    inc>0&&th>0   ? R('Take-Home Ratio',th/inc*100,'%',65,55,'Annual take-home as % of gross — reflects effective tax burden. Higher is better.','h') : null,
+    inc>0&&dp>0   ? R('Debt Service Ratio',dp/inc*100,'%',30,40,'Annual debt repayments as % of gross income. Above 40% severely limits financial flexibility.','l') : null,
+    inc>0&&rent>0 ? R('Housing Cost Ratio',rent/inc*100,'%',25,35,'Annual rent as % of income. Above 35% can strain overall finances.','l') : null,
+    // Liquidity: liquid assets vs (annual_exp/12) = monthly equivalent of annual expense
+    liq>0&&exp>0  ? R('Liquidity Ratio',liq/(exp/12),'x',6,3,'Liquid assets covering how many months of annual expenses. Target: 6 months.','h') : null,
+    th>0&&sav>0   ? R('Savings-to-Take-Home',sav/th*100,'%',25,15,'Annual savings as % of annual take-home — a practical real-income savings rate.','h') : null,
+    ast>0&&lib>0  ? R('Solvency Ratio',(ast-lib)/ast*100,'%',50,30,'Net worth as % of total assets. Core measure of financial resilience.','h') : null,
+    ast>0&&lib>0  ? R('Leverage Ratio',lib/ast*100,'%',30,50,'Total liabilities as % of total assets. Lower = stronger financially.','l') : null,
+    inc>0&&fin>0  ? R('Financial Assets Ratio',fin/inc,'x',3,1,'Total financial assets as multiple of annual income. Target 3× or above.','h') : null,
+  ];
+  renderRatios(ratios,ast,lib,'scoreRingA','scoreNA','scoreLabelA','scoreDescA','ratioItemsA','feedbackListA');
+}
 /* ══════════════════════════════════
-   CONTACT — EmailJS + spam filter
-   Setup: go to emailjs.com, create a free account,
-   connect your Gmail (info@zeronoisefinance.com),
-   create a template with variables:
-   {{from_name}} {{from_email}} {{phone}} {{plan_type}} {{message}}
-   Then replace the three constants below.
+   CONTACT — Web3Forms (free, serverless)
+   ─────────────────────────────────
+   ONE-TIME SETUP (2 minutes):
+   1. Go to https://web3forms.com
+   2. Enter:  info@zeronoisefinance.com
+   3. Click "Create Access Key"
+   4. Check your Gmail inbox, copy the key
+   5. Paste it below replacing YOUR_WEB3FORMS_KEY
+   ─────────────────────────────────
+   After that, every form submission arrives
+   directly in Gmail. No mail app opens for visitor.
 ══════════════════════════════════ */
-const EJS_SVC  = 'YOUR_SERVICE_ID';   // e.g. 'service_abc123'
-const EJS_TPL  = 'YOUR_TEMPLATE_ID';  // e.g. 'template_xyz789'
-const EJS_KEY  = 'YOUR_PUBLIC_KEY';   // from EmailJS Account > API Keys
+const W3F_KEY = 'YOUR_WEB3FORMS_KEY'; // ← paste key here
 
 function isSpam(name,email,msg){
   if(!name||name.trim().length<2) return 'Please enter your full name.';
   if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return 'Please enter a valid email address.';
   if(!msg||msg.trim().length<20) return 'Please describe your question (at least 20 characters).';
-  const bad=['casino','lottery','win prize','click here','free money','crypto pump','guaranteed profit','make money fast','mlm','ponzi'];
-  const text=(name+' '+msg).toLowerCase();
-  if(bad.some(w=>text.includes(w))) return 'This message was flagged as potential spam. Please write a genuine enquiry.';
+  const bad=['casino','lottery','win prize','click here','free money','crypto pump','guaranteed profit','make money fast','mlm','ponzi','adult','escort'];
+  const text=(name+' '+email+' '+msg).toLowerCase();
+  if(bad.some(w=>text.includes(w))) return 'This message was flagged. Please write a genuine enquiry.';
+  // Honeypot: reject if botname field was filled (not visible to users)
   return null;
 }
 
@@ -1983,30 +2096,70 @@ async function submitContact(){
   const email=document.getElementById('c_em').value.trim();
   const plan=document.getElementById('c_ty').value;
   const msg=document.getElementById('c_msg').value.trim();
+
+  // Spam gate
   const err=isSpam(name,email,msg);
-  if(err){alert(err);return}
-  btn.textContent='Sending…';btn.disabled=true;
-  if(typeof emailjs!=='undefined'&&EJS_KEY!=='YOUR_PUBLIC_KEY'){
-    try{
-      await emailjs.send(EJS_SVC,EJS_TPL,{from_name:name,from_email:email,phone:phone||'Not provided',plan_type:plan,message:msg},EJS_KEY);
-      btn.textContent='Message Sent ✓';btn.style.background='#1e7e4f';
-      ['c_name','c_ph','c_em','c_msg'].forEach(id=>document.getElementById(id).value='');
-    }catch(e){
-      // Mailto fallback
-      openMailto(name,phone,email,plan,msg);
-      btn.textContent='Opened Email Client';btn.style.background='#b45309';
-    }
-  }else{
-    openMailto(name,phone,email,plan,msg);
-    btn.textContent='Opened Email Client ✓';btn.style.background='#1e7e4f';
+  if(err){
+    btn.textContent='Send Message →';btn.disabled=false;
+    // Show inline error instead of alert
+    showContactError(err);return;
   }
-  setTimeout(()=>{btn.textContent='Send Message →';btn.style.background='';btn.disabled=false},4500);
+
+  btn.textContent='Sending…';btn.disabled=true;
+  clearContactError();
+
+  if(W3F_KEY==='YOUR_WEB3FORMS_KEY'){
+    // Key not configured yet — guide the developer
+    showContactError('Form not connected yet. To activate: go to web3forms.com, enter info@zeronoisefinance.com, and paste the access key into W3F_KEY in the JS.');
+    btn.textContent='Send Message →';btn.disabled=false;return;
+  }
+
+  try{
+    const res=await fetch('https://api.web3forms.com/submit',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify({
+        access_key: W3F_KEY,
+        subject: `ZNF Enquiry — ${plan} — ${name}`,
+        from_name: name,
+        replyto: email,
+        name,phone:phone||'Not provided',email,plan,message:msg,
+        // Botcheck hidden field
+        botcheck:''
+      })
+    });
+    const data=await res.json();
+    if(data.success){
+      btn.textContent='Message Sent ✓';
+      btn.style.background='#1e7e4f';
+      // Clear form
+      ['c_name','c_ph','c_em','c_msg'].forEach(id=>document.getElementById(id).value='');
+      document.getElementById('c_ty').selectedIndex=0;
+      showContactSuccess();
+    }else{
+      throw new Error(data.message||'Submission failed');
+    }
+  }catch(e){
+    showContactError('Could not send. Please email info@zeronoisefinance.com directly or try again.');
+    btn.textContent='Send Message →';btn.style.background='';
+  }finally{
+    setTimeout(()=>{btn.textContent='Send Message →';btn.style.background='';btn.disabled=false},4000);
+  }
 }
-function openMailto(name,phone,email,plan,msg){
-  const sub=encodeURIComponent('ZNF Enquiry — '+plan);
-  const body=encodeURIComponent(`Name: ${name}\nPhone: ${phone||'—'}\nEmail: ${email}\nLooking for: ${plan}\n\n${msg}`);
-  window.open(`mailto:info@zeronoisefinance.com?subject=${sub}&body=${body}`,'_blank');
+
+function showContactError(msg){
+  let el=document.getElementById('contact-msg');
+  if(!el){el=document.createElement('div');el.id='contact-msg';document.querySelector('#page-contact .calbtn').after(el)}
+  el.style.cssText='margin-top:10px;padding:10px 14px;border-radius:6px;font-size:.82rem;background:#fef2f2;color:#9b1c1c;border:1px solid #fcc';
+  el.textContent=msg;
 }
+function showContactSuccess(){
+  let el=document.getElementById('contact-msg');
+  if(!el){el=document.createElement('div');el.id='contact-msg';document.querySelector('#page-contact .calbtn').after(el)}
+  el.style.cssText='margin-top:10px;padding:10px 14px;border-radius:6px;font-size:.82rem;background:#edf7f2;color:#1e5c3a;border:1px solid #bbdece';
+  el.textContent='✓ Your message has been sent to info@zeronoisefinance.com. Nishant will respond within 24 hours.';
+}
+function clearContactError(){const el=document.getElementById('contact-msg');if(el)el.remove()}
 
 /* ══════════════════════════════════
    ZNF ADVISOR — Claude-powered, human-warm
