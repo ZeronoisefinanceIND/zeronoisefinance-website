@@ -5,11 +5,31 @@
 <link rel="apple-touch-icon" href="favicon.png">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Zero Noise Finance — Clarity Without Compromise</title>
+<title>Zero Noise Finance™ — Clarity Without Compromise | Free Indian Personal Finance Calculators</title>
+<meta name="description" content="Free SIP, retirement, EMI, income tax calculators for India. Insurance IRR analysis, debt health check, ratio analysis. SEBI-compliant financial education — no jargon, no product pushing.">
+<meta name="keywords" content="SIP calculator India, retirement calculator, EMI calculator, income tax calculator FY2025-26, insurance IRR, mutual fund, personal finance India, financial planning, debt management, ratio analysis, SEBI, Zero Noise Finance">
+<meta name="author" content="Zero Noise Finance™">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<link rel="canonical" href="https://zeronoisefinance.com/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Zero Noise Finance™ — Free Indian Personal Finance Calculators">
+<meta property="og:description" content="SIP, retirement, EMI, income tax calculators. Insurance IRR analysis, debt health check. SEBI-compliant financial education for India.">
+<meta property="og:url" content="https://zeronoisefinance.com/">
+<meta property="og:site_name" content="Zero Noise Finance™">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Zero Noise Finance™ — Clarity Without Compromise">
+<meta name="twitter:description" content="Free personal finance calculators for India. SIP, retirement, EMI, tax, insurance IRR. No jargon, no agenda.">
+<!-- Security headers via meta -->
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+<meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+<meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval'; font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://api.anthropic.com https://api.web3forms.com https://cdnjs.cloudflare.com; connect-src 'self' https://api.anthropic.com https://api.web3forms.com; img-src 'self' data:;">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Source+Sans+3:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <!-- EmailJS — for contact form email delivery. Sign up free at emailjs.com -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
 <script>
   // Initialize EmailJS with your public key once you have it
   // emailjs.init('YOUR_PUBLIC_KEY');
@@ -28,7 +48,11 @@
   --fs:'Lora',Georgia,serif;--fb:'Source Sans 3',system-ui,sans-serif;--fm:'JetBrains Mono',monospace;
   --sh1:0 1px 3px rgba(0,0,0,.07),0 1px 2px rgba(0,0,0,.05);
   --sh2:0 4px 16px rgba(0,0,0,.08),0 2px 6px rgba(0,0,0,.05);
+  --sh3:0 8px 32px rgba(0,0,0,.1),0 4px 12px rgba(0,0,0,.06);
+  --glass:rgba(255,255,255,.72);--glass-b:blur(16px);
   --r:10px;--rs:6px;--max:1180px;
+  --glow-pink:0 0 20px rgba(212,43,81,.15);
+  --glow-teal:0 0 20px rgba(26,107,107,.12);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -43,20 +67,32 @@ input,select,textarea{font-family:var(--fb)}
 ::-webkit-scrollbar-thumb{background:var(--rule);border-radius:2px}
 
 /* ─────────────────────────────────────
-   PREMIUM LOADER — clean, bulletproof
+   PREMIUM LOADER — refined + mobile-compatible
 ───────────────────────────────────── */
 #loader{
   position:fixed;inset:0;z-index:99999;
   background:#0a0a0c;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+#loader::before{
+  content:'';position:absolute;width:500px;height:500px;
+  background:radial-gradient(circle,rgba(212,43,81,.12) 0%,transparent 70%);
+  border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);
+  animation:loaderPulse 2.5s ease-in-out infinite;pointer-events:none;
+}
+@keyframes loaderPulse{
+  0%,100%{transform:translate(-50%,-50%) scale(.8);opacity:.4}
+  50%{transform:translate(-50%,-50%) scale(1.2);opacity:.8}
 }
 #loader.fade-out{
-  animation:loaderExit .65s cubic-bezier(.4,0,.2,1) forwards;
+  animation:loaderExit .75s cubic-bezier(.4,0,.2,1) forwards;
   pointer-events:none;
 }
 @keyframes loaderExit{
-  0%  {opacity:1}
-  100%{opacity:0}
+  0%  {opacity:1;transform:scale(1)}
+  60% {opacity:1;transform:scale(1.02)}
+  100%{opacity:0;transform:scale(1.05)}
 }
 
 /* Logo wrapper — flex row */
@@ -170,8 +206,8 @@ input,select,textarea{font-family:var(--fb)}
 ───────────────────────────────────── */
 nav{
   position:fixed;top:0;left:0;right:0;z-index:1000;
-  background:rgba(250,250,248,.96);backdrop-filter:blur(14px);
-  border-bottom:1px solid var(--rule);height:62px;
+  background:rgba(250,250,248,.88);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(226,226,236,.7);height:62px;
   opacity:0;transition:opacity .5s ease;pointer-events:none;
 }
 nav.visible{opacity:1;pointer-events:all}
@@ -235,8 +271,8 @@ nav.visible{opacity:1;pointer-events:all}
 .hero-title em{font-style:italic;color:var(--pink)}
 .hero-desc{font-size:1.08rem;color:var(--ink-l);line-height:1.82;max-width:500px;margin-bottom:34px}
 .hero-actions{display:flex;gap:12px;flex-wrap:wrap}
-.btn-p{display:inline-flex;align-items:center;gap:6px;padding:11px 24px;background:var(--pink);color:#fff;border-radius:var(--rs);font-size:.88rem;font-weight:600;box-shadow:0 2px 10px rgba(212,43,81,.22);transition:background .2s,box-shadow .2s,transform .15s}
-.btn-p:hover{background:#b8244a;box-shadow:0 4px 18px rgba(212,43,81,.35);transform:translateY(-1px);color:#fff;text-decoration:none}
+.btn-p{display:inline-flex;align-items:center;gap:6px;padding:11px 24px;background:var(--pink);color:#fff;border-radius:var(--rs);font-size:.88rem;font-weight:600;box-shadow:0 2px 10px rgba(212,43,81,.22),var(--glow-pink);transition:background .2s,box-shadow .2s,transform .15s}
+.btn-p:hover{background:#b8244a;box-shadow:0 4px 18px rgba(212,43,81,.35),0 0 28px rgba(212,43,81,.2);transform:translateY(-1px);color:#fff;text-decoration:none}
 .btn-o{display:inline-flex;align-items:center;gap:6px;padding:10px 22px;border:1.5px solid var(--rule);color:var(--ink-m);border-radius:var(--rs);font-size:.88rem;font-weight:500;transition:border-color .2s,background .2s}
 .btn-o:hover{border-color:var(--teal);background:var(--teal-s);color:var(--teal);text-decoration:none}
 
@@ -382,8 +418,8 @@ nav.visible{opacity:1;pointer-events:all}
 
 /* WHY GRID */
 .why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:48px}
-.why-card{background:var(--bgp);border:1px solid var(--rule);border-radius:var(--r);padding:26px;transition:box-shadow .28s,transform .28s}
-.why-card:hover{box-shadow:var(--sh2);transform:translateY(-3px)}
+.why-card{background:var(--bgp);border:1px solid var(--rule);border-radius:var(--r);padding:26px;transition:box-shadow .28s,transform .28s,border-color .28s}
+.why-card:hover{box-shadow:var(--sh3);transform:translateY(-4px);border-color:rgba(212,43,81,.15)}
 .wc-num{font-family:var(--fm);font-size:.69rem;color:var(--pink);font-weight:700;margin-bottom:12px;letter-spacing:.04em}
 .why-card h3{font-family:var(--fs);font-size:1.05rem;font-weight:600;margin-bottom:8px;line-height:1.3;color:var(--ink)}
 .why-card p{font-size:.87rem;color:var(--ink-l);line-height:1.72}
@@ -400,8 +436,8 @@ nav.visible{opacity:1;pointer-events:all}
 .articles-intro-in{max-width:var(--max);margin:0 auto}
 .articles-body{padding:46px 24px;max-width:var(--max);margin:0 auto}
 .articles-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:22px}
-.ac{background:var(--bgp);border:1px solid var(--rule);border-radius:var(--r);overflow:hidden;transition:box-shadow .28s,transform .28s}
-.ac:hover{box-shadow:var(--sh2);transform:translateY(-3px)}
+.ac{background:var(--bgp);border:1px solid var(--rule);border-radius:var(--r);overflow:hidden;transition:box-shadow .28s,transform .28s,border-color .3s}
+.ac:hover{box-shadow:var(--sh3);transform:translateY(-4px);border-color:rgba(26,107,107,.2)}
 .ac-thumb{height:154px;background:var(--bgw);display:flex;align-items:center;justify-content:center;font-size:2.3rem;border-bottom:1px solid var(--rule);position:relative}
 .ac-tag{position:absolute;top:10px;left:10px;padding:3px 9px;border-radius:11px;font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;background:var(--pink);color:#fff}
 .ac-body{padding:18px}
@@ -425,7 +461,9 @@ nav.visible{opacity:1;pointer-events:all}
 .cbody{padding:38px 24px;max-width:var(--max);margin:0 auto}
 .cl{display:grid;grid-template-columns:1fr 330px;gap:26px;align-items:start}
 .fc{background:var(--bgp);border:1px solid var(--rule);border-radius:var(--r);padding:26px}
-.rc{background:var(--bgp);border:1px solid var(--rule);border-radius:var(--r);padding:22px;box-shadow:var(--sh1);position:sticky;top:108px}
+.rc{background:var(--bgp);border:1px solid var(--rule);border-radius:var(--r);padding:22px;box-shadow:var(--sh2);position:sticky;top:108px}
+.pdf-btn{width:100%;padding:11px;background:var(--teal);color:#fff;border-radius:var(--rs);font-size:.84rem;font-weight:700;margin-top:14px;transition:background .2s,transform .15s;display:flex;align-items:center;justify-content:center;gap:6px}
+.pdf-btn:hover{background:#15585a;transform:translateY(-1px)}
 /* form */
 .fl{margin-bottom:17px}
 .fl-lbl{font-size:.73rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-m);margin-bottom:5px;display:flex;justify-content:space-between;align-items:center}
@@ -485,14 +523,14 @@ nav.visible{opacity:1;pointer-events:all}
 ───────────────────────────────────── */
 #bot-btn{
   position:fixed;bottom:28px;right:28px;z-index:4000;
-  width:52px;height:52px;border-radius:50%;
-  background:var(--ink);color:#fff;font-size:1.3rem;
-  box-shadow:0 4px 20px rgba(0,0,0,.22);
+  width:56px;height:56px;border-radius:50%;
+  background:linear-gradient(135deg,var(--ink) 0%,#2a2a3e 100%);color:#fff;font-size:1.3rem;
+  box-shadow:0 4px 24px rgba(0,0,0,.28),var(--glow-pink);
   display:flex;align-items:center;justify-content:center;
   cursor:pointer;transition:transform .2s,box-shadow .2s;
-  border:none;
+  border:2px solid rgba(212,43,81,.25);
 }
-#bot-btn:hover{transform:scale(1.08);box-shadow:0 6px 28px rgba(0,0,0,.3)}
+#bot-btn:hover{transform:scale(1.08);box-shadow:0 6px 32px rgba(0,0,0,.35),0 0 24px rgba(212,43,81,.25)}
 #bot-btn .bot-badge{
   position:absolute;top:-2px;right:-2px;width:14px;height:14px;
   background:var(--pink);border-radius:50%;border:2px solid var(--bg);
@@ -500,9 +538,11 @@ nav.visible{opacity:1;pointer-events:all}
 }
 #bot-panel{
   position:fixed;bottom:92px;right:28px;z-index:4000;
-  width:340px;background:var(--bgp);border:1px solid var(--rule);
-  border-radius:var(--r);overflow:hidden;box-shadow:0 12px 48px rgba(0,0,0,.14);
-  display:none;animation:slideUp .25s ease;
+  width:380px;max-height:calc(100vh - 120px);
+  background:var(--bgp);border:1px solid var(--rule);
+  border-radius:16px;overflow:hidden;box-shadow:0 16px 56px rgba(0,0,0,.18);
+  display:none;animation:slideUp .3s cubic-bezier(.34,1.56,.64,1);
+  flex-direction:column;
 }
 @keyframes slideUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 .bot-hdr{background:var(--ink);color:#fff;padding:14px 16px;display:flex;align-items:center;gap:10px}
@@ -510,7 +550,7 @@ nav.visible{opacity:1;pointer-events:all}
 .bot-hdr-t h4{font-size:.86rem;font-weight:700;margin-bottom:1px}
 .bot-hdr-t p{font-size:.67rem;opacity:.6}
 .bot-close{margin-left:auto;color:rgba(255,255,255,.6);font-size:1rem}
-.bot-msgs{height:300px;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:9px;background:var(--bgw)}
+.bot-msgs{height:auto;max-height:340px;min-height:200px;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:9px;background:var(--bgw);flex:1}
 .bmsg{max-width:88%;font-size:.81rem;line-height:1.62;padding:9px 13px;border-radius:var(--rs);animation:msgIn .22s ease}
 @keyframes msgIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
 .bmsg.bot{background:var(--bgp);border:1px solid var(--rule);align-self:flex-start;border-radius:4px 11px 11px 11px;color:var(--ink-m)}
@@ -722,7 +762,7 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:38px 24px}
   .mob-nav{display:flex}
   .hero{padding-top:88px}
   .data-panel{display:none}
-  #bot-panel{width:calc(100vw - 40px);right:20px}
+  #bot-panel{width:calc(100vw - 40px);right:20px;bottom:88px;max-height:calc(100vh - 110px)}
   .metric-strip{grid-template-columns:1fr 1fr}
   .strategy-grid{grid-template-columns:1fr}
   .paywall-features{grid-template-columns:1fr}
@@ -782,11 +822,11 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:38px 24px}
   <button class="mob-close" onclick="closeMob()">✕</button>
   <a href="#" onclick="nav('home');closeMob()">Home</a>
   <a href="#" onclick="nav('articles');closeMob()">Articles</a>
-  <a href="#" onclick="nav('calculators');closeMob()">Calculators</a>
   <a href="#" onclick="nav('planning');closeMob()">Planning</a>
+  <a href="#" onclick="nav('calculators');closeMob()">Calculators</a>
   <a href="#" onclick="nav('insurance');closeMob()">Insurance IRR</a>
-  <a href="#" onclick="nav('ratios');closeMob()">Ratio Analysis</a>
   <a href="#" onclick="nav('debt');closeMob()" style="color:var(--pink)">Debt Check</a>
+  <a href="#" onclick="nav('ratios');closeMob()">Ratio Analysis</a>
   <a href="#" onclick="nav('faq');closeMob()">FAQ</a>
   <a href="#" onclick="nav('contact');closeMob()">Contact</a>
 </div>
@@ -804,11 +844,11 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:38px 24px}
     <div class="nav-links">
       <a href="#" onclick="nav('home')">Home</a>
       <a href="#" onclick="nav('articles')">Articles</a>
-      <a href="#" onclick="nav('calculators')">Calculators</a>
       <a href="#" onclick="nav('planning')">Planning</a>
+      <a href="#" onclick="nav('calculators')">Calculators</a>
       <a href="#" onclick="nav('insurance')">Insurance IRR</a>
-      <a href="#" onclick="nav('ratios')">Ratio Analysis</a>
       <a href="#" onclick="nav('debt')">Debt Check</a>
+      <a href="#" onclick="nav('ratios')">Ratio Analysis</a>
       <a href="#" onclick="nav('faq')">FAQ</a>
       <a href="#" onclick="nav('contact')" class="nav-cta">Consult Us</a>
     </div>
@@ -831,12 +871,14 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:38px 24px}
     <button class="bot-close" onclick="toggleBot()">✕</button>
   </div>
   <div class="bot-msgs" id="botMsgs">
-    <div class="bmsg bot">Hello! I can help you think through personal finance questions — emergency funds, goal planning, insurance basics, and more. What's on your mind?</div>
+    <div class="bmsg bot">Hey there! 👋 I'm the ZNF Advisor — your personal finance guide. Ask me anything about SIPs, insurance, taxes, EMIs, retirement, or just how to make better money decisions. No jargon, no agenda — just honest answers. What's on your mind?</div>
   </div>
   <div class="bot-qs">
     <button class="bq" onclick="askBot('How much emergency fund should I have?')">Emergency fund</button>
     <button class="bq" onclick="askBot('When should I start investing?')">When to start</button>
     <button class="bq" onclick="askBot('How do I plan for retirement?')">Retirement</button>
+    <button class="bq" onclick="askBot('What is a SIP and how does it work?')">SIP basics</button>
+    <button class="bq" onclick="askBot('How can I save tax this year?')">Save tax</button>
     <button class="bq" onclick="askBot('Is my insurance plan worth it?')">Insurance check</button>
   </div>
   <div class="bot-inp-row">
@@ -1076,6 +1118,8 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:38px 24px}
         </div>
         <button class="calbtn" onclick="calcSIP()">Calculate Corpus</button>
         <div style="text-align:center;margin-top:12px"><a href="#" onclick="nav('faq');openFaq('sip')" style="font-size:.78rem;color:var(--teal);text-decoration:none">📖 How does this tool work? What do these options mean? →</a></div>
+      </div>
+      <div class="rc" id="res-sip">
         <div class="r-lbl">Projected Corpus</div>
         <div class="r-big" id="s_corpus">₹ —</div>
         <div class="r-sub" id="s_sub">Enter values above to see projection</div>
@@ -1087,6 +1131,7 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:38px 24px}
         <div class="donut-wrap"><canvas id="sip_donut" width="140" height="140"></canvas></div>
         <div id="s_goal_box"></div>
         <div class="nudge"><strong>A note on planning:</strong> Calculators provide direction. A personalised financial plan accounts for your tax situation, life goals, and changing circumstances over time.</div>
+        <button class="calbtn" style="margin-top:14px;background:var(--teal)" onclick="downloadPDF('sip')">📥 Download Result as PDF</button>
       </div>
     </div>
   </div>
@@ -1136,6 +1181,8 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:38px 24px}
         </div>
         <button class="calbtn" onclick="calcSU()">Calculate Corpus</button>
         <div style="text-align:center;margin-top:12px"><a href="#" onclick="nav('faq');openFaq('stepup')" style="font-size:.78rem;color:var(--teal);text-decoration:none">📖 What is Step-Up SIP and why does it matter so much? →</a></div>
+      </div>
+      <div class="rc" id="res-stepup">
         <div class="r-lbl">Step-Up Corpus</div>
         <div class="r-big" id="su_corpus">₹ —</div>
         <div class="r-sub" id="su_sub">Enter values above to see projection</div>
@@ -1152,6 +1199,7 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:38px 24px}
         </div>
         <div id="su_goal_box"></div>
         <div class="nudge"><strong>Timing tip:</strong> Increasing the SIP amount every April — aligned with annual salary increments — is the simplest way to automate wealth acceleration without lifestyle disruption.</div>
+        <button class="calbtn" style="margin-top:14px;background:var(--teal)" onclick="downloadPDF('stepup')">📥 Download Result as PDF</button>
       </div>
     </div>
   </div>
@@ -1188,6 +1236,8 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:38px 24px}
         </div>
         <button class="calbtn" onclick="calcRet()">Calculate Retirement Plan</button>
         <div style="text-align:center;margin-top:12px"><a href="#" onclick="nav('faq');openFaq('retirement')" style="font-size:.78rem;color:var(--teal);text-decoration:none">📖 How does retirement planning work and why start now? →</a></div>
+      </div>
+      <div class="rc" id="res-retirement">
         <div class="r-lbl">Corpus Required at Retirement</div>
         <div class="r-big" id="r_corpus">₹ —</div>
         <div class="r-sub" id="r_sub">Fill in details to see the full plan</div>
@@ -1204,6 +1254,7 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:38px 24px}
         </div>
         <div id="r_goal_box"></div>
         <div class="nudge"><strong>Healthcare note:</strong> Medical costs in India inflate at ~10–12% annually. A separate health corpus or comprehensive insurance coverage is an essential component of retirement planning.</div>
+        <button class="calbtn" style="margin-top:14px;background:var(--teal)" onclick="downloadPDF('retirement')">📥 Download Result as PDF</button>
       </div>
     </div>
   </div>
@@ -1300,6 +1351,7 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:38px 24px}
         <div class="result-row" style="margin-top:12px" id="tx_rows"></div>
         <div id="tx_breakdown"></div>
         <div id="tx_note" style="margin-top:12px;font-size:.78rem;color:var(--ink-l);line-height:1.65"></div>
+        <button class="calbtn" style="margin-top:14px;background:var(--teal)" onclick="downloadPDF('tax')">📥 Download Result as PDF</button>
       </div>
     </div>
   </div>
@@ -1344,6 +1396,7 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:38px 24px}
         <div class="rb" style="margin-bottom:12px"><div class="rb-v" id="em_total_pay">₹ —</div><div class="rb-k">Total Payment</div></div>
         <div class="donut-wrap"><canvas id="emi_donut" width="140" height="140"></canvas></div>
         <div id="em_afford"></div>
+        <button class="calbtn" style="margin-top:14px;background:var(--teal)" onclick="downloadPDF('emi')">📥 Download Result as PDF</button>
       </div>
     </div>
     <!-- Amortization Table -->
@@ -1464,7 +1517,7 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:38px 24px}
       </div>
     </div>
     <!-- AI moved to floating bot — no inline panel here -->
-    <div style="display:flex;flex-direction:column;gap:16px">
+    <div style="display:flex;flex-direction:column;gap:16px;position:sticky;top:80px;align-self:start">
       <div style="background:var(--bgp);border:1px solid var(--rule);border-radius:var(--r);padding:22px">
         <div style="font-family:var(--fs);font-size:1rem;font-weight:600;margin-bottom:10px">Have a question?</div>
         <p style="font-size:.85rem;color:var(--ink-l);line-height:1.72;margin-bottom:16px">The ZNF Advisor is available via the chat button at the bottom-right of every page. Ask anything about financial planning — emergency funds, retirement, insurance, savings — and receive clear, SEBI-compliant guidance.</p>
@@ -1544,6 +1597,7 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:38px 24px}
           <div class="rb" style="margin-top:9px"><div class="rb-v" id="irr_fd">₹ —</div><div class="rb-k">Same premiums in FD @ 7%</div></div>
         </div>
         <div class="nudge" style="margin-top:14px"><strong>For clarity:</strong> A pure term life plan combined with disciplined investing typically delivers superior outcomes in both protection and wealth creation compared to traditional insurance-investment combinations.</div>
+        <button class="calbtn" style="margin-top:14px;background:var(--teal)" onclick="downloadPDF('irr')">📥 Download Result as PDF</button>
       </div>
     </div>
   </div>
@@ -1683,7 +1737,7 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:38px 24px}
       <div class="fi">
         <h3 style="font-family:var(--fs);font-size:1.25rem;font-weight:600;margin-bottom:12px">Get in touch</h3>
         <p style="font-size:.88rem;color:var(--ink-l);line-height:1.82;margin-bottom:22px">Whether it is a specific question or a complete financial plan — reach out. The first conversation is always free, and always honest.</p>
-        <div class="cc"><div class="cc-ico">📧</div><div><div class="cc-lbl">Email</div><div class="cc-val">info@zeronoisefinance.com</div></div></div>
+        <div class="cc"><div class="cc-ico">📧</div><div><div class="cc-lbl">Email</div><div class="cc-val"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="95fcfbf3fad5eff0e7fafbfafce6f0f3fcfbf4fbf6f0bbf6faf8">[email&#160;protected]</a></div></div></div>
         <div class="cc"><div class="cc-ico">📱</div><div><div class="cc-lbl">Phone / WhatsApp</div><div class="cc-val">+91 91156 00369</div></div></div>
         <div class="cc"><div class="cc-ico">📍</div><div><div class="cc-lbl">Location</div><div class="cc-val">Chandigarh · Available across India</div></div></div>
         <div class="cc"><div class="cc-ico">⏰</div><div><div class="cc-lbl">Availability</div><div class="cc-val">Monday – Saturday, 9 AM – 7 PM</div></div></div>
@@ -1732,10 +1786,10 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:38px 24px}
       <div class="fc fi" style="margin-bottom:24px">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
           <div style="font-family:var(--fs);font-size:1rem;font-weight:600;color:var(--ink)">Your Loans</div>
-          <button class="btn-o" style="padding:7px 14px;font-size:.8rem" onclick="addLoan()">+ Add Loan</button>
         </div>
         <div id="loansContainer"></div>
-        <button class="calbtn" onclick="analyzDebt()" style="margin-top:8px">Analyze My Debt →</button>
+        <button class="btn-o" style="padding:10px 16px;font-size:.82rem;width:100%;margin-top:14px;justify-content:center;display:flex;border-style:dashed" onclick="addLoan()">+ Add Another Loan</button>
+        <button class="calbtn" onclick="analyzDebt()" style="margin-top:12px">Analyze My Debt →</button>
       </div>
 
       <!-- RESULTS -->
@@ -1831,8 +1885,8 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:38px 24px}
   <div class="calc-hdr">
     <div class="calc-hdr-in">
       <div class="s-label">Financial Education</div>
-      <h1 class="s-title">Frequently Asked Questions</h1>
-      <p class="s-sub">Plain language answers to every finance concept and tool on this site. No jargon. No assumptions. Start from zero.</p>
+      <h1 class="s-title">Got questions? Let's make sense of it all.</h1>
+      <p class="s-sub">Plain language answers to every finance concept and tool on this site. No jargon. No assumptions. Click any question to expand the answer — and switch to Hindi if you prefer.</p>
       <div style="margin-top:16px;display:flex;align-items:center;gap:8px">
         <span style="font-size:.78rem;color:var(--ink-l)">Language:</span>
         <button class="faq-lang-btn ip-lang-btn active" data-l="en" onclick="setFaqLang('en')">English</button>
@@ -1856,18 +1910,18 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:38px 24px}
 <footer>
   <div class="ft-in">
     <div>
-      <div class="ft-brand">Zero Noise Finance</div>
-      <div class="ft-disc">Disclaimer: All calculators are educational tools and do not constitute financial advice. Returns shown are illustrative and not guaranteed. Consult a SEBI-registered financial advisor before making investment decisions. Past performance is not indicative of future results. Tax calculations are based on FY 2025–26 rules and are for estimation only.</div>
+      <div class="ft-brand">Zero Noise Finance™</div>
+      <div class="ft-disc">Disclaimer: All calculators are educational tools and do not constitute financial advice. Returns shown are illustrative and not guaranteed. Consult a SEBI-registered financial advisor before making investment decisions. Past performance is not indicative of future results. Tax calculations are based on FY 2025–26 rules and are for estimation only. Zero Noise Finance™ is not a SEBI-registered entity. All tools are for educational purposes.</div>
     </div>
     <div>
       <div class="ft-links">
         <a href="#" onclick="nav('home')">Home</a><a href="#" onclick="nav('articles')">Articles</a>
-        <a href="#" onclick="nav('calculators')">Calculators</a><a href="#" onclick="nav('planning')">Planning</a>
-        <a href="#" onclick="nav('insurance')">Insurance IRR</a><a href="#" onclick="nav('ratios')">Ratio Analysis</a>
-        <a href="#" onclick="nav('debt')">Debt Check</a><a href="#" onclick="nav('faq')">FAQ</a>
+        <a href="#" onclick="nav('planning')">Planning</a><a href="#" onclick="nav('calculators')">Calculators</a>
+        <a href="#" onclick="nav('insurance')">Insurance IRR</a><a href="#" onclick="nav('debt')">Debt Check</a>
+        <a href="#" onclick="nav('ratios')">Ratio Analysis</a><a href="#" onclick="nav('faq')">FAQ</a>
         <a href="#" onclick="nav('contact')">Contact</a>
       </div>
-      <div style="margin-top:12px;font-size:.68rem;color:rgba(255,255,255,.28)">© 2025–26 Zero Noise Finance. Clarity Without Compromise.</div>
+      <div style="margin-top:12px;font-size:.68rem;color:rgba(255,255,255,.28)">© 2025–26 Zero Noise Finance™. Clarity Without Compromise.</div>
     </div>
   </div>
 </footer>
@@ -1875,7 +1929,7 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:38px 24px}
 <!-- ══════════════════════════════════
      JAVASCRIPT
 ══════════════════════════════════ -->
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* ══════════════════════════════════
    ZERO NOISE FINANCE — Main Script
    Clean rewrite, verified syntax
@@ -2012,6 +2066,104 @@ function drawDonut(id, principal, interest) {
 }
 
 /* ── CALCULATOR TABS ── */
+function setChip(id,val,sel,un1,un2){
+  document.getElementById(id).value=val;
+  document.getElementById(sel).classList.add('sel');
+  document.getElementById(un1).classList.remove('sel');
+  document.getElementById(un2).classList.remove('sel');
+}
+var stepUpFreq=12;
+function setFreq(btn,months){
+  stepUpFreq=months;
+  document.querySelectorAll('#su_freq .fchip').forEach(function(b){b.classList.remove('sel');});
+  btn.classList.add('sel');
+  calcSU();
+}
+/* ── PDF DOWNLOAD ── */
+function downloadPDF(calcType){
+  try{
+    var jsPDF=window.jspdf?window.jspdf.jsPDF:null;
+    if(!jsPDF){alert('PDF library loading. Please try again in a moment.');return;}
+    var doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+    var pageW=doc.internal.pageSize.getWidth();
+    var y=20;
+    // Header
+    doc.setFillColor(26,26,36);doc.rect(0,0,pageW,38,'F');
+    doc.setTextColor(255,255,255);doc.setFontSize(18);doc.setFont('helvetica','bold');
+    doc.text('Zero Noise Finance'+String.fromCharCode(8482),14,16);
+    doc.setFontSize(9);doc.setFont('helvetica','normal');
+    doc.setTextColor(180,180,200);doc.text('Clarity Without Compromise',14,24);
+    doc.text('Generated: '+new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'}),14,32);
+    y=48;
+    doc.setTextColor(26,26,36);
+    var titles={sip:'SIP Calculator Results',stepup:'Step-Up SIP Calculator Results',retirement:'Retirement Plan Results',tax:'Income Tax Calculator Results',emi:'EMI Calculator Results',irr:'Insurance IRR Analysis'};
+    doc.setFontSize(14);doc.setFont('helvetica','bold');
+    doc.text(titles[calcType]||'Calculator Results',14,y);y+=10;
+    doc.setDrawColor(212,43,81);doc.setLineWidth(0.5);doc.line(14,y-4,80,y-4);y+=4;
+    // Collect data from the relevant result panel
+    var resId='res-'+calcType;
+    if(calcType==='irr') resId=null; // insurance doesn't have res-irr, use parent
+    var panel=resId?document.getElementById(resId):null;
+    if(!panel){
+      // fallback: find the active panel's .rc
+      var activePanel=document.getElementById('panel-'+calcType);
+      if(activePanel) panel=activePanel.querySelector('.rc');
+      if(!panel){
+        // for insurance/emi which are structured differently
+        var page=document.getElementById('page-'+calcType==='irr'?'insurance':'calculators');
+        if(page) panel=page.querySelector('.rc');
+      }
+    }
+    doc.setFontSize(10);doc.setFont('helvetica','normal');
+    if(panel){
+      // Extract text content from result elements
+      var items=panel.querySelectorAll('.r-lbl, .r-big, .r-sub, .rb-v, .rb-k, .sbox, .nudge, .irr-num');
+      var prevType='';
+      items.forEach(function(el){
+        if(y>270){doc.addPage();y=20;}
+        var text=el.textContent.trim();if(!text)return;
+        if(el.classList.contains('r-lbl')){
+          doc.setFontSize(8);doc.setFont('helvetica','bold');doc.setTextColor(107,107,128);
+          y+=4;doc.text(text.toUpperCase(),14,y);y+=5;prevType='lbl';
+        } else if(el.classList.contains('r-big')||el.classList.contains('irr-num')){
+          doc.setFontSize(16);doc.setFont('helvetica','bold');doc.setTextColor(26,26,36);
+          doc.text(text,14,y);y+=8;prevType='big';
+        } else if(el.classList.contains('r-sub')){
+          doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(107,107,128);
+          doc.text(text,14,y);y+=7;prevType='sub';
+        } else if(el.classList.contains('rb-v')){
+          doc.setFontSize(11);doc.setFont('helvetica','bold');doc.setTextColor(26,26,36);
+          doc.text(text,16,y);prevType='rbv';
+        } else if(el.classList.contains('rb-k')){
+          doc.setFontSize(8);doc.setFont('helvetica','normal');doc.setTextColor(107,107,128);
+          doc.text(' — '+text,16+doc.getTextWidth(prevType==='rbv'?'':'')+2,y);y+=7;prevType='rbk';
+        } else if(el.classList.contains('sbox')){
+          doc.setFontSize(9);doc.setFont('helvetica','bold');
+          var lines=doc.splitTextToSize(text,pageW-28);
+          doc.setTextColor(30,126,79);doc.text(lines,14,y);y+=lines.length*5+4;
+        } else if(el.classList.contains('nudge')){
+          y+=3;doc.setFontSize(8);doc.setFont('helvetica','italic');doc.setTextColor(107,107,128);
+          var lines2=doc.splitTextToSize(text,pageW-28);
+          doc.text(lines2,14,y);y+=lines2.length*4+4;
+        }
+      });
+    }
+    // Disclaimer
+    y=Math.max(y+10,250);
+    if(y>270){doc.addPage();y=20;}
+    doc.setDrawColor(226,226,236);doc.line(14,y,pageW-14,y);y+=6;
+    doc.setFontSize(7);doc.setFont('helvetica','normal');doc.setTextColor(150,150,160);
+    var disc='DISCLAIMER: This document is generated by Zero Noise Finance'+String.fromCharCode(8482)+' calculators for educational purposes only. It does not constitute financial advice. Returns shown are illustrative and not guaranteed. Past performance is not indicative of future results. Consult a SEBI-registered financial advisor before making investment decisions. Tax calculations are based on FY2025-26 rules.';
+    var discLines=doc.splitTextToSize(disc,pageW-28);
+    doc.text(discLines,14,y);y+=discLines.length*3.5+4;
+    doc.setTextColor(212,43,81);doc.setFont('helvetica','bold');
+    doc.text('zeronoisefinance.com | For personalised guidance, contact us.',14,y);
+    doc.save('ZNF-'+titles[calcType].replace(/ /g,'-')+'.pdf');
+  }catch(e){
+    console.error('PDF generation error:',e);
+    alert('Could not generate PDF. Please try again.');
+  }
+}
 function switchCalc(id, btn) {
   ['sip','stepup','retirement','tax','emi'].forEach(function(p) {
     var el = document.getElementById('panel-' + p);
@@ -2043,6 +2195,9 @@ function calcSIP() {
   document.getElementById('s_inv').textContent   = fmt(invested);
   document.getElementById('s_gain').textContent  = fmt(total - invested);
   document.getElementById('s_sub').textContent   = 'at ' + rt + '% for ' + yrs + ' yrs';
+  var mult=invested>0?(total/invested).toFixed(1):'—';
+  document.getElementById('s_mult').textContent  = mult + '×';
+  drawDonut('sip_donut', invested, total-invested);
   var gb = document.getElementById('s_goal_box');
   if (goal > 0 && gb) {
     if (total >= goal) gb.innerHTML = '<div class="sbox s-ok">On track \u2014 surplus of ' + fmt(total-goal) + ' over your ' + fmt(goal) + ' goal.</div>';
@@ -2056,24 +2211,28 @@ function calcSU() {
   var yrs = parseFloat(document.getElementById('su_yr').value)||0;
   var rt  = parseFloat(document.getElementById('su_rt').value)||0;
   var su  = parseFloat(document.getElementById('su_sr').value)||0;
-  var freq= parseInt(document.getElementById('su_freq').value)||12;
+  var freq= stepUpFreq||12;
   document.getElementById('su_yr_r').value = yrs || 20;
   document.getElementById('su_sr_r').value = su  || 10;
   if (!amt||!yrs||!rt) return;
   var r = rt/100/12, corpus=0, s=amt, totalInv=0;
   var periods = yrs * 12;
+  var stepInterval = Math.round(12/freq);
   for (var m=0; m<periods; m++) {
     corpus = (corpus + s) * (1+r);
     totalInv += s;
-    if ((m+1) % freq === 0) s *= (1 + su/100);
+    if ((m+1) % stepInterval === 0) s *= (1 + su/100/(12/stepInterval));
   }
   var flat = amt*((Math.pow(1+r,periods)-1)/r)*(1+r);
   document.getElementById('su_corpus').textContent = fmt(corpus);
   document.getElementById('su_inv').textContent    = fmt(totalInv);
   document.getElementById('su_gain').textContent   = fmt(corpus-totalInv);
   document.getElementById('su_flat').textContent   = fmt(flat);
-  document.getElementById('su_extra').textContent  = fmt(corpus - flat);
+  document.getElementById('su_last').textContent   = fmt(s);
   document.getElementById('su_sub').textContent    = 'starting ' + fmt(amt) + '/mo, +' + su + '% p.a.';
+  var bb=document.getElementById('su_benefit_box'),bf=document.getElementById('su_benefit');
+  if(bb&&bf&&corpus>flat){bb.style.display='block';bf.textContent=fmt(corpus-flat);}
+  else if(bb) bb.style.display='none';
 }
 
 /* ── RETIREMENT ── */
@@ -2638,34 +2797,82 @@ function injectDebtInfoButtons(){
   }
 }
 setTimeout(injectInfoButtons,400);
+// Auto-add first loan
+setTimeout(function(){addLoan();},500);
 
 /* ── FAQ LANGUAGE ── */
 var faqLang='en';
 function setFaqLang(l){
   faqLang=l;
-  document.querySelectorAll('.faq-en').forEach(function(el){el.style.display=l==='en'?'':'none';});
-  document.querySelectorAll('.faq-hi').forEach(function(el){el.style.display=l==='hi'?'':'none';});
+  document.querySelectorAll('.faq-en').forEach(function(el){el.style.display=l==='en'?'block':'none';});
+  document.querySelectorAll('.faq-hi').forEach(function(el){el.style.display=l==='hi'?'block':'none';});
   document.querySelectorAll('.faq-lang-btn').forEach(function(b){b.classList.toggle('active',b.dataset.l===l);});
+  // Recalculate open accordion heights
+  document.querySelectorAll('.faq-body').forEach(function(body){
+    if(body.style.maxHeight && body.style.maxHeight!=='0px'){
+      body.style.maxHeight=body.scrollHeight+40+'px';
+    }
+  });
 }
 
 /* ── BOT ── */
 var botOpen=false;
 var botHistory=[];
-var BOT_SYS='You are the ZNF Advisor for Zero Noise Finance. You are a warm, knowledgeable personal finance guide for Indian users. Speak like a trusted friend. SEBI-compliant: general education only, never specific fund recommendations. If user writes in Hindi, respond in Hindi. Keep answers to 2 short paragraphs. Current India context: RBI Repo 5.25%, G-Sec 6.93%, new tax regime zero tax to Rs 12L. Never name specific products.';
+var BOT_SYS=`You are the ZNF Advisor — the friendly, knowledgeable personal finance guide at Zero Noise Finance™ (zeronoisefinance.com). 
+
+PERSONALITY: Warm, patient, conversational — like a trusted older sibling who genuinely understands money. Use simple language. Be encouraging, never condescending.
+
+RULES (SEBI-COMPLIANT):
+- General financial education ONLY. Never recommend specific mutual funds, stocks, or insurance products by name.
+- Never guarantee returns. Always say "historically" or "typically" when citing numbers.
+- Always remind users that personalised advice requires understanding their full situation.
+- If someone asks for specific product recommendations, say: "I can explain the category and what to look for, but for specific product selection, a SEBI-registered advisor who knows your full situation would be the right step. You can reach us at the Contact page for personalised guidance."
+
+CAPABILITIES:
+- Explain any personal finance concept in plain language with relatable Indian examples
+- Help users understand SIPs, mutual funds, insurance, tax planning, EMIs, retirement
+- Do basic math/estimates in conversation (compound interest, inflation impact, EMI rough calc)
+- Understand Hindi, Hinglish, and English — respond in whatever language the user writes
+- Handle greetings, small talk, gratitude naturally — you're a real conversationalist
+- If someone shares emotions about money (stress, confusion, fear), acknowledge warmly first, then help
+
+CURRENT INDIA CONTEXT (2025-26):
+- RBI Repo Rate: 5.25% (rate cut cycle)
+- 10-Yr G-Sec Yield: 6.93%
+- New Tax Regime: Zero tax up to ₹12L (87A rebate), ₹12.75L for salaried (₹75k std deduction)
+- Equity (Nifty 50) historical: 12-15% CAGR over 15+ years
+- CPI Inflation: ~5-6%
+
+FORMAT: Keep responses to 2-3 short paragraphs maximum. Use ₹ for currency. End complex answers with a follow-up question to keep conversation flowing. After 3-4 exchanges on a topic, gently suggest: "For a complete plan tailored to your situation, you can reach out to us via the Contact page — the first conversation is always free."`;
 var lKB={
-  'emergency':['Think of an emergency fund as your financial seatbelt. The target is 3-6 months of total monthly expenses. Keep it in a savings account or liquid fund - not stocks.\n\nWhat are your monthly expenses roughly?'],
-  'sip':['SIP means investing a fixed amount every month automatically. When markets fall you buy more units cheaply, when they rise existing units gain value.\n\nThe real power is consistency over time. How long are you planning to invest?'],
-  'insurance':['Insurance and investment should always be separate decisions. Buy a pure term plan for life cover - large cover, small premium. Get health insurance independent of your employer.\n\nDo you currently have any insurance in place?'],
-  'retirement':['Retirement planning starts with one question: how much do you spend per month now? That figure inflated at 6-7% annually is what you need at retirement - for 25-30 years without working.\n\nWhat is your current age and when do you want to retire?'],
-  'term':['Term insurance is simple: small premium, your family gets a large sum if something happens. A Rs 1 crore plan in your 30s costs roughly Rs 10-15k per year.\n\nDo you have dependants relying on your income?'],
-  'debt':['Not all debt is the same. Credit card debt at 36-42% interest is financial quicksand - pay it first. Personal loans next. Home loans at 8-9% are more manageable.\n\nWhat kind of debt are you dealing with?'],
-  'tax':['India has two tax regimes. New regime: lower rates, no deductions, zero tax to Rs 12L. Old regime: higher rates but allows 80C, NPS, 80D, HRA deductions.\n\nWhat is your approximate annual income?'],
-  'hello':['Hello! I am the ZNF Advisor - your finance friend without an agenda. What financial question can I help you think through today?'],
-  'hi':['Hey! Great to have you here. I can help with emergency funds, SIPs, insurance, tax, EMI calculations, and more.\n\nWhat is on your mind?'],
-  'thanks':['Of course! Finance becomes much clearer once the fundamentals click. Feel free to come back anytime.\n\nIs there anything else on your mind?'],
-  'default':['Good question. The honest answer is: it depends on your situation - and that is the right kind of complexity.\n\nCould you share a bit more context? Age, what you are trying to figure out, any existing investments or loans?',
-    'I want to give you something genuinely useful here. Can you share a bit more about your financial situation?\n\nOnce I know that, I can give you a focused, honest answer.',
-    'Finance is one of those areas where the right answer depends on your specific situation. Tell me more about what you are trying to figure out and I will give you my most honest take.']
+  'emergency':['Think of an emergency fund as your financial seatbelt — you hope you never need it, but it\'s non-negotiable. The target is 3-6 months of total monthly expenses in a savings account or liquid fund.\n\nFor example, if you spend ₹40,000/month, aim for ₹1.5-2.5 lakh parked safely. This is step one before any investing. What are your monthly expenses roughly? I can help you set a target.'],
+  'sip':['SIP is beautifully simple — you invest a fixed amount every month automatically. When markets fall, your ₹5,000 buys MORE units (like a sale!). When markets rise, your existing units grow in value.\n\nThe real magic is consistency + time. A ₹5,000 SIP at 12% for 20 years grows to about ₹49.5 lakh — you only invested ₹12 lakh. The rest is pure compounding. How much are you thinking of starting with?'],
+  'mutual fund':['Mutual funds pool money from many investors and a professional fund manager invests it. Think of it as hiring an expert chef instead of cooking yourself.\n\nThere are three main types: Equity funds (stocks, higher returns ~12-15%, more volatile), Debt funds (bonds, steadier ~6-8%), and Hybrid (mix of both ~10-12%). For goals 7+ years away, equity is historically the best bet. What\'s your investment timeline?'],
+  'insurance':['Here\'s the golden rule: insurance is for PROTECTION, not investment. Keep them separate.\n\nBuy a pure term life plan (₹1 crore cover costs just ₹10-15k/year in your 30s) + a good health insurance policy (independent of employer). Then invest separately in mutual funds for wealth. Mixing the two almost always gives poor returns. Do you currently have any insurance?'],
+  'retirement':['Retirement planning boils down to one scary but empowering number: how much do you spend per month? That figure, inflated at 6-7% annually, is what you\'ll need every month for 25-30 years after you stop working.\n\nQuick example: ₹50k/month today becomes ₹2.87 lakh/month in 30 years at 6% inflation. You\'d need roughly ₹4.7 crore corpus. Sounds huge, but a ₹11,000 SIP started at 30 can get you there. What\'s your current age?'],
+  'term':['Term insurance is the purest form of life cover — small premium, BIG protection. If something happens to you, your family gets ₹1 crore (or whatever sum you choose). If nothing happens, the premium is gone — and that\'s perfectly fine.\n\nA 30-year-old can get ₹1 crore cover for roughly ₹10-15k/year. That\'s less than ₹1,250/month for your family\'s complete financial security. Do you have dependants relying on your income?'],
+  'debt':['Not all debt is created equal! Credit card debt at 36-42% interest is financial quicksand — pay it off yesterday. Personal loans at 12-18% are next. Home loans at 8-9% are the most manageable.\n\nTwo popular strategies: Snowball (pay smallest loan first for quick wins) and Avalanche (pay highest-interest first to save the most). Our Debt Health Check tool can analyse your exact situation. What loans do you currently have?'],
+  'tax':['Good news for FY2025-26: under the new tax regime, you pay ZERO tax up to ₹12 lakh income (₹12.75 lakh if salaried, thanks to ₹75k standard deduction). No deductions needed!\n\nThe old regime still works better if you have heavy deductions — ₹1.5L in 80C + ₹50k NPS + HRA + 80D can save a lot at higher incomes. Our Income Tax Calculator compares both regimes instantly. What\'s your approximate annual income?'],
+  'gold':['Gold is a good hedge against inflation and currency depreciation, but it shouldn\'t be your primary investment. A sensible allocation is 5-10% of your portfolio.\n\nFor investing in gold, Sovereign Gold Bonds (SGBs) are the best option — you get gold price returns PLUS 2.5% annual interest, and zero capital gains tax if held to maturity. Physical gold has making charges and storage hassles. What percentage of your portfolio is in gold currently?'],
+  'fd':['Fixed Deposits are safe and predictable — currently offering 6.5-7.5% in most banks. But here\'s the catch: after tax (30% bracket), your real return is about 4.5-5.2%, and if inflation is 6%, you\'re actually LOSING purchasing power.\n\nFDs are perfect for emergency funds and short-term goals (1-3 years). For anything longer, equity mutual funds have historically delivered much better real returns. What are you planning to use the FD for?'],
+  'ppf':['PPF is one of India\'s best tax-saving instruments — currently giving 7.1% with EEE tax benefit (Exempt at investment, Exempt on growth, Exempt at withdrawal). That\'s effectively 10%+ pre-tax return!\n\nThe catch is the 15-year lock-in. Perfect for retirement planning or your child\'s education fund. Max ₹1.5 lakh/year (counts under 80C). For shorter goals, look at ELSS mutual funds instead (3-year lock-in). Are you already investing in PPF?'],
+  'nps':['NPS (National Pension System) gives you an extra ₹50,000 tax deduction under 80CCD(1B) — that\'s OVER AND ABOVE the ₹1.5 lakh 80C limit. In the 30% tax bracket, that\'s ₹15,600 saved instantly.\n\nNPS invests in a mix of equity, corporate bonds, and government securities. Historical returns have been 9-12% depending on allocation. The trade-off: money is locked until 60, and 40% must go into an annuity. Worth it for the tax savings alone though.'],
+  'emi':['EMI has two hidden parts: principal (returning the borrowed amount) and interest (the cost of borrowing). In the early months, almost all your EMI is interest — the bank collects its profit first!\n\nGolden rule: total EMIs (all loans combined) should never exceed 35-40% of your monthly take-home salary. Above 50% is danger zone. Our EMI Calculator shows you the exact breakdown. What loan are you considering?'],
+  'hello':['Hello! Welcome to Zero Noise Finance™ 👋 I\'m the ZNF Advisor — think of me as your finance friend who actually explains things clearly.\n\nI can help you think through SIPs, insurance, taxes, EMIs, retirement planning, or any money question on your mind. What would you like to explore?'],
+  'hi':['Hey there! 👋 Great to have you here. I can help with pretty much any personal finance question — emergency funds, SIPs, insurance, tax planning, EMIs, retirement, and more.\n\nNo jargon, no product pushing — just clear thinking. What\'s on your mind?'],
+  'good morning':['Good morning! ☀️ Hope you\'re having a great start to the day. I\'m here whenever you need help thinking through any money question.\n\nWhat can I help you with today?'],
+  'good evening':['Good evening! 🌙 Great time to think about finances — the day\'s distractions are winding down. What would you like to explore?'],
+  'thanks':['You\'re most welcome! Finance becomes so much clearer once the fundamentals click. You\'re asking the right questions, and that\'s genuinely the hardest part.\n\nFeel free to come back anytime. And if you\'d like a complete plan tailored to your specific situation, you can reach out via the Contact page — the first conversation is always free and always honest. 😊'],
+  'thank you':['Happy to help! 😊 You\'re on the right track by asking these questions. Most people never even start — so you\'re already ahead.\n\nIf you ever want a personalised plan that accounts for your exact income, goals, and family situation, just head to the Contact page. No pressure — whenever you\'re ready.'],
+  'who are you':['I\'m the ZNF Advisor — the AI assistant at Zero Noise Finance™. I help people understand personal finance in plain language, without jargon or product pushing.\n\nI can explain SIPs, insurance, taxes, EMIs, retirement — basically anything related to your money. I follow SEBI guidelines, so I won\'t recommend specific products, but I\'ll help you understand what to look for. What can I help with?'],
+  'how are you':['I\'m doing great, thanks for asking! 😊 Always ready to chat about finance. How about you — any money questions keeping you up at night?'],
+  'namaste':['Namaste! 🙏 Zero Noise Finance mein aapka swagat hai. Main aapki personal finance se judi kisi bhi sawal mein madad kar sakta hoon — SIP, insurance, tax, EMI, retirement, kuch bhi.\n\nKya poochna chahenge?'],
+  'kya':['Haan, bataiye! Main yahaan hoon aapki madad ke liye. Personal finance se juda koi bhi sawaal ho — SIP, insurance, tax, loan, retirement — befikr hokar poochiye. 😊'],
+  'confused':['That\'s completely normal — personal finance can feel overwhelming because there\'s SO much conflicting advice out there. That\'s exactly why Zero Noise Finance exists.\n\nLet\'s break it down step by step. What\'s the specific area that\'s confusing you? I promise to explain it in plain language.'],
+  'scared':['Money worries are genuinely stressful, and it\'s okay to feel that way. The good news is that even small, consistent steps make a massive difference over time.\n\nLet\'s start with where you are right now — no judgment. What\'s the biggest financial concern on your mind?'],
+  'default':['Good question! The honest answer is: it depends on your specific situation — and that\'s actually a good thing, because it means the right answer exists for you.\n\nCould you share a bit more context? Things like your age, what you\'re trying to achieve, any existing investments or loans — that helps me give you something genuinely useful.',
+    'I want to make sure I give you something actually helpful here. Can you share a bit more about your situation? Once I know the basics, I can give you a focused, honest answer.\n\nOr if you\'d prefer, you can use our calculators to run the numbers yourself — they\'re designed to give you clarity in seconds.',
+    'Finance is one of those areas where the right answer really depends on your specific numbers. Tell me what you\'re trying to figure out, and I\'ll give you my most honest take.\n\nFor a complete personalised plan, you can also reach us via the Contact page — the first conversation is always free.']
 };
 function getLocalReply(q){
   var ql=q.toLowerCase();
@@ -2690,7 +2897,7 @@ async function callAI(q){
 }
 function toggleBot(){
   botOpen=!botOpen;
-  var p=document.getElementById('bot-panel'); if(p) p.style.display=botOpen?'block':'none';
+  var p=document.getElementById('bot-panel'); if(p) p.style.display=botOpen?'flex':'none';
   if(botOpen) scrollBotMsgs();
 }
 async function sendBot(){
@@ -2704,7 +2911,16 @@ async function sendBot(){
   typ.remove(); appendBot(reply,'bot');
 }
 function askBot(q){var inp=document.getElementById('botInput');if(inp)inp.value=q;if(!botOpen)toggleBot();sendBot();}
-function appendBot(msg,role){var d=document.createElement('div');d.className='bmsg '+role;d.textContent=msg;var m=document.getElementById('botMsgs');if(m)m.appendChild(d);scrollBotMsgs();}
+function appendBot(msg,role){
+  var d=document.createElement('div');d.className='bmsg '+role;
+  if(role==='bot'){
+    // Convert newlines to proper paragraphs for bot messages
+    d.innerHTML=msg.replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
+  } else {
+    d.textContent=msg;
+  }
+  var m=document.getElementById('botMsgs');if(m)m.appendChild(d);scrollBotMsgs();
+}
 function scrollBotMsgs(){var m=document.getElementById('botMsgs');if(m)m.scrollTop=m.scrollHeight;}
 
 /* ── FAQ SYSTEM ── */
@@ -2754,44 +2970,69 @@ function buildFAQ(){
   Object.keys(topics).forEach(function(topic){
     navHtml+='<div style="font-size:.69rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-l);padding:8px 0 4px">'+topic+'</div>';
     topics[topic].forEach(function(f){
-      navHtml+='<a href="#faq-'+f.id+'" onclick="event.preventDefault();var e=document.getElementById(\'faq-'+f.id+'\');if(e)e.scrollIntoView({behavior:\'smooth\',block:\'start\'})" style="display:block;padding:5px 8px;font-size:.79rem;color:var(--ink-m);border-radius:4px;transition:background .18s;text-decoration:none;line-height:1.4" onmouseover="this.style.background=\'var(--bgw)\'" onmouseout="this.style.background=\'\'">'+f.q.replace(' \u2014','').replace('?','')+'</a>';
-      contentHtml+='<div id="faq-'+f.id+'" style="background:var(--bgp);border:1px solid var(--rule);border-radius:var(--r);padding:26px;margin-bottom:14px;scroll-margin-top:80px">'
-        +'<div style="font-size:.69rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--pink);margin-bottom:8px">'+topic+'</div>'
-        +'<h3 style="font-family:var(--fs);font-size:1.12rem;font-weight:600;color:var(--ink);margin-bottom:14px;line-height:1.3">'+f.q+'</h3>'
-        +'<div class="faq-en" style="font-size:.88rem;color:var(--ink-m);line-height:1.82">'+f.a+'</div>'
-        +(f.aHi?'<div class="faq-hi" style="font-size:.88rem;color:var(--ink-m);line-height:1.88;display:none">'+f.aHi+'</div>':'')
+      navHtml+='<a href="#faq-'+f.id+'" onclick="event.preventDefault();toggleFaqItem(\''+f.id+'\');var e=document.getElementById(\'faq-'+f.id+'\');if(e)e.scrollIntoView({behavior:\'smooth\',block:\'start\'})" style="display:block;padding:5px 8px;font-size:.79rem;color:var(--ink-m);border-radius:4px;transition:background .18s;text-decoration:none;line-height:1.4" onmouseover="this.style.background=\'var(--bgw)\'" onmouseout="this.style.background=\'\'">'+f.q.replace(' \u2014','').replace('?','')+'</a>';
+      contentHtml+='<div id="faq-'+f.id+'" class="faq-card" style="background:var(--bgp);border:1px solid var(--rule);border-radius:var(--r);margin-bottom:14px;scroll-margin-top:80px;overflow:hidden;transition:border-color .2s">'
+        +'<div class="faq-header" onclick="toggleFaqItem(\''+f.id+'\')" style="display:flex;align-items:center;justify-content:space-between;padding:18px 22px;cursor:pointer;user-select:none;transition:background .15s">'
+        +'<div style="flex:1"><div style="font-size:.69rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--pink);margin-bottom:4px">'+topic+'</div>'
+        +'<h3 style="font-family:var(--fs);font-size:1.05rem;font-weight:600;color:var(--ink);line-height:1.3;margin:0">'+f.q+'</h3></div>'
+        +'<div class="faq-arrow" style="font-size:1rem;color:var(--ink-l);flex-shrink:0;margin-left:12px;transition:transform .25s;transform:rotate(0deg)">▼</div>'
+        +'</div>'
+        +'<div class="faq-body" style="max-height:0;overflow:hidden;transition:max-height .35s ease,padding .25s ease;padding:0 22px">'
+        +'<div class="faq-en" style="font-size:.88rem;color:var(--ink-m);line-height:1.82;padding-bottom:18px">'+f.a+'</div>'
+        +(f.aHi?'<div class="faq-hi" style="font-size:.88rem;color:var(--ink-m);line-height:1.88;display:none;padding-bottom:18px">'+f.aHi+'</div>':'')
+        +'</div>'
         +'</div>';
     });
   });
   navEl.innerHTML=navHtml;
   content.innerHTML=contentHtml;
 }
+function toggleFaqItem(id){
+  var card=document.getElementById('faq-'+id);
+  if(!card) return;
+  var body=card.querySelector('.faq-body');
+  var arrow=card.querySelector('.faq-arrow');
+  var isOpen=body.style.maxHeight && body.style.maxHeight!=='0px';
+  if(isOpen){
+    body.style.maxHeight='0';body.style.padding='0 22px';
+    if(arrow) arrow.style.transform='rotate(0deg)';
+    card.style.borderColor='var(--rule)';
+  } else {
+    body.style.maxHeight=body.scrollHeight+40+'px';body.style.padding='0 22px';
+    if(arrow) arrow.style.transform='rotate(180deg)';
+    card.style.borderColor='rgba(212,43,81,.25)';
+  }
+}
 function openFaq(id){
   setTimeout(function(){
+    toggleFaqItem(id);
     var el=document.getElementById('faq-'+id);
     if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
-  },120);
+  },200);
 }
 buildFAQ();
 
 /* ── CONTACT ── */
 var W3F_KEY='b54d2da6-ceaf-495a-aa05-f55331495fed';
+function sanitize(str){return String(str||'').replace(/[<>'"]/g,'').trim();}
 function isSpam(name,email,msg){
   if(!name||name.trim().length<2) return 'Please enter your full name.';
   if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return 'Please enter a valid email.';
   if(!msg||msg.trim().length<20) return 'Please describe your question (20+ chars).';
-  var bad=['casino','lottery','win prize','free money','crypto pump','guaranteed profit','mlm','ponzi'];
+  if(name.length>100||email.length>100||msg.length>5000) return 'Input too long. Please shorten.';
+  var bad=['casino','lottery','win prize','free money','crypto pump','guaranteed profit','mlm','ponzi','bitcoin doubler','earn from home','click here','subscribe now'];
   var text=(name+' '+msg).toLowerCase();
   for(var i=0;i<bad.length;i++){if(text.indexOf(bad[i])>=0) return 'Message flagged. Please write a genuine enquiry.';}
+  if((msg.match(/http/gi)||[]).length>2) return 'Too many links. Please write a genuine enquiry.';
   return null;
 }
 async function submitContact(){
   var btn=event.currentTarget;
-  var name=document.getElementById('c_name').value.trim();
-  var phone=document.getElementById('c_ph').value.trim();
-  var email=document.getElementById('c_em').value.trim();
-  var plan=document.getElementById('c_ty').value;
-  var msg=document.getElementById('c_msg').value.trim();
+  var name=sanitize(document.getElementById('c_name').value);
+  var phone=sanitize(document.getElementById('c_ph').value);
+  var email=sanitize(document.getElementById('c_em').value);
+  var plan=sanitize(document.getElementById('c_ty').value);
+  var msg=sanitize(document.getElementById('c_msg').value);
   var err=isSpam(name,email,msg);
   if(err){showContactError(err);return;}
   btn.textContent='Sending\u2026';btn.disabled=true;clearContactError();
@@ -2825,14 +3066,7 @@ function showContactSuccess(){
   el.style.cssText='margin-top:10px;padding:10px 14px;border-radius:6px;font-size:.82rem;background:#edf7f2;color:#1e5c3a;border:1px solid #bbdece';
   el.textContent='\u2713 Message sent to info@zeronoisefinance.com. Nishant will reply within 24 hours.';
 }
-function clearContactError(){var el=document.getElementById('contact-msg');if(el)el.remove();}
-
-/* ── INIT ── */
-document.getElementById('s_yr_r').value=15;
-document.getElementById('su_yr_r').value=20;
-document.getElementById('su_sr_r').value=10;
-setTaxRegime('new');
-addLoan();
+function clearContactError(){var el=document.getElementById('contact-msg');if(el) el.remove();}
 </script>
 </body>
 </html>
