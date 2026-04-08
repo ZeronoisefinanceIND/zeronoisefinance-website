@@ -24,12 +24,11 @@
 <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
 <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
 <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval'; font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://api.anthropic.com https://api.web3forms.com https://cdnjs.cloudflare.com; connect-src 'self' https://api.anthropic.com https://api.web3forms.com; img-src 'self' data:;">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval'; font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://api.anthropic.com https://api.web3forms.com https://cdnjs.cloudflare.com https://unpkg.com; connect-src 'self' https://api.anthropic.com https://api.web3forms.com; img-src 'self' data:;">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Source+Sans+3:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <!-- EmailJS — for contact form email delivery. Sign up free at emailjs.com -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
 <script>
   // Initialize EmailJS with your public key once you have it
   // emailjs.init('YOUR_PUBLIC_KEY');
@@ -2080,89 +2079,181 @@ function setFreq(btn,months){
   calcSU();
 }
 /* ── PDF DOWNLOAD ── */
+var _pdfLoading=false;
+function loadJsPDF(cb){
+  if(window.jspdf&&window.jspdf.jsPDF){cb(window.jspdf.jsPDF);return;}
+  if(_pdfLoading){setTimeout(function(){loadJsPDF(cb);},500);return;}
+  _pdfLoading=true;
+  var urls=[
+    'https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',
+    'https://unpkg.com/jspdf@2.5.2/dist/jspdf.umd.min.js'
+  ];
+  var idx=0;
+  function tryNext(){
+    if(idx>=urls.length){_pdfLoading=false;cb(null);return;}
+    var s=document.createElement('script');
+    s.src=urls[idx]; idx++;
+    s.onload=function(){
+      _pdfLoading=false;
+      if(window.jspdf&&window.jspdf.jsPDF) cb(window.jspdf.jsPDF);
+      else tryNext();
+    };
+    s.onerror=function(){tryNext();};
+    document.head.appendChild(s);
+  }
+  tryNext();
+}
+
 function downloadPDF(calcType){
-  try{
-    var jsPDF=window.jspdf?window.jspdf.jsPDF:null;
-    if(!jsPDF){alert('PDF library loading. Please try again in a moment.');return;}
-    var doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
-    var pageW=doc.internal.pageSize.getWidth();
-    var y=20;
-    // Header
-    doc.setFillColor(26,26,36);doc.rect(0,0,pageW,38,'F');
-    doc.setTextColor(255,255,255);doc.setFontSize(18);doc.setFont('helvetica','bold');
-    doc.text('Zero Noise Finance'+String.fromCharCode(8482),14,16);
-    doc.setFontSize(9);doc.setFont('helvetica','normal');
-    doc.setTextColor(180,180,200);doc.text('Clarity Without Compromise',14,24);
-    doc.text('Generated: '+new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'}),14,32);
-    y=48;
-    doc.setTextColor(26,26,36);
-    var titles={sip:'SIP Calculator Results',stepup:'Step-Up SIP Calculator Results',retirement:'Retirement Plan Results',tax:'Income Tax Calculator Results',emi:'EMI Calculator Results',irr:'Insurance IRR Analysis'};
-    doc.setFontSize(14);doc.setFont('helvetica','bold');
-    doc.text(titles[calcType]||'Calculator Results',14,y);y+=10;
-    doc.setDrawColor(212,43,81);doc.setLineWidth(0.5);doc.line(14,y-4,80,y-4);y+=4;
-    // Collect data from the relevant result panel
-    var resId='res-'+calcType;
-    if(calcType==='irr') resId=null; // insurance doesn't have res-irr, use parent
-    var panel=resId?document.getElementById(resId):null;
-    if(!panel){
-      // fallback: find the active panel's .rc
-      var activePanel=document.getElementById('panel-'+calcType);
-      if(activePanel) panel=activePanel.querySelector('.rc');
+  var btn=event&&event.currentTarget;
+  if(btn){btn.textContent='⏳ Generating PDF...';btn.disabled=true;}
+
+  loadJsPDF(function(JsPDF){
+    if(!JsPDF){
+      if(btn){btn.textContent='📥 Download Result as PDF';btn.disabled=false;}
+      // Fallback: use print dialog
+      if(confirm('PDF library could not load. Would you like to use your browser\'s Print to PDF instead?')){
+        window.print();
+      }
+      return;
+    }
+    try{
+      var doc=new JsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+      var pageW=doc.internal.pageSize.getWidth();
+      var y=20;
+
+      // ─── Header bar ───
+      doc.setFillColor(26,26,36);doc.rect(0,0,pageW,40,'F');
+      doc.setFillColor(212,43,81);doc.rect(0,38,pageW,2,'F');
+      doc.setTextColor(255,255,255);doc.setFontSize(20);doc.setFont('helvetica','bold');
+      doc.text('ZERO NOISE FINANCE',14,18);
+      doc.setFontSize(8);doc.setFont('helvetica','normal');
+      doc.setTextColor(212,43,81);doc.text('TM',doc.getTextWidth('ZERO NOISE FINANCE')*20/doc.internal.getFontSize()+16,14);
+      doc.setTextColor(180,180,200);doc.setFontSize(9);
+      doc.text('Clarity Without Compromise',14,26);
+      doc.text('Generated: '+new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'}),14,33);
+      y=50;
+
+      // ─── Title ───
+      doc.setTextColor(26,26,36);
+      var titles={sip:'SIP Calculator Results',stepup:'Step-Up SIP Calculator Results',retirement:'Retirement Plan Results',tax:'Income Tax Calculator Results',emi:'EMI Calculator Results',irr:'Insurance IRR Analysis',ratios:'Ratio Analysis Report',debt:'Debt Health Check Report'};
+      doc.setFontSize(15);doc.setFont('helvetica','bold');
+      doc.text(titles[calcType]||'Calculator Results',14,y);y+=4;
+      doc.setDrawColor(212,43,81);doc.setLineWidth(0.6);doc.line(14,y,90,y);y+=10;
+
+      // ─── Find the results panel ───
+      var panel=document.getElementById('res-'+calcType);
       if(!panel){
-        // for insurance/emi which are structured differently
-        var page=document.getElementById('page-'+calcType==='irr'?'insurance':'calculators');
-        if(page) panel=page.querySelector('.rc');
+        // For pages where rc has no specific id
+        var containers={
+          tax:document.getElementById('panel-tax'),
+          emi:document.getElementById('panel-emi'),
+          irr:document.getElementById('page-insurance'),
+          ratios:document.getElementById('page-ratios'),
+          debt:document.getElementById('debtResults')
+        };
+        var container=containers[calcType]||document.getElementById('panel-'+calcType);
+        if(container) panel=container.querySelector('.rc')||container.querySelector('.ratio-rp')||container;
+      }
+
+      doc.setFontSize(10);doc.setFont('helvetica','normal');
+
+      if(panel){
+        // Extract meaningful data pairs
+        var bigEls=panel.querySelectorAll('.r-big, .irr-num');
+        var subEls=panel.querySelectorAll('.r-sub');
+        var rbEls=panel.querySelectorAll('.rb');
+        var sboxEls=panel.querySelectorAll('.sbox');
+        var nudgeEls=panel.querySelectorAll('.nudge');
+        var lblEls=panel.querySelectorAll('.r-lbl');
+
+        // Main result
+        lblEls.forEach(function(el){
+          var text=el.textContent.trim();if(!text)return;
+          doc.setFontSize(9);doc.setFont('helvetica','bold');doc.setTextColor(107,107,128);
+          doc.text(text.toUpperCase(),14,y);y+=6;
+        });
+        bigEls.forEach(function(el){
+          var text=el.textContent.trim();if(!text||text==='—'||text==='— ')return;
+          doc.setFontSize(18);doc.setFont('helvetica','bold');doc.setTextColor(26,26,36);
+          doc.text(text,14,y);y+=9;
+        });
+        subEls.forEach(function(el){
+          var text=el.textContent.trim();if(!text)return;
+          doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(107,107,128);
+          doc.text(text,14,y);y+=7;
+        });
+
+        // Key-value pairs from .rb boxes
+        if(rbEls.length>0){
+          y+=3;
+          doc.setDrawColor(226,226,236);doc.setLineWidth(0.2);doc.line(14,y-2,pageW-14,y-2);y+=4;
+          rbEls.forEach(function(rb){
+            if(y>265){doc.addPage();y=20;}
+            var val=rb.querySelector('.rb-v');
+            var key=rb.querySelector('.rb-k');
+            if(val&&key){
+              var vText=val.textContent.trim();
+              var kText=key.textContent.trim();
+              if(vText&&vText!=='₹ —'&&vText!=='—'){
+                doc.setFontSize(11);doc.setFont('helvetica','bold');doc.setTextColor(26,26,36);
+                doc.text(vText,16,y);
+                doc.setFontSize(8);doc.setFont('helvetica','normal');doc.setTextColor(107,107,128);
+                doc.text('  '+kText,16+doc.getTextWidth(vText)+2,y);
+                y+=7;
+              }
+            }
+          });
+        }
+
+        // Status boxes
+        sboxEls.forEach(function(el){
+          if(y>265){doc.addPage();y=20;}
+          var text=el.textContent.trim();if(!text)return;
+          y+=4;
+          doc.setFillColor(237,247,242);doc.roundedRect(14,y-5,pageW-28,12,2,2,'F');
+          doc.setFontSize(9);doc.setFont('helvetica','bold');doc.setTextColor(30,126,79);
+          var lines=doc.splitTextToSize(text,pageW-34);
+          doc.text(lines,16,y+1);y+=lines.length*5+8;
+        });
+
+        // Nudge/advisory notes
+        nudgeEls.forEach(function(el){
+          if(y>260){doc.addPage();y=20;}
+          var text=el.textContent.trim();if(!text)return;
+          y+=4;
+          doc.setFontSize(8);doc.setFont('helvetica','italic');doc.setTextColor(107,107,128);
+          var lines=doc.splitTextToSize(text,pageW-32);
+          doc.text(lines,16,y);y+=lines.length*4+6;
+        });
+      }
+
+      // ─── Disclaimer ───
+      y=Math.max(y+12,240);
+      if(y>268){doc.addPage();y=20;}
+      doc.setDrawColor(226,226,236);doc.setLineWidth(0.3);doc.line(14,y,pageW-14,y);y+=7;
+      doc.setFontSize(7);doc.setFont('helvetica','normal');doc.setTextColor(140,140,155);
+      var disc='IMPORTANT DISCLAIMER: This document is generated by Zero Noise Finance\u2122 calculators for educational and informational purposes only. It does not constitute financial, investment, tax, or legal advice. All figures shown are illustrative projections based on the assumptions entered and are NOT guaranteed. Actual results may vary significantly. Past performance of any asset class is not indicative of future results. Tax calculations are based on Indian FY 2025-26 rules and may change. Zero Noise Finance\u2122 is not a SEBI-registered investment advisor. Always consult a qualified, SEBI-registered financial advisor before making any investment, insurance, or tax decisions.';
+      var discLines=doc.splitTextToSize(disc,pageW-28);
+      doc.text(discLines,14,y);y+=discLines.length*3.5+6;
+
+      // ─── Footer ───
+      doc.setFillColor(26,26,36);doc.rect(0,doc.internal.pageSize.getHeight()-12,pageW,12,'F');
+      doc.setTextColor(212,43,81);doc.setFont('helvetica','bold');doc.setFontSize(8);
+      doc.text('zeronoisefinance.com',14,doc.internal.pageSize.getHeight()-4);
+      doc.setTextColor(180,180,200);doc.setFont('helvetica','normal');
+      doc.text('For personalised guidance: info@zeronoisefinance.com | +91 91156 00369',pageW-14,doc.internal.pageSize.getHeight()-4,{align:'right'});
+
+      doc.save('ZNF-'+(titles[calcType]||'Report').replace(/ /g,'-')+'.pdf');
+    }catch(e){
+      console.error('PDF generation error:',e);
+      if(confirm('PDF generation encountered an error. Use browser Print to PDF instead?')){
+        window.print();
       }
     }
-    doc.setFontSize(10);doc.setFont('helvetica','normal');
-    if(panel){
-      // Extract text content from result elements
-      var items=panel.querySelectorAll('.r-lbl, .r-big, .r-sub, .rb-v, .rb-k, .sbox, .nudge, .irr-num');
-      var prevType='';
-      items.forEach(function(el){
-        if(y>270){doc.addPage();y=20;}
-        var text=el.textContent.trim();if(!text)return;
-        if(el.classList.contains('r-lbl')){
-          doc.setFontSize(8);doc.setFont('helvetica','bold');doc.setTextColor(107,107,128);
-          y+=4;doc.text(text.toUpperCase(),14,y);y+=5;prevType='lbl';
-        } else if(el.classList.contains('r-big')||el.classList.contains('irr-num')){
-          doc.setFontSize(16);doc.setFont('helvetica','bold');doc.setTextColor(26,26,36);
-          doc.text(text,14,y);y+=8;prevType='big';
-        } else if(el.classList.contains('r-sub')){
-          doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(107,107,128);
-          doc.text(text,14,y);y+=7;prevType='sub';
-        } else if(el.classList.contains('rb-v')){
-          doc.setFontSize(11);doc.setFont('helvetica','bold');doc.setTextColor(26,26,36);
-          doc.text(text,16,y);prevType='rbv';
-        } else if(el.classList.contains('rb-k')){
-          doc.setFontSize(8);doc.setFont('helvetica','normal');doc.setTextColor(107,107,128);
-          doc.text(' — '+text,16+doc.getTextWidth(prevType==='rbv'?'':'')+2,y);y+=7;prevType='rbk';
-        } else if(el.classList.contains('sbox')){
-          doc.setFontSize(9);doc.setFont('helvetica','bold');
-          var lines=doc.splitTextToSize(text,pageW-28);
-          doc.setTextColor(30,126,79);doc.text(lines,14,y);y+=lines.length*5+4;
-        } else if(el.classList.contains('nudge')){
-          y+=3;doc.setFontSize(8);doc.setFont('helvetica','italic');doc.setTextColor(107,107,128);
-          var lines2=doc.splitTextToSize(text,pageW-28);
-          doc.text(lines2,14,y);y+=lines2.length*4+4;
-        }
-      });
-    }
-    // Disclaimer
-    y=Math.max(y+10,250);
-    if(y>270){doc.addPage();y=20;}
-    doc.setDrawColor(226,226,236);doc.line(14,y,pageW-14,y);y+=6;
-    doc.setFontSize(7);doc.setFont('helvetica','normal');doc.setTextColor(150,150,160);
-    var disc='DISCLAIMER: This document is generated by Zero Noise Finance'+String.fromCharCode(8482)+' calculators for educational purposes only. It does not constitute financial advice. Returns shown are illustrative and not guaranteed. Past performance is not indicative of future results. Consult a SEBI-registered financial advisor before making investment decisions. Tax calculations are based on FY2025-26 rules.';
-    var discLines=doc.splitTextToSize(disc,pageW-28);
-    doc.text(discLines,14,y);y+=discLines.length*3.5+4;
-    doc.setTextColor(212,43,81);doc.setFont('helvetica','bold');
-    doc.text('zeronoisefinance.com | For personalised guidance, contact us.',14,y);
-    doc.save('ZNF-'+titles[calcType].replace(/ /g,'-')+'.pdf');
-  }catch(e){
-    console.error('PDF generation error:',e);
-    alert('Could not generate PDF. Please try again.');
-  }
+    if(btn){btn.textContent='📥 Download Result as PDF';btn.disabled=false;}
+  });
 }
 function switchCalc(id, btn) {
   ['sip','stepup','retirement','tax','emi'].forEach(function(p) {
