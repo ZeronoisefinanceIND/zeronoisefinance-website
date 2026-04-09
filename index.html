@@ -14,14 +14,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Zero Noise Finance™ — Clarity Without Compromise | Free Indian Personal Finance Calculators</title>
-<meta name="description" content="Free SIP, retirement, EMI, income tax calculators for India. Insurance IRR analysis, debt health check, ratio analysis. SEBI-compliant financial education — no jargon, no product pushing.">
+<meta name="description" content="Free SIP, retirement, EMI, income tax calculators for India. Insurance IRR analysis, debt health check, ratio analysis. Clear, honest financial education — no jargon, no product pushing.">
 <meta name="keywords" content="SIP calculator India, retirement calculator, EMI calculator, income tax calculator FY2025-26, insurance IRR, mutual fund, personal finance India, financial planning, debt management, ratio analysis, SEBI, Zero Noise Finance">
 <meta name="author" content="Zero Noise Finance™">
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
 <link rel="canonical" href="https://zeronoisefinance.com/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Zero Noise Finance™ — Free Indian Personal Finance Calculators">
-<meta property="og:description" content="SIP, retirement, EMI, income tax calculators. Insurance IRR analysis, debt health check. SEBI-compliant financial education for India.">
+<meta property="og:description" content="SIP, retirement, EMI, income tax calculators. Insurance IRR analysis, debt health check. Clear, honest financial education for India.">
 <meta property="og:url" content="https://zeronoisefinance.com/">
 <meta property="og:site_name" content="Zero Noise Finance™">
 <meta name="twitter:card" content="summary_large_image">
@@ -105,12 +105,12 @@ input,select,textarea{font-family:var(--fb)}
 /* Logo wrapper — flex row */
 #loader-logo{
   position:relative;
-  display:flex;align-items:center;gap:4px;
+  display:flex;align-items:center;gap:8px;
 }
 
 /* NOISE + FINANCE — fade + slide up first */
 #ll-right{
-  display:flex;align-items:center;gap:4px;
+  display:flex;align-items:center;gap:8px;
   opacity:0;
   animation:llFadeUp .6s cubic-bezier(.22,1,.36,1) .1s forwards;
 }
@@ -134,8 +134,10 @@ input,select,textarea{font-family:var(--fb)}
 /* ZERO pill — only box-shadow glow, zero opacity/transform conflicts */
 .ll-zero{
   background:var(--pink);color:#fff;
-  font-family:var(--fb);font-weight:800;font-size:1.55rem;
-  letter-spacing:.03em;padding:6px 15px;border-radius:32px;line-height:1;
+  font-family:var(--fb);font-weight:800;font-size:.95rem;
+  letter-spacing:.03em;
+  width:44px;height:44px;border-radius:50%;line-height:1;
+  display:flex;align-items:center;justify-content:center;
   box-shadow:0 0 0 rgba(212,43,81,0);
   animation:zeroGlow .7s ease 1.2s forwards;
 }
@@ -145,16 +147,16 @@ input,select,textarea{font-family:var(--fb)}
   100%{box-shadow:0 0 16px 2px rgba(212,43,81,.22)}
 }
 
-/* NOISE pill */
+/* NOISE rectangle — matched to ZERO circle height */
 .ll-noise{
   background:#fff;color:#0a0a0c;
-  font-family:var(--fb);font-weight:700;font-size:1.55rem;
-  letter-spacing:.03em;padding:6px 15px;line-height:1;border-radius:4px;
+  font-family:var(--fb);font-weight:700;font-size:1.05rem;
+  letter-spacing:.03em;padding:5px 12px;line-height:1;border-radius:4px;
 }
 
-/* FINANCE text */
+/* FINANCE text — matched proportion */
 .ll-fin{
-  font-family:var(--fb);font-weight:700;font-size:1.55rem;color:#fff;
+  font-family:var(--fb);font-weight:700;font-size:1.05rem;color:#fff;
   letter-spacing:-.01em;
 }
 
@@ -183,24 +185,25 @@ input,select,textarea{font-family:var(--fb)}
   100%{opacity:0;background-position:-60% 0}
 }
 
-/* Horizontal line below logo — NOT absolutely positioned, avoids layout issues */
+/* Horizontal line below logo */
 #loader-line{
-  width:0;height:1.5px;margin-top:8px;
+  width:0;height:1.5px;margin-top:10px;
   background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);
   animation:lineSlice .4s ease-out 1.68s forwards;
 }
 @keyframes lineSlice{
   0%  {width:0;opacity:1}
-  72% {width:240px;opacity:1}
-  100%{width:300px;opacity:0}
+  72% {width:200px;opacity:1}
+  100%{width:240px;opacity:0}
 }
 
 /* Tagline */
 #loader-tag{
-  margin-top:22px;font-size:.73rem;letter-spacing:.2em;
-  text-transform:uppercase;color:rgba(255,255,255,.28);
+  margin-top:16px;font-size:.7rem;letter-spacing:.22em;
+  text-transform:uppercase;color:rgba(255,255,255,.32);
   opacity:0;animation:tagFade .5s ease .82s forwards;
   font-family:var(--fb);font-weight:500;
+  text-align:center;
 }
 @keyframes tagFade{to{opacity:1}}
 /* ─────────────────────────────────────
@@ -222,7 +225,7 @@ nav.visible{opacity:1;pointer-events:all}
 /* Logo — equal spacing ZERO | NOISE | FINANCE */
 .nav-logo{display:flex;align-items:center;gap:0;cursor:pointer}
 .logo-mark{display:flex;align-items:center;gap:3px}
-.logo-zero{background:var(--pink);color:#fff;font-family:var(--fb);font-weight:700;font-size:.72rem;letter-spacing:.04em;padding:3px 7px;border-radius:20px;line-height:1}
+.logo-zero{background:var(--pink);color:#fff;font-family:var(--fb);font-weight:700;font-size:.62rem;letter-spacing:.03em;width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;line-height:1}
 .logo-noise{background:var(--ink);color:#fff;font-family:var(--fb);font-weight:600;font-size:.72rem;letter-spacing:.04em;padding:3px 7px;line-height:1;border-radius:3px}
 .logo-fin{font-family:var(--fb);font-weight:700;font-size:.88rem;color:var(--ink);letter-spacing:-.015em;margin-left:4px}
 .nav-links{display:flex;align-items:center;gap:2px}
@@ -293,14 +296,23 @@ nav.visible{opacity:1;pointer-events:all}
    HOMEPAGE FEATURE SLIDESHOW
 ───────────────────────────────────── */
 .feature-carousel{
-  position:relative;border-radius:var(--r);overflow:hidden;
-  box-shadow:var(--sh2);height:auto;min-height:320px;
+  position:relative;border-radius:14px;overflow:hidden;
+  box-shadow:0 8px 32px rgba(0,0,0,.18),0 2px 8px rgba(0,0,0,.08);
+  height:auto;min-height:320px;
+  perspective:1200px;
+  transform-style:preserve-3d;
 }
-.carousel-track{display:flex;transition:transform .55s cubic-bezier(.77,0,.18,1)}
+.feature-carousel::before{
+  content:'';position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:linear-gradient(135deg,rgba(255,255,255,.06) 0%,transparent 50%,rgba(0,0,0,.1) 100%);
+  border-radius:14px;
+}
+.carousel-track{display:flex;transition:transform .65s cubic-bezier(.77,0,.18,1);transform-style:preserve-3d}
 .carousel-slide{
   min-width:100%;padding:28px 26px;
   display:flex;flex-direction:column;justify-content:space-between;
   position:relative;overflow:hidden;min-height:320px;
+  backface-visibility:hidden;
 }
 /* Slide content entrance animation */
 .carousel-slide .cs-title,.carousel-slide .cs-desc,.carousel-slide .cs-btn,.carousel-slide .cs-label{
@@ -311,11 +323,22 @@ nav.visible{opacity:1;pointer-events:all}
 .carousel-slide.slide-enter .cs-desc{animation:csDescIn .5s ease .25s both}
 .carousel-slide.slide-enter .cs-btn{animation:csBtnIn .5s ease .35s both}
 .carousel-slide.slide-enter .cs-icon{animation:csIconPop .6s cubic-bezier(.34,1.56,.64,1) .2s both}
-@keyframes csLabelIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
-@keyframes csTitleIn{from{opacity:0;transform:translateX(-16px)}to{opacity:1;transform:none}}
-@keyframes csDescIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-@keyframes csBtnIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:none}}
-@keyframes csIconPop{from{opacity:0;transform:translateY(-50%) scale(.6) rotate(-12deg)}to{opacity:.18;transform:translateY(-50%) scale(1) rotate(0deg)}}
+@keyframes csLabelIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:none}}
+@keyframes csTitleIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:none}}
+@keyframes csDescIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes csBtnIn{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:none}}
+@keyframes csIconPop{from{opacity:0;transform:translateY(-50%) scale(.5) rotate(-15deg)}to{opacity:.18;transform:translateY(-50%) scale(1) rotate(0deg)}}
+/* 3D shimmer on slide change */
+.carousel-slide.slide-enter::after{
+  content:'';position:absolute;inset:0;z-index:3;pointer-events:none;
+  background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.12) 48%,rgba(255,255,255,.12) 52%,transparent 70%);
+  background-size:300% 100%;
+  animation:carouselShimmer .8s ease .1s both;
+}
+@keyframes carouselShimmer{
+  from{background-position:140% 0;opacity:1}
+  to{background-position:-60% 0;opacity:0}
+}
 .cs-0{background:linear-gradient(135deg,#0d0d0f 0%,#1a1a2e 100%)}
 .cs-1{background:linear-gradient(135deg,#0a1628 0%,#1a3a2a 100%)}
 .cs-2{background:linear-gradient(135deg,#1a0a18 0%,#2d1a10 100%)}
@@ -650,6 +673,17 @@ nav.visible{opacity:1;pointer-events:all}
 
 /* FOOTER */
 footer{background:var(--ink);color:rgba(255,255,255,.55);padding:38px 24px;position:relative}
+
+/* ─── ARTICLE READER BODY STYLES ─── */
+#articleReaderBody h2{font-family:var(--fs);font-size:1.25rem;font-weight:600;color:var(--ink);margin:28px 0 12px;line-height:1.3}
+#articleReaderBody h3{font-family:var(--fs);font-size:1.05rem;font-weight:600;color:var(--ink);margin:22px 0 10px}
+#articleReaderBody p{margin-bottom:16px}
+#articleReaderBody ul,#articleReaderBody ol{padding-left:20px;margin-bottom:16px}
+#articleReaderBody li{margin-bottom:8px;line-height:1.85}
+#articleReaderBody strong{color:var(--ink)}
+#articleReaderBody blockquote{border-left:3px solid var(--pink);padding:12px 16px;margin:18px 0;background:var(--pink-s);border-radius:0 var(--rs) var(--rs) 0;font-style:italic;color:var(--ink-m)}
+#articleReaderBody .callout{background:var(--teal-s);border:1px solid #b2dfdb;border-radius:var(--rs);padding:14px 16px;margin:18px 0;font-size:.88rem}
+#articleReaderBody .callout strong{color:var(--teal)}
 footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--pink),var(--teal-m),var(--pink))}
 .ft-in{max-width:var(--max);margin:0 auto;display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:22px}
 .ft-brand{color:rgba(255,255,255,.88);font-family:var(--fs);font-size:.93rem;font-weight:600;margin-bottom:6px}
@@ -784,13 +818,14 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
 .dh-icon{font-size:1.1rem;flex-shrink:0;margin-top:1px}
 .dh-text strong{display:block;font-weight:700;margin-bottom:2px}
 @media(max-width:920px){
-  .hero,.cl,.ins-l,.ratio-l,.ct-l,.tl-wrap,.debt-layout{grid-template-columns:1fr}
+  .hero,.cl,.ins-l,.ratio-l,.ct-l,.tl-wrap,.debt-layout,.about-grid{grid-template-columns:1fr}
   .why-grid{grid-template-columns:1fr 1fr}
   .rc,.ratio-rp{position:static}
   nav .nav-links,.nav-cta{display:none}
   .mob-btn{display:flex}
   .mob-nav{display:flex}
   .hero{padding-top:88px;gap:28px}
+  .hero > div:last-child{max-width:100%;overflow:hidden}
   .hero::after{display:none}
   .data-panel{display:none}
   #bot-panel{width:calc(100vw - 32px);right:16px;bottom:88px;max-height:calc(100vh - 110px)}
@@ -802,7 +837,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
   #page-faq .cbody > div{grid-template-columns:1fr}
   #faq-nav{display:none}
   /* Carousel mobile fix */
-  .feature-carousel{min-height:280px;max-width:100%;overflow:hidden}
+  .feature-carousel{min-height:280px;max-width:100%;overflow:hidden;perspective:none;border-radius:12px}
   .carousel-slide{min-height:280px;padding:22px 20px}
   .cs-title{font-size:1.2rem}
   .cs-desc{font-size:.8rem;max-width:220px}
@@ -826,12 +861,13 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
   .hero{padding:78px 16px 48px;gap:20px}
   .hero-actions{flex-direction:column}
   .hero-actions .btn-p,.hero-actions .btn-o{width:100%;justify-content:center}
-  .feature-carousel{min-height:260px}
-  .carousel-slide{min-height:260px;padding:18px 16px}
+  .feature-carousel{min-height:300px;border-radius:10px}
+  .carousel-slide{min-height:300px;padding:20px 18px}
   .cs-title{font-size:1.05rem}
-  .cs-desc{font-size:.76rem;max-width:180px}
-  .cs-icon{font-size:3rem;opacity:.08}
+  .cs-desc{font-size:.76rem;max-width:200px}
+  .cs-icon{font-size:3.5rem;opacity:.1}
   .cs-btn{font-size:.74rem;padding:7px 14px}
+  .carousel-slide.slide-enter::after{display:none}
   #loader-logo{transform:scale(.72)}
   #loader-tag{font-size:.62rem;letter-spacing:.15em}
   .cbody{padding:24px 14px}
@@ -926,7 +962,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
 </nav>
 
 <!-- FLOATING BOT -->
-<button id="bot-btn" onclick="toggleBot()" aria-label="Ask ZNF Advisor">
+<button id="bot-btn" onclick="toggleBot()" aria-label="Chat with ZNF Assist">
   💬
   <span class="bot-badge"></span>
 </button>
@@ -934,13 +970,13 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
   <div class="bot-hdr">
     <div class="bot-av">🤖</div>
     <div class="bot-hdr-t">
-      <h4>ZNF Advisor</h4>
-      <p>General financial guidance · SEBI-compliant</p>
+      <h4>ZNF Assist</h4>
+      <p>Your personal finance companion</p>
     </div>
     <button class="bot-close" onclick="toggleBot()">✕</button>
   </div>
   <div class="bot-msgs" id="botMsgs">
-    <div class="bmsg bot">Hey there! 👋 I'm the ZNF Advisor — your personal finance guide. Ask me anything about SIPs, insurance, taxes, EMIs, retirement, or just how to make better money decisions. No jargon, no agenda — just honest answers. What's on your mind?</div>
+    <div class="bmsg bot">Hey there! 👋 I'm ZNF Assist — your personal finance companion. Ask me anything about SIPs, insurance, taxes, EMIs, retirement, or just how to make better money decisions. No jargon, no agenda — just honest answers. What's on your mind?</div>
   </div>
   <div class="bot-qs">
     <button class="bq" onclick="askBot('How much emergency fund should I have?')">Emergency fund</button>
@@ -976,8 +1012,9 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
         <button class="btn-p" onclick="nav('calculators')">Use Calculators →</button>
         <button class="btn-o" onclick="nav('articles')">Read Articles</button>
       </div>
-      <div style="margin-top:20px" class="fi">
+      <div style="margin-top:20px;display:flex;gap:16px;flex-wrap:wrap" class="fi">
         <a href="#" onclick="nav('faq')" style="font-size:.82rem;color:var(--teal);display:inline-flex;align-items:center;gap:6px;text-decoration:none;border-bottom:1px solid rgba(26,107,107,.3);padding-bottom:1px">📚 Understand personal finance in plain language →</a>
+        <a href="#about-section" onclick="event.preventDefault();document.getElementById('about-section').scrollIntoView({behavior:'smooth',block:'start'})" style="font-size:.82rem;color:var(--pink);display:inline-flex;align-items:center;gap:6px;text-decoration:none;border-bottom:1px solid rgba(212,43,81,.3);padding-bottom:1px">👤 About the person behind ZNF →</a>
       </div>
     </div>
     <div class="fi">
@@ -1109,6 +1146,61 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
       </div>
     </div>
   </div>
+
+  <!-- ABOUT SECTION -->
+  <div class="rule"></div>
+  <div class="section" id="about-section">
+    <div style="display:grid;grid-template-columns:1fr 1.1fr;gap:48px;align-items:start" class="about-grid">
+      <!-- Left: Personal intro -->
+      <div class="fi">
+        <div class="s-label">The Person Behind The Platform</div>
+        <h2 class="s-title" style="margin-bottom:18px">Hi, I'm <em style="color:var(--pink);font-style:normal">Nishant Sharma.</em></h2>
+        <div style="width:48px;height:3px;background:linear-gradient(90deg,var(--pink),var(--teal));border-radius:2px;margin-bottom:22px"></div>
+        <div style="font-size:.92rem;color:var(--ink-m);line-height:1.88">
+          <p style="margin-bottom:14px">I work in the field of financial planning and investment advisory, with a strong focus on helping individuals make better, more informed financial decisions. Over time, I've realised that most people don't struggle because of a lack of income — <strong style="color:var(--ink)">they struggle because of a lack of clarity.</strong></p>
+          <p style="margin-bottom:14px">That's exactly what I aim to solve.</p>
+          <p style="margin-bottom:14px">My approach is simple: no unnecessary complexity, no product pushing, and no commission-driven bias. Just clear, goal-based financial planning that actually works in real life.</p>
+          <p>I have experience working with clients on risk profiling, asset allocation, mutual fund selection, and long-term wealth creation. I've also been involved in building comprehensive financial plans covering retirement, tax efficiency, and cash flow management.</p>
+        </div>
+      </div>
+      <!-- Right: Platform story + beliefs -->
+      <div class="fi">
+        <div style="background:linear-gradient(135deg,#0d0d0f 0%,#1a2a3a 100%);border-radius:var(--r);padding:28px 26px;color:#fff;margin-bottom:22px;position:relative;overflow:hidden">
+          <div style="position:absolute;top:0;right:0;width:120px;height:120px;background:radial-gradient(circle,rgba(212,43,81,.2),transparent);border-radius:50%;pointer-events:none"></div>
+          <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.45);margin-bottom:10px">Why I Built This</div>
+          <div style="font-family:var(--fs);font-size:1.15rem;font-weight:600;line-height:1.35;margin-bottom:12px">Beyond my professional work, I wanted to create something more practical and accessible.</div>
+          <p style="font-size:.86rem;color:rgba(255,255,255,.6);line-height:1.75">That's why I built <strong style="color:#fff">Zero Noise Finance™</strong> — a platform designed to simplify financial decisions through tools, calculators, and clear insights. The idea is to remove the "noise" that often surrounds finance and help people focus on what actually matters.</p>
+        </div>
+        <div style="font-family:var(--fs);font-size:1rem;font-weight:600;color:var(--ink);margin-bottom:14px">What I believe in:</div>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:22px">
+          <div style="display:flex;gap:12px;align-items:flex-start;padding:12px 14px;background:var(--bgw);border-radius:var(--rs);border-left:3px solid var(--pink)">
+            <span style="font-size:1.1rem;flex-shrink:0;margin-top:1px">🎯</span>
+            <div style="font-size:.86rem;color:var(--ink-m);line-height:1.65"><strong style="color:var(--ink)">Goal-based, not product-based.</strong> Financial planning should start with what you want in life — not which mutual fund is trending this week.</div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;padding:12px 14px;background:var(--bgw);border-radius:var(--rs);border-left:3px solid var(--teal)">
+            <span style="font-size:1.1rem;flex-shrink:0;margin-top:1px">🧘</span>
+            <div style="font-size:.86rem;color:var(--ink-m);line-height:1.65"><strong style="color:var(--ink)">Simplicity beats complexity.</strong> The best financial plan is one you actually follow. Long-term investing rewards consistency, not cleverness.</div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;padding:12px 14px;background:var(--bgw);border-radius:var(--rs);border-left:3px solid var(--ok)">
+            <span style="font-size:1.1rem;flex-shrink:0;margin-top:1px">🤝</span>
+            <div style="font-size:.86rem;color:var(--ink-m);line-height:1.65"><strong style="color:var(--ink)">Everyone deserves unbiased guidance.</strong> Clear, understandable financial advice shouldn't be a luxury. It should be the default.</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:center;padding:14px 16px;background:var(--pink-s);border:1px solid rgba(212,43,81,.12);border-radius:var(--rs)">
+          <div style="width:40px;height:40px;background:var(--pink);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <span style="font-size:1rem;color:#fff">📜</span>
+          </div>
+          <div>
+            <div style="font-size:.82rem;font-weight:700;color:var(--ink)">NISM Series V-A & X-A Certified</div>
+            <div style="font-size:.75rem;color:var(--ink-l);line-height:1.5">Continuously deepening knowledge in investment advisory and financial planning.</div>
+          </div>
+        </div>
+        <div style="margin-top:18px;text-align:center">
+          <button class="btn-p" onclick="nav('contact')" style="width:100%;justify-content:center">Let's Build Your Financial Plan →</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- ══════════════════════════════════
@@ -1120,15 +1212,27 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
       <div class="s-label fi">Knowledge Hub</div>
       <h1 class="s-title fi">Insights without agenda.</h1>
       <p class="s-sub fi">Every article is written to educate, not to sell. No product recommendations, no conflicts of interest — clear thinking on personal finance for India.</p>
+      <!-- Filter chips -->
+      <div style="margin-top:18px;display:flex;gap:6px;flex-wrap:wrap" id="articleFilters">
+        <button class="fchip sel" onclick="filterArticles('all',this)">All</button>
+      </div>
     </div>
   </div>
   <div class="articles-body">
-    <div class="articles-grid" id="articlesGrid">
-      <div style="grid-column:1/-1;text-align:center;padding:60px 0;color:var(--ink-l)">
-        <div style="font-size:2.4rem;margin-bottom:14px">✍️</div>
-        <div style="font-family:var(--fs);font-size:1.15rem;font-weight:600;color:var(--ink);margin-bottom:8px">Articles coming soon</div>
-        <p style="font-size:.88rem;max-width:340px;margin:0 auto;line-height:1.75;color:var(--ink-l)">New articles will appear here regularly. Check back soon or reach out directly for personalised guidance.</p>
-      </div>
+    <!-- Article grid (auto-rendered from JS array) -->
+    <div class="articles-grid" id="articlesGrid"></div>
+  </div>
+  <!-- Article Reader (full article view) -->
+  <div id="articleReader" style="display:none;padding:80px 24px 60px;max-width:720px;margin:0 auto">
+    <button onclick="closeArticle()" style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:var(--rs);font-size:.82rem;font-weight:600;color:var(--teal);background:var(--teal-s);border:1px solid #b2dfdb;margin-bottom:24px;transition:background .2s">← Back to Articles</button>
+    <div id="articleReaderTag" style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--pink);margin-bottom:10px"></div>
+    <h1 id="articleReaderTitle" style="font-family:var(--fs);font-size:clamp(1.6rem,3vw,2.2rem);font-weight:700;color:var(--ink);line-height:1.25;margin-bottom:12px"></h1>
+    <div id="articleReaderMeta" style="font-size:.78rem;color:var(--ink-l);margin-bottom:28px;padding-bottom:18px;border-bottom:1px solid var(--rule)"></div>
+    <div id="articleReaderBody" style="font-size:.95rem;color:var(--ink-m);line-height:1.95"></div>
+    <div style="margin-top:36px;padding:20px;background:var(--pink-s);border:1px solid rgba(212,43,81,.12);border-radius:var(--r);text-align:center">
+      <div style="font-family:var(--fs);font-size:1rem;font-weight:600;color:var(--ink);margin-bottom:8px">Found this helpful?</div>
+      <p style="font-size:.84rem;color:var(--ink-l);margin-bottom:14px">For personalised guidance based on your specific situation, reach out for a free consultation.</p>
+      <button class="btn-p" onclick="nav('contact')">Book a Consultation →</button>
     </div>
   </div>
 </div>
@@ -1668,8 +1772,8 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
     <div style="display:flex;flex-direction:column;gap:16px;position:sticky;top:80px;align-self:start">
       <div style="background:var(--bgp);border:1px solid var(--rule);border-radius:var(--r);padding:22px">
         <div style="font-family:var(--fs);font-size:1rem;font-weight:600;margin-bottom:10px">Have a question?</div>
-        <p style="font-size:.85rem;color:var(--ink-l);line-height:1.72;margin-bottom:16px">The ZNF Advisor is available via the chat button at the bottom-right of every page. Ask anything about financial planning — emergency funds, retirement, insurance, savings — and receive clear, SEBI-compliant guidance.</p>
-        <button class="btn-p" style="width:100%;justify-content:center" onclick="toggleBot()">Open ZNF Advisor 💬</button>
+        <p style="font-size:.85rem;color:var(--ink-l);line-height:1.72;margin-bottom:16px">The ZNF Assist is available via the chat button at the bottom-right of every page. Ask anything about financial planning — emergency funds, retirement, insurance, savings — and get clear, practical answers.</p>
+        <button class="btn-p" style="width:100%;justify-content:center" onclick="toggleBot()">Open ZNF Assist 💬</button>
       </div>
       <div style="background:var(--teal-s);border:1px solid #b2dfdb;border-radius:var(--r);padding:22px">
         <div style="font-family:var(--fs);font-size:.97rem;font-weight:600;margin-bottom:10px;color:var(--teal)">Want personalised guidance?</div>
@@ -1733,7 +1837,6 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
         <div id="irr_verdict" style="margin-bottom:14px"></div>
         <div style="font-family:var(--fs);font-size:.86rem;font-weight:600;margin-bottom:9px;color:var(--ink)">Comparison</div>
         <div class="cmp-row"><span style="color:var(--ink-l)">Your policy IRR</span><strong id="irr_cv">—</strong></div>
-        <div class="cmp-row"><span style="color:var(--ink-l)">Bank FD (~7%)</span><span>7.00%</span></div>
         <div class="cmp-row"><span style="color:var(--ink-l)">RBI Repo Rate</span><span>5.25%</span></div>
         <div class="cmp-row"><span style="color:var(--ink-l)">10-Yr G-Sec Yield</span><span>6.93%</span></div>
         <div class="cmp-row"><span style="color:var(--ink-l)">CPI Inflation</span><span>2.1%</span></div>
@@ -1742,7 +1845,6 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
             <div class="rb"><div class="rb-v" id="irr_paid">₹ —</div><div class="rb-k">Total Paid</div></div>
             <div class="rb"><div class="rb-v" id="irr_recv">₹ —</div><div class="rb-k">Total Received</div></div>
           </div>
-          <div class="rb" style="margin-top:9px"><div class="rb-v" id="irr_fd">₹ —</div><div class="rb-k">Same premiums in FD @ 7%</div></div>
         </div>
         <div class="nudge" style="margin-top:14px"><strong>For clarity:</strong> A pure term life plan combined with disciplined investing typically delivers superior outcomes in both protection and wealth creation compared to traditional insurance-investment combinations.</div>
         <button class="calbtn" style="margin-top:14px;background:var(--teal)" onclick="downloadPDF('irr')">📥 Download Result as PDF</button>
@@ -2086,12 +2188,23 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
 /* ── LOADER ── */
 window.addEventListener('DOMContentLoaded', function() {
   setTimeout(function() {
-    var loader = document.getElementById('loader');
-    var navbar = document.getElementById('navbar');
-    if (loader) { loader.classList.add('fade-out'); setTimeout(function(){ loader.style.display='none'; }, 700); }
-    if (navbar) navbar.classList.add('visible');
-  }, 2900);
+    try {
+      var loader = document.getElementById('loader');
+      var navbar = document.getElementById('navbar');
+      if (loader) { loader.classList.add('fade-out'); setTimeout(function(){ if(loader) loader.style.display='none'; }, 700); }
+      if (navbar) navbar.classList.add('visible');
+    } catch(e) { console.error('Loader error:', e); }
+  }, 2800);
 });
+// Failsafe: always remove loader after 5 seconds no matter what
+setTimeout(function(){
+  try {
+    var l = document.getElementById('loader');
+    if (l && l.style.display !== 'none') { l.style.display = 'none'; }
+    var n = document.getElementById('navbar');
+    if (n) n.classList.add('visible');
+  } catch(e){}
+}, 5000);
 
 /* ── SCROLL PROGRESS ── */
 window.addEventListener('scroll', function() {
@@ -2175,6 +2288,459 @@ function refreshMarketData() {
 }
 refreshMarketData();
 setInterval(refreshMarketData, 60000);
+
+/* ══════════════════════════════════════════════
+   ARTICLES SYSTEM
+   ─────────────────────────────────────────────
+   HOW TO ADD/EDIT/REMOVE ARTICLES:
+   
+   Each article is an object in the ARTICLES array below.
+   
+   TO ADD: Copy any existing article object, paste it at the
+           TOP of the array (newest first), and change the fields.
+   
+   TO EDIT: Find the article by its title and change any field.
+   
+   TO REMOVE: Delete the entire object (from { to },) 
+   
+   FIELDS:
+   - id:       Unique identifier (lowercase, no spaces, use hyphens)
+   - title:    Article headline
+   - excerpt:  Short preview (1-2 sentences, shown on card)
+   - tag:      Category label (e.g. "Investing", "Tax", "Insurance")
+   - emoji:    Card thumbnail emoji
+   - date:     Publication date string (e.g. "15 Apr 2026")
+   - readTime: Estimated read time (e.g. "5 min read")
+   - body:     Full article HTML content. Use:
+               <h2> for section headings
+               <h3> for sub-headings
+               <p> for paragraphs
+               <ul><li> for bullet lists
+               <ol><li> for numbered lists
+               <strong> for bold text
+               <blockquote> for highlighted quotes
+               <div class="callout"><strong>Tip:</strong> text</div> for tip boxes
+   
+   EXAMPLE — Adding a new article:
+   Just add this at the TOP of the ARTICLES array:
+   
+   {
+     id: 'my-new-article',
+     title: 'My New Article Title',
+     excerpt: 'A short preview of what this article covers.',
+     tag: 'Investing',
+     emoji: '📈',
+     date: '20 Apr 2026',
+     readTime: '6 min read',
+     body: '<h2>First Section</h2><p>Your content here...</p>'
+   },
+   
+══════════════════════════════════════════════ */
+
+var ARTICLES = [
+  /* ─── PASTE NEW ARTICLES HERE (newest first) ─── */
+
+  {
+    id: 'taxation-main-character-investment-strategy',
+    title: 'Is Taxation Now the "Main Character" of Your Investment Strategy?',
+    excerpt: 'We used to invest based on returns, risk, and time. Now the first question is "how will this be taxed?" Let\'s find out if this shift is smart — or dangerous.',
+    tag: 'Tax',
+    emoji: '📋',
+    date: '8 Apr 2026',
+    readTime: '8 min read',
+    body: `
+      <p>A few years back, we invested based on <strong>returns, risk, and time horizon</strong>. Taxation was secondary. But today, before choosing an asset class, the first question most people ask is: <em>"How will this be taxed?"</em></p>
+      <p>The reasons are clear:</p>
+      <ul>
+        <li>No indexation benefit on debt funds anymore</li>
+        <li>Revised capital gain tax rates</li>
+        <li>Ongoing Old vs New regime confusion</li>
+      </ul>
+      <p>So is this just a mental shift, or has taxation genuinely become central to portfolio strategy? Let's break it down.</p>
+
+      <!-- Visual: Tax shift illustration -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:24px 0">
+        <div style="background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1px solid #bbf7d0;border-radius:10px;padding:18px;text-align:center">
+          <div style="font-size:1.8rem;margin-bottom:6px">📊</div>
+          <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#166534;margin-bottom:4px">Before</div>
+          <div style="font-size:.85rem;color:#14532d;line-height:1.5">Returns → Risk → Time<br><span style="font-size:.75rem;color:#4ade80">Tax was an afterthought</span></div>
+        </div>
+        <div style="background:linear-gradient(135deg,#fef2f2,#fecaca);border:1px solid #fca5a5;border-radius:10px;padding:18px;text-align:center">
+          <div style="font-size:1.8rem;margin-bottom:6px">💸</div>
+          <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#991b1b;margin-bottom:4px">Now</div>
+          <div style="font-size:.85rem;color:#7f1d1d;line-height:1.5">"How will this be taxed?"<br><span style="font-size:.75rem;color:#f87171">Tax is the first question</span></div>
+        </div>
+      </div>
+
+      <h2>A. Current Taxation Structure</h2>
+      <p>Before we optimise anything, we need to understand how different asset classes are taxed right now.</p>
+
+      <h3>1. Equity-Oriented Funds</h3>
+      <p>If a mutual fund maintains at least 65% exposure in Indian equities (including arbitrage positions), it qualifies for equity taxation:</p>
+      <ul>
+        <li><strong>Holding ≤ 12 months →</strong> 20% STCG (Short-Term Capital Gain)</li>
+        <li><strong>Holding > 12 months →</strong> 12.5% LTCG (Long-Term Capital Gain)</li>
+        <li><strong>First ₹1.25 lakh</strong> LTCG per financial year is <strong>exempt</strong></li>
+      </ul>
+      <p>This applies to equity mutual funds, index funds, and arbitrage funds.</p>
+
+      <h3>2. Debt Mutual Funds</h3>
+      <p>If a mutual fund maintains more than 65% exposure in debt and money market instruments (bonds, G-Secs, T-bills), it qualifies for debt taxation.</p>
+      <p>For all units purchased on or after 1st April 2023: <strong>there is no concept of long-term capital gains anymore.</strong> No indexation benefit. No 12.5% special rate.</p>
+      <blockquote>All gains are added to your income and taxed at your slab rate. If you're in the 30% bracket, gains are taxed at 30%.</blockquote>
+      <p>Now you might think — if debt is taxed so heavily, why bother? This happens when we don't understand the <em>purpose</em> of investment and let social media narratives drive our decisions.</p>
+      <p>Debt is critical for:</p>
+      <ul>
+        <li><strong>Stability</strong> — cushions your portfolio during market crashes</li>
+        <li><strong>Liquidity</strong> — money available when you need it</li>
+        <li><strong>Capital Protection</strong> — preserves what you've built</li>
+        <li><strong>Goal Rebalancing</strong> — safely parks money near goal completion</li>
+        <li><strong>Business Cash Parking</strong> — far better than idle current account balances</li>
+      </ul>
+      <div class="callout"><strong>Key insight:</strong> Tax efficiency is only one part of the equation. Never let the tax tail wag the investment dog.</div>
+
+      <h3>3. Hybrid Funds</h3>
+      <p>These funds mix equity and debt. The percentage allocation decides the tax treatment:</p>
+
+      <!-- Visual: Hybrid fund tax table -->
+      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;margin:18px 0">
+        <div style="display:grid;grid-template-columns:1fr 1fr;font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#64748b;padding:10px 14px;background:#f1f5f9;border-bottom:1px solid #e2e8f0">
+          <span>Equity Allocation</span><span>Tax Treatment</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;padding:10px 14px;font-size:.86rem;border-bottom:1px solid #f1f5f9;align-items:center">
+          <span style="font-weight:600;color:#166534">≥ 65% equity</span><span>Equity tax (20% STCG / 12.5% LTCG)</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;padding:10px 14px;font-size:.86rem;border-bottom:1px solid #f1f5f9;align-items:center">
+          <span style="font-weight:600;color:#991b1b">≤ 35% equity</span><span>Debt tax (added to income, slab rate)</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;padding:10px 14px;font-size:.86rem;align-items:center">
+          <span style="font-weight:600;color:#b45309">35%–65% equity</span><span>Held > 24 months → 12.5% LTCG, else slab rate</span>
+        </div>
+      </div>
+
+      <h2>B. Let's Apply This Practically</h2>
+
+      <h3>Scenario 1: Saving for Child's Education or Marriage</h3>
+      <p>This is a long-horizon goal. The best asset class for a long horizon is equity — not because of tax, but because <strong>long time horizons absorb volatility</strong> (we're talking a decade or more here).</p>
+      <p>For tax efficiency: start an SIP in the child's name (you as guardian). When the child turns 18, you can utilise the ₹1.25 lakh LTCG exemption annually at just 12.5%. This improves long-term compounding significantly.</p>
+      <blockquote>But always remember — don't remain fully invested in equity till the goal. 3–4 years before the goal, gradually shift to debt. Many focus on returns; very few focus on capital protection near the goal. This is where real planning matters.</blockquote>
+
+      <h3>Scenario 2: Business Owners Parking Idle Cash</h3>
+      <p>Large balances sitting in a current account earn zero interest. Liquid funds (debt category) are the obvious choice — but they're taxed at your slab rate.</p>
+      <p>We need something more tax-efficient but still low-risk. <strong>Arbitrage Funds</strong> offer equity taxation with low volatility. Sounds perfect, but there are practical issues:</p>
+      <ul>
+        <li>Exit load for the first 7–15 days</li>
+        <li>Redemption usually T+2</li>
+        <li>Not ideal for same-day liquidity</li>
+      </ul>
+      <p>The smarter approach: <strong>create 3 buckets</strong> based on when you need the cash:</p>
+
+      <!-- Visual: 3-bucket system -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:18px 0">
+        <div style="background:linear-gradient(135deg,#eff6ff,#dbeafe);border:1px solid #93c5fd;border-radius:10px;padding:14px;text-align:center">
+          <div style="font-size:1.3rem;margin-bottom:4px">⚡</div>
+          <div style="font-size:.72rem;font-weight:700;color:#1e40af;margin-bottom:4px">BUCKET 1</div>
+          <div style="font-size:.82rem;font-weight:600;color:#1e3a8a;margin-bottom:4px">Overnight Fund</div>
+          <div style="font-size:.72rem;color:#3b82f6;line-height:1.5">T+1 liquidity<br>No exit load<br>Slab rate tax</div>
+        </div>
+        <div style="background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1px solid #86efac;border-radius:10px;padding:14px;text-align:center">
+          <div style="font-size:1.3rem;margin-bottom:4px">💧</div>
+          <div style="font-size:.72rem;font-weight:700;color:#166534;margin-bottom:4px">BUCKET 2</div>
+          <div style="font-size:.82rem;font-weight:600;color:#14532d;margin-bottom:4px">Liquid Fund</div>
+          <div style="font-size:.72rem;color:#22c55e;line-height:1.5">7–30 day needs<br>Minimal exit load<br>Better returns</div>
+        </div>
+        <div style="background:linear-gradient(135deg,#fefce8,#fef08a);border:1px solid #fde047;border-radius:10px;padding:14px;text-align:center">
+          <div style="font-size:1.3rem;margin-bottom:4px">🏦</div>
+          <div style="font-size:.72rem;font-weight:700;color:#854d0e;margin-bottom:4px">BUCKET 3</div>
+          <div style="font-size:.82rem;font-weight:600;color:#713f12;margin-bottom:4px">Arbitrage Fund</div>
+          <div style="font-size:.72rem;color:#ca8a04;line-height:1.5">30+ day surplus<br>Equity taxation<br>₹1.25L exempt</div>
+        </div>
+      </div>
+      <p>This three-bucket approach balances liquidity, tax efficiency, and capital stability.</p>
+
+      <h2>The Bottom Line</h2>
+      <p>From the examples above, it's clear: <strong>we can optimise taxes, but we cannot avoid them.</strong> More importantly, taxes should never override the purpose of your investment.</p>
+      <p>We can design investments around our goals and then layer in tax efficiency. But making tax the <em>first filter</em> distorts portfolios and leads to poor decisions.</p>
+
+      <!-- Visual: Key takeaway -->
+      <div style="background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:12px;padding:22px 24px;margin:22px 0;text-align:center">
+        <div style="font-family:var(--fs);font-size:1.1rem;font-weight:600;color:#fff;line-height:1.45">Smart investing is <span style="color:#f472b6">tax-aware</span>,<br>not <span style="color:#fbbf24">tax-obsessed</span>.</div>
+        <div style="font-size:.78rem;color:rgba(255,255,255,.5);margin-top:8px">Goal → Time Horizon → Risk → Asset Allocation → Then Tax Optimisation</div>
+      </div>
+
+      <p>Until then, invest intelligently — not emotionally.</p>
+      <p style="font-size:.82rem;color:var(--ink-l);margin-top:22px;font-style:italic">Disclaimer: This content is for educational purposes only. Tax laws are subject to amendments. Please consult a qualified financial professional before implementing any strategy.</p>
+    `
+  },
+
+  {
+    id: 'expectations-trap-investors-sabotage-returns',
+    title: 'The Expectations Trap: Why Most Investors Sabotage Their Own Returns',
+    excerpt: 'The market didn\'t fail you — your expectations did. Here\'s the data, the myths, and the math behind why most investors underperform.',
+    tag: 'Investing',
+    emoji: '🧠',
+    date: '5 Apr 2026',
+    readTime: '9 min read',
+    body: `
+      <p>I speak with a lot of investors. And I keep noticing the same pattern. People chase returns, lose money, and give up on investing altogether. They don't realise the market didn't fail them. <strong>Their own expectations did.</strong></p>
+
+      <!-- Visual: Quote highlight -->
+      <div style="background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:12px;padding:22px 24px;margin:22px 0;text-align:center">
+        <div style="font-family:var(--fs);font-size:1.05rem;font-weight:600;color:#fff;line-height:1.5">"Market behaviour isn't your biggest risk.<br><span style="color:#f472b6">Your own expectations are.</span>"</div>
+      </div>
+
+      <p>Let me tell you about someone I spoke with recently. He had been investing in mutual funds for a few years. When his portfolio turned red during a correction, he panicked, redeemed everything, and moved his savings entirely into Fixed Deposits. He told me he was "done with risky investments."</p>
+      <p>What actually happened? <strong>His expectations broke before his portfolio did.</strong></p>
+      <blockquote>The market will throw you out if your expectations are unrealistic. The question isn't whether markets go down — they always do. The question is whether you were prepared for it.</blockquote>
+
+      <h2>The Data Says This Is Everywhere</h2>
+      <p>This isn't just an anecdote. Research firm <strong>DALBAR</strong> has been tracking investor behaviour for over three decades. Their findings are striking: even in years when markets perform strongly, the average equity investor leaves enormous returns on the table — not because of bad funds, but because of <strong>bad timing decisions driven entirely by emotion.</strong></p>
+
+      <!-- Visual: Behavior gap illustration -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:22px 0">
+        <div style="background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1px solid #bbf7d0;border-radius:10px;padding:18px;text-align:center">
+          <div style="font-size:2rem;margin-bottom:4px">📈</div>
+          <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;color:#166534;margin-bottom:4px">The Market</div>
+          <div style="font-size:1.4rem;font-weight:700;color:#15803d">Performs</div>
+        </div>
+        <div style="background:linear-gradient(135deg,#fef2f2,#fecaca);border:1px solid #fca5a5;border-radius:10px;padding:18px;text-align:center">
+          <div style="font-size:2rem;margin-bottom:4px">😰</div>
+          <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;color:#991b1b;margin-bottom:4px">The Investor</div>
+          <div style="font-size:1.4rem;font-weight:700;color:#dc2626">Underperforms</div>
+        </div>
+      </div>
+      <p>They sell just before the market rises, and buy back in after it already has. In India, where millions of investors often follow what people around them are doing, this behaviour is even more common.</p>
+
+      <h2>Three Dangerous Myths That Ruin Portfolios</h2>
+      <p>Most expectation failures come from one of three deeply held — and deeply wrong — beliefs about how markets work.</p>
+
+      <!-- Visual: 3 Myths -->
+      <div style="border-left:3px solid #f472b6;padding:14px 18px;background:#fdf2f8;border-radius:0 10px 10px 0;margin:16px 0">
+        <div style="font-size:.72rem;font-weight:700;color:#be185d;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Myth 1</div>
+        <div style="font-size:.92rem;font-weight:600;color:#831843;margin-bottom:6px">"If a fund averaged 15% over 5 years, I should expect 15% every year."</div>
+        <div style="font-size:.85rem;color:#9d174d;line-height:1.7">Markets don't deliver average returns in average years. They deliver lumpy, volatile, sometimes terrifying returns that <em>average out</em> over time. A fund that returned -20% in year one and +70% in year two has a fine long-term average — but if you redeemed in year one, you captured only the loss.</div>
+      </div>
+
+      <div style="border-left:3px solid #f59e0b;padding:14px 18px;background:#fffbeb;border-radius:0 10px 10px 0;margin:16px 0">
+        <div style="font-size:.72rem;font-weight:700;color:#b45309;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Myth 2</div>
+        <div style="font-size:.92rem;font-weight:600;color:#78350f;margin-bottom:6px">"This fund gave great returns last year, so it will this year too."</div>
+        <div style="font-size:.85rem;color:#92400e;line-height:1.7">Past performance does not predict future returns — and this is not just a disclaimer, <strong>it is the truth.</strong> When a fund does well, money floods in. But that flood usually arrives at the peak. The new investors who came chasing yesterday's returns are the first to feel tomorrow's correction.</div>
+      </div>
+
+      <div style="border-left:3px solid #ef4444;padding:14px 18px;background:#fef2f2;border-radius:0 10px 10px 0;margin:16px 0">
+        <div style="font-size:.72rem;font-weight:700;color:#b91c1c;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Myth 3</div>
+        <div style="font-size:.92rem;font-weight:600;color:#7f1d1d;margin-bottom:6px">"I'm a risk-taker, so I'll go 100% equity for maximum returns."</div>
+        <div style="font-size:.85rem;color:#991b1b;line-height:1.7">Calling yourself a risk-taker without actually measuring your risk tolerance is like saying you're a strong swimmer without ever jumping in the pool. When a real bear market hits — a sustained 30–40% drawdown — many self-described risk-takers discover they are not. Panic-selling at the bottom is how people lock in <strong>permanent</strong> losses.</div>
+      </div>
+
+      <h2>Why Diversification Isn't What Most People Think</h2>
+      <p>When investors say they're "diversified," they usually mean: <em>"I have money in large-cap, mid-cap, and small-cap funds."</em> That's not diversification. That's three different bets on the same horse — the equity market.</p>
+      <p><strong>True diversification</strong> means spreading across asset classes that don't move together. When equity falls, your debt should hold steady. When both struggle, gold sometimes rises. The goal isn't to maximise returns from every corner — it's to ensure no single event wipes you out.</p>
+      <blockquote>If all your investments are going up at the same pace and reaching new highs together — you're probably not actually diversified.</blockquote>
+
+      <h2>The Math of Asset Allocation</h2>
+      <p>Abstract arguments don't convince anyone. Numbers do. Here's exactly what asset allocation protection looks like in a real downturn, assuming a <strong>30% equity market fall:</strong></p>
+
+      <!-- Visual: Allocation comparison table -->
+      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;margin:18px 0">
+        <div style="display:grid;grid-template-columns:1.2fr 1fr 1fr;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#64748b;padding:10px 14px;background:#f1f5f9;border-bottom:1px solid #e2e8f0">
+          <span>Portfolio</span><span style="text-align:center">Your Fall</span><span style="text-align:center">Saved</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1.2fr 1fr 1fr;padding:12px 14px;font-size:.88rem;border-bottom:1px solid #f1f5f9;align-items:center">
+          <span style="font-weight:600">100% Equity</span><span style="text-align:center;color:#dc2626;font-weight:700;font-size:1.05rem">-30%</span><span style="text-align:center;color:#94a3b8">—</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1.2fr 1fr 1fr;padding:12px 14px;font-size:.88rem;border-bottom:1px solid #f1f5f9;align-items:center">
+          <span style="font-weight:600">90% Equity / 10% Debt</span><span style="text-align:center;color:#ea580c;font-weight:700;font-size:1.05rem">-26.4%</span><span style="text-align:center;color:#16a34a;font-weight:600">3.6%</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1.2fr 1fr 1fr;padding:12px 14px;font-size:.88rem;align-items:center">
+          <span style="font-weight:600">80% Equity / 20% Debt</span><span style="text-align:center;color:#ca8a04;font-weight:700;font-size:1.05rem">-22.8%</span><span style="text-align:center;color:#16a34a;font-weight:600">7.2%</span>
+        </div>
+      </div>
+
+      <div class="callout"><strong>Here's what most people miss:</strong> Even if your debt delivers 0% returns — no gain whatsoever — an 80:20 allocation still reduces your fall from 30% to 24%. The protection isn't only about what debt <em>earns</em>. It's about what it <em>doesn't lose.</em></div>
+
+      <p>Those percentages aren't just numbers — they're the difference between staying invested and panic-selling. When a 100% equity portfolio drops from ₹100 to ₹70, the emotional damage is severe. When a blended portfolio drops to ₹77, the same bear market feels <strong>survivable</strong>. That gap in perception is what keeps you in the game long enough for the recovery.</p>
+      <p>With gold, keep it between 10–20% of your portfolio. Gold can deliver strong returns in certain periods, but it's not consistent — it doesn't earn like a business, doesn't pay dividends, and can stay flat for years. What it does reliably is <strong>hold its value when everything else is falling.</strong> Use it as a cushion, not a core investment.</p>
+
+      <h2>Five Principles Worth Keeping</h2>
+
+      <!-- Visual: 5 Principles -->
+      <div style="display:flex;flex-direction:column;gap:10px;margin:16px 0">
+        <div style="display:flex;gap:12px;align-items:flex-start;padding:12px 14px;background:var(--bgw);border-radius:8px;border-left:3px solid #8b5cf6">
+          <span style="font-size:.85rem;font-weight:700;color:#7c3aed;flex-shrink:0;width:20px">1.</span>
+          <div style="font-size:.88rem;line-height:1.7"><strong>Align expectations with reality</strong> before investing a single rupee. Equity markets can and will go down — sometimes sharply — before they go up. That is not failure. That is how they work.</div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start;padding:12px 14px;background:var(--bgw);border-radius:8px;border-left:3px solid #3b82f6">
+          <span style="font-size:.85rem;font-weight:700;color:#2563eb;flex-shrink:0;width:20px">2.</span>
+          <div style="font-size:.88rem;line-height:1.7"><strong>Measure your actual risk tolerance,</strong> not your imagined one. Ask honestly: "If my portfolio fell 30% and stayed there for two years, what would I do?" Your honest answer is your real risk profile.</div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start;padding:12px 14px;background:var(--bgw);border-radius:8px;border-left:3px solid #10b981">
+          <span style="font-size:.85rem;font-weight:700;color:#059669;flex-shrink:0;width:20px">3.</span>
+          <div style="font-size:.88rem;line-height:1.7"><strong>Diversify across asset classes,</strong> not just across market caps. Equity, debt, gold, and international exposure each play a distinct role in a portfolio built for all conditions.</div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start;padding:12px 14px;background:var(--bgw);border-radius:8px;border-left:3px solid #f59e0b">
+          <span style="font-size:.85rem;font-weight:700;color:#d97706;flex-shrink:0;width:20px">4.</span>
+          <div style="font-size:.88rem;line-height:1.7"><strong>Worry more about downside risk</strong> than upside potential. A fund that protects you during crashes and delivers decent returns in recoveries will outperform a high-flyer you exit during its first rough patch.</div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start;padding:12px 14px;background:var(--bgw);border-radius:8px;border-left:3px solid #ec4899">
+          <span style="font-size:.85rem;font-weight:700;color:#db2777;flex-shrink:0;width:20px">5.</span>
+          <div style="font-size:.88rem;line-height:1.7"><strong>Be suspicious of investments you don't understand.</strong> Misaligned expectations often aren't the investor's fault — they're the product of promises that sounded too good and were never examined closely enough.</div>
+        </div>
+      </div>
+
+      <div style="background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:12px;padding:22px 24px;margin:22px 0;text-align:center">
+        <div style="font-family:var(--fs);font-size:1.05rem;font-weight:600;color:#fff;line-height:1.5">"Markets don't disappoint <span style="color:#4ade80">serious</span> investors.<br>They disappoint investors who came in with the <span style="color:#f472b6">wrong picture</span> of what investing is."</div>
+      </div>
+
+      <p>FDs aren't bad — but moving into them <em>after</em> a market correction, locking in losses and locking out growth, is one of the most expensive decisions you can make. The exit feels like safety. It usually isn't.</p>
+      <p>Follow these principles, stay disciplined, and the market won't need to disappoint you. Not today, not ever.</p>
+      <p style="font-size:.82rem;color:var(--ink-l);margin-top:22px;font-style:italic">Disclaimer: This article is for educational purposes only and does not constitute investment advice. Past market performance is not indicative of future results. Please consult a qualified financial professional before making investment decisions.</p>
+    `
+  },
+  
+  {
+    id: 'emergency-fund-guide',
+    title: 'Emergency Fund: How Much Is Enough and Where to Keep It',
+    excerpt: 'Before you invest a single rupee, build this safety net. Here\'s exactly how much you need and the best places to park it.',
+    tag: 'Planning',
+    emoji: '🛟',
+    date: '10 Apr 2026',
+    readTime: '5 min read',
+    body: `
+      <h2>Why an Emergency Fund Comes Before Everything</h2>
+      <p>An emergency fund is your financial seatbelt. You hope you never need it, but when life throws a curveball — job loss, medical emergency, urgent home repair — this fund is what keeps you from breaking your investments or sliding into debt.</p>
+      <p><strong>Rule #1 of personal finance:</strong> Build your emergency fund before you start investing. Without it, every other financial plan sits on a fragile foundation.</p>
+      
+      <h2>How Much Do You Actually Need?</h2>
+      <p>The standard recommendation is <strong>3 to 6 months of total monthly expenses</strong>. Not income — expenses. Here's how to think about it:</p>
+      <ul>
+        <li><strong>Salaried with stable job:</strong> 3-4 months of expenses</li>
+        <li><strong>Single income household:</strong> 6 months of expenses</li>
+        <li><strong>Freelancer / Business owner:</strong> 6-9 months of expenses</li>
+        <li><strong>If you have dependents + loans:</strong> 6 months minimum</li>
+      </ul>
+      <div class="callout"><strong>Quick calculation:</strong> If your monthly expenses are ₹40,000, your emergency fund target is ₹1,20,000 to ₹2,40,000. Start with 3 months and build to 6 over time.</div>
+      
+      <h2>Where to Keep It</h2>
+      <p>Your emergency fund needs two things: <strong>instant access</strong> and <strong>zero risk</strong>. This is not money you invest for returns — it's money you park for safety.</p>
+      <ul>
+        <li><strong>Savings account:</strong> Keep 1 month's expenses here for immediate access</li>
+        <li><strong>Liquid mutual fund:</strong> Park the rest here — redeemable within 24 hours, earns 4-6% (better than savings account)</li>
+        <li><strong>Short-term FD (sweepable):</strong> Alternative to liquid fund if you prefer bank products</li>
+      </ul>
+      <blockquote>Never keep your emergency fund in stocks, equity mutual funds, or locked instruments like PPF. The whole point is instant access when you need it most.</blockquote>
+      
+      <h2>How to Build It</h2>
+      <p>If you're starting from zero, don't try to build 6 months at once. Set up an automatic monthly transfer — even ₹5,000/month builds ₹60,000 in a year. That's a solid start.</p>
+      <p>Once your emergency fund is in place, <strong>then</strong> start your SIPs and long-term investments. This order matters more than most people realise.</p>
+    `
+  },
+  {
+    id: 'new-vs-old-tax-regime',
+    title: 'New vs Old Tax Regime FY2025-26: Which One Saves You More?',
+    excerpt: 'The new regime is default — but is it always better? A clear breakdown of when each regime wins, with real examples.',
+    tag: 'Tax',
+    emoji: '📋',
+    date: '8 Apr 2026',
+    readTime: '7 min read',
+    body: `
+      <h2>The Big Picture</h2>
+      <p>From FY2025-26, the <strong>new tax regime is the default</strong> for all taxpayers. You pay zero tax on income up to ₹12 lakh (₹12.75 lakh for salaried, thanks to the ₹75,000 standard deduction). No deductions needed, no paperwork.</p>
+      <p>The old regime has higher tax rates but allows deductions — 80C, NPS, HRA, 80D, home loan interest, and more. <strong>The right choice depends entirely on your numbers.</strong></p>
+      
+      <h2>New Regime — Who It's Best For</h2>
+      <ul>
+        <li>Income up to ₹12.75 lakh (salaried) — <strong>always better</strong>, zero tax</li>
+        <li>Anyone who doesn't have significant deductions (no HRA, limited 80C)</li>
+        <li>People who prefer simplicity over optimisation</li>
+        <li>Young professionals early in career with fewer tax-saving investments</li>
+      </ul>
+      
+      <h2>Old Regime — Who It's Best For</h2>
+      <ul>
+        <li>High income (₹15L+) with large deductions: 80C (₹1.5L) + NPS (₹50K) + 80D + HRA</li>
+        <li>Salaried in metro cities claiming substantial HRA exemption</li>
+        <li>People with home loan interest deduction (Section 24b — up to ₹2L)</li>
+        <li>Those who can claim ₹3-4 lakh+ in total deductions</li>
+      </ul>
+      <div class="callout"><strong>Pro tip:</strong> Use our Income Tax Calculator to compare both regimes with your exact numbers. The break-even typically happens around ₹15-18 lakh income with ₹3-4 lakh in deductions.</div>
+      
+      <h2>Real Example</h2>
+      <p><strong>Rajesh, 32, salaried, CTC ₹18 lakh:</strong></p>
+      <p>New regime: Taxable = ₹18L - ₹75K = ₹17.25L → Tax = ~₹1,27,500</p>
+      <p>Old regime: ₹18L - ₹50K (std) - ₹1.5L (80C) - ₹50K (NPS) - ₹25K (80D) - ₹1.8L (HRA) = ₹13.45L → Tax = ~₹1,04,000</p>
+      <p>Old regime saves Rajesh ~₹23,500 because he has ₹4.55 lakh in deductions. Without the HRA and NPS, new regime would win.</p>
+      
+      <h2>The Practical Advice</h2>
+      <p>Don't choose a regime based on what someone else told you. <strong>Run your own numbers.</strong> If your total deductions are below ₹2.5 lakh, the new regime almost certainly wins. Above ₹3.5 lakh, the old regime starts becoming attractive. The grey zone in between needs calculation.</p>
+    `
+  }
+  
+  /* ─── END OF ARTICLES ─── */
+];
+
+/* ── ARTICLE RENDERING ── */
+function renderArticles(filter){
+  var grid=document.getElementById('articlesGrid');
+  var filterBar=document.getElementById('articleFilters');
+  if(!grid) return;
+  
+  // Build filter chips from unique tags
+  if(filterBar){
+    var tags=['all'];
+    ARTICLES.forEach(function(a){if(tags.indexOf(a.tag)<0)tags.push(a.tag);});
+    filterBar.innerHTML=tags.map(function(t){
+      return '<button class="fchip'+((!filter||filter==='all')&&t==='all'?' sel':(filter===t?' sel':''))+'" onclick="filterArticles(\''+t+'\',this)">'+( t==='all'?'All':t)+'</button>';
+    }).join('');
+  }
+  
+  var filtered=(!filter||filter==='all')?ARTICLES:ARTICLES.filter(function(a){return a.tag===filter;});
+  
+  if(!filtered.length){
+    grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:60px 0;color:var(--ink-l)"><div style="font-size:2.4rem;margin-bottom:14px">✍️</div><div style="font-family:var(--fs);font-size:1.15rem;font-weight:600;color:var(--ink);margin-bottom:8px">Articles coming soon</div><p style="font-size:.88rem;max-width:340px;margin:0 auto;line-height:1.75;color:var(--ink-l)">New articles will appear here regularly. Check back soon or reach out directly for personalised guidance.</p></div>';
+    return;
+  }
+  
+  grid.innerHTML=filtered.map(function(a){
+    return '<div class="ac fi" onclick="openArticle(\''+a.id+'\')" style="cursor:pointer">'
+      +'<div class="ac-thumb">'+a.emoji+'<span class="ac-tag">'+a.tag+'</span></div>'
+      +'<div class="ac-body">'
+      +'<div class="ac-meta">'+a.date+' · '+a.readTime+'</div>'
+      +'<div class="ac-title">'+a.title+'</div>'
+      +'<div class="ac-exc">'+a.excerpt+'</div>'
+      +'</div>'
+      +'<div class="ac-foot"><span class="read-link">Read article →</span></div>'
+      +'</div>';
+  }).join('');
+  
+  // Re-observe for fade-in
+  grid.querySelectorAll('.fi').forEach(function(el){obs.observe(el);});
+}
+function filterArticles(tag,btn){
+  document.querySelectorAll('#articleFilters .fchip').forEach(function(b){b.classList.remove('sel');});
+  if(btn) btn.classList.add('sel');
+  renderArticles(tag);
+}
+function openArticle(id){
+  var a=ARTICLES.find(function(x){return x.id===id;});
+  if(!a) return;
+  document.getElementById('articleReaderTag').textContent=a.tag;
+  document.getElementById('articleReaderTitle').textContent=a.title;
+  document.getElementById('articleReaderMeta').textContent=a.date+' · '+a.readTime;
+  document.getElementById('articleReaderBody').innerHTML=a.body;
+  document.querySelector('.articles-intro').style.display='none';
+  document.querySelector('.articles-body').style.display='none';
+  document.getElementById('articleReader').style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function closeArticle(){
+  document.querySelector('.articles-intro').style.display='';
+  document.querySelector('.articles-body').style.display='';
+  document.getElementById('articleReader').style.display='none';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+// Initial render
+renderArticles('all');
 
 /* ── UTILITIES ── */
 function fmt(n) {
@@ -2471,7 +3037,6 @@ function downloadPDF(calcType){
         addBigResult('Policy IRR',pdfVal('irr_val'));
         addRow('Total Premiums Paid',pdfVal('irr_paid'));
         addRow('Total Benefits Received',pdfVal('irr_recv'));
-        addRow('Same Premiums in FD @7%',pdfVal('irr_fd'),'Alternative benchmark');
         var vr=document.getElementById('irr_verdict');
         if(vr&&vr.textContent.trim()) addNote(vr.textContent.trim());
         y+=2;
@@ -2703,7 +3268,7 @@ function calcIRR() {
   var polT = parseInt(document.getElementById('ip_pol').value)||0;
   var mat  = Math.abs(parseFloat(document.getElementById('ip_mat').value)||0);
   if (!prem||!payT||!polT) {
-    ['irr_val','irr_paid','irr_recv','irr_fd'].forEach(function(id){ var e=document.getElementById(id); if(e) e.textContent='— '; });
+    ['irr_val','irr_paid','irr_recv'].forEach(function(id){ var e=document.getElementById(id); if(e) e.textContent='— '; });
     var vd=document.getElementById('irr_verdict'); if(vd) vd.innerHTML='';
     return;
   }
@@ -2719,7 +3284,6 @@ function calcIRR() {
   var paid=prem*payT;
   document.getElementById('irr_paid').textContent=fmt(paid);
   document.getElementById('irr_recv').textContent=fmt(recv);
-  document.getElementById('irr_fd').textContent  =fmt(excelFV(0.07,payT,prem,0));
   if(!cf.some(function(x){return x>0;})||!cf.some(function(x){return x<0;})){
     document.getElementById('irr_val').textContent='N/A';
     document.getElementById('irr_cv').textContent='—';
@@ -3305,7 +3869,7 @@ function setFaqLang(l){
 /* ── BOT ── */
 var botOpen=false;
 var botHistory=[];
-var BOT_SYS=`You are the ZNF Advisor — the friendly, knowledgeable personal finance guide at Zero Noise Finance™ (zeronoisefinance.com). 
+var BOT_SYS=`You are the ZNF Assist — the friendly, knowledgeable personal finance guide at Zero Noise Finance™ (zeronoisefinance.com). 
 
 PERSONALITY: Warm, patient, conversational — like a trusted older sibling who genuinely understands money. Use simple language. Be encouraging, never condescending.
 
@@ -3345,13 +3909,13 @@ var lKB={
   'ppf':['PPF is one of India\'s best tax-saving instruments — currently giving 7.1% with EEE tax benefit (Exempt at investment, Exempt on growth, Exempt at withdrawal). That\'s effectively 10%+ pre-tax return!\n\nThe catch is the 15-year lock-in. Perfect for retirement planning or your child\'s education fund. Max ₹1.5 lakh/year (counts under 80C). For shorter goals, look at ELSS mutual funds instead (3-year lock-in). Are you already investing in PPF?'],
   'nps':['NPS (National Pension System) gives you an extra ₹50,000 tax deduction under 80CCD(1B) — that\'s OVER AND ABOVE the ₹1.5 lakh 80C limit. In the 30% tax bracket, that\'s ₹15,600 saved instantly.\n\nNPS invests in a mix of equity, corporate bonds, and government securities. Historical returns have been 9-12% depending on allocation. The trade-off: money is locked until 60, and 40% must go into an annuity. Worth it for the tax savings alone though.'],
   'emi':['EMI has two hidden parts: principal (returning the borrowed amount) and interest (the cost of borrowing). In the early months, almost all your EMI is interest — the bank collects its profit first!\n\nGolden rule: total EMIs (all loans combined) should never exceed 35-40% of your monthly take-home salary. Above 50% is danger zone. Our EMI Calculator shows you the exact breakdown. What loan are you considering?'],
-  'hello':['Hello! Welcome to Zero Noise Finance™ 👋 I\'m the ZNF Advisor — think of me as your finance friend who actually explains things clearly.\n\nI can help you think through SIPs, insurance, taxes, EMIs, retirement planning, or any money question on your mind. What would you like to explore?'],
+  'hello':['Hello! Welcome to Zero Noise Finance™ 👋 I\'m the ZNF Assist — think of me as your finance friend who actually explains things clearly.\n\nI can help you think through SIPs, insurance, taxes, EMIs, retirement planning, or any money question on your mind. What would you like to explore?'],
   'hi':['Hey there! 👋 Great to have you here. I can help with pretty much any personal finance question — emergency funds, SIPs, insurance, tax planning, EMIs, retirement, and more.\n\nNo jargon, no product pushing — just clear thinking. What\'s on your mind?'],
   'good morning':['Good morning! ☀️ Hope you\'re having a great start to the day. I\'m here whenever you need help thinking through any money question.\n\nWhat can I help you with today?'],
   'good evening':['Good evening! 🌙 Great time to think about finances — the day\'s distractions are winding down. What would you like to explore?'],
   'thanks':['You\'re most welcome! Finance becomes so much clearer once the fundamentals click. You\'re asking the right questions, and that\'s genuinely the hardest part.\n\nFeel free to come back anytime. And if you\'d like a complete plan tailored to your specific situation, you can reach out via the Contact page — the first conversation is always free and always honest. 😊'],
   'thank you':['Happy to help! 😊 You\'re on the right track by asking these questions. Most people never even start — so you\'re already ahead.\n\nIf you ever want a personalised plan that accounts for your exact income, goals, and family situation, just head to the Contact page. No pressure — whenever you\'re ready.'],
-  'who are you':['I\'m the ZNF Advisor — the AI assistant at Zero Noise Finance™. I help people understand personal finance in plain language, without jargon or product pushing.\n\nI can explain SIPs, insurance, taxes, EMIs, retirement — basically anything related to your money. I follow SEBI guidelines, so I won\'t recommend specific products, but I\'ll help you understand what to look for. What can I help with?'],
+  'who are you':['I\'m the ZNF Assist — the AI assistant at Zero Noise Finance™. I help people understand personal finance in plain language, without jargon or product pushing.\n\nI can explain SIPs, insurance, taxes, EMIs, retirement — basically anything related to your money. I don\'t recommend specific products, but I\'ll help you understand what to look for. What can I help with?'],
   'how are you':['I\'m doing great, thanks for asking! 😊 Always ready to chat about finance. How about you — any money questions keeping you up at night?'],
   'namaste':['Namaste! 🙏 Zero Noise Finance mein aapka swagat hai. Main aapki personal finance se judi kisi bhi sawal mein madad kar sakta hoon — SIP, insurance, tax, EMI, retirement, kuch bhi.\n\nKya poochna chahenge?'],
   'kya':['Haan, bataiye! Main yahaan hoon aapki madad ke liye. Personal finance se juda koi bhi sawaal ho — SIP, insurance, tax, loan, retirement — befikr hokar poochiye. 😊'],
@@ -3554,7 +4118,7 @@ function showContactSuccess(){
   var el=document.getElementById('contact-msg');
   if(!el){el=document.createElement('div');el.id='contact-msg';var btn=document.querySelector('#page-contact .calbtn');if(btn)btn.after(el);}
   el.style.cssText='margin-top:10px;padding:10px 14px;border-radius:6px;font-size:.82rem;background:#edf7f2;color:#1e5c3a;border:1px solid #bbdece';
-  el.textContent='\u2713 Message sent to info@zeronoisefinance.com. We will reply within 24 hours.';
+  el.textContent='\u2713 Message sent to info@zeronoisefinance.com. Nishant will reply within 24 hours.';
 }
 function clearContactError(){var el=document.getElementById('contact-msg');if(el) el.remove();}
 </script>
