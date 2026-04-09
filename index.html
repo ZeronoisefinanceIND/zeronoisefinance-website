@@ -7,10 +7,9 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-XYBSTTGGP8');
 </script>
- <link rel="icon" type="image/png" href="favicon.png">
+<link rel="icon" type="image/png" href="favicon.png">
 <link rel="apple-touch-icon" href="favicon.png">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,7 +32,7 @@
 <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
 <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
 <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval'; font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://api.anthropic.com https://api.web3forms.com https://cdnjs.cloudflare.com https://unpkg.com; connect-src 'self' https://api.anthropic.com https://api.web3forms.com; img-src 'self' data:;">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval'; font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://api.anthropic.com https://api.web3forms.com https://cdnjs.cloudflare.com https://unpkg.com https://www.googletagmanager.com https://www.google-analytics.com; connect-src 'self' https://api.anthropic.com https://api.web3forms.com https://www.google-analytics.com https://analytics.google.com; img-src 'self' data: https://www.google-analytics.com;">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Source+Sans+3:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <!-- EmailJS — for contact form email delivery. Sign up free at emailjs.com -->
@@ -227,8 +226,9 @@ nav.visible{opacity:1;pointer-events:all}
 .logo-noise{background:var(--ink);color:#fff;font-family:var(--fb);font-weight:600;font-size:.72rem;letter-spacing:.04em;padding:3px 7px;line-height:1;border-radius:3px}
 .logo-fin{font-family:var(--fb);font-weight:700;font-size:.88rem;color:var(--ink);letter-spacing:-.015em;margin-left:4px}
 .nav-links{display:flex;align-items:center;gap:2px}
-.nav-links a{padding:6px 12px;border-radius:var(--rs);font-size:.82rem;font-weight:500;color:var(--ink-m);transition:background .18s,color .18s}
+.nav-links a{padding:6px 12px;border-radius:var(--rs);font-size:.82rem;font-weight:500;color:var(--ink-m);transition:background .18s,color .18s;border-bottom:2.5px solid transparent}
 .nav-links a:hover,.nav-links a.active{background:var(--bgw);color:var(--ink);text-decoration:none}
+.nav-links a.active{border-bottom-color:var(--pink);color:var(--pink);font-weight:600}
 .nav-cta{padding:7px 17px;background:var(--pink) !important;color:#fff !important;border-radius:20px;font-size:.82rem;font-weight:600;box-shadow:0 2px 8px rgba(212,43,81,.2);transition:background .2s,box-shadow .2s}
 .nav-cta:hover{background:#b8244a !important;box-shadow:0 4px 16px rgba(212,43,81,.3) !important}
 .mob-btn{display:none;flex-direction:column;gap:4px;padding:8px}
@@ -265,14 +265,19 @@ nav.visible{opacity:1;pointer-events:all}
    HOME
 ───────────────────────────────────── */
 .hero{padding:110px 24px 72px;max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:1fr 360px;gap:56px;align-items:center;position:relative}
-/* Subtle background graph lines for hero */
+/* Financial grid background */
 .hero::before{
-  content:'';position:absolute;inset:0;pointer-events:none;opacity:.03;
+  content:'';position:absolute;inset:0;pointer-events:none;opacity:.035;
   background-image:
     linear-gradient(var(--pink) 1px,transparent 1px),
     linear-gradient(90deg,var(--teal) 1px,transparent 1px);
   background-size:40px 40px;
   mask-image:radial-gradient(ellipse 60% 80% at 80% 50%,black,transparent);
+}
+.hero::after{
+  content:'';position:absolute;top:50%;right:0;width:300px;height:300px;
+  background:radial-gradient(circle,rgba(212,43,81,.06) 0%,transparent 70%);
+  border-radius:50%;transform:translateY(-50%);pointer-events:none;
 }
 .hero-eyebrow{font-size:.76rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--pink);margin-bottom:16px}
 .hero-title{font-family:var(--fs);font-size:clamp(2.3rem,4.2vw,3.4rem);font-weight:700;line-height:1.1;letter-spacing:-.02em;color:var(--ink);margin-bottom:20px}
@@ -297,6 +302,20 @@ nav.visible{opacity:1;pointer-events:all}
   display:flex;flex-direction:column;justify-content:space-between;
   position:relative;overflow:hidden;min-height:320px;
 }
+/* Slide content entrance animation */
+.carousel-slide .cs-title,.carousel-slide .cs-desc,.carousel-slide .cs-btn,.carousel-slide .cs-label{
+  transition:opacity .4s ease,transform .4s ease;
+}
+.carousel-slide.slide-enter .cs-label{animation:csLabelIn .5s ease .05s both}
+.carousel-slide.slide-enter .cs-title{animation:csTitleIn .5s ease .15s both}
+.carousel-slide.slide-enter .cs-desc{animation:csDescIn .5s ease .25s both}
+.carousel-slide.slide-enter .cs-btn{animation:csBtnIn .5s ease .35s both}
+.carousel-slide.slide-enter .cs-icon{animation:csIconPop .6s cubic-bezier(.34,1.56,.64,1) .2s both}
+@keyframes csLabelIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+@keyframes csTitleIn{from{opacity:0;transform:translateX(-16px)}to{opacity:1;transform:none}}
+@keyframes csDescIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes csBtnIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:none}}
+@keyframes csIconPop{from{opacity:0;transform:translateY(-50%) scale(.6) rotate(-12deg)}to{opacity:.18;transform:translateY(-50%) scale(1) rotate(0deg)}}
 .cs-0{background:linear-gradient(135deg,#0d0d0f 0%,#1a1a2e 100%)}
 .cs-1{background:linear-gradient(135deg,#0a1628 0%,#1a3a2a 100%)}
 .cs-2{background:linear-gradient(135deg,#1a0a18 0%,#2d1a10 100%)}
@@ -428,7 +447,7 @@ nav.visible{opacity:1;pointer-events:all}
 .why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:48px}
 .why-card{background:var(--bgp);border:1px solid var(--rule);border-radius:var(--r);padding:26px;transition:box-shadow .28s,transform .28s,border-color .28s}
 .why-card:hover{box-shadow:var(--sh3);transform:translateY(-4px);border-color:rgba(212,43,81,.15)}
-.wc-num{font-family:var(--fm);font-size:.69rem;color:var(--pink);font-weight:700;margin-bottom:12px;letter-spacing:.04em}
+.wc-num{font-family:var(--fm);font-size:.67rem;color:#fff;font-weight:700;margin-bottom:12px;letter-spacing:.04em;background:var(--pink);display:inline-block;padding:3px 10px;border-radius:12px}
 .why-card h3{font-family:var(--fs);font-size:1.05rem;font-weight:600;margin-bottom:8px;line-height:1.3;color:var(--ink)}
 .why-card p{font-size:.87rem;color:var(--ink-l);line-height:1.72}
 /* Section headings visual accent */
@@ -459,7 +478,8 @@ nav.visible{opacity:1;pointer-events:all}
 /* ─────────────────────────────────────
    CALCULATOR COMMON
 ───────────────────────────────────── */
-.calc-hdr{background:var(--bgw);border-bottom:1px solid var(--rule);padding:78px 24px 38px}
+.calc-hdr{background:linear-gradient(135deg,var(--bgw) 0%,#f0ede8 50%,var(--bgw) 100%);border-bottom:1px solid var(--rule);padding:78px 24px 38px;position:relative;overflow:hidden}
+.calc-hdr::after{content:'';position:absolute;top:0;right:0;width:250px;height:100%;background:radial-gradient(ellipse at 100% 50%,rgba(212,43,81,.04),transparent 70%);pointer-events:none}
 .calc-hdr-in{max-width:var(--max);margin:0 auto}
 .ctabs-bar{background:var(--bgp);border-bottom:1px solid var(--rule);position:sticky;top:62px;z-index:100}
 .ctabs-in{max-width:var(--max);margin:0 auto;padding:0 24px;display:flex;gap:0;overflow-x:auto}
@@ -468,7 +488,7 @@ nav.visible{opacity:1;pointer-events:all}
 .ctab.active{color:var(--pink);border-bottom-color:var(--pink)}
 .cbody{padding:38px 24px;max-width:var(--max);margin:0 auto}
 .cl{display:grid;grid-template-columns:1fr 330px;gap:26px;align-items:start}
-.fc{background:var(--bgp);border:1px solid var(--rule);border-radius:var(--r);padding:26px}
+.fc{background:var(--bgp);border:1px solid var(--rule);border-radius:var(--r);padding:26px;border-top:3px solid var(--pink)}
 .rc{background:var(--bgp);border:1px solid var(--rule);border-radius:var(--r);padding:22px;box-shadow:var(--sh2);position:sticky;top:108px}
 .pdf-btn{width:100%;padding:11px;background:var(--teal);color:#fff;border-radius:var(--rs);font-size:.84rem;font-weight:700;margin-top:14px;transition:background .2s,transform .15s;display:flex;align-items:center;justify-content:center;gap:6px}
 .pdf-btn:hover{background:#15585a;transform:translateY(-1px)}
@@ -511,7 +531,8 @@ nav.visible{opacity:1;pointer-events:all}
 /* ─────────────────────────────────────
    PLANNING
 ───────────────────────────────────── */
-.plan-hero{background:linear-gradient(135deg,var(--bgw) 60%,var(--teal-s));border-bottom:1px solid var(--rule);padding:80px 24px 46px}
+.plan-hero{background:linear-gradient(135deg,var(--bgw) 0%,#eef5f5 40%,var(--teal-s) 100%);border-bottom:1px solid var(--rule);padding:80px 24px 46px;position:relative;overflow:hidden}
+.plan-hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:60px;background:linear-gradient(to top,var(--bg),transparent);pointer-events:none}
 .tl-wrap{padding:46px 24px;max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:1fr 330px;gap:38px;align-items:start}
 .tl{position:relative;padding-left:26px}
 .tl::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--pink),var(--teal-m))}
@@ -628,7 +649,8 @@ nav.visible{opacity:1;pointer-events:all}
 .cc-val{font-size:.88rem;font-weight:600;color:var(--ink)}
 
 /* FOOTER */
-footer{background:var(--ink);color:rgba(255,255,255,.55);padding:38px 24px}
+footer{background:var(--ink);color:rgba(255,255,255,.55);padding:38px 24px;position:relative}
+footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--pink),var(--teal-m),var(--pink))}
 .ft-in{max-width:var(--max);margin:0 auto;display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:22px}
 .ft-brand{color:rgba(255,255,255,.88);font-family:var(--fs);font-size:.93rem;font-weight:600;margin-bottom:6px}
 .ft-links{display:flex;gap:18px;flex-wrap:wrap}
@@ -763,26 +785,65 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:38px 24px}
 .dh-text strong{display:block;font-weight:700;margin-bottom:2px}
 @media(max-width:920px){
   .hero,.cl,.ins-l,.ratio-l,.ct-l,.tl-wrap,.debt-layout{grid-template-columns:1fr}
-  .why-grid{grid-template-columns:1fr}
+  .why-grid{grid-template-columns:1fr 1fr}
   .rc,.ratio-rp{position:static}
   nav .nav-links,.nav-cta{display:none}
   .mob-btn{display:flex}
   .mob-nav{display:flex}
-  .hero{padding-top:88px}
+  .hero{padding-top:88px;gap:28px}
+  .hero::after{display:none}
   .data-panel{display:none}
-  #bot-panel{width:calc(100vw - 40px);right:20px;bottom:88px;max-height:calc(100vh - 110px)}
+  #bot-panel{width:calc(100vw - 32px);right:16px;bottom:88px;max-height:calc(100vh - 110px)}
+  #bot-btn{bottom:20px;right:20px;width:50px;height:50px;font-size:1.1rem}
   .metric-strip{grid-template-columns:1fr 1fr}
   .strategy-grid{grid-template-columns:1fr}
   .paywall-features{grid-template-columns:1fr}
   .loan-grid{grid-template-columns:1fr}
   #page-faq .cbody > div{grid-template-columns:1fr}
   #faq-nav{display:none}
+  /* Carousel mobile fix */
+  .feature-carousel{min-height:280px;max-width:100%;overflow:hidden}
+  .carousel-slide{min-height:280px;padding:22px 20px}
+  .cs-title{font-size:1.2rem}
+  .cs-desc{font-size:.8rem;max-width:220px}
+  .cs-icon{font-size:4rem;right:12px;opacity:.12}
+  /* Planning sidebar */
+  .tl-wrap > div:last-child{position:static !important}
+  /* Sections */
+  .section{padding:48px 18px}
+  .s-title{font-size:clamp(1.5rem,3vw,2.2rem)}
+  .hero-title{font-size:clamp(1.8rem,3.8vw,2.8rem)}
+  .hero-desc{font-size:.95rem}
+  /* Loader mobile centering */
+  #loader-logo{transform:scale(.85)}
 }
 @media(max-width:600px){
   .r2{grid-template-columns:1fr}
   .r-row{grid-template-columns:1fr 1fr}
   .dp-grid{grid-template-columns:1fr 1fr}
   .metric-strip{grid-template-columns:1fr}
+  .why-grid{grid-template-columns:1fr}
+  .hero{padding:78px 16px 48px;gap:20px}
+  .hero-actions{flex-direction:column}
+  .hero-actions .btn-p,.hero-actions .btn-o{width:100%;justify-content:center}
+  .feature-carousel{min-height:260px}
+  .carousel-slide{min-height:260px;padding:18px 16px}
+  .cs-title{font-size:1.05rem}
+  .cs-desc{font-size:.76rem;max-width:180px}
+  .cs-icon{font-size:3rem;opacity:.08}
+  .cs-btn{font-size:.74rem;padding:7px 14px}
+  #loader-logo{transform:scale(.72)}
+  #loader-tag{font-size:.62rem;letter-spacing:.15em}
+  .cbody{padding:24px 14px}
+  .fc{padding:18px}
+  .rc{padding:16px}
+  .calc-hdr{padding:72px 16px 30px}
+  .bot-msgs{max-height:260px;min-height:160px}
+  .ct-l{gap:28px}
+  .plan-hero{padding:72px 16px 36px}
+  .articles-intro{padding:72px 16px 36px}
+  .ft-in{flex-direction:column;gap:16px}
+  .ft-disc{max-width:100%}
 }
 </style>
 </head>
@@ -1090,6 +1151,7 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:38px 24px}
       <button class="ctab" onclick="switchCalc('retirement',this)">Retirement</button>
       <button class="ctab" onclick="switchCalc('tax',this)">Income Tax Calculator</button>
       <button class="ctab" onclick="switchCalc('emi',this)">EMI Calculator</button>
+      <button class="ctab" onclick="switchCalc('termplan',this)">Term Plan</button>
     </div>
   </div>
 
@@ -1407,26 +1469,104 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:38px 24px}
         <button class="calbtn" style="margin-top:14px;background:var(--teal)" onclick="downloadPDF('emi')">📥 Download Result as PDF</button>
       </div>
     </div>
-    <!-- Amortization Table -->
-    <div id="em_table_wrap" style="margin-top:28px;display:none">
-      <div style="font-family:var(--fs);font-size:1rem;font-weight:600;margin-bottom:14px">Repayment Schedule</div>
-      <div style="overflow-x:auto">
-        <table style="width:100%;border-collapse:collapse;font-size:.82rem">
-          <thead>
-            <tr style="background:var(--bgw);border-bottom:2px solid var(--rule)">
-              <th style="padding:9px 12px;text-align:left;font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-l)">Month</th>
-              <th style="padding:9px 12px;text-align:right;font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-l)">EMI</th>
-              <th style="padding:9px 12px;text-align:right;font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-l)">Principal</th>
-              <th style="padding:9px 12px;text-align:right;font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-l)">Interest</th>
-              <th style="padding:9px 12px;text-align:right;font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-l)">Balance</th>
-            </tr>
-          </thead>
-          <tbody id="em_tbody"></tbody>
-          <tfoot id="em_tfoot"></tfoot>
-        </table>
+    <!-- Amortization Schedule (collapsible inline) -->
+    <div id="em_table_trigger" style="margin-top:24px;display:none">
+      <div style="background:var(--bgp);border:1px solid var(--rule);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh1)">
+        <div onclick="toggleEmiSchedule()" style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;cursor:pointer;background:var(--bgw);border-bottom:1px solid var(--rule);user-select:none;transition:background .15s">
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="font-size:1.1rem">📋</span>
+            <div>
+              <div style="font-family:var(--fs);font-size:.95rem;font-weight:600;color:var(--ink)">Repayment Schedule</div>
+              <div style="font-size:.75rem;color:var(--ink-l)">Month-by-month EMI breakdown</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px">
+            <button class="btn-o" style="padding:6px 14px;font-size:.78rem" onclick="event.stopPropagation();downloadPDF('emi')">📥 PDF</button>
+            <span id="emiScheduleArrow" style="font-size:.9rem;color:var(--ink-l);transition:transform .25s">▼</span>
+          </div>
+        </div>
+        <div id="emiScheduleBody" style="max-height:0;overflow:hidden;transition:max-height .4s ease">
+          <div style="overflow-x:auto;max-height:420px;overflow-y:auto;padding:0">
+            <table style="width:100%;border-collapse:collapse;font-size:.82rem">
+              <thead>
+                <tr style="background:var(--bgw);border-bottom:2px solid var(--rule)">
+                  <th style="padding:9px 12px;text-align:left;font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-l);position:sticky;top:0;background:var(--bgw)">Month</th>
+                  <th style="padding:9px 12px;text-align:right;font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-l);position:sticky;top:0;background:var(--bgw)">EMI</th>
+                  <th style="padding:9px 12px;text-align:right;font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-l);position:sticky;top:0;background:var(--bgw)">Principal</th>
+                  <th style="padding:9px 12px;text-align:right;font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-l);position:sticky;top:0;background:var(--bgw)">Interest</th>
+                  <th style="padding:9px 12px;text-align:right;font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-l);position:sticky;top:0;background:var(--bgw)">Balance</th>
+                </tr>
+              </thead>
+              <tbody id="em_tbody"></tbody>
+              <tfoot id="em_tfoot"></tfoot>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
   </div>
+
+  <!-- TERM PLAN CALCULATOR -->
+  <div class="cbody" id="panel-termplan" style="display:none">
+    <div class="cl">
+      <div class="fc">
+        <div style="background:var(--pink-s);border:1px solid rgba(212,43,81,.15);border-radius:var(--r);padding:16px 18px;margin-bottom:20px;font-size:.86rem;color:var(--ink-m);line-height:1.7">
+          <strong style="color:var(--pink)">Why Term Insurance?</strong> Term insurance is the purest form of life protection — it ensures your family can maintain their lifestyle and meet all financial goals if you're no longer around. It's not an investment; it's a responsibility.
+        </div>
+        <div class="fl">
+          <div class="fl-lbl">Do you have financial dependents?</div>
+          <div class="fchips" id="tp_dep_chips">
+            <button class="fchip sel" onclick="setTPDep(true,this)">Yes — spouse, children, parents</button>
+            <button class="fchip" onclick="setTPDep(false,this)">No dependents currently</button>
+          </div>
+          <div id="tp_no_dep_note" style="display:none;margin-top:10px;padding:12px 14px;background:var(--teal-s);border:1px solid #b2dfdb;border-radius:var(--rs);font-size:.82rem;color:var(--ink-m);line-height:1.65">
+            If you have no dependents, term insurance is not immediately essential. However, getting a policy while young locks in much lower premiums. Revisit this when you have a spouse, children, or aging parents who depend on you financially.
+          </div>
+        </div>
+        <div id="tp_form" style="border-top:1px solid var(--rule);padding-top:16px;margin-top:4px">
+          <div style="font-family:var(--fs);font-size:.95rem;font-weight:600;margin-bottom:14px;color:var(--ink)">Your Details</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:13px">
+            <div class="fl"><div class="fl-lbl">Your Current Age</div><input class="fi-inp" type="number" id="tp_age" placeholder="e.g. 30" oninput="calcTermPlan()"></div>
+            <div class="fl"><div class="fl-lbl">Spouse/Partner Age <span class="fl-opt">Optional</span></div><input class="fi-inp opt" type="number" id="tp_sage" placeholder="e.g. 28" oninput="calcTermPlan()"></div>
+            <div class="fl"><div class="fl-lbl">Annual Take-Home Income (₹)</div><input class="fi-inp" type="number" id="tp_income" placeholder="e.g. 12,00,000" oninput="calcTermPlan()"></div>
+            <div class="fl"><div class="fl-lbl">Monthly Household Expenses (₹)</div><input class="fi-inp" type="number" id="tp_exp" placeholder="e.g. 50,000" oninput="calcTermPlan()"></div>
+          </div>
+          <div style="font-family:var(--fs);font-size:.92rem;font-weight:600;margin:18px 0 10px;padding-top:14px;border-top:1px solid var(--rule)">Financial Goals (that need protection)</div>
+          <div style="font-size:.8rem;color:var(--ink-l);margin-bottom:12px;line-height:1.6">Add each major goal your family would need to fund without your income — child's education, home loan, wedding, etc.</div>
+          <div id="tp_goals_container"></div>
+          <button class="btn-o" style="padding:8px 14px;font-size:.8rem;width:100%;justify-content:center;display:flex;border-style:dashed;margin-top:10px" onclick="addTPGoal()">+ Add a Goal</button>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-top:16px;padding-top:14px;border-top:1px solid var(--rule)">
+            <div class="fl"><div class="fl-lbl">Total Outstanding Loans (₹) <span class="fl-opt">Optional</span></div><input class="fi-inp opt" type="number" id="tp_loans" placeholder="Home loan + car loan + other" oninput="calcTermPlan()"></div>
+            <div class="fl"><div class="fl-lbl">Total Existing Assets (₹) <span class="fl-opt">Investments, FDs, etc.</span></div><input class="fi-inp opt" type="number" id="tp_assets" placeholder="Savings + MF + EPF + FD" oninput="calcTermPlan()"></div>
+            <div class="fl"><div class="fl-lbl">Existing Life Cover (₹) <span class="fl-opt">Current term/group cover</span></div><input class="fi-inp opt" type="number" id="tp_existing" placeholder="Already insured amount" oninput="calcTermPlan()"></div>
+            <div class="fl"><div class="fl-lbl">Expected Inflation (% p.a.)</div><input class="fi-inp" type="number" id="tp_infl" value="6" placeholder="e.g. 6" oninput="calcTermPlan()"></div>
+          </div>
+          <button class="calbtn" onclick="calcTermPlan()">Calculate Required Cover</button>
+        </div>
+      </div>
+      <div class="rc" id="res-termplan">
+        <div class="r-lbl">Recommended Term Cover</div>
+        <div class="r-big" id="tp_cover">₹ —</div>
+        <div class="r-sub" id="tp_sub">Fill in your details to see the recommended cover</div>
+        <div class="r-row">
+          <div class="rb"><div class="rb-v" id="tp_hlv">₹ —</div><div class="rb-k">Human Life Value (HLV)</div></div>
+          <div class="rb"><div class="rb-v" id="tp_needs">₹ —</div><div class="rb-k">Total Needs-Based Cover</div></div>
+        </div>
+        <div class="r-row">
+          <div class="rb"><div class="rb-v" id="tp_goals_total">₹ —</div><div class="rb-k">Future Value of Goals</div></div>
+          <div class="rb"><div class="rb-v" id="tp_exp_cover">₹ —</div><div class="rb-k">Family Expense Cover</div></div>
+        </div>
+        <div class="r-row">
+          <div class="rb"><div class="rb-v" id="tp_debt_val">₹ —</div><div class="rb-k">Loan Clearance</div></div>
+          <div class="rb"><div class="rb-v" id="tp_net_val">₹ —</div><div class="rb-k">Less: Existing Assets + Cover</div></div>
+        </div>
+        <div id="tp_verdict"></div>
+        <div class="nudge" style="margin-top:12px"><strong>Tip:</strong> Get term insurance as early as possible — premiums are significantly lower when you're young and healthy. A 25-year-old can get ₹1 Cr cover for roughly ₹8,000–10,000/year.</div>
+        <button class="calbtn" style="margin-top:14px;background:var(--teal)" onclick="downloadPDF('termplan')">📥 Download Result as PDF</button>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <!-- ══════════════════════════════════
@@ -1745,7 +1885,7 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:38px 24px}
       <div class="fi">
         <h3 style="font-family:var(--fs);font-size:1.25rem;font-weight:600;margin-bottom:12px">Get in touch</h3>
         <p style="font-size:.88rem;color:var(--ink-l);line-height:1.82;margin-bottom:22px">Whether it is a specific question or a complete financial plan — reach out. The first conversation is always free, and always honest.</p>
-        <div class="cc"><div class="cc-ico">📧</div><div><div class="cc-lbl">Email</div><div class="cc-val"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="95fcfbf3fad5eff0e7fafbfafce6f0f3fcfbf4fbf6f0bbf6faf8">[email&#160;protected]</a></div></div></div>
+        <div class="cc"><div class="cc-ico">📧</div><div><div class="cc-lbl">Email</div><div class="cc-val"><a href="mailto:info@zeronoisefinance.com">info@zeronoisefinance.com</a></div></div></div>
         <div class="cc"><div class="cc-ico">📱</div><div><div class="cc-lbl">Phone / WhatsApp</div><div class="cc-val">+91 91156 00369</div></div></div>
         <div class="cc"><div class="cc-ico">📍</div><div><div class="cc-lbl">Location</div><div class="cc-val">Chandigarh · Available across India</div></div></div>
         <div class="cc"><div class="cc-ico">⏰</div><div><div class="cc-lbl">Availability</div><div class="cc-val">Monday – Saturday, 9 AM – 7 PM</div></div></div>
@@ -1919,7 +2059,7 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:38px 24px}
   <div class="ft-in">
     <div>
       <div class="ft-brand">Zero Noise Finance™</div>
-      <div class="ft-disc">Disclaimer: All calculators are educational tools and do not constitute financial advice. Returns shown are illustrative and not guaranteed. Consult a SEBI-registered financial advisor before making investment decisions. Past performance is not indicative of future results. Tax calculations are based on FY 2025–26 rules and are for estimation only. Zero Noise Finance™ is not a SEBI-registered entity. All tools are for educational purposes.</div>
+      <div class="ft-disc">Disclaimer: The calculators and content on this website are for educational and informational purposes only. Projections are based on assumptions entered and are not guaranteed. Past performance is not indicative of future results. Investments are subject to market risks — please read all scheme-related documents carefully before investing. Tax calculations are based on FY 2025–26 rules and may be subject to change. For personalised financial advice, consult a qualified financial advisor.</div>
     </div>
     <div>
       <div class="ft-links">
@@ -1937,7 +2077,7 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:38px 24px}
 <!-- ══════════════════════════════════
      JAVASCRIPT
 ══════════════════════════════════ -->
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 /* ══════════════════════════════════
    ZERO NOISE FINANCE — Main Script
    Clean rewrite, verified syntax
@@ -1972,6 +2112,12 @@ function nav(p) {
   var pg = document.getElementById('page-' + p);
   if (pg) pg.classList.add('active');
   window.scrollTo({top: 0, behavior: 'smooth'});
+  // Highlight active nav link
+  document.querySelectorAll('.nav-links a').forEach(function(a){
+    a.classList.remove('active');
+    var href=a.getAttribute('onclick')||'';
+    if(href.indexOf("'"+p+"'")>=0 && !a.classList.contains('nav-cta')) a.classList.add('active');
+  });
   setTimeout(function(){
     var panel = document.getElementById('page-' + p);
     if (panel) panel.querySelectorAll('.fi').forEach(function(el){ obs.observe(el); });
@@ -2011,9 +2157,16 @@ function carouselGoto(n) {
   var track = document.getElementById('carouselTrack');
   if (track) track.style.transform = 'translateX(-' + (cIdx * 100) + '%)';
   document.querySelectorAll('.cdot').forEach(function(d, i){ d.classList.toggle('active', i === cIdx); });
+  // Trigger entrance animation on active slide
+  document.querySelectorAll('.carousel-slide').forEach(function(s,i){
+    s.classList.remove('slide-enter');
+    if(i===cIdx) setTimeout(function(){s.classList.add('slide-enter');},80);
+  });
   cTimer = setInterval(function(){ carouselMove(1); }, 5000);
 }
 carouselInit();
+// Trigger entrance animation on first slide
+setTimeout(function(){var s=document.querySelector('.carousel-slide');if(s)s.classList.add('slide-enter');},300);
 
 /* ── MARKET DATA ── */
 function refreshMarketData() {
@@ -2117,159 +2270,272 @@ function loadJsPDF(cb){
 function downloadPDF(calcType){
   var btn=event&&event.currentTarget;
   if(btn){btn.textContent='⏳ Generating PDF...';btn.disabled=true;}
-
   loadJsPDF(function(JsPDF){
     if(!JsPDF){
       if(btn){btn.textContent='📥 Download Result as PDF';btn.disabled=false;}
-      // Fallback: use print dialog
-      if(confirm('PDF library could not load. Would you like to use your browser\'s Print to PDF instead?')){
-        window.print();
-      }
+      if(confirm('PDF library could not load. Use browser Print to PDF instead?')) window.print();
       return;
     }
     try{
       var doc=new JsPDF({orientation:'portrait',unit:'mm',format:'a4'});
-      var pageW=doc.internal.pageSize.getWidth();
-      var y=20;
+      var W=doc.internal.pageSize.getWidth();
+      var H=doc.internal.pageSize.getHeight();
+      var y=20, mx=14;
+      var titles={sip:'SIP Calculator Report',stepup:'Step-Up SIP Report',retirement:'Retirement Planning Report',tax:'Income Tax Calculation Report',emi:'EMI & Loan Report',irr:'Insurance IRR Analysis',termplan:'Term Insurance Needs Report',ratios:'Financial Health Report'};
 
-      // ─── Header bar ───
-      doc.setFillColor(26,26,36);doc.rect(0,0,pageW,40,'F');
-      doc.setFillColor(212,43,81);doc.rect(0,38,pageW,2,'F');
-      doc.setTextColor(255,255,255);doc.setFontSize(20);doc.setFont('helvetica','bold');
-      doc.text('ZERO NOISE FINANCE',14,18);
-      doc.setFontSize(8);doc.setFont('helvetica','normal');
-      doc.setTextColor(212,43,81);doc.text('TM',doc.getTextWidth('ZERO NOISE FINANCE')*20/doc.internal.getFontSize()+16,14);
-      doc.setTextColor(180,180,200);doc.setFontSize(9);
-      doc.text('Clarity Without Compromise',14,26);
-      doc.text('Generated: '+new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'}),14,33);
-      y=50;
+      // ─── HEADER BAR ───
+      doc.setFillColor(26,26,36);doc.rect(0,0,W,42,'F');
+      doc.setFillColor(212,43,81);doc.rect(0,40,W,2,'F');
+      doc.setTextColor(255,255,255);doc.setFontSize(18);doc.setFont('helvetica','bold');
+      doc.text('ZERO NOISE FINANCE',mx,18);
+      doc.setFontSize(7);doc.text('TM',mx+doc.getTextWidth('ZERO NOISE FINANCE')*18/doc.internal.getFontSize()+1,13);
+      doc.setTextColor(180,180,200);doc.setFontSize(9);doc.setFont('helvetica','normal');
+      doc.text('Clarity Without Compromise | zeronoisefinance.com',mx,27);
+      doc.setFontSize(8);
+      doc.text('Report generated: '+new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'}),mx,35);
+      y=52;
 
-      // ─── Title ───
-      doc.setTextColor(26,26,36);
-      var titles={sip:'SIP Calculator Results',stepup:'Step-Up SIP Calculator Results',retirement:'Retirement Plan Results',tax:'Income Tax Calculator Results',emi:'EMI Calculator Results',irr:'Insurance IRR Analysis',ratios:'Ratio Analysis Report',debt:'Debt Health Check Report'};
-      doc.setFontSize(15);doc.setFont('helvetica','bold');
-      doc.text(titles[calcType]||'Calculator Results',14,y);y+=4;
-      doc.setDrawColor(212,43,81);doc.setLineWidth(0.6);doc.line(14,y,90,y);y+=10;
+      // ─── TITLE ───
+      doc.setTextColor(26,26,36);doc.setFontSize(14);doc.setFont('helvetica','bold');
+      doc.text(titles[calcType]||'Calculator Report',mx,y);y+=3;
+      doc.setDrawColor(212,43,81);doc.setLineWidth(0.7);doc.line(mx,y,mx+55,y);y+=10;
 
-      // ─── Find the results panel ───
-      var panel=document.getElementById('res-'+calcType);
-      if(!panel){
-        // For pages where rc has no specific id
-        var containers={
-          tax:document.getElementById('panel-tax'),
-          emi:document.getElementById('panel-emi'),
-          irr:document.getElementById('page-insurance'),
-          ratios:document.getElementById('page-ratios'),
-          debt:document.getElementById('debtResults')
-        };
-        var container=containers[calcType]||document.getElementById('panel-'+calcType);
-        if(container) panel=container.querySelector('.rc')||container.querySelector('.ratio-rp')||container;
+      // ─── HELPER FUNCTIONS ───
+      // Clean number formatter for PDF (avoids Unicode space issues)
+      function pdfNum(n){
+        if(typeof n==='string'){
+          // Strip any unicode spaces/non-breaking spaces, normalize
+          return n.replace(/[\u00A0\u2000-\u200B\u202F\u205F\u3000\uFEFF]/g,' ').replace(/\s+/g,'').replace(/,/g,',');
+        }
+        n=Number(n);if(isNaN(n)||!isFinite(n))return'—';
+        var a=Math.abs(n),s=n<0?'-':'',p='Rs. ';
+        if(a>=1e7)return s+p+(a/1e7).toFixed(2)+' Cr';
+        if(a>=1e5)return s+p+(a/1e5).toFixed(2)+' L';
+        // Indian comma format without locale
+        var str=Math.round(a).toString();
+        var last3=str.slice(-3);
+        var rest=str.slice(0,-3);
+        if(rest)rest=rest.replace(/\B(?=(\d{2})+(?!\d))/g,',');
+        return s+p+(rest?rest+',':'')+last3;
+      }
+      function pdfVal(elId){
+        var el=document.getElementById(elId);
+        if(!el)return'—';
+        return pdfClean(el.textContent.trim());
+      }
+      function pdfClean(s){
+        // Strip Unicode whitespace that jsPDF renders as wide gaps
+        return String(s||'').replace(/[\u00A0\u2000-\u200B\u202F\u205F\u3000\uFEFF]/g,'').replace(/₹/g,'Rs.');
+      }
+      function addSection(title){
+        if(y>255){doc.addPage();y=20;}
+        doc.setFillColor(245,244,240);doc.roundedRect(mx,y-4,W-mx*2,8,1,1,'F');
+        doc.setFontSize(9);doc.setFont('helvetica','bold');doc.setTextColor(107,107,128);
+        doc.text(title.toUpperCase(),mx+4,y+1);y+=10;
+      }
+      function addRow(label,value,hint){
+        if(y>268){doc.addPage();y=20;}
+        doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(107,107,128);
+        doc.text(pdfClean(label),mx+2,y);
+        doc.setFont('helvetica','bold');doc.setTextColor(26,26,36);doc.setFontSize(10);
+        doc.text(pdfClean(value),mx+82,y);
+        if(hint){doc.setFont('helvetica','normal');doc.setTextColor(160,160,170);doc.setFontSize(7);doc.text(pdfClean(hint),mx+82,y+4);y+=4;}
+        y+=7;
+      }
+      function addBigResult(label,value){
+        if(y>260){doc.addPage();y=20;}
+        doc.setFontSize(8);doc.setFont('helvetica','bold');doc.setTextColor(107,107,128);
+        doc.text(pdfClean(label).toUpperCase(),mx+2,y);y+=7;
+        doc.setFontSize(22);doc.setFont('helvetica','bold');doc.setTextColor(212,43,81);
+        doc.text(pdfClean(value),mx+2,y);y+=12;
+        doc.setTextColor(26,26,36);
+      }
+      function addAdvice(text){
+        if(y>258){doc.addPage();y=20;}
+        y+=2;
+        doc.setFontSize(8);doc.setFont('helvetica','italic');doc.setTextColor(140,60,80);
+        var lines=doc.splitTextToSize(pdfClean(text),W-mx*2-8);
+        var boxH=lines.length*4+8;
+        doc.setFillColor(245,232,236);doc.roundedRect(mx,y-4,W-mx*2,boxH,2,2,'F');
+        doc.text(lines,mx+4,y+1);y+=boxH+4;
+      }
+      function addNote(text){
+        if(y>258){doc.addPage();y=20;}
+        doc.setFontSize(8);doc.setFont('helvetica','normal');doc.setTextColor(107,107,128);
+        var lines=doc.splitTextToSize(pdfClean(text),W-mx*2-4);
+        doc.text(lines,mx+2,y);y+=lines.length*4+4;
       }
 
-      doc.setFontSize(10);doc.setFont('helvetica','normal');
-
-      if(panel){
-        // Extract meaningful data pairs
-        var bigEls=panel.querySelectorAll('.r-big, .irr-num');
-        var subEls=panel.querySelectorAll('.r-sub');
-        var rbEls=panel.querySelectorAll('.rb');
-        var sboxEls=panel.querySelectorAll('.sbox');
-        var nudgeEls=panel.querySelectorAll('.nudge');
-        var lblEls=panel.querySelectorAll('.r-lbl');
-
-        // Main result
-        lblEls.forEach(function(el){
-          var text=el.textContent.trim();if(!text)return;
-          doc.setFontSize(9);doc.setFont('helvetica','bold');doc.setTextColor(107,107,128);
-          doc.text(text.toUpperCase(),14,y);y+=6;
-        });
-        bigEls.forEach(function(el){
-          var text=el.textContent.trim();if(!text||text==='—'||text==='— ')return;
-          doc.setFontSize(18);doc.setFont('helvetica','bold');doc.setTextColor(26,26,36);
-          doc.text(text,14,y);y+=9;
-        });
-        subEls.forEach(function(el){
-          var text=el.textContent.trim();if(!text)return;
-          doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(107,107,128);
-          doc.text(text,14,y);y+=7;
-        });
-
-        // Key-value pairs from .rb boxes
-        if(rbEls.length>0){
-          y+=3;
-          doc.setDrawColor(226,226,236);doc.setLineWidth(0.2);doc.line(14,y-2,pageW-14,y-2);y+=4;
-          rbEls.forEach(function(rb){
-            if(y>265){doc.addPage();y=20;}
-            var val=rb.querySelector('.rb-v');
-            var key=rb.querySelector('.rb-k');
-            if(val&&key){
-              var vText=val.textContent.trim();
-              var kText=key.textContent.trim();
-              if(vText&&vText!=='₹ —'&&vText!=='—'){
-                doc.setFontSize(11);doc.setFont('helvetica','bold');doc.setTextColor(26,26,36);
-                doc.text(vText,16,y);
-                doc.setFontSize(8);doc.setFont('helvetica','normal');doc.setTextColor(107,107,128);
-                doc.text('  '+kText,16+doc.getTextWidth(vText)+2,y);
-                y+=7;
-              }
-            }
+      // ─── CALCULATOR-SPECIFIC CONTENT ───
+      if(calcType==='sip'){
+        var sAmt=document.getElementById('s_amt').value||'—';
+        var sYr=document.getElementById('s_yr').value||'—';
+        var sRt=document.getElementById('s_rt').value||'—';
+        var sLs=document.getElementById('s_ls').value||'0';
+        var sGoal=document.getElementById('s_goal').value||'';
+        addSection('Your Inputs');
+        addRow('Monthly SIP Amount',pdfNum(sAmt),'Fixed amount invested every month');
+        addRow('Investment Duration',sYr+' years','Total holding period');
+        addRow('Expected Annual Return',sRt+'%','Based on asset class selection');
+        if(Number(sLs)>0) addRow('Existing Lump Sum',pdfNum(sLs),'Already invested today');
+        if(sGoal) addRow('Target Goal',pdfNum(sGoal),'Your financial target');
+        y+=4;
+        addSection('Projected Results');
+        addBigResult('Projected Corpus',pdfVal('s_corpus'));
+        addRow('Total Invested',pdfVal('s_inv'),'Your actual contribution');
+        addRow('Wealth Gained',pdfVal('s_gain'),'Returns earned through compounding');
+        addRow('Money Multiplier',pdfVal('s_mult'),'How many times your money grew');
+        var gb=document.getElementById('s_goal_box');
+        if(gb&&gb.textContent.trim()) addNote(gb.textContent.trim());
+        y+=2;
+        addAdvice('The power of SIP lies in consistency. Markets will fluctuate — that is normal. Staying invested through cycles is what creates wealth. Even small amounts, invested regularly over long periods, can generate substantial corpus through compounding.');
+      }
+      else if(calcType==='stepup'){
+        addSection('Your Inputs');
+        addRow('Starting Monthly SIP',pdfNum(document.getElementById('su_amt').value||0),'First year monthly amount');
+        addRow('Annual Step-Up',(document.getElementById('su_sr').value||'—')+'%','Yearly increase in SIP');
+        addRow('Duration',(document.getElementById('su_yr').value||'—')+' years','Investment horizon');
+        addRow('Expected Return',(document.getElementById('su_rt').value||'—')+'%','Annual return assumption');
+        var suLs=document.getElementById('su_ls').value;
+        if(Number(suLs)>0) addRow('Existing Savings',pdfNum(suLs));
+        y+=4;
+        addSection('Projected Results');
+        addBigResult('Step-Up SIP Corpus',pdfVal('su_corpus'));
+        addRow('Total Invested',pdfVal('su_inv'));
+        addRow('Wealth Gained',pdfVal('su_gain'));
+        addRow('Final Monthly SIP',pdfVal('su_last'),'Your SIP in the last year');
+        addRow('Flat SIP Corpus (comparison)',pdfVal('su_flat'),'Without step-up');
+        y+=2;
+        addAdvice('Step-up SIP is one of the most underrated wealth tools. By increasing your SIP by just 10% annually — typically aligned with salary increments — you can nearly double your final corpus compared to a flat SIP. Start with what is comfortable and let the step-up do the heavy lifting.');
+      }
+      else if(calcType==='retirement'){
+        addSection('Your Inputs');
+        addRow('Current Age',document.getElementById('r_age').value||'—');
+        addRow('Retirement Age',document.getElementById('r_ret').value||'60');
+        addRow('Life Expectancy',document.getElementById('r_life').value||'85');
+        addRow('Monthly Expenses Today',pdfNum(document.getElementById('r_exp').value||0));
+        addRow('Expected Inflation',(document.getElementById('r_infl').value||'6')+'%');
+        addRow('Pre-Retirement Return',(document.getElementById('r_pre').value||'12')+'%');
+        addRow('Post-Retirement Return',(document.getElementById('r_post').value||'7')+'%');
+        y+=4;
+        addSection('Retirement Plan');
+        addBigResult('Corpus Required',pdfVal('r_corpus'));
+        addRow('Monthly Expense at Retirement',pdfVal('r_mneed'),'Inflation-adjusted');
+        addRow('Years to Retirement',pdfVal('r_yleft'));
+        addRow('Monthly SIP Needed (Flat)',pdfVal('r_sip_flat'));
+        addRow('Monthly SIP Needed (Step-Up)',pdfVal('r_sip_su'));
+        y+=2;
+        addAdvice('Prioritise your retirement goal above all others. There are loans available for a house, a car, or education — but there is no loan for retirement. The earlier you start, the less you need to save each month. Even a 5-year head start can reduce your required SIP by 40-50%.');
+        addNote('Healthcare costs in India inflate at 10-12% annually. Consider building a separate health corpus or ensuring comprehensive health insurance coverage as part of your retirement plan.');
+      }
+      else if(calcType==='tax'){
+        addSection('Your Inputs');
+        addRow('Gross Income',pdfNum(document.getElementById('tx_salary').value||0));
+        addRow('Tax Regime',taxRegime==='new'?'New Regime FY2025-26':'Old Regime FY2025-26');
+        y+=4;
+        addSection('Tax Calculation');
+        addBigResult('Total Tax Payable',pdfVal('tx_total'));
+        addNote(pdfVal('tx_sub')||'');
+        // Extract rb elements
+        var txRows=document.getElementById('tx_rows');
+        if(txRows){var rbs=txRows.querySelectorAll('.rb');rbs.forEach(function(rb){var v=rb.querySelector('.rb-v'),k=rb.querySelector('.rb-k');if(v&&k)addRow(k.textContent,v.textContent);});}
+        var txNote=document.getElementById('tx_note');
+        if(txNote&&txNote.textContent) addNote(txNote.textContent);
+        y+=2;
+        addAdvice('Tax planning is most effective when done at the start of the financial year, not in January-March. If under the old regime, maximise 80C (₹1.5L), NPS 80CCD(1B) (₹50K), and health insurance 80D early in the year for both tax savings and financial protection.');
+      }
+      else if(calcType==='emi'){
+        addSection('Loan Details');
+        var emName=document.getElementById('em_name').value;
+        if(emName) addRow('Loan Type',emName);
+        addRow('Loan Amount',pdfNum(document.getElementById('em_amt').value||0));
+        addRow('Interest Rate',(document.getElementById('em_rate').value||'—')+'% p.a.');
+        addRow('Tenure',(document.getElementById('em_months').value||'—')+' months');
+        y+=4;
+        addSection('EMI Breakdown');
+        addBigResult('Monthly EMI',pdfVal('em_emi'));
+        addRow('Total Payment',pdfVal('em_total_pay'),'Principal + Interest');
+        addRow('Total Interest',pdfVal('em_interest_total'),'The real cost of borrowing');
+        var af=document.getElementById('em_afford');
+        if(af&&af.textContent.trim()) addNote(af.textContent.trim());
+        y+=2;
+        addAdvice('In the early months of any loan, most of your EMI goes towards interest — the bank collects its profit first. Making even small prepayments in the first few years can save you lakhs in total interest. Keep total EMIs within 35-40% of your take-home salary.');
+      }
+      else if(calcType==='irr'){
+        addSection('Policy Details');
+        addRow('Annual Premium',pdfNum(document.getElementById('ip_prem').value||0));
+        addRow('Premium Paying Term',(document.getElementById('ip_pay').value||'—')+' years');
+        addRow('Policy Term',(document.getElementById('ip_pol').value||'—')+' years');
+        y+=4;
+        addSection('IRR Analysis');
+        addBigResult('Policy IRR',pdfVal('irr_val'));
+        addRow('Total Premiums Paid',pdfVal('irr_paid'));
+        addRow('Total Benefits Received',pdfVal('irr_recv'));
+        addRow('Same Premiums in FD @7%',pdfVal('irr_fd'),'Alternative benchmark');
+        var vr=document.getElementById('irr_verdict');
+        if(vr&&vr.textContent.trim()) addNote(vr.textContent.trim());
+        y+=2;
+        addAdvice('Insurance should protect, not invest. A pure term life plan (large cover, small premium) combined with systematic mutual fund investing almost always delivers better outcomes in both protection and wealth creation. Compare your policy IRR against the 10-year G-Sec yield of 6.93% as a baseline.');
+      }
+      else if(calcType==='termplan'){
+        addSection('Your Profile');
+        addRow('Age',document.getElementById('tp_age').value||'—');
+        addRow('Annual Income',pdfNum(document.getElementById('tp_income').value||0));
+        addRow('Monthly Expenses',pdfNum(document.getElementById('tp_exp').value||0));
+        addRow('Outstanding Loans',pdfNum(document.getElementById('tp_loans').value||0));
+        addRow('Existing Assets',pdfNum(document.getElementById('tp_assets').value||0));
+        y+=4;
+        addSection('Recommended Term Cover');
+        addBigResult('Recommended Cover',pdfVal('tp_cover'));
+        addRow('Human Life Value (HLV)',pdfVal('tp_hlv'),'Income replacement method');
+        addRow('Needs-Based Cover',pdfVal('tp_needs'),'Goals + expenses + loans');
+        addRow('Future Value of Goals',pdfVal('tp_goals_total'));
+        addRow('Family Expense Cover',pdfVal('tp_exp_cover'));
+        y+=2;
+        addAdvice('Term insurance is the foundation of financial planning for anyone with dependents. Get covered as early as possible — premiums are significantly lower when young. Choose a policy term that covers you until at least age 60-65. Your cover should be reviewed every 3-5 years as income and responsibilities change.');
+      }
+      else{
+        // Generic fallback
+        addSection('Results');
+        var panel=document.querySelector('.page.active .rc, .page.active .ratio-rp');
+        if(panel){
+          panel.querySelectorAll('.rb').forEach(function(rb){
+            var v=rb.querySelector('.rb-v'),k=rb.querySelector('.rb-k');
+            if(v&&k&&v.textContent.trim()!=='₹ —') addRow(k.textContent,v.textContent);
           });
         }
-
-        // Status boxes
-        sboxEls.forEach(function(el){
-          if(y>265){doc.addPage();y=20;}
-          var text=el.textContent.trim();if(!text)return;
-          y+=4;
-          doc.setFillColor(237,247,242);doc.roundedRect(14,y-5,pageW-28,12,2,2,'F');
-          doc.setFontSize(9);doc.setFont('helvetica','bold');doc.setTextColor(30,126,79);
-          var lines=doc.splitTextToSize(text,pageW-34);
-          doc.text(lines,16,y+1);y+=lines.length*5+8;
-        });
-
-        // Nudge/advisory notes
-        nudgeEls.forEach(function(el){
-          if(y>260){doc.addPage();y=20;}
-          var text=el.textContent.trim();if(!text)return;
-          y+=4;
-          doc.setFontSize(8);doc.setFont('helvetica','italic');doc.setTextColor(107,107,128);
-          var lines=doc.splitTextToSize(text,pageW-32);
-          doc.text(lines,16,y);y+=lines.length*4+6;
-        });
       }
 
-      // ─── Disclaimer ───
-      y=Math.max(y+12,240);
-      if(y>268){doc.addPage();y=20;}
-      doc.setDrawColor(226,226,236);doc.setLineWidth(0.3);doc.line(14,y,pageW-14,y);y+=7;
-      doc.setFontSize(7);doc.setFont('helvetica','normal');doc.setTextColor(140,140,155);
-      var disc='IMPORTANT DISCLAIMER: This document is generated by Zero Noise Finance\u2122 calculators for educational and informational purposes only. It does not constitute financial, investment, tax, or legal advice. All figures shown are illustrative projections based on the assumptions entered and are NOT guaranteed. Actual results may vary significantly. Past performance of any asset class is not indicative of future results. Tax calculations are based on Indian FY 2025-26 rules and may change. Zero Noise Finance\u2122 is not a SEBI-registered investment advisor. Always consult a qualified, SEBI-registered financial advisor before making any investment, insurance, or tax decisions.';
-      var discLines=doc.splitTextToSize(disc,pageW-28);
-      doc.text(discLines,14,y);y+=discLines.length*3.5+6;
+      // ─── DISCLAIMER ───
+      y=Math.max(y+8,H-40);
+      if(y>H-25){doc.addPage();y=20;}
+      doc.setDrawColor(226,226,236);doc.setLineWidth(0.2);doc.line(mx,y,W-mx,y);y+=5;
+      doc.setFontSize(6.5);doc.setFont('helvetica','normal');doc.setTextColor(140,140,155);
+      var disc='Disclaimer: This report is generated by Zero Noise Finance\u2122 calculators for educational and informational purposes only. Projections are based on the assumptions entered and are not guaranteed. Past performance is not indicative of future results. Investments in securities are subject to market risks — read all scheme-related documents carefully before investing. Tax laws are subject to change. For personalised financial advice tailored to your specific situation, please consult a qualified financial advisor.';
+      var dl=doc.splitTextToSize(disc,W-mx*2);
+      doc.text(dl,mx,y);y+=dl.length*3+4;
 
-      // ─── Footer ───
-      doc.setFillColor(26,26,36);doc.rect(0,doc.internal.pageSize.getHeight()-12,pageW,12,'F');
-      doc.setTextColor(212,43,81);doc.setFont('helvetica','bold');doc.setFontSize(8);
-      doc.text('zeronoisefinance.com',14,doc.internal.pageSize.getHeight()-4);
+      // ─── FOOTER BAR ───
+      doc.setFillColor(26,26,36);doc.rect(0,H-10,W,10,'F');
+      doc.setTextColor(212,43,81);doc.setFont('helvetica','bold');doc.setFontSize(7);
+      doc.text('zeronoisefinance.com',mx,H-4);
       doc.setTextColor(180,180,200);doc.setFont('helvetica','normal');
-      doc.text('For personalised guidance: info@zeronoisefinance.com | +91 91156 00369',pageW-14,doc.internal.pageSize.getHeight()-4,{align:'right'});
+      doc.text('info@zeronoisefinance.com | +91 91156 00369',W-mx,H-4,{align:'right'});
 
       doc.save('ZNF-'+(titles[calcType]||'Report').replace(/ /g,'-')+'.pdf');
     }catch(e){
-      console.error('PDF generation error:',e);
-      if(confirm('PDF generation encountered an error. Use browser Print to PDF instead?')){
-        window.print();
-      }
+      console.error('PDF error:',e);
+      if(confirm('PDF generation error. Use browser Print to PDF?')) window.print();
     }
     if(btn){btn.textContent='📥 Download Result as PDF';btn.disabled=false;}
   });
 }
 function switchCalc(id, btn) {
-  ['sip','stepup','retirement','tax','emi'].forEach(function(p) {
+  ['sip','stepup','retirement','tax','emi','termplan'].forEach(function(p) {
     var el = document.getElementById('panel-' + p);
     if (el) el.style.display = 'none';
   });
-  var tbl = document.getElementById('em_table_wrap');
+  var tbl = document.getElementById('em_table_trigger');
   if (tbl && id !== 'emi') tbl.style.display = 'none';
   document.querySelectorAll('.ctab').forEach(function(t){ t.classList.remove('active'); });
   var panel = document.getElementById('panel-' + id);
@@ -2287,8 +2553,10 @@ function calcSIP() {
   document.getElementById('s_yr_r').value = yrs || 15;
   if (!amt || !yrs || !rt) return;
   var r = rt/100/12, n = yrs*12;
+  // Excel FV: =FV(rate,nper,-pmt,0,1) for SIP (beginning of period)
   var sipFV  = amt * ((Math.pow(1+r,n)-1)/r) * (1+r);
-  var lumpFV = ls * Math.pow(1+r/12*12,n);
+  // Lump sum: =FV(rate,nper,0,-pv) — compounds monthly
+  var lumpFV = ls * Math.pow(1+r, n);
   var total  = sipFV + lumpFV;
   var invested = amt*n + ls;
   document.getElementById('s_corpus').textContent = fmt(total);
@@ -2311,28 +2579,38 @@ function calcSU() {
   var yrs = parseFloat(document.getElementById('su_yr').value)||0;
   var rt  = parseFloat(document.getElementById('su_rt').value)||0;
   var su  = parseFloat(document.getElementById('su_sr').value)||0;
+  var ls  = parseFloat(document.getElementById('su_ls').value)||0;
+  var goal= parseFloat(document.getElementById('su_goal').value)||0;
   var freq= stepUpFreq||12;
   document.getElementById('su_yr_r').value = yrs || 20;
   document.getElementById('su_sr_r').value = su  || 10;
   if (!amt||!yrs||!rt) return;
   var r = rt/100/12, corpus=0, s=amt, totalInv=0;
   var periods = yrs * 12;
-  var stepInterval = Math.round(12/freq);
+  var stepInterval = Math.max(1,Math.round(12/freq));
   for (var m=0; m<periods; m++) {
     corpus = (corpus + s) * (1+r);
     totalInv += s;
     if ((m+1) % stepInterval === 0) s *= (1 + su/100/(12/stepInterval));
   }
-  var flat = amt*((Math.pow(1+r,periods)-1)/r)*(1+r);
-  document.getElementById('su_corpus').textContent = fmt(corpus);
+  var lumpFV = ls * Math.pow(1+r, periods);
+  var total = corpus + lumpFV;
+  totalInv += ls;
+  var flat = amt*((Math.pow(1+r,periods)-1)/r)*(1+r) + lumpFV;
+  document.getElementById('su_corpus').textContent = fmt(total);
   document.getElementById('su_inv').textContent    = fmt(totalInv);
-  document.getElementById('su_gain').textContent   = fmt(corpus-totalInv);
+  document.getElementById('su_gain').textContent   = fmt(total-totalInv);
   document.getElementById('su_flat').textContent   = fmt(flat);
   document.getElementById('su_last').textContent   = fmt(s);
   document.getElementById('su_sub').textContent    = 'starting ' + fmt(amt) + '/mo, +' + su + '% p.a.';
   var bb=document.getElementById('su_benefit_box'),bf=document.getElementById('su_benefit');
-  if(bb&&bf&&corpus>flat){bb.style.display='block';bf.textContent=fmt(corpus-flat);}
+  if(bb&&bf&&total>flat){bb.style.display='block';bf.textContent=fmt(total-flat);}
   else if(bb) bb.style.display='none';
+  var gb=document.getElementById('su_goal_box');
+  if(goal>0&&gb){
+    if(total>=goal) gb.innerHTML='<div class="sbox s-ok">On track — surplus of '+fmt(total-goal)+' over your '+fmt(goal)+' goal.</div>';
+    else gb.innerHTML='<div class="sbox s-bd">Shortfall of '+fmt(goal-total)+'. Try increasing SIP, step-up %, or duration.</div>';
+  } else if(gb) gb.innerHTML='';
 }
 
 /* ── RETIREMENT ── */
@@ -2713,7 +2991,7 @@ function calcEMI() {
   }
   if(tbody) tbody.innerHTML=rows.join('');
   if(tfoot) tfoot.innerHTML='<tr style="background:var(--bgw);font-weight:700;border-top:2px solid var(--rule)"><td style="padding:9px 12px">Total</td><td style="padding:9px 12px;text-align:right;font-family:var(--fm)">\u20b9'+Math.round(totalPay).toLocaleString('en-IN')+'</td><td style="padding:9px 12px;text-align:right;font-family:var(--fm);color:var(--ok)">\u20b9'+Math.round(P).toLocaleString('en-IN')+'</td><td style="padding:9px 12px;text-align:right;font-family:var(--fm);color:var(--err)">\u20b9'+Math.round(totInt).toLocaleString('en-IN')+'</td><td style="padding:9px 12px">—</td></tr>';
-  var tw=document.getElementById('em_table_wrap'); if(tw) tw.style.display='block';
+  var tw=document.getElementById('em_table_trigger'); if(tw) tw.style.display='block';
 }
 
 /* ── DEBT HEALTH CHECK ── */
@@ -2768,12 +3046,113 @@ function analyzDebt(){
   var res=document.getElementById('debtResults'); if(res){res.classList.add('show');res.scrollIntoView({behavior:'smooth',block:'start'});}
 }
 
+/* ── EMI SCHEDULE TOGGLE ── */
+var emiScheduleOpen=false;
+function toggleEmiSchedule(){
+  emiScheduleOpen=!emiScheduleOpen;
+  var body=document.getElementById('emiScheduleBody');
+  var arrow=document.getElementById('emiScheduleArrow');
+  if(body){
+    if(emiScheduleOpen){body.style.maxHeight=body.scrollHeight+'px';}
+    else{body.style.maxHeight='0';}
+  }
+  if(arrow) arrow.style.transform=emiScheduleOpen?'rotate(180deg)':'rotate(0deg)';
+}
+
+/* ── TERM PLAN CALCULATOR ── */
+var tpHasDep=true;
+var tpGoalCount=0;
+function setTPDep(has,btn){
+  tpHasDep=has;
+  document.querySelectorAll('#tp_dep_chips .fchip').forEach(function(b){b.classList.remove('sel');});
+  btn.classList.add('sel');
+  document.getElementById('tp_no_dep_note').style.display=has?'none':'block';
+  calcTermPlan();
+}
+function addTPGoal(){
+  tpGoalCount++;
+  var id=tpGoalCount;
+  var div=document.createElement('div');
+  div.id='tpg_'+id;
+  div.style.cssText='display:grid;grid-template-columns:1fr 100px 80px 28px;gap:8px;align-items:end;margin-bottom:8px';
+  div.innerHTML='<div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.68rem">Goal Name</div><input class="fi-inp" type="text" id="tpgn_'+id+'" placeholder="e.g. Child education" style="padding:8px 10px;font-size:.85rem"></div>'
+    +'<div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.68rem">Amount (₹)</div><input class="fi-inp" type="number" id="tpga_'+id+'" placeholder="₹" oninput="calcTermPlan()" style="padding:8px 10px;font-size:.85rem"></div>'
+    +'<div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.68rem">Years Away</div><input class="fi-inp" type="number" id="tpgy_'+id+'" placeholder="Yrs" oninput="calcTermPlan()" style="padding:8px 10px;font-size:.85rem"></div>'
+    +'<button onclick="document.getElementById(\'tpg_'+id+'\').remove();calcTermPlan()" style="color:var(--ink-l);font-size:.9rem;padding:6px;border-radius:4px;transition:color .2s;margin-bottom:1px" title="Remove">✕</button>';
+  document.getElementById('tp_goals_container').appendChild(div);
+}
+function calcTermPlan(){
+  var age=parseFloat(document.getElementById('tp_age').value)||0;
+  var sage=parseFloat(document.getElementById('tp_sage').value)||0;
+  var income=parseFloat(document.getElementById('tp_income').value)||0;
+  var exp=parseFloat(document.getElementById('tp_exp').value)||0;
+  var loans=parseFloat(document.getElementById('tp_loans').value)||0;
+  var assets=parseFloat(document.getElementById('tp_assets').value)||0;
+  var existing=parseFloat(document.getElementById('tp_existing').value)||0;
+  var infl=parseFloat(document.getElementById('tp_infl').value)||6;
+  if(!age||!income) return;
+
+  // Method 1: Human Life Value (HLV) — income replacement until 60
+  var workingYears=Math.max(1,60-age);
+  var discountRate=0.08; // 8% discount rate
+  var hlv=0;
+  for(var y=1;y<=workingYears;y++){
+    hlv+=income*Math.pow(1+infl/100,y)/Math.pow(1+discountRate,y);
+  }
+
+  // Method 2: Needs-based approach
+  // a) Family expense cover: spouse till 90, or 25 years minimum
+  var expYears=sage>0?Math.max(25,90-sage):Math.max(25,90-(age>0?age-2:28));
+  var annualExp=exp*12;
+  var realRate=Math.max(0.005,((1+0.08)/(1+infl/100))-1);
+  var expCover=annualExp*(1-Math.pow(1+realRate,-expYears))/realRate;
+
+  // b) Goals future value
+  var goalsFV=0;
+  for(var i=1;i<=tpGoalCount;i++){
+    var el=document.getElementById('tpg_'+i);if(!el)continue;
+    var gAmt=parseFloat((document.getElementById('tpga_'+i)||{}).value)||0;
+    var gYrs=parseFloat((document.getElementById('tpgy_'+i)||{}).value)||0;
+    if(gAmt>0) goalsFV+=gAmt*Math.pow(1+infl/100,gYrs);
+  }
+
+  // c) Total needs
+  var totalNeeds=expCover+goalsFV+loans;
+  var netNeeds=Math.max(0,totalNeeds-assets-existing);
+
+  // Recommended: higher of HLV and needs-based, rounded up to nearest 25L
+  var recommended=Math.max(hlv,netNeeds);
+  recommended=Math.ceil(recommended/2500000)*2500000;
+  // Minimum 10x income
+  recommended=Math.max(recommended,income*10);
+
+  document.getElementById('tp_cover').textContent=fmt(recommended);
+  document.getElementById('tp_sub').textContent='Based on HLV + needs analysis for age '+age;
+  document.getElementById('tp_hlv').textContent=fmt(hlv);
+  document.getElementById('tp_needs').textContent=fmt(netNeeds);
+  document.getElementById('tp_goals_total').textContent=fmt(goalsFV);
+  document.getElementById('tp_exp_cover').textContent=fmt(expCover);
+  document.getElementById('tp_debt_val').textContent=fmt(loans);
+  document.getElementById('tp_net_val').textContent=fmt(assets+existing);
+
+  // Salary-based benchmark
+  var salaryMultiple=income>0?Math.round(recommended/income):0;
+  var vHtml='<div class="sbox s-ok" style="margin-top:10px">Recommended cover: <strong>'+salaryMultiple+'x your annual income</strong>. Industry standard is 10-15x.</div>';
+  if(salaryMultiple<10) vHtml='<div class="sbox s-wn" style="margin-top:10px">At '+salaryMultiple+'x income, consider increasing to at least 10-15x for adequate protection.</div>';
+  // Estimated premium
+  var estPremium=Math.round(recommended/10000000*12000*(1+Math.max(0,age-25)*0.06));
+  vHtml+='<div style="margin-top:10px;padding:11px 14px;background:var(--bgw);border:1px solid var(--rule);border-radius:var(--rs);font-size:.82rem;color:var(--ink-m);line-height:1.65"><strong>Estimated annual premium:</strong> ~'+fmt(estPremium)+'/year for '+fmt(recommended)+' cover at age '+age+'. <span style="color:var(--ink-l)">(Actual premium depends on health, habits, and insurer.)</span></div>';
+  document.getElementById('tp_verdict').innerHTML=vHtml;
+}
+// Initialize with one goal
+setTimeout(function(){addTPGoal();},600);
+
 /* ── INFO BUTTONS ── */
 var infoLang='en';
 var INFO_DB={
-  s_amt:{title:'Monthly Investment',en:'How much you invest every month. Even Rs 1,000/month started early builds significant wealth. A guideline: 10-20% of take-home salary is a good starting point.',hi:'Har mahine kitna invest karenge. Rs 1,000/maah bhi jaldi shuru karne par kaafi banta hai. Take-home ka 10-20% achhi shuruaat hai.'},
-  s_yr:{title:'Investment Duration (Years)',en:'For how many years you will keep investing. The single most powerful variable. 5 extra years can nearly double your corpus. Never stop SIPs during market falls - that is when you buy more units cheaply.',hi:'Kitne saalo tak invest karenge. Sabse mahatvapurna sankhya. 5 saal zyada = lagbhag double corpus. Market girawat mein band mat karein.'},
-  s_rt:{title:'Expected Annual Return (%)',en:'Yearly return expected. Equity (12-15%): stock index funds long-term. Hybrid (~10%): mix of stocks and bonds. Debt (6-7%): bonds, FDs. Always use conservative estimates for planning.',hi:'Equity: 12-15%. Hybrid: ~10%. Debt: 6-7%. Planning ke liye hamesha conservative anuman lagayen.'},
+  s_amt:{title:'Monthly Investment',en:'How much you invest every month. Even Rs 1,000/month started early builds significant wealth. A guideline: 10-20% of take-home salary is a good starting point.',hi:'हर महीने कितना निवेश करेंगे। ₹1,000/माह भी जल्दी शुरू करने पर बहुत बनता है। अपनी मासिक वेतन का 10-20% अच्छी शुरुआत है।'},
+  s_yr:{title:'Investment Duration (Years)',en:'For how many years you will keep investing. The single most powerful variable. 5 extra years can nearly double your corpus. Never stop SIPs during market falls - that is when you buy more units cheaply.',hi:'कितने सालों तक निवेश करेंगे। सबसे महत्वपूर्ण संख्या। 5 साल अतिरिक्त = कॉर्पस लगभग दोगुना। बाज़ार गिरने पर SIP बंद मत करें — तब आप सस्ते में अधिक यूनिट खरीदते हैं।'},
+  s_rt:{title:'Expected Annual Return (%)',en:'Yearly return expected. Equity (12-15%): stock index funds long-term. Hybrid (~10%): mix of stocks and bonds. Debt (6-7%): bonds, FDs. Always use conservative estimates for planning.',hi:'इक्विटी: 12-15%। हाइब्रिड: ~10%। डेब्ट: 6-7%। योजना बनाने के लिए हमेशा रूढ़िवादी अनुमान लगाएं।'},
   s_ls:{title:'Existing Savings / Lump Sum',en:'Any money you have already invested or saved today. It compounds alongside your monthly SIPs giving you a head-start. Optional - leave blank if starting fresh.',hi:'Aaj tak jo paisa invest ya bachaaya hai. Monthly SIP ke saath compound hota hai. Optional.'},
   s_goal:{title:'Financial Goal Amount',en:'The target corpus you want to reach. Calculator shows if you are on track or how much more you need. Leave blank to just see projected corpus.',hi:'Aap kitna paisa chahte hain. Calculator batayega on track hain ya zyada invest karna hoga.'},
   su_amt:{title:'Starting Monthly SIP',en:'Your initial monthly investment amount in the first year. Start with what is comfortable - the step-up will increase it each year automatically.',hi:'Pehle saal ki monthly SIP. Jo aaram se ho usi se shuru karein - step-up se har saal badhegi.'},
@@ -2781,10 +3160,10 @@ var INFO_DB={
   su_rt:{title:'Expected Annual Return (%)',en:'Annual return expected. Equity historically 12-15% over 15+ years. Use 10-11% for conservative planning. Hybrid and debt are lower.',hi:'Saalana return ki ummed. Equity historically 12-15% (15+ saal). Conservative planning ke liye 10-11%.'},
   su_sr:{title:'Annual Step-Up (%)',en:'By what percentage your SIP increases each year. 5% keeps pace with inflation. 10-15% is ideal if your salary grows similarly. Even 5% annual step-up nearly doubles your final corpus vs flat SIP.',hi:'SIP har saal kitne % badhegi. 5% = mehangai ke barabar. 10-15% = agar salary bhi itni badhti ho. Sirf 5% step-up se bhi corpus lagbhag double hota hai.'},
   su_freq:{title:'Step-Up Frequency',en:'How often your SIP increases. Annual (once a year in April) is most practical - aligns with salary hike cycles. Semi-annual and quarterly give slightly better results.',hi:'Step-up kitni baar hoga. Annual (April) sabse aasaan hai - salary hike ke saath milta hai.'},
-  r_age:{title:'Your Current Age',en:'Enter your age today. The gap between now and your retirement age is your wealth-building window. Starting at 25 vs 35 can mean a difference of crores due to compounding.',hi:'Aapki aaj ki umar. Retirement se pehle ke saal hi dhan nirmaan ki khidki hain. 25 par shuru karna vs 35 - crores ka fark.'},
-  r_ret:{title:'Target Retirement Age',en:'Age at which you plan to stop working. Most Indians plan for 60. A later retirement gives more saving time and shorter withdrawal period - both reduce corpus needed.',hi:'Aap kis umar mein kaam band karna chahte hain. Zyaadatar 60 plan karte hain. Baad mein retire karna = zyada samay + kam corpus.'},
-  r_life:{title:'Life Expectancy',en:'How old you plan the corpus to last until. Plan to age 85-90 minimum. Underestimating this is the most dangerous retirement mistake - running out of money at 80 with 10+ years left.',hi:'Kitni umar tak corpus chalega - yeh plan karein. Minimum 85-90 saal. 80 par paisa khatam hona sabse badi galti hai.'},
-  r_exp:{title:'Current Monthly Expenses',en:'What you spend each month today - rent, food, EMIs, utilities, everything. This gets inflated at your assumed inflation rate to your retirement date. Be thorough - underestimating leads to insufficient corpus.',hi:'Aaj aap har mahine kitna kharch karte hain - rent, khana, EMI, sab. Retirement tak mehangai se badhega. Sahi sahi batayen.'},
+  r_age:{title:'Your Current Age',en:'Enter your age today. The gap between now and your retirement age is your wealth-building window. Starting at 25 vs 35 can mean a difference of crores due to compounding.',hi:'आपकी आज की उम्र। रिटायरमेंट से पहले के साल ही धन निर्माण की खिड़की हैं। 25 पर शुरू करना vs 35 — करोड़ों का फर्क।'},
+  r_ret:{title:'Target Retirement Age',en:'Age at which you plan to stop working. Most Indians plan for 60. A later retirement gives more saving time and shorter withdrawal period - both reduce corpus needed.',hi:'आप किस उम्र में काम बंद करना चाहते हैं। अधिकांश लोग 60 पर योजना बनाते हैं। देर से रिटायर होना = अधिक समय + कम कोष की ज़रूरत।'},
+  r_life:{title:'Life Expectancy',en:'How old you plan the corpus to last until. Plan to age 85-90 minimum. Underestimating this is the most dangerous retirement mistake - running out of money at 80 with 10+ years left.',hi:'कितनी उम्र तक कोष चलेगा — यह योजना बनाएं। न्यूनतम 85-90 साल मानें। 80 साल में पैसा खत्म होना सबसे खतरनाक गलती है।'},
+  r_exp:{title:'Current Monthly Expenses',en:'What you spend each month today - rent, food, EMIs, utilities, everything. This gets inflated at your assumed inflation rate to your retirement date. Be thorough - underestimating leads to insufficient corpus.',hi:'आज आप हर महीने कितना खर्च करते हैं — किराया, खाना, EMI, बिजली, सब मिलाकर। रिटायरमेंट तक महँगाई से बढ़ेगा। सही-सही बताएं।'},
   r_infl:{title:'Expected Inflation Rate (%)',en:'Rate at which prices will rise annually. India average CPI is 5-7%. Healthcare inflation is even higher at 10-12%. At 6%, your expenses double every 12 years.',hi:'Har saal kimatein kitne % badhti hain. India mein 5-7% average. Swasthya sewaon mein 10-12%. 6% par kharch 12 saal mein double.'},
   r_pre:{title:'Pre-Retirement Return (%)',en:'Annual return on investments during working years. Can be equity-heavy (12%) since you have time to ride market cycles. Higher equity = higher potential return but more volatility.',hi:'Kaam karne ke saalon mein investments par return. Zyaadatar equity (12%) rakh sakte hain - samay hai. Zyada equity = zyada potential return.'},
   r_post:{title:'Post-Retirement Return (%)',en:'Annual return expected after retirement while drawing down corpus. Use 7-8% - conservative because you cannot afford big losses when withdrawing. Shift to debt-heavy allocation at retirement.',hi:'Retire hone ke baad corpus par return. 7-8% use karein - conservative kyunki paisa nikal rahe hain. Debt-heavy allocation pe shift karein.'},
@@ -2813,6 +3192,13 @@ var INFO_DB={
   em_start:{title:'Loan Start Month',en:'The month your first EMI is due. Optional. When entered, the amortization schedule shows actual calendar months instead of Month 1, Month 2. Useful for cash flow planning.',hi:'EMI kab shuru hogi. Optional. Daalne par schedule mein asli mahine dikhenge. Cash flow planning mein helpful.'},
   em_income:{title:'Monthly Take-Home Salary (Rs)',en:'Monthly salary after ALL deductions (tax, PF, professional tax). NOT gross or CTC. Used to check affordability. Rule: all EMIs combined should not exceed 35-40% of take-home. Above 50% is financially risky.',hi:'Tax, PF ke baad ki monthly salary - gross nahi. EMI affordable hai check karne ke liye. Sab EMI milake take-home ka 35-40% se zyada nahi honi chahiye.'},
   em_existing:{title:'Existing Monthly EMIs (Rs)',en:'Total of all other loan EMIs you currently pay monthly - home loan, car loan, personal loan, everything combined. Added to new EMI to check total debt burden against income.',hi:'Abhi jo sab loan EMI bharte hain unka total. Nai EMI ke saath jodkar kul debt burden check hota hai.'},
+  tp_age:{title:'Your Current Age',en:'Your age today. Term insurance premiums are lowest when you are young and healthy. A 25-year-old pays roughly 40-50% less premium than a 35-year-old for the same cover.',hi:'Aapki aaj ki umar. Jitni kam umar, utna kam premium. 25 saal ki umar mein premium 35 saal se lagbhag aadha hota hai.'},
+  tp_income:{title:'Annual Take-Home Income (Rs)',en:'Your annual income after taxes. This is the income your family would lose if something happened to you. The Human Life Value method uses this to calculate how much income needs to be replaced.',hi:'Tax ke baad aapki saalana aay. Yahi woh aay hai jo aapke parivar ko milna band ho jaayegi. HLV method isse use karta hai.'},
+  tp_exp:{title:'Monthly Household Expenses (Rs)',en:'Total monthly spending your family needs to maintain current lifestyle. Include rent, food, utilities, education, insurance premiums, everything. Be realistic — underestimating means insufficient cover.',hi:'Parivar ka maahana kharch - rent, khana, bijli, padhai, insurance sab. Sahi sahi likhen — kam likhne se cover kam padega.'},
+  tp_loans:{title:'Total Outstanding Loans (Rs)',en:'All outstanding loans — home loan, car loan, personal loan, education loan. Your term cover should clear these so your family is not burdened with EMI repayments.',hi:'Sab baaki loan — ghar, gaadi, personal, education. Term cover se yeh sab chuk jaane chahiye taaki parivar par EMI ka bojh na rahe.'},
+  tp_assets:{title:'Total Existing Assets (Rs)',en:'All investments and savings that can support your family — mutual funds, EPF, PPF, FDs, savings account. Do NOT include illiquid assets like your primary home (they will live there, not sell it).',hi:'Sab investments aur bachat — MF, EPF, PPF, FD, savings. Apna ghar mat ginen (parivar wahan rahega, bechega nahi).'},
+  tp_existing:{title:'Existing Life Cover (Rs)',en:'Any term insurance, group insurance (employer), or other life cover already in place. This amount is deducted from the total need.',hi:'Jo bhi term insurance, group insurance (employer wali) ya koi aur cover abhi hai. Yeh zarurat mein se ghata diya jaayega.'},
+  tp_infl:{title:'Expected Inflation (%)',en:'Annual inflation rate to calculate future value of goals. India CPI average is 5-7%. Goals like education may inflate faster at 8-10%. Use 6% as a reasonable default.',hi:'Mehangai dar. India mein 5-7% average. Education 8-10% tak. 6% ek achha default hai.'},
   rm_inc:{title:'Monthly Gross Income (Rs)',en:'Total monthly income before deductions - salary, freelance income, rental income, all sources combined. Most financial ratios are measured as % of gross income.',hi:'Sab sources se monthly gross aay - salary, freelance, kiraya sab. Adhiktar vittiy anupat gross aay ke % mein maape jaate hain.'},
   rm_th:{title:'Monthly Take-Home (Rs)',en:'Net monthly salary after all deductions (income tax, PF, professional tax). What actually reaches your bank. Used for EMI affordability and practical savings rate.',hi:'Sab katauti ke baad bank mein aane wali monthly salary. EMI affordability aur practical savings rate ke liye.'},
   rm_sav:{title:'Monthly Savings (Rs)',en:'Total invested or saved every month - SIPs, RD, FD deposits, PPF, EPF (your share), everything combined. Higher savings as % of income = faster wealth building.',hi:'Har mahine kul bachaat ya investment - SIP, RD, FD, PPF, EPF sab. Income ka zyada % = zyada tezi se dhan.'},
@@ -2882,6 +3268,7 @@ function injectInfoButtons(){
     ip_prem:'ip_prem',ip_pay:'ip_pay',ip_pol:'ip_pol',ip_mat:'ip_mat',ip_sa:'ip_sa',
     tx_salary:'tx_salary',tx_other:'tx_other',tx_80c:'tx_80c',tx_nps:'tx_nps',tx_80d_self:'tx_80d_self',tx_80d_par:'tx_80d_par',tx_hra:'tx_hra',tx_80e:'tx_80e',tx_tta:'tx_tta',tx_homeloan:'tx_homeloan',tx_other_ded:'tx_other_ded',
     em_name:'em_name',em_amt:'em_amt',em_rate:'em_rate',em_months:'em_months',em_start:'em_start',em_income:'em_income',em_existing:'em_existing',
+    tp_age:'tp_age',tp_income:'tp_income',tp_exp:'tp_exp',tp_loans:'tp_loans',tp_assets:'tp_assets',tp_existing:'tp_existing',tp_infl:'tp_infl',
     rm_inc:'rm_inc',rm_th:'rm_th',rm_sav:'rm_sav',rm_exp:'rm_exp',rm_emi:'rm_emi',rm_rent:'rm_rent',rm_ast:'rm_ast',rm_lib:'rm_lib',rm_liq:'rm_liq',rm_fin:'rm_fin',
     ra_inc:'ra_inc',ra_th:'ra_th',ra_sav:'ra_sav',ra_exp:'ra_exp',ra_dp:'ra_dp',ra_rent:'ra_rent',ra_ast:'rm_ast',ra_lib:'rm_lib',ra_liq:'rm_liq',ra_fin:'rm_fin'
   };
@@ -3036,28 +3423,31 @@ var FAQS=[
    aHi:'<p>\u0939\u093e\u0907\u092c\u094d\u0930\u093f\u0921 \u092b\u0902\u0921 \u0907\u0915\u094d\u0935\u093f\u091f\u0940 \u0914\u0930 \u0921\u0947\u092c\u094d\u091f \u0926\u094b\u0928\u094b\u0902 \u092e\u0947\u0902 \u0928\u093f\u0935\u0947\u0936 \u0915\u0930\u0924\u0947 \u0939\u0948\u0902\u0964 \u0917\u094d\u0930\u094b\u0925 \u0914\u0930 \u0938\u094d\u0925\u093f\u0930\u0924\u093e \u0926\u094b\u0928\u094b\u0902 \u092e\u093f\u0932\u0924\u0940 \u0939\u0948\u0902\u0964 7+ \u0938\u093e\u0932 \u092e\u0947\u0902 ~10% CAGR\u0964</p>'},
   {id:'sip',topic:'Calculators',q:'SIP Calculator \u2014 how to use it?',
    a:'<p>SIP means investing a fixed amount every month. Your money earns compound interest. <strong>Monthly Investment:</strong> even \u20b91,000 matters if started early. <strong>Duration:</strong> most powerful variable \u2014 5 extra years can nearly double corpus. <strong>Return:</strong> Equity 12-15%, Hybrid ~10%, Debt 6-7%.</p><p>Example: \u20b95,000/month for 20 years at 12% = \u20b949.5 lakhs. You invested \u20b912 lakhs. Extra \u20b937.5 lakhs is compounding. Same SIP for 25 years = \u20b993 lakhs.</p>',
-   aHi:'<p>SIP \u092f\u093e\u0928\u0940 har mahine tay rashi invest karna. \u0909\u0926\u093e\u0939\u0930\u0923: \u20b95,000/\u092e\u093e\u0939 \xd7 20 \u0938\u093e\u0932 \xd7 12% = \u20b949.5 \u0932\u093e\u0916\u0964 \u0906\u092a\u0928\u0947 \u0932\u0917\u093e\u090f \u20b912 \u0932\u093e\u0916, \u092c\u093e\u0915\u0940 \u091a\u0915\u094d\u0930\u0935\u0943\u0926\u094d\u0927\u093f \u0915\u093e \u091c\u093e\u0926\u0942\u0964</p>'},
+   aHi:'<p><strong>SIP क्या है?</strong> SIP यानी हर महीने एक तय राशि निवेश करना। आपका पैसा चक्रवृद्धि ब्याज (कंपाउंडिंग) कमाता है। <strong>मासिक निवेश:</strong> ₹1,000 भी जल्दी शुरू करने पर बहुत मायने रखता है। <strong>अवधि:</strong> सबसे शक्तिशाली कारक — 5 साल अतिरिक्त कॉर्पस को लगभग दोगुना कर सकते हैं। <strong>रिटर्न:</strong> इक्विटी 12-15%, हाइब्रिड ~10%, डेब्ट 6-7%।</p><p><strong>उदाहरण:</strong> ₹5,000/माह × 20 साल × 12% = ₹49.5 लाख। आपने लगाए ₹12 लाख, बाकी ₹37.5 लाख चक्रवृद्धि का जादू। वही SIP 25 साल के लिए = ₹93 लाख।</p>'},
   {id:'stepup',topic:'Calculators',q:'Step-Up SIP \u2014 why does it matter?',
    a:'<p>A Step-Up SIP increases monthly investment by a fixed % each year. Flat SIP \u20b910,000/month for 20 years at 12% = ~\u20b999 lakhs. Same with 10% annual step-up = ~\u20b92.3 crores. Same starting amount, \u20b91.3 crores more. Set step-up at minimum 5% (inflation) or match your salary growth rate.</p>',
-   aHi:'<p>Har saal SIP ek tay % badhti hai. Sirf step-up se \u20b91.3 crore zyada \u2014 same shuruat, same rate.</p>'},
+   aHi:'<p><strong>स्टेप-अप SIP क्या है?</strong> हर साल आपकी SIP राशि एक तय प्रतिशत से बढ़ती है। <strong>उदाहरण:</strong> ₹10,000/माह की साधारण SIP 20 साल में 12% पर = ~₹99 लाख। वही SIP 10% सालाना स्टेप-अप के साथ = ~₹2.3 करोड़। वही शुरुआत, वही रिटर्न, लेकिन ₹1.3 करोड़ अधिक। स्टेप-अप कम से कम 5% (महँगाई दर) या अपनी वेतन वृद्धि दर के बराबर रखें।</p>'},
   {id:'retirement',topic:'Calculators',q:'Retirement Calculator \u2014 planning basics',
    a:'<p>Answers: how much do you need at retirement, and how much to invest monthly? At 6% inflation, expenses double every 12 years. Plan life to 85-90 (underestimating is the most dangerous mistake). Use 7-8% post-retirement return (conservative, you are withdrawing).</p><p>Example: Age 30, retire 60, life 85, \u20b950k/month expenses, 6% inflation = corpus needed ~\u20b94.7 crores. Monthly SIP needed: ~\u20b911,000 starting now.</p>',
-   aHi:'<p>Age 30, retire 60, jeevan 85, kharch \u20b950k/maah = zaruri kosh ~\u20b94.7 crore. Monthly SIP: ~\u20b911,000 abhi shuru karein.</p>'},
+   aHi:'<p><strong>रिटायरमेंट प्लानिंग कैसे करें?</strong> यह दो सवालों का जवाब देती है: रिटायरमेंट पर कितने पैसे चाहिए, और हर महीने कितना निवेश करना होगा? 6% महँगाई पर खर्च हर 12 साल में दोगुना होता है। जीवन 85-90 साल तक मानकर प्लान बनाएं।</p><p><strong>उदाहरण:</strong> उम्र 30, रिटायर 60, जीवन 85, खर्च ₹50,000/माह = ज़रूरी कोष ~₹4.7 करोड़। आज से SIP शुरू करें: ~₹11,000/माह। <strong>याद रखें:</strong> रिटायरमेंट को प्राथमिकता दें — घर, गाड़ी, पढ़ाई के लिए लोन मिल सकता है, लेकिन रिटायरमेंट के लिए कोई लोन नहीं मिलता।</p>'},
   {id:'irr',topic:'Calculators',q:'Insurance IRR \u2014 what is it?',
    a:'<p>IRR is the actual annual return your insurance policy gives on premiums paid. Example: \u20b950,000/year for 20 years (\u20b910L total). Receive \u20b915L back. Sounds good but IRR is only ~5.5% \u2014 an FD at 7% would have given more.</p><p>Reading results: Above 8% = good. 5.5-8% = marginal (term plan + MF likely better). Below 5.5% = poor. Compare against G-Sec yield 6.93%.</p>',
-   aHi:'<p>IRR aapki insurance policy ka asli saalana return hai. Agar IRR 5.5% se kam hai, to FD bhi behtar tha.</p>'},
+   aHi:'<p><strong>IRR क्या है?</strong> IRR आपकी बीमा पॉलिसी का असली सालाना रिटर्न है। <strong>उदाहरण:</strong> ₹50,000/साल × 20 साल (कुल ₹10 लाख जमा)। वापस मिले ₹15 लाख। अच्छा लगता है लेकिन IRR सिर्फ ~5.5% है — 7% FD भी इससे अच्छा देती।</p><p><strong>परिणाम कैसे पढ़ें:</strong> 8% से ऊपर = अच्छा। 5.5-8% = ठीक-ठाक (टर्म प्लान + म्यूचुअल फंड शायद बेहतर)। 5.5% से नीचे = खराब — FD भी बेहतर था। 10 साल की G-Sec यील्ड 6.93% से तुलना करें।</p>'},
   {id:'tax',topic:'Calculators',q:'Income Tax \u2014 New vs Old regime',
    a:'<p><strong>New Regime FY2025-26:</strong> Zero tax to \u20b912L (87A rebate). Salaried: \u20b975k standard deduction, so effective zero-tax limit \u20b912.75L. No other deductions. Default for all.</p><p><strong>Old Regime:</strong> 80C (\u20b91.5L) + NPS (\u20b950k) + HRA + 80D can reduce taxable income \u20b93-4L. Only beats new regime at higher incomes with large deductions. Use our calculator to compare both exactly.</p>',
-   aHi:'<p>Nai vyavastha: \u20b912.75L tak zero tax (naukripesh). Purani: zyada dar lekin katauti se kam tax. \u20b912.75L se kam aay pe nai vyavastha hamesha behtar.</p>'},
+   aHi:'<p><strong>नई कर व्यवस्था FY2025-26:</strong> ₹12 लाख तक शून्य कर (87A छूट)। नौकरीपेशा: ₹75,000 मानक कटौती, इसलिए ₹12.75 लाख तक शून्य कर। कोई अन्य कटौती नहीं।</p><p><strong>पुरानी व्यवस्था:</strong> दरें अधिक हैं लेकिन कटौतियाँ मिलती हैं: 80C (₹1.5 लाख) + NPS (₹50,000) + HRA + 80D। अधिक आय और बड़ी कटौतियों वालों के लिए ही पुरानी व्यवस्था बेहतर। हमारे कैलकुलेटर से दोनों की तुलना करें।</p>'},
   {id:'emi',topic:'Calculators',q:'EMI Calculator \u2014 how loans work',
    a:'<p>EMI has two parts: principal (returning borrowed amount) and interest (borrowing cost). In early months, most EMI is interest. Example: \u20b98L car loan at 9% for 5 years. EMI: ~\u20b916,600. Total paid: ~\u20b99,96,000. Total interest: ~\u20b91,96,000 \u2014 the real cost of the loan.</p><p>Affordability rule: total EMIs should not exceed 35-40% of monthly take-home. Enter your salary for instant verdict.</p>',
-   aHi:'<p>EMI ke do hisse: muladhan aur byaj. Shuruaat mein zyaadatar EMI byaj hota hai. Total EMI take-home ka 35-40% se zyada nahi honi chahiye.</p>'},
+   aHi:'<p><strong>EMI कैसे काम करती है?</strong> EMI के दो हिस्से होते हैं: मूलधन (उधार ली गई राशि वापसी) और ब्याज (उधार लेने की लागत)। शुरुआती महीनों में अधिकांश EMI ब्याज में जाती है — बैंक पहले अपना मुनाफ़ा लेता है।</p><p><strong>उदाहरण:</strong> ₹8 लाख कार लोन, 9%, 5 साल। EMI: ~₹16,600। कुल भुगतान: ~₹9,96,000। कुल ब्याज: ~₹1,96,000 — यही लोन की असली कीमत है। <strong>नियम:</strong> सभी EMI मिलाकर आपकी मासिक वेतन के 35-40% से अधिक नहीं होनी चाहिए।</p>'},
   {id:'ratios',topic:'Tools',q:'Ratio Analysis \u2014 what these mean',
    a:'<p>Ratios are a financial health checkup: <strong>Savings Rate</strong> 30%+ = wealth building on track. <strong>Liquidity</strong> 6 months expenses in liquid = safe. <strong>EMI-to-Income</strong> below 35% = safe, above 50% = danger. <strong>Solvency</strong> net worth as % of assets, 50%+ = strong. <strong>Financial Assets Ratio</strong> 3x annual income or above = on track.</p>',
    aHi:'<p>Vittiy anupat aapke paison ki sehat ki jaanch karte hain. Bachat dar 30%+, taralata 6 maah, EMI 35% se kam \u2014 ye teen sabse mahatvapurna hain.</p>'},
   {id:'debt-check',topic:'Tools',q:'Debt Health Check \u2014 strategies',
    a:'<p><strong>Snowball:</strong> Pay smallest loan first. Psychological wins keep you motivated. Best for people who need momentum to stay on track.</p><p><strong>Avalanche:</strong> Pay highest-interest loan first. Mathematically optimal \u2014 saves the most money. Best for disciplined people. A personalised debt plan accounts for your exact cashflow \u2014 full strategy in consultation.</p>',
-   aHi:'<p>Snowball: sabse chhota loan pehle. Avalanche: sabse zyada byaj wala loan pehle \u2014 sab se zyada bachat. Vyaktigat plan ke liye consultation lein.</p>'}
+   aHi:'<p><strong>स्नोबॉल तरीका:</strong> सबसे छोटा लोन पहले चुकाएं। मानसिक जीत से प्रेरणा बनी रहती है। जिन लोगों को रास्ते पर बने रहने के लिए प्रेरणा चाहिए।</p><p><strong>एवलांच तरीका:</strong> सबसे अधिक ब्याज वाला लोन पहले चुकाएं। गणितीय रूप से सबसे अच्छा — सबसे अधिक पैसा बचता है। अनुशासित लोगों के लिए उपयुक्त। व्यक्तिगत योजना के लिए परामर्श लें।</p>'},
+  {id:'termplan',topic:'Calculators',q:'Term Plan Calculator \u2014 how much cover do I need?',
+   a:'<p>Term insurance replaces your income for your family if you are no longer around. The calculator uses two methods: <strong>Human Life Value (HLV)</strong> \u2014 the present value of your future income until retirement, and <strong>Needs-Based Analysis</strong> \u2014 adding up all your family\'s financial needs (expenses, goals, loans) minus existing assets.</p><p>The recommended cover is the higher of these two methods, rounded up to the nearest ₹25 lakh. As a thumb rule, your cover should be at least <strong>10\u201315 times your annual income</strong>. Get covered early \u2014 premiums at age 25 are roughly half of what they are at 35 for the same cover amount.</p><p><strong>Key inputs:</strong> Add all financial goals your family would need without you (child\'s education, home loan, wedding, daily expenses for 20\u201330 years). The calculator inflates these to future values and subtracts your existing savings and cover.</p>',
+   aHi:'<p><strong>टर्म बीमा क्या है?</strong> टर्म बीमा आपकी आय को प्रतिस्थापित करता है यदि आप नहीं रहें। कैलकुलेटर दो तरीकों से गणना करता है: <strong>मानव जीवन मूल्य (HLV)</strong> — रिटायरमेंट तक आपकी भविष्य की आय का वर्तमान मूल्य, और <strong>ज़रूरत-आधारित विश्लेषण</strong> — परिवार की सभी आर्थिक ज़रूरतों (खर्च, लक्ष्य, लोन) का कुल घटा मौजूदा संपत्ति।</p><p>अनुशंसित कवर: <strong>सालाना आय का 10-15 गुना</strong>। जल्दी लें — 25 साल की उम्र में प्रीमियम 35 साल की उम्र से लगभग आधा होता है। हर 3-5 साल में अपने कवर की समीक्षा करें।</p>'}
 ];
 
 function buildFAQ(){
@@ -3164,7 +3554,7 @@ function showContactSuccess(){
   var el=document.getElementById('contact-msg');
   if(!el){el=document.createElement('div');el.id='contact-msg';var btn=document.querySelector('#page-contact .calbtn');if(btn)btn.after(el);}
   el.style.cssText='margin-top:10px;padding:10px 14px;border-radius:6px;font-size:.82rem;background:#edf7f2;color:#1e5c3a;border:1px solid #bbdece';
-  el.textContent='\u2713 Message sent to info@zeronoisefinance.com. Nishant will reply within 24 hours.';
+  el.textContent='\u2713 Message sent to info@zeronoisefinance.com. We will reply within 24 hours.';
 }
 function clearContactError(){var el=document.getElementById('contact-msg');if(el) el.remove();}
 </script>
