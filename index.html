@@ -987,9 +987,9 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
   .carousel-slide.slide-enter::after{display:none}
   #loader-logo{transform:scale(.72)}
   #loader-tag{font-size:.62rem;letter-spacing:.15em}
-  .cbody{padding:24px 14px}
-  .fc{padding:18px}
-  .rc{padding:16px}
+  .cbody{padding:20px 12px}
+  .fc{padding:16px 14px;border-radius:8px}
+  .rc{padding:14px;border-radius:8px}
   .calc-hdr{padding:72px 16px 30px}
   .bot-msgs{max-height:260px;min-height:160px}
   .ct-l{gap:28px}
@@ -997,6 +997,42 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
   .articles-intro{padding:72px 16px 36px}
   .ft-in{flex-direction:column;gap:16px}
   .ft-disc{max-width:100%}
+
+  /* ── CALCULATOR MOBILE ── */
+  .cl{gap:16px}
+  .r-big{font-size:1.8rem}
+  .rb-v{font-size:.88rem}
+  .r-row{gap:7px}
+  .rb{padding:9px 10px}
+  .fl{margin-bottom:13px}
+  .fi-inp{font-size:.88rem;padding:9px 11px}
+  .calbtn{padding:11px;font-size:.86rem}
+
+  /* ── GOALS MOBILE ── */
+  #page-goals .cbody{padding:16px 12px}
+  #page-goals .ins-l{gap:16px}
+  #page-goals .rc{padding:14px;margin-top:0}
+  #page-goals .ins-l > div:first-child > div[id^="goal_"]{padding:14px 12px;border-radius:8px;margin-bottom:10px}
+  /* Goal card header row */
+  #page-goals .ins-l > div:first-child > div[id^="goal_"] > div:first-child{flex-wrap:wrap;gap:8px}
+  /* Retirement card */
+  #page-goals .ins-l > div:first-child > div:not([id^="goal_"]) > div:last-child{padding:14px 12px}
+  #page-goals [style*="grid-template-columns:1fr 1fr 1fr 1fr"]{grid-template-columns:1fr 1fr !important}
+  #page-goals [style*="grid-template-columns:1fr 1fr 1fr"]{grid-template-columns:1fr 1fr !important}
+  /* Goals right panel */
+  #goalsRightPanel{padding:12px}
+  #goalsRightPanel > div:first-child{grid-template-columns:1fr 1fr !important}
+  /* Goal result mini-boxes */
+  #page-goals .ins-l [style*="grid-template-columns:1fr 1fr 1fr"]{grid-template-columns:1fr 1fr !important}
+  /* Summary breakdown */
+  #goalsBreakdownWrap{padding:0 12px 16px}
+  #goalsBreakdownWrap table{font-size:.7rem}
+  #goalsBreakdownWrap th,#goalsBreakdownWrap td{padding:6px 7px}
+  /* Goal add button */
+  #page-goals .btn-o[onclick="addGoalRow()"]{padding:12px 14px;font-size:.84rem}
+  /* Goals summary bar */
+  #goalSummary{padding:14px 16px}
+  #goalSummaryContent > div:first-child{grid-template-columns:1fr 1fr !important}
 }
 </style>
 </head>
@@ -2223,18 +2259,18 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
           </div>
           <div style="padding:20px 22px">
           <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin-bottom:12px">
-            <div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Current Age</div><input class="fi-inp" type="number" id="gl_ret_age" value="30" oninput="calcGoals()" style="padding:8px"></div>
-            <div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Retire At</div><input class="fi-inp" type="number" id="gl_ret_at" value="60" oninput="calcGoals()" style="padding:8px"></div>
-            <div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Life Expectancy</div><input class="fi-inp" type="number" id="gl_ret_life" value="85" oninput="calcGoals()" style="padding:8px"></div>
-            <div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Monthly Expense Today (₹)</div><input class="fi-inp" type="number" id="gl_ret_exp" value="50000" oninput="calcGoals()" style="padding:8px"></div>
+            <div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Current Age</div><input class="fi-inp" type="number" id="gl_ret_age" placeholder="e.g. 30" oninput="calcGoals()" style="padding:8px"></div>
+            <div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Retire At</div><input class="fi-inp" type="number" id="gl_ret_at" placeholder="e.g. 60" oninput="calcGoals()" style="padding:8px"></div>
+            <div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Life Expectancy</div><input class="fi-inp" type="number" id="gl_ret_life" placeholder="e.g. 85" oninput="calcGoals()" style="padding:8px"></div>
+            <div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Monthly Expense Today (₹)</div><input class="fi-inp" type="number" id="gl_ret_exp" placeholder="e.g. 50,000" oninput="calcGoals()" style="padding:8px"></div>
           </div>
           <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px">
-            <div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Inflation (%)</div><input class="fi-inp" type="number" id="gl_ret_inf" value="6" step="0.5" oninput="calcGoals()" style="padding:8px"></div>
-            <div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Pre-Retirement Return (%)</div><input class="fi-inp" type="number" id="gl_ret_pre" value="12" step="0.5" oninput="calcGoals()" style="padding:8px"></div>
-            <div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Post-Retirement Return (%)</div><input class="fi-inp" type="number" id="gl_ret_post" value="8" step="0.5" oninput="calcGoals()" style="padding:8px"></div>
-            <div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Existing Retirement Savings (₹)</div><input class="fi-inp" type="number" id="gl_ret_saved" value="0" oninput="calcGoals()" style="padding:8px"></div>
+            <div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Inflation (%)</div><input class="fi-inp" type="number" id="gl_ret_inf" placeholder="e.g. 6" step="0.5" oninput="calcGoals()" style="padding:8px"></div>
+            <div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Pre-Retirement Return (%)</div><input class="fi-inp" type="number" id="gl_ret_pre" placeholder="e.g. 12" step="0.5" oninput="calcGoals()" style="padding:8px"></div>
+            <div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Post-Retirement Return (%)</div><input class="fi-inp" type="number" id="gl_ret_post" placeholder="e.g. 8" step="0.5" oninput="calcGoals()" style="padding:8px"></div>
+            <div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Existing Retirement Savings (₹)</div><input class="fi-inp" type="number" id="gl_ret_saved" placeholder="e.g. 0" oninput="calcGoals()" style="padding:8px"></div>
           </div>
-          <div style="margin-top:8px"><div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Annual Step-Up on SIP (%) <span class="fl-opt">Optional</span></div><input class="fi-inp" type="number" id="gl_ret_su" value="0" step="1" oninput="calcGoals()" style="padding:8px;max-width:180px"></div></div>
+          <div style="margin-top:8px"><div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Annual Step-Up on SIP (%) <span class="fl-opt">Optional</span></div><input class="fi-inp" type="number" id="gl_ret_su" placeholder="e.g. 10" step="1" oninput="calcGoals()" style="padding:8px;max-width:180px"></div></div>
           <div id="gl_ret_result" style="margin-top:14px"></div>
           </div><!-- end retirement card inner padding -->
         </div>
@@ -2407,7 +2443,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
       <div class="fi">
         <h3 style="font-family:var(--fs);font-size:1.25rem;font-weight:600;margin-bottom:12px">Get in touch</h3>
         <p style="font-size:.88rem;color:var(--ink-l);line-height:1.82;margin-bottom:22px">Whether it is a specific question or a complete financial plan — reach out. The first conversation is always free, and always honest.</p>
-        <div class="cc"><div class="cc-ico">📧</div><div><div class="cc-lbl">Email</div><div class="cc-val"><a href="mailto:info@zeronoisefinance.com">info@zeronoisefinance.com</a></div></div></div>
+        <div class="cc"><div class="cc-ico">📧</div><div><div class="cc-lbl">Email</div><div class="cc-val"><a href="/cdn-cgi/l/email-protection#7910171f1639031c0b161716100a1c1f101718171a1c571a1614"><span class="__cf_email__" data-cfemail="7e171018113e041b0c111011170d1b1817101f101d1b501d1113">[email&#160;protected]</span></a></div></div></div>
         <div class="cc"><div class="cc-ico">📱</div><div><div class="cc-lbl">Phone / WhatsApp</div><div class="cc-val">+91 91156 00369</div></div></div>
         <div class="cc"><div class="cc-ico">📍</div><div><div class="cc-lbl">Location</div><div class="cc-val">Chandigarh · Available across India</div></div></div>
         <div class="cc"><div class="cc-ico">⏰</div><div><div class="cc-lbl">Availability</div><div class="cc-val">Monday – Saturday, 9 AM – 7 PM</div></div></div>
@@ -2957,7 +2993,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
 <!-- ══════════════════════════════════
      JAVASCRIPT
 ══════════════════════════════════ -->
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* ══════════════════════════════════
    ZERO NOISE FINANCE — Main Script
    Clean rewrite, verified syntax
@@ -3062,7 +3098,7 @@ function ppCheck(phase){
     if(checked>=3&&!ppVisionUnlocked[phase]){
       ppVisionUnlocked[phase]=true;
       var vcard=document.getElementById('pp'+phase+'_vision');
-      if(vcard){vcard.style.display='block';setTimeout(function(){vcard.scrollIntoView({behavior:'smooth',block:'center'});},250);}
+      if(vcard){vcard.style.display='block';}
     }
     // Completion card at 60%+
     if(checked>=Math.ceil(total*0.6)){
@@ -3238,8 +3274,6 @@ function jyComplete(step){
   }
   jyUpdateProgress();
   closeJyModal();
-  // Auto-open next after a beat (for step 6 special handling)
-  if(next<=6) setTimeout(function(){openJyModal(next);},500);
 }
 
 function getJyContent(step){
@@ -3441,18 +3475,21 @@ function addGoalRow(){
     +'<span style="font-size:1.5rem">'+emoji+'</span>'
     +'<div style="flex:1"><div style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--pink);margin-bottom:2px">Goal Name</div>'
     +'<input type="text" class="fi-inp" id="gn_'+id+'" placeholder="e.g. Child\'s Education, Dream Car, World Trip..." style="padding:8px 12px;font-size:.95rem;font-weight:600;color:var(--ink);width:100%;border:1.5px solid var(--rule);border-radius:var(--rs);background:var(--bgw)"></div>'
-    +'<select class="fi-inp" id="gpri_'+id+'" style="width:110px;padding:6px 8px;font-size:.8rem;margin-left:6px" onchange="calcGoals()">'
+    +'<div style="display:flex;flex-direction:column;align-items:center;gap:2px;margin-left:6px">'
+    +'<div style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-l)">Priority</div>'
+    +'<select class="fi-inp" id="gpri_'+id+'" style="width:110px;padding:6px 8px;font-size:.8rem" onchange="calcGoals()">'
     +'<option value="1">\ud83d\udd34 High</option><option value="2" selected>\ud83d\udfe1 Medium</option><option value="3">\ud83d\udfe2 Low</option></select>'
+    +'</div>'
     +'<button onclick="removeGoal('+id+')" style="color:var(--ink-l);font-size:1rem;padding:6px 10px;flex-shrink:0" title="Remove">&#x2715;</button></div>'
     +'<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:8px">'
     +'<div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Target Amount — Today\'s Value (&#x20b9;)</div><input class="fi-inp" type="number" id="gt_'+id+'" placeholder="e.g. 10,00,000" oninput="calcGoals()" style="padding:7px 8px;font-size:.84rem"></div>'
-    +'<div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Years Away</div><input class="fi-inp" type="number" id="gy_'+id+'" value="10" oninput="calcGoals()" style="padding:7px 8px;font-size:.84rem"></div>'
-    +'<div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Inflation (%)</div><input class="fi-inp" type="number" id="ginf_'+id+'" value="6" step="0.5" oninput="calcGoals()" style="padding:7px 8px;font-size:.84rem"></div>'
+    +'<div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Years Away</div><input class="fi-inp" type="number" id="gy_'+id+'" placeholder="e.g. 10" oninput="calcGoals()" style="padding:7px 8px;font-size:.84rem"></div>'
+    +'<div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Inflation (%)</div><input class="fi-inp" type="number" id="ginf_'+id+'" placeholder="e.g. 6" step="0.5" oninput="calcGoals()" style="padding:7px 8px;font-size:.84rem"></div>'
     +'</div>'
     +'<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">'
-    +'<div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Expected Return (%)</div><input class="fi-inp" type="number" id="gr_'+id+'" value="12" step="0.5" oninput="calcGoals()" style="padding:7px 8px;font-size:.84rem"></div>'
-    +'<div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Already Saved (&#x20b9;)</div><input class="fi-inp" type="number" id="gs_'+id+'" value="0" oninput="calcGoals()" style="padding:7px 8px;font-size:.84rem"></div>'
-    +'<div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Step-Up SIP (% p.a.) <span class="fl-opt">Optional</span></div><input class="fi-inp" type="number" id="gsu_'+id+'" value="0" step="1" oninput="calcGoals()" style="padding:7px 8px;font-size:.84rem"></div>'
+    +'<div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Expected Return (%)</div><input class="fi-inp" type="number" id="gr_'+id+'" placeholder="e.g. 12" step="0.5" oninput="calcGoals()" style="padding:7px 8px;font-size:.84rem"></div>'
+    +'<div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Already Saved (&#x20b9;)</div><input class="fi-inp" type="number" id="gs_'+id+'" placeholder="e.g. 0" oninput="calcGoals()" style="padding:7px 8px;font-size:.84rem"></div>'
+    +'<div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Step-Up SIP (% p.a.) <span class="fl-opt">Optional</span></div><input class="fi-inp" type="number" id="gsu_'+id+'" placeholder="e.g. 10" step="1" oninput="calcGoals()" style="padding:7px 8px;font-size:.84rem"></div>'
     +'</div>'
     +'<div id="gr_'+id+'_result" style="margin-top:10px"></div>';
   container.appendChild(div);
@@ -3500,12 +3537,12 @@ function calcGoals(){
     var resultEl=document.getElementById('gr_'+i+'_result');
     if(resultEl){
       var yrsHint=years>7?'Suggested ~12% return (equity, long horizon)':years>=5?'Suggested ~10% return (balanced)':'Suggested 6-7% return (debt, short term)';
-      resultEl.innerHTML='<div style="font-size:.7rem;color:var(--teal);margin-bottom:6px">'+yrsHint+'</div>'
-        +'<div style="display:grid;grid-template-columns:1fr 1fr 1fr'+(su>0?' 1fr':'');+';gap:8px">'
-        +'<div style="background:var(--bgw);border-radius:6px;padding:8px;text-align:center"><div style="font-size:.62rem;color:var(--ink-l);font-weight:600;text-transform:uppercase">Future Value</div><div style="font-family:var(--fm);font-size:.9rem;font-weight:700;color:var(--ink)">'+fmt(fvGoal)+'</div></div>'
-        +'<div style="background:var(--bgw);border-radius:6px;padding:8px;text-align:center"><div style="font-size:.62rem;color:var(--ink-l);font-weight:600;text-transform:uppercase">Monthly SIP</div><div style="font-family:var(--fm);font-size:.9rem;font-weight:700;color:var(--pink)">'+fmt(sip)+'</div></div>'
-        +'<div style="background:var(--bgw);border-radius:6px;padding:8px;text-align:center"><div style="font-size:.62rem;color:var(--ink-l);font-weight:600;text-transform:uppercase">FV of Saved</div><div style="font-family:var(--fm);font-size:.9rem;font-weight:600;color:var(--ok)">'+fmt(fvSaved)+'</div></div>'
-        +(su>0?'<div style="background:var(--teal-s);border-radius:6px;padding:8px;text-align:center"><div style="font-size:.62rem;color:var(--teal);font-weight:600;text-transform:uppercase">Step-Up SIP Start</div><div style="font-family:var(--fm);font-size:.9rem;font-weight:700;color:var(--teal)">'+fmt(sipSU)+'</div></div>':'')
+      resultEl.innerHTML='<div style="background:var(--bgw);border-radius:var(--rs);padding:10px 12px;margin-bottom:6px;font-size:.72rem;color:var(--teal);font-weight:600">'+yrsHint+'</div>'
+        +'<div style="display:grid;grid-template-columns:1fr 1fr'+(su>0?' 1fr':'')+(su>0?' 1fr':'');+';gap:8px">'
+        +'<div style="background:var(--bgp);border:1.5px solid var(--rule);border-radius:var(--rs);padding:12px;text-align:center;border-top:3px solid var(--ink-l)"><div style="font-size:.62rem;color:var(--ink-l);font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Future Value</div><div style="font-family:var(--fm);font-size:1rem;font-weight:700;color:var(--ink)">'+fmt(fvGoal)+'</div></div>'
+        +'<div style="background:var(--bgp);border:1.5px solid rgba(212,43,81,.2);border-radius:var(--rs);padding:12px;text-align:center;border-top:3px solid var(--pink)"><div style="font-size:.62rem;color:var(--pink);font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Monthly SIP</div><div style="font-family:var(--fm);font-size:1rem;font-weight:700;color:var(--pink)">'+fmt(sip)+'</div></div>'
+        +'<div style="background:var(--bgp);border:1.5px solid rgba(26,107,107,.2);border-radius:var(--rs);padding:12px;text-align:center;border-top:3px solid var(--teal)"><div style="font-size:.62rem;color:var(--teal);font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Savings FV</div><div style="font-family:var(--fm);font-size:1rem;font-weight:600;color:var(--teal)">'+fmt(fvSaved)+'</div></div>'
+        +(su>0?'<div style="background:var(--teal-s);border:1.5px solid var(--teal);border-radius:var(--rs);padding:12px;text-align:center;border-top:3px solid var(--teal-m)"><div style="font-size:.62rem;color:var(--teal);font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Step-Up Start</div><div style="font-family:var(--fm);font-size:1rem;font-weight:700;color:var(--teal)">'+fmt(sipSU)+'</div></div>':'')
         +'</div>';
     }
     totalSIP+=sip;if(su>0)totalSIPsu+=sipSU;else totalSIPsu+=sip;totalCorpus+=fvGoal;
@@ -3547,10 +3584,10 @@ function calcGoals(){
     var retEl=document.getElementById('gl_ret_result');
     if(retEl){
       retEl.innerHTML='<div style="display:grid;grid-template-columns:1fr 1fr 1fr'+(retSU>0?' 1fr':'')+';gap:8px">'
-        +'<div style="background:var(--bgw);border-radius:8px;padding:12px;text-align:center;border-bottom:3px solid var(--pink)"><div style="font-size:.62rem;color:var(--ink-l);font-weight:600;text-transform:uppercase;margin-bottom:4px">Corpus Needed</div><div style="font-family:var(--fm);font-size:1.05rem;font-weight:700;color:var(--pink)">'+fmt(corpus)+'</div></div>'
-        +'<div style="background:var(--bgw);border-radius:8px;padding:12px;text-align:center;border-bottom:3px solid var(--teal)"><div style="font-size:.62rem;color:var(--ink-l);font-weight:600;text-transform:uppercase;margin-bottom:4px">Monthly SIP (Flat)</div><div style="font-family:var(--fm);font-size:1.05rem;font-weight:700;color:var(--teal)">'+fmt(retSIP)+'</div></div>'
-        +(retSU>0?'<div style="background:var(--teal-s);border-radius:8px;padding:12px;text-align:center;border-bottom:3px solid var(--teal)"><div style="font-size:.62rem;color:var(--teal);font-weight:600;text-transform:uppercase;margin-bottom:4px">Step-Up Start ('+retSU+'%)</div><div style="font-family:var(--fm);font-size:1.05rem;font-weight:700;color:var(--teal)">'+fmt(retSIPsu)+'</div></div>':'')
-        +'<div style="background:var(--bgw);border-radius:8px;padding:12px;text-align:center"><div style="font-size:.62rem;color:var(--ink-l);font-weight:600;text-transform:uppercase;margin-bottom:4px">Monthly at Retire</div><div style="font-family:var(--fm);font-size:1.05rem;font-weight:700;color:var(--ink)">'+fmt(mExpAtRetire)+'</div></div></div>'
+        +'<div style="background:var(--bgp);border:1.5px solid rgba(212,43,81,.2);border-radius:var(--rs);padding:12px;text-align:center;border-top:3px solid var(--pink)"><div style="font-size:.62rem;color:var(--pink);font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Corpus Needed</div><div style="font-family:var(--fm);font-size:1.05rem;font-weight:700;color:var(--pink)">'+fmt(corpus)+'</div></div>'
+        +'<div style="background:var(--bgp);border:1.5px solid rgba(26,107,107,.2);border-radius:var(--rs);padding:12px;text-align:center;border-top:3px solid var(--teal)"><div style="font-size:.62rem;color:var(--teal);font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Monthly SIP (Flat)</div><div style="font-family:var(--fm);font-size:1.05rem;font-weight:700;color:var(--teal)">'+fmt(retSIP)+'</div></div>'
+        +(retSU>0?'<div style="background:var(--teal-s);border:1.5px solid var(--teal);border-radius:var(--rs);padding:12px;text-align:center;border-top:3px solid var(--teal-m)"><div style="font-size:.62rem;color:var(--teal);font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Step-Up Start ('+retSU+'%)</div><div style="font-family:var(--fm);font-size:1.05rem;font-weight:700;color:var(--teal)">'+fmt(retSIPsu)+'</div></div>':'')
+        +'<div style="background:var(--bgp);border:1.5px solid var(--rule);border-radius:var(--rs);padding:12px;text-align:center;border-top:3px solid var(--ink-l)"><div style="font-size:.62rem;color:var(--ink-l);font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Monthly at Retire</div><div style="font-family:var(--fm);font-size:1.05rem;font-weight:700;color:var(--ink)">'+fmt(mExpAtRetire)+'</div></div></div>'
         +'<div style="background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:var(--rs);padding:12px 14px;margin-top:10px;font-size:.78rem;color:rgba(255,255,255,.7);line-height:1.72">'
         +'\u20b9'+Math.round(monthExp/1000)+'K/mo today \u2192 <strong style="color:#f472b6">\u20b9'+Math.round(mExpAtRetire/1000)+'K/mo</strong> at '+retireAt+' | Corpus: <strong style="color:#f472b6">'+fmt(corpus)+'</strong> | SIP: <strong style="color:#4ade80">'+fmt(retSIP)+'/mo</strong>'
         +(retSU>0?' | Step-up start: <strong style="color:#4ade80">'+fmt(retSIPsu)+'/mo</strong>':'')
@@ -3815,38 +3852,57 @@ function showPopup(el, title, what, why) {
 }
 
 /* ── CAROUSEL ── */
-var cIdx = 0, cTotal = 5, cTimer;
+var cIdx = 0, cTotal = 5, cTimer = null;
 function carouselInit() {
-  var dots = document.getElementById('carouselDots');
-  if (!dots) return;
-  dots.innerHTML = '';
-  for (var i = 0; i < cTotal; i++) {
-    (function(n) {
-      var d = document.createElement('div');
-      d.className = 'cdot' + (n === 0 ? ' active' : '');
-      d.onclick = function(){ carouselGoto(n); };
-      dots.appendChild(d);
-    })(i);
-  }
-  cTimer = setInterval(function(){ carouselMove(1); }, 5000);
+  try {
+    cIdx = 0;
+    if (cTimer) { clearInterval(cTimer); cTimer = null; }
+    var dots = document.getElementById('carouselDots');
+    var track = document.getElementById('carouselTrack');
+    if (!dots || !track) return;
+    // Reset track position
+    track.style.transition = 'none';
+    track.style.transform = 'translateX(0%)';
+    // Force reflow
+    void track.offsetWidth;
+    track.style.transition = '';
+    // Build dots
+    dots.innerHTML = '';
+    for (var i = 0; i < cTotal; i++) {
+      (function(n) {
+        var d = document.createElement('div');
+        d.className = 'cdot' + (n === 0 ? ' active' : '');
+        d.onclick = function(){ carouselGoto(n); };
+        dots.appendChild(d);
+      })(i);
+    }
+    // Remove all slide-enter classes first
+    document.querySelectorAll('.carousel-slide').forEach(function(s){ s.classList.remove('slide-enter'); });
+    // Start animation on first slide
+    setTimeout(function(){
+      var s = document.querySelector('.carousel-slide');
+      if (s) s.classList.add('slide-enter');
+    }, 300);
+    // Start autoplay
+    cTimer = setInterval(function(){ carouselMove(1); }, 5000);
+  } catch(e){ console.error('carouselInit error:', e); }
 }
 function carouselMove(dir){ carouselGoto((cIdx + dir + cTotal) % cTotal); }
 function carouselGoto(n) {
-  clearInterval(cTimer);
-  cIdx = n;
-  var track = document.getElementById('carouselTrack');
-  if (track) track.style.transform = 'translateX(-' + (cIdx * 100) + '%)';
-  document.querySelectorAll('.cdot').forEach(function(d, i){ d.classList.toggle('active', i === cIdx); });
-  // Trigger entrance animation on active slide
-  document.querySelectorAll('.carousel-slide').forEach(function(s,i){
-    s.classList.remove('slide-enter');
-    if(i===cIdx) setTimeout(function(){s.classList.add('slide-enter');},80);
-  });
-  cTimer = setInterval(function(){ carouselMove(1); }, 5000);
+  try {
+    if (cTimer) { clearInterval(cTimer); cTimer = null; }
+    cIdx = n;
+    var track = document.getElementById('carouselTrack');
+    if (track) track.style.transform = 'translateX(-' + (cIdx * 100) + '%)';
+    document.querySelectorAll('.cdot').forEach(function(d, i){ d.classList.toggle('active', i === cIdx); });
+    document.querySelectorAll('.carousel-slide').forEach(function(s,i){
+      s.classList.remove('slide-enter');
+      if(i===cIdx) setTimeout(function(){s.classList.add('slide-enter');},80);
+    });
+    cTimer = setInterval(function(){ carouselMove(1); }, 5000);
+  } catch(e){ console.error('carouselGoto error:', e); }
 }
 carouselInit();
-// Trigger entrance animation on first slide
-setTimeout(function(){var s=document.querySelector('.carousel-slide');if(s)s.classList.add('slide-enter');},300);
 
 /* ── MARKET DATA ── */
 function refreshMarketData() {
@@ -7328,14 +7384,14 @@ function scrollBotMsgs(){var m=document.getElementById('botMsgs');if(m)m.scrollT
 /* ── FAQ SYSTEM ── */
 var FAQS=[
   {id:'equity',topic:'Investments',q:'What is Equity? Why invest in it?',
-   a:'<p>Think of equity as <strong>ownership</strong>. When you buy shares or invest in an equity mutual fund, you become a part-owner of real businesses. When they grow, your ownership becomes more valuable.</p><p><strong>Example:</strong> 10 friends start a chai shop. You invest \u20b910,000 for 10% ownership. The shop grows to \u20b91 lakh value. Your 10% is now worth \u20b91,00,000. That is equity.</p><p>Nifty 50 has delivered 12\u201315% CAGR over any 15-year period. FDs give 6\u20137%. Equity is the only asset class that consistently beats inflation long-term. Use it for money you will not need for at least 7 years.</p><div style="background:var(--pink-s);border-left:3px solid var(--pink);padding:12px 16px;border-radius:0 6px 6px 0;margin-top:14px;font-size:.85rem"><strong>Key risk:</strong> Equity can fall 40\u201350% in a crash. This is temporary. The risk is not the fall \u2014 it is selling in panic during the fall.</div>',
-   aHi:'<p><strong>\u0907\u0915\u094d\u0935\u093f\u091f\u0940 \u092e\u0924\u0932\u092c \u0939\u0948 \u0938\u094d\u0935\u093e\u092e\u093f\u0924\u094d\u0935\u0964</strong> \u0909\u0926\u093e\u0939\u0930\u0923: 10 \u0926\u094b\u0938\u094d\u0924\u094b\u0902 \u0928\u0947 \u091a\u093e\u092f \u0915\u0940 \u0926\u0941\u0915\u093e\u0928 \u0916\u094b\u0932\u0940\u0964 \u0906\u092a\u0928\u0947 \u20b910,000 \u0932\u0917\u093e\u090f 10% \u0915\u0947 \u0932\u093f\u090f\u0964 \u0926\u0941\u0915\u093e\u0928 \u0905\u092c \u20b91 \u0932\u093e\u0916 \u0915\u0940 = \u0906\u092a\u0915\u093e \u0939\u093f\u0938\u094d\u0938\u093e \u20b91,00,000\u0964 \u092f\u0939\u0940 \u0907\u0915\u094d\u0935\u093f\u091f\u0940 \u0939\u0948\u0964</p><p>Nifty 50 \u0928\u0947 \u092a\u093f\u091b\u0932\u0947 15 \u0938\u093e\u0932\u094b\u0902 \u092e\u0947\u0902 12\u201315% CAGR \u0926\u093f\u092f\u093e \u0939\u0948\u0964 \u0907\u0915\u094d\u0935\u093f\u091f\u0940 \u0935\u0939 \u090f\u0915\u092e\u093e\u0924\u094d\u0930 \u0938\u0902\u092a\u0924\u094d\u0924\u093f \u0939\u0948 \u091c\u094b \u0932\u0902\u092c\u0947 \u0938\u092e\u092f \u092e\u0947\u0902 \u092e\u0939\u0902\u0917\u093e\u0908 \u0915\u094b \u092e\u093e\u0924 \u0926\u0947\u0924\u0940 \u0939\u0948\u0964</p>'},
+   a:'<p><strong>Think of Equity as Ownership.</strong> When you buy a share, you become a part-owner of a real business. As the company grows in revenue and profit, its stock price reflects that success. Over the long term, equity is the most powerful \u201cwealth-building asset\u201d because it consistently beats inflation.</p><h3 style="font-family:var(--fs);font-size:.95rem;font-weight:600;color:var(--ink);margin:14px 0 8px">What is an Equity Mutual Fund?</h3><p>If a single stock is one flower, an Equity Mutual Fund is a bouquet. It is a basket of 30\u201350 different stocks.</p><p><strong>Professional Management:</strong> You don\u2019t have to track the market yourself. A dedicated Fund Manager (an expert) picks the best companies based on research.</p><p><strong>Diversification:</strong> Since your money is spread across many businesses, even if one company fails, the others protect your investment.</p><p><strong>The Strategy:</strong> Invest for goals 5\u20137+ years away. This time allows you to ride out \u201cvolatility\u201d (the market\u2019s up-and-down movement) and smooth out your returns.</p><div style="background:var(--teal-s);border-left:3px solid var(--teal);padding:12px 16px;border-radius:0 6px 6px 0;margin-top:14px;font-size:.85rem;line-height:1.7"><strong>Simple Example:</strong> Imagine 10 friends start a chai shop. You invest \u20b910,000 for 10% ownership. As the shop grows into a nationwide chain, your 10% stake could grow to \u20b91,00,000. That is equity growth!</div>',
+   aHi:'<p><strong>इक्विटी का मतलब है मालिकाना हक।</strong> जब आप शेयर खरीदते हैं, तो आप उस बिजनेस के हिस्सेदार बन जाते हैं। जैसे-जैसे कंपनी का मुनाफा बढ़ता है, आपके शेयर की कीमत भी बढ़ती है। लंबे समय में यह \u201cवेल्थ\u201d बनाने का सबसे बड़ा जरिया है।</p><h3 style="font-family:var(--fs);font-size:.95rem;font-weight:600;color:var(--ink);margin:14px 0 8px">इक्विटी म्यूचुअल फंड क्या है?</h3><p>अगर एक शेयर एक फूल है, तो म्यूचुअल फंड फूलों का गुलदस्ता है। यह 30\u201350 अलग-अलग कंपनियों के शेयरों का एक समूह होता है।</p><p><strong>एक्सपर्ट की देखरेख:</strong> आपको खुद रिसर्च करने की जरूरत नहीं है। एक फंड मैनेजर (जो एक्सपर्ट होता है) आपके लिए सबसे बेहतरीन कंपनियां चुनता है।</p><p><strong>विविधता (Diversification):</strong> आपका पैसा कई कंपनियों में बँटा होता है, इसलिए अगर एक कंपनी अच्छा नहीं भी करती, तो दूसरी कंपनियां आपके पोर्टफोलियो को संभाल लेती हैं।</p><p><strong>रणनीति:</strong> इसमें कम से कम 5-7 साल के लिए निवेश करें ताकि बाजार के उतार-चढ़ाव (Volatility) का असर खत्म हो सके।</p><div style="background:var(--teal-s);border-left:3px solid var(--teal);padding:12px 16px;border-radius:0 6px 6px 0;margin-top:14px;font-size:.85rem;line-height:1.7"><strong>आसान उदाहरण:</strong> मान लीजिए 10 दोस्तों ने एक चाय की दुकान शुरू की। आपने \u20b910,000 निवेश करके 10% हिस्सा लिया। जब वह दुकान पूरे देश में फैल गई, तो आपकी 10% की वैल्यू बढ़कर \u20b91,00,000 हो गई। यही इक्विटी की ताकत है।</div>'},
   {id:'debt',topic:'Investments',q:'What is Debt investing?',
-   a:'<p>Debt investing means <strong>lending your money to earn interest</strong>. In FDs, bonds, or debt mutual funds, you are the lender. Simple example: deposit \u20b91 lakh at 7% FD = get \u20b91,07,000 after one year. You lent the bank money and earned \u20b97,000.</p><p>Use debt for goals within 1\u20135 years. Equity for 7+ years. In between, use a mix. Common debt options: FD (6.5\u20137.5%), G-Secs (6\u20137%), Debt MF (6\u20138%), PPF (7.1% with EEE tax benefit).</p>',
-   aHi:'<p><strong>\u0921\u0947\u092c\u094d\u091f \u0928\u093f\u0935\u0947\u0936</strong> \u092e\u0924\u0932\u092c \u0905\u092a\u0928\u093e \u092a\u0948\u0938\u093e \u0909\u0927\u093e\u0930 \u0926\u0947\u0915\u0930 \u092c\u094d\u092f\u093e\u091c \u0915\u092e\u093e\u0928\u093e\u0964 FD, \u092c\u0949\u0902\u0921, \u0921\u0947\u092c\u094d\u091f MF \u2014 \u0907\u0928 \u0938\u092c\u092e\u0947\u0902 \u0906\u092a \u0915\u0930\u094d\u091c\u0926\u093e\u0924\u093e \u0939\u0948\u0902\u0964</p><p>\u0928\u093f\u092f\u092e: 3 \u0938\u093e\u0932 \u0938\u0947 \u0915\u092e \u0932\u0915\u094d\u0937\u094d\u092f = \u0921\u0947\u092c\u094d\u091f\u0964 7+ \u0938\u093e\u0932 = \u0907\u0915\u094d\u0935\u093f\u091f\u0940\u0964 \u092c\u0940\u091a \u092e\u0947\u0902 = \u0926\u094b\u0928\u094b\u0902\u0964</p>'},
+   a:'<p><strong>If Equity is \u201cOwnership,\u201d Debt is Lending.</strong> When you invest in debt, you are acting like a bank, lending your money to companies or the government for a fixed interest rate.</p><h3 style="font-family:var(--fs);font-size:.95rem;font-weight:600;color:var(--ink);margin:14px 0 8px">What is a Debt Mutual Fund?</h3><p>Instead of lending to just one place, a Debt Mutual Fund lends to many different entities (Government bonds, Corporate bonds, etc.).</p><p><strong>The Expert\u2019s Role:</strong> The Fund Manager ensures the money is lent to reliable borrowers who will pay it back with interest.</p><p><strong>The Benefit:</strong> It provides stability. While equity grows your wealth, debt protects it. It is ideal for short-term goals (1\u20133 years) or your emergency fund.</p>',
+   aHi:'<p><strong>इक्विटी अगर \u201cमालिक\u201d बनना है, तो डेट का मतलब है \u201cसाहूकार\u201d बनना।</strong> यहाँ आप अपना पैसा सरकार या कंपनियों को ब्याज पर उधार देते हैं।</p><h3 style="font-family:var(--fs);font-size:.95rem;font-weight:600;color:var(--ink);margin:14px 0 8px">डेट म्यूचुअल फंड क्या है?</h3><p>यहाँ फंड मैनेजर आपका पैसा किसी एक जगह नहीं, बल्कि कई भरोसेमंद कंपनियों और सरकारी बॉन्ड्स में उधार देता है।</p><p><strong>एक्सपर्ट की भूमिका:</strong> फंड मैनेजर यह पक्का करता है कि पैसा सही जगह दिया जाए जहाँ से ब्याज और मूल धन सुरक्षित वापस मिले।</p><p><strong>फायदा:</strong> इसमें स्थिरता (Stability) होती है। यह कम समय (1-3 साल) के लक्ष्यों के लिए सबसे सुरक्षित विकल्प है।</p>'},
   {id:'hybrid',topic:'Investments',q:'What is Hybrid investing?',
-   a:'<p>Hybrid funds invest in <strong>both equity and debt</strong>. You get growth potential with stability cushioning. Example: split \u20b91,00,000 \u2014 \u20b965,000 equity, \u20b935,000 FD. If markets crash 30%, equity becomes \u20b945,500, FD stays ~\u20b937,450. Total: \u20b982,950 \u2014 a 17% fall not 30%. That cushioning is hybrid.</p><p>Balanced Advantage Funds adjust equity-debt ratio with market valuations. Historical returns ~10-12% over 7+ years. Best for 5-8 year goals or investors who find pure equity too volatile.</p>',
-   aHi:'<p>\u0939\u093e\u0907\u092c\u094d\u0930\u093f\u0921 \u092b\u0902\u0921 \u0907\u0915\u094d\u0935\u093f\u091f\u0940 \u0914\u0930 \u0921\u0947\u092c\u094d\u091f \u0926\u094b\u0928\u094b\u0902 \u092e\u0947\u0902 \u0928\u093f\u0935\u0947\u0936 \u0915\u0930\u0924\u0947 \u0939\u0948\u0902\u0964 \u0917\u094d\u0930\u094b\u0925 \u0914\u0930 \u0938\u094d\u0925\u093f\u0930\u0924\u093e \u0926\u094b\u0928\u094b\u0902 \u092e\u093f\u0932\u0924\u0940 \u0939\u0948\u0902\u0964 7+ \u0938\u093e\u0932 \u092e\u0947\u0902 ~10% CAGR\u0964</p>'},
+   a:'<p>Hybrid is a \u201cBalanced Diet\u201d for your portfolio. It is a single fund that contains a mix of both Equity and Debt.</p><h3 style="font-family:var(--fs);font-size:.95rem;font-weight:600;color:var(--ink);margin:14px 0 8px">What is a Hybrid Mutual Fund?</h3><p>The Fund Manager moves the money between stocks and bonds to give you the best of both.</p><p><strong>The Strategy:</strong> The Equity part drives growth, while the Debt part acts as a safety net when the market gets bumpy.</p><p><strong>The Benefit:</strong> It offers a smoother experience. You get better returns than a traditional FD, but without the high stress of a pure stock market investment. It\u2019s perfect for a medium-term horizon (3\u20135 years).</p>',
+   aHi:'<p>हाइब्रिड आपके निवेश की एक ऐसी \u201cथाली\u201d है जिसमें दाल (डेट) और सब्जी (इक्विटी) दोनों शामिल हैं।</p><h3 style="font-family:var(--fs);font-size:.95rem;font-weight:600;color:var(--ink);margin:14px 0 8px">हाइब्रिड म्यूचुअल फंड क्या है?</h3><p>एक ही फंड के अंदर एक्सपर्ट कुछ पैसा शेयरों में और कुछ पैसा सुरक्षित बॉन्ड्स में डालता है।</p><p><strong>रणनीति:</strong> इसका इक्विटी वाला हिस्सा पैसा बढ़ाने का काम करता है, और डेट वाला हिस्सा मुश्किल समय में सुरक्षा देता है।</p><p><strong>फायदा:</strong> यह उन लोगों के लिए बेस्ट है जो FD से बेहतर रिटर्न चाहते हैं लेकिन शेयर बाजार के रिस्क से डरते हैं। यह मध्यम अवधि (3-5 साल) के लिए बेहतरीन है।</p>'},
   {id:'sip',topic:'Calculators',q:'SIP Calculator \u2014 how to use it?',
    a:'<p>SIP means investing a fixed amount every month. Your money earns compound interest. <strong>Monthly Investment:</strong> even \u20b91,000 matters if started early. <strong>Duration:</strong> most powerful variable \u2014 5 extra years can nearly double corpus. <strong>Return:</strong> Equity 12-15%, Hybrid ~10%, Debt 6-7%.</p><p>Example: \u20b95,000/month for 20 years at 12% = \u20b949.5 lakhs. You invested \u20b912 lakhs. Extra \u20b937.5 lakhs is compounding. Same SIP for 25 years = \u20b993 lakhs.</p>',
    aHi:'<p><strong>SIP क्या है?</strong> SIP यानी हर महीने एक तय राशि निवेश करना। आपका पैसा चक्रवृद्धि ब्याज (कंपाउंडिंग) कमाता है। <strong>मासिक निवेश:</strong> ₹1,000 भी जल्दी शुरू करने पर बहुत मायने रखता है। <strong>अवधि:</strong> सबसे शक्तिशाली कारक — 5 साल अतिरिक्त कॉर्पस को लगभग दोगुना कर सकते हैं। <strong>रिटर्न:</strong> इक्विटी 12-15%, हाइब्रिड ~10%, डेब्ट 6-7%।</p><p><strong>उदाहरण:</strong> ₹5,000/माह × 20 साल × 12% = ₹49.5 लाख। आपने लगाए ₹12 लाख, बाकी ₹37.5 लाख चक्रवृद्धि का जादू। वही SIP 25 साल के लिए = ₹93 लाख।</p>'},
@@ -7468,8 +7524,9 @@ function showContactError(msg){
 function showContactSuccess(){
   var el=document.getElementById('contact-msg');
   if(!el){el=document.createElement('div');el.id='contact-msg';var btn=document.querySelector('#page-contact .calbtn');if(btn)btn.after(el);}
-  el.style.cssText='margin-top:10px;padding:10px 14px;border-radius:6px;font-size:.82rem;background:#edf7f2;color:#1e5c3a;border:1px solid #a7f3d0';
-  el.textContent='Message sent! We will get back to you soon.';
+  el.style.cssText='margin-top:10px;padding:10px 14px;border-radius:6px;font-size:.82rem;background:#edf7f2;color:#1e5c3a;border:1px solid #bbdece';
+  el.textContent='Message sent! We will be in touch shortly.';
+  setTimeout(function(){if(el&&el.parentNode)el.parentNode.removeChild(el);},6000);
 }
 </script>
 </body>
