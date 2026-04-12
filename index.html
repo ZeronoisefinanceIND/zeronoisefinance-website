@@ -2,13 +2,12 @@
 <html lang="en">
 <head>
 <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-MF44R9301C"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XYBSTTGGP8"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
-  gtag('config', 'G-MF44R9301C');
+  gtag('config', 'G-XYBSTTGGP8');
 </script>
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="apple-touch-icon" href="favicon.png">
@@ -1013,13 +1012,16 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
   #page-goals .cbody{padding:16px 12px}
   #page-goals .ins-l{gap:16px}
   #page-goals .rc{padding:14px;margin-top:0}
-  #page-goals .ins-l > div:first-child > div[id^="goal_"]{padding:14px 12px;border-radius:8px;margin-bottom:10px}
+  #page-goals .ins-l > div:first-child > div[id^="goal_"]{padding:16px 14px;border-radius:8px;margin-bottom:12px}
   /* Goal card header row */
   #page-goals .ins-l > div:first-child > div[id^="goal_"] > div:first-child{flex-wrap:wrap;gap:8px}
-  /* Retirement card */
-  #page-goals .ins-l > div:first-child > div:not([id^="goal_"]) > div:last-child{padding:14px 12px}
+  /* Goal inputs — single col on small screens */
   #page-goals [style*="grid-template-columns:1fr 1fr 1fr 1fr"]{grid-template-columns:1fr 1fr !important}
   #page-goals [style*="grid-template-columns:1fr 1fr 1fr"]{grid-template-columns:1fr 1fr !important}
+  /* Retirement card inner */
+  #page-goals .ins-l > div:first-child > div:not([id^="goal_"]) > div:last-child{padding:14px 12px}
+  /* Retirement inner grids force 1 col below 400px */
+  #page-goals .ins-l > div:first-child > div:not([id^="goal_"]) [style*="grid-template-columns"]{gap:10px !important}
   /* Goals right panel */
   #goalsRightPanel{padding:12px}
   #goalsRightPanel > div:first-child{grid-template-columns:1fr 1fr !important}
@@ -1030,7 +1032,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
   #goalsBreakdownWrap table{font-size:.7rem}
   #goalsBreakdownWrap th,#goalsBreakdownWrap td{padding:6px 7px}
   /* Goal add button */
-  #page-goals .btn-o[onclick="addGoalRow()"]{padding:12px 14px;font-size:.84rem}
+  #page-goals .btn-o[onclick="addGoalRow()"]{padding:14px 14px;font-size:.86rem}
   /* Goals summary bar */
   #goalSummary{padding:14px 16px}
   #goalSummaryContent > div:first-child{grid-template-columns:1fr 1fr !important}
@@ -1324,8 +1326,8 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
   </div>
 
   <!-- JOURNEY MODAL POPUP -->
-  <div id="jyModal" style="display:none;position:fixed;inset:0;z-index:8000;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);animation:jyModalBg .25s ease;overflow-y:auto;padding:16px 0">
-    <div id="jyModalInner" style="position:relative;background:var(--bgp);border-radius:16px;width:92%;max-width:520px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.3);animation:jyModalIn .3s cubic-bezier(.22,1,.36,1);margin:auto;margin-top:max(16px,5vh)">
+  <div id="jyModal" style="display:none;position:fixed;inset:0;z-index:8000;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);animation:jyModalBg .25s ease">
+    <div id="jyModalInner" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--bgp);border-radius:16px;width:92%;max-width:520px;max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.3);animation:jyModalIn .3s cubic-bezier(.22,1,.36,1)">
       <div style="display:flex;justify-content:space-between;align-items:center;padding:18px 22px 0">
         <div id="jyModalTitle" style="font-family:var(--fs);font-size:1.1rem;font-weight:600;color:var(--ink)"></div>
         <button onclick="closeJyModal()" style="font-size:1.1rem;color:var(--ink-l);padding:4px 8px">✕</button>
@@ -1390,6 +1392,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
     </div>
   </div>
 </div>
+
 
 <!-- ══════════════════════════════════
      ARTICLES
@@ -2258,21 +2261,21 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
               <div style="font-size:.72rem;color:rgba(255,255,255,.7)">The most important goal — no loan, no scholarship, no alternative for this one</div>
             </div>
           </div>
-          <div style="padding:20px 22px">
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin-bottom:12px">
-            <div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Current Age</div><input class="fi-inp" type="number" id="gl_ret_age" placeholder="e.g. 30" oninput="calcGoals()" style="padding:8px"></div>
-            <div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Retire At</div><input class="fi-inp" type="number" id="gl_ret_at" placeholder="e.g. 60" oninput="calcGoals()" style="padding:8px"></div>
-            <div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Life Expectancy</div><input class="fi-inp" type="number" id="gl_ret_life" placeholder="e.g. 85" oninput="calcGoals()" style="padding:8px"></div>
-            <div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Monthly Expense Today (₹)</div><input class="fi-inp" type="number" id="gl_ret_exp" placeholder="e.g. 50,000" oninput="calcGoals()" style="padding:8px"></div>
+          <div style="padding:22px 24px">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:14px">
+            <div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Current Age</div><input class="fi-inp" type="number" id="gl_ret_age" placeholder="e.g. 30" oninput="calcGoals()" style="padding:11px 13px;font-size:.9rem"></div>
+            <div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Retire At</div><input class="fi-inp" type="number" id="gl_ret_at" placeholder="e.g. 60" oninput="calcGoals()" style="padding:11px 13px;font-size:.9rem"></div>
+            <div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Life Expectancy</div><input class="fi-inp" type="number" id="gl_ret_life" placeholder="e.g. 85" oninput="calcGoals()" style="padding:11px 13px;font-size:.9rem"></div>
+            <div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Monthly Expense Today (₹)</div><input class="fi-inp" type="number" id="gl_ret_exp" placeholder="e.g. 50,000" oninput="calcGoals()" style="padding:11px 13px;font-size:.9rem"></div>
           </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px">
-            <div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Inflation (%)</div><input class="fi-inp" type="number" id="gl_ret_inf" placeholder="e.g. 6" step="0.5" oninput="calcGoals()" style="padding:8px"></div>
-            <div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Pre-Retirement Return (%)</div><input class="fi-inp" type="number" id="gl_ret_pre" placeholder="e.g. 12" step="0.5" oninput="calcGoals()" style="padding:8px"></div>
-            <div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Post-Retirement Return (%)</div><input class="fi-inp" type="number" id="gl_ret_post" placeholder="e.g. 8" step="0.5" oninput="calcGoals()" style="padding:8px"></div>
-            <div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Existing Retirement Savings (₹)</div><input class="fi-inp" type="number" id="gl_ret_saved" placeholder="e.g. 0" oninput="calcGoals()" style="padding:8px"></div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px">
+            <div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Inflation (%)</div><input class="fi-inp" type="number" id="gl_ret_inf" placeholder="e.g. 6" step="0.5" oninput="calcGoals()" style="padding:11px 13px;font-size:.9rem"></div>
+            <div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Pre-Retirement Return (%)</div><input class="fi-inp" type="number" id="gl_ret_pre" placeholder="e.g. 12" step="0.5" oninput="calcGoals()" style="padding:11px 13px;font-size:.9rem"></div>
+            <div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Post-Retirement Return (%)</div><input class="fi-inp" type="number" id="gl_ret_post" placeholder="e.g. 8" step="0.5" oninput="calcGoals()" style="padding:11px 13px;font-size:.9rem"></div>
+            <div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Existing Retirement Savings (₹)</div><input class="fi-inp" type="number" id="gl_ret_saved" placeholder="e.g. 0" oninput="calcGoals()" style="padding:11px 13px;font-size:.9rem"></div>
           </div>
-          <div style="margin-top:8px"><div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Annual Step-Up on SIP (%) <span class="fl-opt">Optional</span></div><input class="fi-inp" type="number" id="gl_ret_su" placeholder="e.g. 10" step="1" oninput="calcGoals()" style="padding:8px;max-width:180px"></div></div>
-          <div id="gl_ret_result" style="margin-top:14px"></div>
+          <div style="margin-top:12px"><div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Annual Step-Up on SIP (%) <span class="fl-opt">Optional</span></div><input class="fi-inp" type="number" id="gl_ret_su" placeholder="e.g. 10" step="1" oninput="calcGoals()" style="padding:11px 13px;font-size:.9rem;max-width:200px"></div></div>
+          <div id="gl_ret_result" style="margin-top:16px"></div>
           </div><!-- end retirement card inner padding -->
         </div>
 
@@ -3275,6 +3278,8 @@ function jyComplete(step){
   }
   jyUpdateProgress();
   closeJyModal();
+  // Auto-open next step after a beat
+  if(next<=6) setTimeout(function(){openJyModal(next);},500);
 }
 
 function getJyContent(step){
@@ -3341,7 +3346,7 @@ function jyStep1Answer(ans){
 function jyStep2Answer(ans){
   var r=document.getElementById('jym_result');if(!r)return;
   if(ans==='yes'){
-    r.innerHTML='<div class="jy-modal-result" style="background:#f0fdf4;border:1px solid #86efac;color:#166534">\ud83c\udf89 <strong>Smart move!</strong> Quick checks: Is there a co-pay clause? Room rent limit? Is cover at least \u20b910\u201315 lakh? Medical inflation is 10201314% per year. If any of these are issues, consider upgrading.</div>'
+    r.innerHTML='<div class="jy-modal-result" style="background:#f0fdf4;border:1px solid #86efac;color:#166534">\ud83c\udf89 <strong>Smart move!</strong> Quick checks: Is there a co-pay clause? Room rent limit? Is cover at least \u20b910\u201315 lakh? Medical inflation is 10-14% per year. If any of these are issues, consider upgrading.</div>'
       +'<button class="btn-p" style="width:100%;justify-content:center;margin-top:12px" onclick="jyComplete(2)">Got it! Next Step \u2192</button>';
   } else {
     r.innerHTML='<div class="jy-modal-result" style="background:#fef2f2;border:1px solid #fca5a5;color:#991b1b">\ud83d\udea8 <strong>Critical gap!</strong> One hospitalisation costs \u20b92\u201310 lakh. Get at least \u20b910 lakh cover. Premium is just \u20b98,000\u201315,000/year for a 30-year-old.</div>'
@@ -3416,7 +3421,7 @@ function jyGoalSelect(type){
     +'<div style="display:flex;gap:8px;margin-top:10px"><button class="btn-p" onclick="closeJyModal();nav(\'goals\')">Open Goal Planner \u2192</button><button class="btn-o" onclick="jyComplete(5)">Goals set \u2192 Final Step</button></div>';
 }
 
-// Auto-start quiz when step 4 modal opens
+// Auto-start quiz when step 4 modal opens, track completed steps
 var jyCompletedSteps={};
 var _origOpenJyModal=openJyModal;
 openJyModal=function(step){
@@ -3433,31 +3438,29 @@ openJyModal=function(step){
       +'<div style="font-family:var(--fs);font-size:1rem;font-weight:600;color:var(--ok);margin-bottom:8px">You\'ve completed this step!</div>'
       +'<p style="font-size:.84rem;color:var(--ink-l);margin-bottom:16px">This foundation is in place. Keep it maintained and move forward.</p>'
       +'<button class="btn-o" onclick="closeJyModal()" style="padding:10px 24px">Close</button></div>';
-    modal.style.display='block';
+    modal.style.display='flex';
+    modal.style.alignItems='flex-start';
+    modal.style.justifyContent='center';
     document.body.style.overflow='hidden';
     return;
   }
   _origOpenJyModal(step);
   if(step===4&&!jyCompletedSteps[4]) setTimeout(jyStartQuiz,200);
-  // Step 6: mark complete after showing (modal stays open for celebration)
-  if(step===6) setTimeout(function(){jyComplete(6);},300);
-};
-
-// Override jyComplete to track completion
-var _origJyComplete=jyComplete;
-jyComplete=function(step){
-  jyCompletedSteps[step]=true;
-  // For step 6, just mark card done and update progress, do NOT close modal
-  if(step===6){
+  if(step===6) setTimeout(function(){
+    jyCompletedSteps[6]=true;
     var card=document.getElementById('jyg6');
     if(card){card.classList.remove('active','locked');card.classList.add('done');
       card.querySelector('.jyg-action').textContent='Completed \u2713';
       card.querySelector('.jyg-step span').textContent='\u2713';
     }
-    jyStep=7;
-    jyUpdateProgress();
-    return;// Don't close modal — let user see celebration
-  }
+    jyStep=7;jyUpdateProgress();
+  },300);
+};
+
+// Override jyComplete to track completion and auto-advance
+var _origJyComplete=jyComplete;
+jyComplete=function(step){
+  jyCompletedSteps[step]=true;
   _origJyComplete(step);
 };
 
