@@ -542,7 +542,7 @@ nav.visible{opacity:1;pointer-events:all}
 .jy-grid-card.done .jyg-action{color:var(--ok)}
 /* Modal */
 @keyframes jyModalBg{from{opacity:0}to{opacity:1}}
-@keyframes jyModalIn{from{opacity:0;transform:translate(-50%,-50%) scale(.92)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+@keyframes jyModalIn{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
 .jy-modal-q{font-family:var(--fs);font-size:.95rem;font-weight:600;color:var(--ink);margin:14px 0 12px}
 .jy-modal-desc{font-size:.86rem;color:var(--ink-m);line-height:1.75;margin-bottom:14px}
 .jy-modal-btns{display:flex;gap:10px;flex-wrap:wrap}
@@ -706,6 +706,14 @@ nav.visible{opacity:1;pointer-events:all}
    INSURANCE
 ───────────────────────────────────── */
 .ins-l{display:grid;grid-template-columns:1fr 330px;gap:26px;align-items:start}
+
+/* Goals page specific improvements */
+#page-goals .ins-l{grid-template-columns:1fr 360px;gap:28px}
+#page-goals .rc{position:sticky;top:80px;background:var(--bgp);border:1px solid var(--rule);border-radius:var(--r);padding:22px;box-shadow:var(--sh2)}
+#page-goals .ins-l > div:first-child{min-width:0}
+
+/* Journey modal improved */
+@keyframes jyPop{0%{transform:scale(0)}60%{transform:scale(1.15)}100%{transform:scale(1)}}
 .ptbl{width:100%;border-collapse:collapse;margin-top:9px;font-size:.84rem}
 .ptbl th{text-align:left;padding:7px 9px;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-l);border-bottom:1px solid var(--rule)}
 .ptbl td{padding:6px 9px;border-bottom:1px solid rgba(0,0,0,.04)}
@@ -926,6 +934,8 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
 .dh-text strong{display:block;font-weight:700;margin-bottom:2px}
 @media(max-width:920px){
   .hero,.cl,.ins-l,.ratio-l,.ct-l,.tl-wrap,.debt-layout,.about-grid,.portfolio-grid{grid-template-columns:1fr}
+  #page-goals .ins-l{grid-template-columns:1fr}
+  #page-goals .rc{position:static}
   .why-grid{grid-template-columns:1fr 1fr}
   .rc,.ratio-rp{position:static}
   nav .nav-links,.nav-cta{display:none}
@@ -1277,8 +1287,8 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
   </div>
 
   <!-- JOURNEY MODAL POPUP -->
-  <div id="jyModal" style="display:none;position:fixed;inset:0;z-index:8000;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);animation:jyModalBg .25s ease">
-    <div id="jyModalInner" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--bgp);border-radius:16px;width:92%;max-width:520px;max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.3);animation:jyModalIn .3s cubic-bezier(.22,1,.36,1)">
+  <div id="jyModal" style="display:none;position:fixed;inset:0;z-index:8000;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);animation:jyModalBg .25s ease;overflow-y:auto;padding:16px 0">
+    <div id="jyModalInner" style="position:relative;background:var(--bgp);border-radius:16px;width:92%;max-width:520px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.3);animation:jyModalIn .3s cubic-bezier(.22,1,.36,1);margin:auto;margin-top:max(16px,5vh)">
       <div style="display:flex;justify-content:space-between;align-items:center;padding:18px 22px 0">
         <div id="jyModalTitle" style="font-family:var(--fs);font-size:1.1rem;font-weight:600;color:var(--ink)"></div>
         <button onclick="closeJyModal()" style="font-size:1.1rem;color:var(--ink-l);padding:4px 8px">✕</button>
@@ -1873,6 +1883,23 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
     <p style="font-size:.92rem;color:rgba(255,255,255,.5);max-width:480px;margin:0 auto 24px;line-height:1.72">Walk with our character through every life stage. Collect the essentials, avoid the traps, and watch your wealth grow — one step at a time.</p>
     <button class="btn-p" style="padding:12px 28px" onclick="startPlanJourney()">Begin the Journey 🚶</button>
   </div>
+  <div id="planAgeBox" style="display:none;max-width:420px;margin:24px auto 0;padding:0 24px">
+    <div style="background:var(--bgp);border:1.5px solid var(--teal);border-radius:var(--r);padding:20px;text-align:center">
+      <div style="font-family:var(--fs);font-size:.97rem;font-weight:600;color:var(--ink);margin-bottom:8px">How old are you?</div>
+      <div style="font-size:.82rem;color:var(--ink-l);margin-bottom:14px">We'll jump you straight to your life stage.</div>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:12px">
+        <button class="chip" onclick="startPlanAtAge(25)">21–30</button>
+        <button class="chip" onclick="startPlanAtAge(35)">31–40</button>
+        <button class="chip" onclick="startPlanAtAge(45)">41–50</button>
+        <button class="chip" onclick="startPlanAtAge(55)">51–59</button>
+        <button class="chip" onclick="startPlanAtAge(62)">60+</button>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;justify-content:center">
+        <input type="number" id="planAgeInput" class="fi-inp" placeholder="Enter exact age" min="18" max="85" style="width:140px;padding:9px;text-align:center">
+        <button class="btn-p" style="padding:9px 18px" onclick="startPlanAtAge(parseFloat(document.getElementById('planAgeInput').value)||25)">Go</button>
+      </div>
+    </div>
+  </div>
 
   <!-- Journey Road -->
   <div style="max-width:700px;margin:0 auto;padding:32px 24px;position:relative" id="planRoad">
@@ -1908,9 +1935,11 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
         <div class="pp-insight">
           <strong>💡 The ₹5,000 truth:</strong> A ₹5,000/month SIP started at 22 grows to ~₹3.5 crore by 60 (at 12% CAGR). Start at 32? Only ~₹1.1 crore. One decade costs ₹2.4 crore.
         </div>
+        <div id="pp1_unlock_hint"><div style="text-align:center;padding:8px 12px;background:#f8fafc;border:1px dashed #cbd5e1;border-radius:var(--rs);font-size:.78rem;color:var(--ink-l);margin-top:8px">🔒 Check at least <strong>3 items</strong> to unlock your Vision &amp; Roadmap</div></div>
         <div id="pp1_result"></div>
       </div>
     </div>
+      <div id="pp1_vision" style="display:none;margin:0 20px 16px;animation:ppCardIn .5s ease"><div style="background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1.5px solid #86efac;border-radius:14px;padding:22px 24px;position:relative;overflow:hidden"><div style="position:absolute;top:-20px;right:-20px;width:100px;height:100px;background:radial-gradient(circle,rgba(255,255,255,.5),transparent);border-radius:50%;pointer-events:none"></div><div style="font-family:var(--fs);font-size:1.05rem;font-weight:700;color:#166534;margin-bottom:16px">🗺️ Your Foundation Roadmap</div><div style="display:grid;grid-template-columns:1fr;gap:12px"><div style="background:rgba(255,255,255,.7);border-radius:10px;padding:14px"><div style="font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#166534;margin-bottom:6px">📌 What you need to build in your 20s</div><div style="font-size:.82rem;color:var(--ink-m);line-height:1.65">Emergency fund · Health insurance · Term insurance · First SIP · Zero bad debt</div></div><div style="background:rgba(255,255,255,.7);border-radius:10px;padding:14px"><div style="font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#166534;margin-bottom:6px">💡 Why this phase is non-negotiable</div><div style="font-size:.82rem;color:var(--ink-m);line-height:1.65">Starting at 22 vs 32 is a ₹2.4 crore difference at retirement. The 20s are about building habits, not hitting numbers. Every rupee you save now works for 35+ years.</div></div><div style="background:rgba(255,255,255,.7);border-radius:10px;padding:14px"><div style="font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#166534;margin-bottom:6px">⚡ How to actually do it — step by step</div><div style="font-size:.82rem;color:var(--ink-m);line-height:1.65">Step 1: Park 6 months expenses in a liquid fund. Step 2: Buy a ₹5 lakh health policy (₹3-5K/yr). Step 3: Buy a ₹1 cr term plan (₹8-12K/yr at 25). Step 4: Start ₹1,000–₹5,000 SIP in index fund. Step 5: Never EMI a phone.</div></div></div></div></div>
 
     <!-- PHASE 2: ACCELERATION (Age 30-40) -->
     <div class="plan-phase" id="pp2" style="display:none">
@@ -1934,9 +1963,11 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
         <div class="pp-insight">
           <strong>💡 The 50-30-20 rule:</strong> 50% needs, 30% wants, 20% savings. But if you can push savings to 30-40% in this decade, your 40s become significantly easier.
         </div>
+        <div id="pp2_unlock_hint"><div style="text-align:center;padding:8px 12px;background:#f8fafc;border:1px dashed #cbd5e1;border-radius:var(--rs);font-size:.78rem;color:var(--ink-l);margin-top:8px">🔒 Check at least <strong>3 items</strong> to unlock your Vision &amp; Roadmap</div></div>
         <div id="pp2_result"></div>
       </div>
     </div>
+      <div id="pp2_vision" style="display:none;margin:0 20px 16px;animation:ppCardIn .5s ease"><div style="background:linear-gradient(135deg,#eff6ff,#dbeafe);border:1.5px solid #93c5fd;border-radius:14px;padding:22px 24px;position:relative;overflow:hidden"><div style="position:absolute;top:-20px;right:-20px;width:100px;height:100px;background:radial-gradient(circle,rgba(255,255,255,.5),transparent);border-radius:50%;pointer-events:none"></div><div style="font-family:var(--fs);font-size:1.05rem;font-weight:700;color:#1e40af;margin-bottom:16px">🗺️ Your Acceleration Roadmap</div><div style="display:grid;grid-template-columns:1fr;gap:12px"><div style="background:rgba(255,255,255,.7);border-radius:10px;padding:14px"><div style="font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#1e40af;margin-bottom:6px">📌 What you need to accelerate in your 30s</div><div style="font-size:.82rem;color:var(--ink-m);line-height:1.65">Step-up SIP · Goal-based funds · Tax optimisation · Insurance review · Lifestyle discipline</div></div><div style="background:rgba(255,255,255,.7);border-radius:10px;padding:14px"><div style="font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#1e40af;margin-bottom:6px">💡 Why this decade determines your retirement</div><div style="font-size:.82rem;color:var(--ink-m);line-height:1.65">The 30s are when income jumps but lifestyle inflation can swallow it all. Every 10% salary hike, 5% should go to SIP step-up. Compound interest needs time — give it as much as possible.</div></div><div style="background:rgba(255,255,255,.7);border-radius:10px;padding:14px"><div style="font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#1e40af;margin-bottom:6px">⚡ How to go from saving to wealth-building</div><div style="font-size:.82rem;color:var(--ink-m);line-height:1.65">Step 1: Set up auto-debit SIPs for each goal separately. Step 2: Every April, increase SIP by 10%. Step 3: Max out 80C (₹1.5L) + NPS (₹50K extra) + HRA. Step 4: Review insurance: cover should be 15× income. Step 5: Maintain 50-30-20 split.</div></div></div></div></div>
 
     <!-- PHASE 3: CONSOLIDATION (Age 40-50) -->
     <div class="plan-phase" id="pp3" style="display:none">
@@ -1960,26 +1991,58 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
         <div class="pp-insight">
           <strong>💡 Critical mistake to avoid:</strong> Never use your retirement corpus for children's education. Education has loans, scholarships, and alternatives. Retirement has none.
         </div>
+        <div id="pp3_unlock_hint"><div style="text-align:center;padding:8px 12px;background:#f8fafc;border:1px dashed #cbd5e1;border-radius:var(--rs);font-size:.78rem;color:var(--ink-l);margin-top:8px">🔒 Check at least <strong>3 items</strong> to unlock your Vision &amp; Roadmap</div></div>
         <div id="pp3_result"></div>
       </div>
     </div>
+      <div id="pp3_vision" style="display:none;margin:0 20px 16px;animation:ppCardIn .5s ease"><div style="background:linear-gradient(135deg,#fffbeb,#fef3c7);border:1.5px solid #fcd34d;border-radius:14px;padding:22px 24px;position:relative;overflow:hidden"><div style="position:absolute;top:-20px;right:-20px;width:100px;height:100px;background:radial-gradient(circle,rgba(255,255,255,.5),transparent);border-radius:50%;pointer-events:none"></div><div style="font-family:var(--fs);font-size:1.05rem;font-weight:700;color:#92400e;margin-bottom:16px">🗺️ Your Consolidation Roadmap</div><div style="display:grid;grid-template-columns:1fr;gap:12px"><div style="background:rgba(255,255,255,.7);border-radius:10px;padding:14px"><div style="font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#92400e;margin-bottom:6px">📌 What to protect and consolidate in your 40s</div><div style="font-size:.82rem;color:var(--ink-m);line-height:1.65">Retirement corpus check · Asset rebalancing · Children's education fund · Will & nominations · Super top-up health cover</div></div><div style="background:rgba(255,255,255,.7);border-radius:10px;padding:14px"><div style="font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#92400e;margin-bottom:6px">💡 Why one mistake here costs a decade</div><div style="font-size:.82rem;color:var(--ink-m);line-height:1.65">At 40, you have ~20 years left to grow and ~25 years to live in retirement. A ₹50L loss to bad investment at 42 requires 8 years to recover. Your job is to not lose what you've built.</div></div><div style="background:rgba(255,255,255,.7);border-radius:10px;padding:14px"><div style="font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#92400e;margin-bottom:6px">⚡ How to de-risk without sacrificing growth</div><div style="font-size:.82rem;color:var(--ink-m);line-height:1.65">Step 1: Calculate your retirement number — use the retirement calculator. Step 2: Rebalance to 70% equity / 25% debt / 5% gold. Step 3: Open a separate education fund for each child. Step 4: Update will + all nominations today. Step 5: Add super top-up (₹25L cover for ~₹5K/yr).</div></div></div></div></div>
 
-    <!-- PHASE 4: TRANSITION (Age 50+) -->
+    <!-- PHASE 4: REBALANCE (Age 50-59) -->
     <div class="plan-phase" id="pp4" style="display:none">
       <div class="pp-road-walk" id="pp4_walk"></div>
       <div class="pp-card">
         <div class="pp-badge" style="background:linear-gradient(135deg,#a78bfa,#8b5cf6)">4</div>
-        <div class="pp-label" style="color:#7c3aed">Transition Phase</div>
-        <div class="pp-age">Age 50+ · Preserve and Enjoy</div>
-        <div class="pp-desc">The finish line is in sight. Now the priority is capital preservation, predictable income, and making sure your money outlives you — not the other way around.</div>
-        <div class="pp-q" style="margin-top:16px">What is your primary goal now?</div>
-        <div style="display:flex;gap:10px;margin:12px 0;flex-wrap:wrap">
-          <button class="pp-choice" onclick="ppTransition('preserve')">🛡️ Capital Preservation</button>
-          <button class="pp-choice" onclick="ppTransition('growth')">📈 Still Want High Returns</button>
+        <div class="pp-label" style="color:#7c3aed">Rebalance Phase</div>
+        <div class="pp-age">Age 50–59 · Tilt Towards Debt &amp; Safety</div>
+        <div class="pp-desc">The decade before retirement is about gradually reducing equity exposure and increasing debt. Don't wait until 60 to start — each year matters.</div>
+        <div class="pp-check" style="margin-top:16px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+            <div class="pp-check-title" style="margin:0">Rebalancing priorities:</div>
+            <div class="pp-score" id="pp4_score">0 / 50 pts</div>
+          </div>
+          <label class="pp-item" onclick="ppCheck(4)"><input type="checkbox" id="pp4c1" data-pts="15"> <span>Gradually shift equity from 70% → 50% over this decade (tilt to debt/balanced)</span><span class="pp-pts">+15</span></label>
+          <label class="pp-item" onclick="ppCheck(4)"><input type="checkbox" id="pp4c2" data-pts="12"> <span>Increase to PPF, Senior Citizens Savings Scheme, Debt MFs for stability</span><span class="pp-pts">+12</span></label>
+          <label class="pp-item" onclick="ppCheck(4)"><input type="checkbox" id="pp4c3" data-pts="10"> <span>Recalculate retirement gap and step up SIP if needed</span><span class="pp-pts">+10</span></label>
+          <label class="pp-item" onclick="ppCheck(4)"><input type="checkbox" id="pp4c4" data-pts="8"> <span>Upgrade health insurance with super top-up before pre-existing conditions appear</span><span class="pp-pts">+8</span></label>
+          <label class="pp-item" onclick="ppCheck(4)"><input type="checkbox" id="pp4c5" data-pts="5"> <span>Will and nomination updated across all investments and accounts</span><span class="pp-pts">+5</span></label>
         </div>
+        <div class="pp-insight" style="margin-top:12px">
+          <strong>Thumb rule:</strong> Hold your age in debt. At 52, hold ~52% debt. Rebalance once a year — not more. At 59: target Equity 35% / Debt 55% / Gold 10%.
+        </div>
+        <div id="pp4_unlock_hint"><div style="text-align:center;padding:8px 12px;background:#f8fafc;border:1px dashed #cbd5e1;border-radius:var(--rs);font-size:.78rem;color:var(--ink-l);margin-top:8px">🔒 Check at least <strong>3 items</strong> to unlock your Vision &amp; Roadmap</div></div>
         <div id="pp4_result"></div>
       </div>
     </div>
+      <div id="pp4_vision" style="display:none;margin:0 20px 16px;animation:ppCardIn .5s ease"><div style="background:linear-gradient(135deg,#f5f3ff,#ede9fe);border:1.5px solid #c4b5fd;border-radius:14px;padding:22px 24px;position:relative;overflow:hidden"><div style="position:absolute;top:-20px;right:-20px;width:100px;height:100px;background:radial-gradient(circle,rgba(255,255,255,.5),transparent);border-radius:50%;pointer-events:none"></div><div style="font-family:var(--fs);font-size:1.05rem;font-weight:700;color:#5b21b6;margin-bottom:16px">🗺️ Your Pre-Retirement Roadmap</div><div style="display:grid;grid-template-columns:1fr;gap:12px"><div style="background:rgba(255,255,255,.7);border-radius:10px;padding:14px"><div style="font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#5b21b6;margin-bottom:6px">📌 What to shift and secure in your 50s</div><div style="font-size:.82rem;color:var(--ink-m);line-height:1.65">Equity reduction · Debt increase (PPF/SCSS) · SIP recalculation · Will update · Health upgrade</div></div><div style="background:rgba(255,255,255,.7);border-radius:10px;padding:14px"><div style="font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#5b21b6;margin-bottom:6px">💡 Why capital preservation beats growth now</div><div style="font-size:.82rem;color:var(--ink-m);line-height:1.65">At 55, a 30% market crash with 5 years to retirement is painful but recoverable. At 59, it is not. The goal is no longer to maximise returns — it's to ensure you don't run out of money at 80.</div></div><div style="background:rgba(255,255,255,.7);border-radius:10px;padding:14px"><div style="font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#5b21b6;margin-bottom:6px">⚡ How to transition to a retirement-ready portfolio</div><div style="font-size:.82rem;color:var(--ink-m);line-height:1.65">Step 1: Target Equity 50% → 35% over this decade. Step 2: Move debt portion to SCSS, RBI Bonds, Debt MFs. Step 3: Recalculate retirement corpus — plug into retirement calculator. Step 4: Ensure 2 years of expenses are liquid. Step 5: Get a comprehensive will drafted with a lawyer.</div></div></div></div></div>
+
+    <!-- PHASE 5: RETIREMENT (Age 60+) -->
+    <div class="plan-phase" id="pp5" style="display:none">
+      <div class="pp-road-walk" id="pp5_walk"></div>
+      <div class="pp-card">
+        <div class="pp-badge" style="background:linear-gradient(135deg,#f9a8d4,#ec4899)">5</div>
+        <div class="pp-label" style="color:#be185d">Retirement Phase</div>
+        <div class="pp-age">Age 60+ · Capital Preservation is the Goal</div>
+        <div class="pp-desc">Your corpus is built. Now the mission is to make it last 25–30 years. One bad decision here can't be recovered from.</div>
+        <div class="pp-q" style="margin-top:16px">What is your primary focus now?</div>
+        <div style="display:flex;gap:10px;margin:12px 0;flex-wrap:wrap">
+          <button class="pp-choice" onclick="ppPhase5('preserve')">Capital Preservation — Safety + predictable income</button>
+          <button class="pp-choice" onclick="ppPhase5('growth')">Still want higher returns</button>
+        </div>
+        <div id="pp5_unlock_hint"><div style="text-align:center;padding:8px 12px;background:#f8fafc;border:1px dashed #cbd5e1;border-radius:var(--rs);font-size:.78rem;color:var(--ink-l);margin-top:8px">🔒 Check at least <strong>3 items</strong> to unlock your Vision &amp; Roadmap</div></div>
+        <div id="pp5_result"></div>
+      </div>
+    </div>
+      <div id="pp5_vision" style="display:none;margin:0 20px 16px;animation:ppCardIn .5s ease"><div style="background:linear-gradient(135deg,#fdf2f8,#fce7f3);border:1.5px solid #f9a8d4;border-radius:14px;padding:22px 24px;position:relative;overflow:hidden"><div style="position:absolute;top:-20px;right:-20px;width:100px;height:100px;background:radial-gradient(circle,rgba(255,255,255,.5),transparent);border-radius:50%;pointer-events:none"></div><div style="font-family:var(--fs);font-size:1.05rem;font-weight:700;color:#9d174d;margin-bottom:16px">🗺️ Your Retirement Roadmap</div><div style="display:grid;grid-template-columns:1fr;gap:12px"><div style="background:rgba(255,255,255,.7);border-radius:10px;padding:14px"><div style="font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#9d174d;margin-bottom:6px">📌 What your post-60 portfolio should look like</div><div style="font-size:.82rem;color:var(--ink-m);line-height:1.65">Income strategy · SWP (3–4% of corpus/yr) · Equity hedge (20%) · 12–18 months liquid buffer · SCSS / RBI Bonds</div></div><div style="background:rgba(255,255,255,.7);border-radius:10px;padding:14px"><div style="font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#9d174d;margin-bottom:6px">💡 Why sequence-of-returns risk is your biggest enemy</div><div style="font-size:.82rem;color:var(--ink-m);line-height:1.65">A bad market year at 63 when you're withdrawing is far more damaging than the same crash at 43 when you're investing. The order in which returns occur matters as much as the average return.</div></div><div style="background:rgba(255,255,255,.7);border-radius:10px;padding:14px"><div style="font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#9d174d;margin-bottom:6px">⚡ How to make your corpus last 25–30 years</div><div style="font-size:.82rem;color:var(--ink-m);line-height:1.65">Step 1: Keep 12-18 months expenses in liquid fund — never touch equity for expenses. Step 2: Set up SWP at 3-4% of corpus per year. Step 3: Portfolio: 20% equity (inflation hedge) / 60% debt / 10% gold / 10% liquid. Step 4: Review annually — adjust SWP if corpus falls below 25× annual expenses. Step 5: Keep term plan nominee and will updated.</div></div></div></div></div>
 
     <!-- FINISH -->
     <div class="plan-phase" id="ppFinish" style="display:none">
@@ -2100,53 +2163,111 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
      GOALS
 ══════════════════════════════════ -->
 <div class="page" id="page-goals">
-  <div class="calc-hdr" style="background:linear-gradient(135deg,var(--bgw) 0%,#f0fdf4 50%,var(--bgw) 100%)">
-    <div class="calc-hdr-in">
-      <div class="s-label" style="color:var(--ok)">Goal-Based Planning</div>
-      <h1 class="s-title">My Financial Goals</h1>
-      <p class="s-sub">Add all your life goals — retirement, education, house, travel — and get the exact monthly investment needed for each. Download your complete goal sheet as a PDF.</p>
+  <div class="calc-hdr" style="background:linear-gradient(135deg,#0a1a0a 0%,#0d2818 50%,#0a1a0a 100%);padding-bottom:0">
+    <div class="calc-hdr-in" style="padding-bottom:0">
+      <div class="s-label" style="color:#4ade80">Goal-Based Planning</div>
+      <h1 class="s-title" style="color:#fff">My Financial Goals</h1>
+      <p class="s-sub" style="color:rgba(255,255,255,.6)">Add all your life goals — retirement, education, house, travel — and get the exact monthly investment needed for each. Download your complete goal sheet as a PDF.</p>
+      <!-- Explainer chips in header — compact pill style -->
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;padding-bottom:28px">
+        <div style="display:flex;align-items:center;gap:7px;background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.25);border-radius:20px;padding:6px 14px">
+          <span style="font-size:.95rem">🎯</span>
+          <div>
+            <div style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:#4ade80;margin-bottom:1px">Goal Planning</div>
+            <div style="font-size:.72rem;color:rgba(255,255,255,.65);line-height:1.4">Turn every dream into a number</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:7px;background:rgba(96,165,250,.12);border:1px solid rgba(96,165,250,.25);border-radius:20px;padding:6px 14px">
+          <span style="font-size:.95rem">💡</span>
+          <div>
+            <div style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:#60a5fa;margin-bottom:1px">Step-Up SIP</div>
+            <div style="font-size:.72rem;color:rgba(255,255,255,.65);line-height:1.4">10%/yr increase halves your start SIP</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:7px;background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.25);border-radius:20px;padding:6px 14px">
+          <span style="font-size:.95rem">🔴</span>
+          <div>
+            <div style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:#fbbf24;margin-bottom:1px">Priority Levels</div>
+            <div style="font-size:.72rem;color:rgba(255,255,255,.65);line-height:1.4">High · Medium · Low — prioritise ruthlessly</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:7px;background:rgba(244,114,182,.12);border:1px solid rgba(244,114,182,.25);border-radius:20px;padding:6px 14px">
+          <span style="font-size:.95rem">🏖️</span>
+          <div>
+            <div style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:#f472b6;margin-bottom:1px">Retirement First</div>
+            <div style="font-size:.72rem;color:rgba(255,255,255,.65);line-height:1.4">No alternative — must be funded first</div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   <div class="cbody">
-    <div style="max-width:780px;margin:0 auto">
-      <!-- Goal List -->
-      <div id="goalsList"></div>
-      <button class="btn-o" style="padding:12px 18px;font-size:.86rem;width:100%;justify-content:center;display:flex;border-style:dashed;margin:16px 0" onclick="addGoalRow()">+ Add a Goal</button>
+    <div class="ins-l">
+      <!-- LEFT: inputs -->
+      <div>
 
-      <!-- Retirement (special, always shown) -->
-      <div style="background:var(--bgp);border:2px solid var(--pink);border-radius:var(--r);padding:22px;margin-bottom:16px;position:relative;overflow:hidden">
-        <div style="position:absolute;top:0;right:0;width:120px;height:120px;background:radial-gradient(circle,rgba(212,43,81,.06),transparent);pointer-events:none"></div>
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
-          <span style="font-size:1.6rem">🏖️</span>
-          <div>
-            <div style="font-family:var(--fs);font-size:1rem;font-weight:600;color:var(--ink)">Retirement Goal</div>
-            <div style="font-size:.75rem;color:var(--ink-l)">The most important goal — no loan, no scholarship, no alternative for this one</div>
+        <!-- Goal List -->
+        <div id="goalsList"></div>
+        <button class="btn-o" style="padding:13px 18px;font-size:.88rem;width:100%;justify-content:center;display:flex;border-style:dashed;border-width:2px;margin:16px 0;border-radius:var(--r);gap:8px;font-weight:700;transition:all .2s" onclick="addGoalRow()">
+          <span style="font-size:1.1rem">+</span> Add a Goal
+        </button>
+
+        <!-- Retirement (special, always shown) -->
+        <div style="background:var(--bgp);border:2px solid var(--pink);border-radius:var(--r);overflow:hidden;margin-bottom:16px;position:relative">
+          <div style="background:linear-gradient(135deg,var(--pink),#b8244a);padding:14px 22px;display:flex;align-items:center;gap:10px">
+            <span style="font-size:1.4rem">🏖️</span>
+            <div>
+              <div style="font-family:var(--fs);font-size:.95rem;font-weight:700;color:#fff">Retirement Goal</div>
+              <div style="font-size:.72rem;color:rgba(255,255,255,.7)">The most important goal — no loan, no scholarship, no alternative for this one</div>
+            </div>
+          </div>
+          <div style="padding:20px 22px">
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin-bottom:12px">
+            <div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Current Age</div><input class="fi-inp" type="number" id="gl_ret_age" value="30" oninput="calcGoals()" style="padding:8px"></div>
+            <div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Retire At</div><input class="fi-inp" type="number" id="gl_ret_at" value="60" oninput="calcGoals()" style="padding:8px"></div>
+            <div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Life Expectancy</div><input class="fi-inp" type="number" id="gl_ret_life" value="85" oninput="calcGoals()" style="padding:8px"></div>
+            <div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Monthly Expense Today (₹)</div><input class="fi-inp" type="number" id="gl_ret_exp" value="50000" oninput="calcGoals()" style="padding:8px"></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px">
+            <div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Inflation (%)</div><input class="fi-inp" type="number" id="gl_ret_inf" value="6" step="0.5" oninput="calcGoals()" style="padding:8px"></div>
+            <div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Pre-Retirement Return (%)</div><input class="fi-inp" type="number" id="gl_ret_pre" value="12" step="0.5" oninput="calcGoals()" style="padding:8px"></div>
+            <div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Post-Retirement Return (%)</div><input class="fi-inp" type="number" id="gl_ret_post" value="8" step="0.5" oninput="calcGoals()" style="padding:8px"></div>
+            <div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Existing Retirement Savings (₹)</div><input class="fi-inp" type="number" id="gl_ret_saved" value="0" oninput="calcGoals()" style="padding:8px"></div>
+          </div>
+          <div style="margin-top:8px"><div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Annual Step-Up on SIP (%) <span class="fl-opt">Optional</span></div><input class="fi-inp" type="number" id="gl_ret_su" value="0" step="1" oninput="calcGoals()" style="padding:8px;max-width:180px"></div></div>
+          <div id="gl_ret_result" style="margin-top:14px"></div>
+          </div><!-- end retirement card inner padding -->
+        </div>
+
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px">
+          <button class="calbtn" style="flex:1;background:var(--teal)" onclick="downloadPDF('goals')">📥 Download Goals PDF</button>
+          <button class="btn-p" style="flex:1;justify-content:center" onclick="nav('contact')">Book Consultation →</button>
+        </div>
+      </div>
+
+      <!-- RIGHT: results sticky -->
+      <div class="rc" style="padding:0;overflow:hidden">
+        <div style="background:linear-gradient(135deg,#0d2818,#0a1a0a);padding:16px 20px">
+          <div style="font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#4ade80;margin-bottom:4px">Goals Summary</div>
+          <div style="font-family:var(--fs);font-size:1rem;font-weight:600;color:#fff">Your investment plan</div>
+        </div>
+        <div style="padding:16px 20px" id="goalsRightPanel">
+          <div style="text-align:center;padding:32px 16px;color:var(--ink-l);font-size:.83rem">
+            <div style="font-size:2rem;margin-bottom:8px">🎯</div>
+            Add goals on the left and see your complete investment plan here.
           </div>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin-bottom:12px">
-          <div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Current Age</div><input class="fi-inp" type="number" id="gl_ret_age" value="30" oninput="calcGoals()" style="padding:8px"></div>
-          <div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Retire At</div><input class="fi-inp" type="number" id="gl_ret_at" value="60" oninput="calcGoals()" style="padding:8px"></div>
-          <div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Life Expectancy</div><input class="fi-inp" type="number" id="gl_ret_life" value="85" oninput="calcGoals()" style="padding:8px"></div>
-          <div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Monthly Expense Today (₹)</div><input class="fi-inp" type="number" id="gl_ret_exp" value="50000" oninput="calcGoals()" style="padding:8px"></div>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px">
-          <div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Inflation (%)</div><input class="fi-inp" type="number" id="gl_ret_inf" value="6" step="0.5" oninput="calcGoals()" style="padding:8px"></div>
-          <div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Pre-Retirement Return (%)</div><input class="fi-inp" type="number" id="gl_ret_pre" value="12" step="0.5" oninput="calcGoals()" style="padding:8px"></div>
-          <div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Post-Retirement Return (%)</div><input class="fi-inp" type="number" id="gl_ret_post" value="8" step="0.5" oninput="calcGoals()" style="padding:8px"></div>
-          <div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Existing Retirement Savings (₹)</div><input class="fi-inp" type="number" id="gl_ret_saved" value="0" oninput="calcGoals()" style="padding:8px"></div>
-        </div>
-        <div id="gl_ret_result" style="margin-top:14px"></div>
       </div>
+    </div>
 
-      <!-- Summary -->
-      <div style="background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:var(--r);padding:22px 24px;margin-bottom:16px;color:#fff" id="goalSummary" style="display:none">
-        <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.4);margin-bottom:12px">Total Goal Summary</div>
+    <!-- Goals breakdown table (full width below) -->
+    <div id="goalsBreakdownWrap" style="display:none;margin-top:24px;padding:0 24px 24px">
+      <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-l);margin-bottom:12px">All Goals — Priority Sorted</div>
+      <div id="goalsBreakdownTable"></div>
+      <!-- Summary dark bar -->
+      <div style="background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:var(--r);padding:18px 22px;margin-top:16px;color:#fff" id="goalSummary">
+        <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.4);margin-bottom:10px">Total Goal Summary</div>
         <div id="goalSummaryContent"></div>
-      </div>
-
-      <div style="display:flex;gap:10px;flex-wrap:wrap">
-        <button class="calbtn" style="flex:1;background:var(--teal)" onclick="downloadPDF('goals')">📥 Download Goals PDF</button>
-        <button class="btn-p" style="flex:1;justify-content:center" onclick="nav('contact')">Book Consultation → Let's Build Your Wealth Journey</button>
       </div>
     </div>
   </div>
@@ -2836,7 +2957,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
 <!-- ══════════════════════════════════
      JAVASCRIPT
 ══════════════════════════════════ -->
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* ══════════════════════════════════
    ZERO NOISE FINANCE — Main Script
    Clean rewrite, verified syntax
@@ -2874,13 +2995,27 @@ window.addEventListener('scroll', function() {
 
 /* ═══ PLANNING JOURNEY GAME ═══ */
 var ppPhase=0;
+var ppUserAge=25;
+var ppUserStartPhase=1;
 var ppChars=['🧒','🧑‍💼','🚗','👨‍👩‍👧','👴'];
 var ppLabels=['Age 21','Age 30','Age 40','Age 50','Retired'];
 
 function startPlanJourney(){
   var ch=document.getElementById('planChar');
-  if(ch){ch.style.opacity='1';ch.style.transform='translateY(0)';}
-  setTimeout(function(){ppShowPhase(1);},600);
+  if(ch){ch.style.opacity='1';}
+  var box=document.getElementById('planAgeBox');
+  if(box){box.style.display='block';setTimeout(function(){box.scrollIntoView({behavior:'smooth',block:'center'});},200);}
+}
+function startPlanAtAge(age){
+  var box=document.getElementById('planAgeBox');
+  if(box) box.style.display='none';
+  var ch=document.getElementById('planChar');
+  if(ch){ch.style.opacity='1';}
+  // Always start from phase 1; unlock up to the user's age phase without showing checklists for skipped phases
+  var startPhase=age>=60?5:age>=50?4:age>=40?3:age>=30?2:1;
+  ppUserAge=age;
+  ppUserStartPhase=startPhase;
+  ppShowPhase(1);
 }
 
 function ppShowPhase(n){
@@ -2900,7 +3035,8 @@ function ppShowPhase(n){
   setTimeout(function(){phase.scrollIntoView({behavior:'smooth',block:'center'});},200);
 }
 
-var ppTotalPoints=0;var ppPhasePoints={1:0,2:0,3:0,4:0};var ppMaxPoints={1:50,2:45,3:50,4:10};
+var ppTotalPoints=0;var ppPhasePoints={1:0,2:0,3:0,4:0,5:0};var ppMaxPoints={1:50,2:45,3:50,4:50,5:10};
+var ppVisionUnlocked={1:false,2:false,3:false,4:false,5:false};
 function ppCheck(phase){
   setTimeout(function(){
     var pts=0,total=0,checked=0;
@@ -2909,7 +3045,6 @@ function ppCheck(phase){
       if(cb){total++;var p=parseInt(cb.getAttribute('data-pts'))||0;if(cb.checked){checked++;pts+=p;}}
     }
     ppPhasePoints[phase]=pts;
-    // Update score display
     var scoreEl=document.getElementById('pp'+phase+'_score');
     var maxPts=ppMaxPoints[phase]||50;
     if(scoreEl){
@@ -2917,15 +3052,28 @@ function ppCheck(phase){
       scoreEl.style.background=pts>=maxPts*0.8?'#dcfce7':pts>=maxPts*0.5?'#fef9c3':'var(--pink-s)';
       scoreEl.style.color=pts>=maxPts*0.8?'#166534':pts>=maxPts*0.5?'#854d0e':'var(--pink)';
     }
+    // Unlock hint
+    var hintEl=document.getElementById('pp'+phase+'_unlock_hint');
+    if(hintEl){
+      if(checked<3){hintEl.innerHTML='<div style="text-align:center;padding:8px 12px;background:#f8fafc;border:1px dashed #cbd5e1;border-radius:var(--rs);font-size:.78rem;color:var(--ink-l);margin-top:8px">\u{1F512} Check at least <strong>'+(3-checked)+' more item'+(3-checked===1?'':'s')+'</strong> to unlock your Vision &amp; Roadmap</div>';}
+      else{hintEl.innerHTML='';}
+    }
+    // Unlock vision card at 3 checks
+    if(checked>=3&&!ppVisionUnlocked[phase]){
+      ppVisionUnlocked[phase]=true;
+      var vcard=document.getElementById('pp'+phase+'_vision');
+      if(vcard){vcard.style.display='block';setTimeout(function(){vcard.scrollIntoView({behavior:'smooth',block:'center'});},250);}
+    }
+    // Completion card at 60%+
     if(checked>=Math.ceil(total*0.6)){
       var result=document.getElementById('pp'+phase+'_result');
       if(result&&!result.innerHTML){
         var grade=pts>=maxPts*0.9?'A+':pts>=maxPts*0.7?'A':pts>=maxPts*0.5?'B':'C';
         var gradeCol=grade==='A+'?'#1e7e4f':grade==='A'?'#22c55e':grade==='B'?'#ca8a04':'#f59e0b';
-        var msg=pts>=maxPts*0.9?'Outstanding! Every foundation is rock solid.':pts>=maxPts*0.7?'Great job! A few more items will make this bulletproof.':pts>=maxPts*0.5?'Good start! Come back and grab the remaining collectibles to strengthen your base.':'Decent beginning, but the unchecked items are important — revisit them soon.';
+        var msg=pts>=maxPts*0.9?'Outstanding! Every foundation is rock solid.':pts>=maxPts*0.7?'Great job! A few more items will make this bulletproof.':pts>=maxPts*0.5?'Good start! Come back and grab the remaining collectibles.':'Decent beginning — the unchecked items are important, revisit them soon.';
         result.innerHTML='<div style="text-align:center;padding:18px;margin-top:14px;background:#f0fdf4;border:1px solid #86efac;border-radius:var(--rs);animation:ppCardIn .4s ease">'
           +'<div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:8px">'
-          +'<div style="font-size:1.8rem;animation:jyPop .5s ease">\ud83c\udf89</div>'
+          +'<div style="font-size:1.8rem;animation:jyPop .5s ease">\u{1F389}</div>'
           +'<div style="width:40px;height:40px;border-radius:50%;background:'+gradeCol+';display:flex;align-items:center;justify-content:center;font-family:var(--fs);font-size:.9rem;font-weight:800;color:#fff">'+grade+'</div></div>'
           +'<div style="font-family:var(--fs);font-size:1rem;font-weight:600;color:#166534;margin-bottom:4px">Phase '+phase+' Complete! '+pts+'/'+maxPts+' points</div>'
           +'<div style="font-size:.82rem;color:#15803d;margin-bottom:12px">'+msg+'</div>'
@@ -2937,38 +3085,35 @@ function ppCheck(phase){
 }
 
 function ppAdvance(nextPhase){
-  if(nextPhase<=4){
+  if(nextPhase<=5){
     ppShowPhase(nextPhase);
   } else {
-    // Calculate total score
-    ppTotalPoints=ppPhasePoints[1]+ppPhasePoints[2]+ppPhasePoints[3]+ppPhasePoints[4];
-    var maxTotal=ppMaxPoints[1]+ppMaxPoints[2]+ppMaxPoints[3]+ppMaxPoints[4];
+    ppTotalPoints=ppPhasePoints[1]+ppPhasePoints[2]+ppPhasePoints[3]+ppPhasePoints[4]+(ppPhasePoints[5]||0);
+    var maxTotal=ppMaxPoints[1]+ppMaxPoints[2]+ppMaxPoints[3]+ppMaxPoints[4]+ppMaxPoints[5];
     var pct=Math.round(ppTotalPoints/maxTotal*100);
     var finalGrade=pct>=90?'A+':pct>=75?'A':pct>=60?'B+':pct>=45?'B':'C';
     var gradeCol=finalGrade==='A+'?'#1e7e4f':finalGrade==='A'?'#22c55e':finalGrade==='B+'?'#65a30d':finalGrade==='B'?'#ca8a04':'#f59e0b';
-    var verdict=pct>=90?'\ud83c\udfc6 You are financially battle-ready! Every foundation is in place. Now it\'s about discipline and compounding.':
-      pct>=75?'\ud83d\udcaa Strong position! A few gaps remain — come back and collect the missing items to level up.':
-      pct>=60?'\ud83d\udca1 Good awareness, but there are meaningful gaps. The unchecked items aren\'t optional — they\'re the difference between financial security and financial anxiety.':
-      pct>=45?'\u26a0\ufe0f You\'ve started, but significant foundations are missing. Focus on the unchecked items — especially emergency fund, insurance, and SIP. These protect everything else.':
-      '\ud83d\udea8 Your financial foundation needs urgent attention. Start with Step 1 of the Homepage Journey and build one block at a time. No investments before the basics.';
+    var verdict=pct>=90?'You are financially battle-ready! Every foundation is in place.':
+      pct>=75?'Strong position! A few gaps remain — collect the missing items to level up.':
+      pct>=60?'Good awareness, but meaningful gaps exist. The unchecked items aren\'t optional.':
+      pct>=45?'You\'ve started, but significant foundations are missing. Focus on emergency fund, insurance, and SIP first.':
+      'Your financial foundation needs urgent attention. Build one block at a time.';
     var finish=document.getElementById('ppFinish');
     if(finish){
       finish.style.display='block';
       finish.innerHTML='<div style="text-align:center;padding:40px 20px">'
-        +'<div style="font-size:4rem;margin-bottom:12px;animation:jyPop .6s ease">\ud83c\udfc6</div>'
+        +'<div style="font-size:4rem;margin-bottom:12px">\ud83c\udfc6</div>'
         +'<div style="font-family:var(--fs);font-size:1.4rem;font-weight:700;color:var(--ink);margin-bottom:12px">Journey Complete!</div>'
-        // Score display
         +'<div style="display:inline-flex;align-items:center;gap:14px;padding:14px 24px;background:var(--bgw);border:2px solid '+gradeCol+';border-radius:var(--r);margin-bottom:16px">'
         +'<div style="width:52px;height:52px;border-radius:50%;background:'+gradeCol+';display:flex;align-items:center;justify-content:center;font-family:var(--fs);font-size:1.3rem;font-weight:800;color:#fff">'+finalGrade+'</div>'
         +'<div style="text-align:left"><div style="font-family:var(--fm);font-size:1.3rem;font-weight:700;color:var(--ink)">'+ppTotalPoints+' / '+maxTotal+'</div>'
         +'<div style="font-size:.75rem;color:var(--ink-l)">Financial Readiness Score</div></div></div>'
-        // Phase breakdown
-        +'<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:16px auto;max-width:400px">'
-        +'<div style="text-align:center;padding:8px;background:var(--bgw);border-radius:var(--rs)"><div style="font-size:.65rem;color:var(--ink-l);font-weight:600">Phase 1</div><div style="font-family:var(--fm);font-size:.9rem;font-weight:700;color:#16a34a">'+ppPhasePoints[1]+'/'+ppMaxPoints[1]+'</div></div>'
-        +'<div style="text-align:center;padding:8px;background:var(--bgw);border-radius:var(--rs)"><div style="font-size:.65rem;color:var(--ink-l);font-weight:600">Phase 2</div><div style="font-family:var(--fm);font-size:.9rem;font-weight:700;color:#2563eb">'+ppPhasePoints[2]+'/'+ppMaxPoints[2]+'</div></div>'
-        +'<div style="text-align:center;padding:8px;background:var(--bgw);border-radius:var(--rs)"><div style="font-size:.65rem;color:var(--ink-l);font-weight:600">Phase 3</div><div style="font-family:var(--fm);font-size:.9rem;font-weight:700;color:#d97706">'+ppPhasePoints[3]+'/'+ppMaxPoints[3]+'</div></div>'
-        +'<div style="text-align:center;padding:8px;background:var(--bgw);border-radius:var(--rs)"><div style="font-size:.65rem;color:var(--ink-l);font-weight:600">Phase 4</div><div style="font-family:var(--fm);font-size:.9rem;font-weight:700;color:#7c3aed">'+ppPhasePoints[4]+'/'+ppMaxPoints[4]+'</div></div></div>'
-        // Verdict
+        +'<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:16px auto;max-width:460px">'
+        +'<div style="text-align:center;padding:8px;background:var(--bgw);border-radius:var(--rs)"><div style="font-size:.62rem;color:var(--ink-l);font-weight:600">P1</div><div style="font-family:var(--fm);font-size:.88rem;font-weight:700;color:#16a34a">'+ppPhasePoints[1]+'/'+ppMaxPoints[1]+'</div></div>'
+        +'<div style="text-align:center;padding:8px;background:var(--bgw);border-radius:var(--rs)"><div style="font-size:.62rem;color:var(--ink-l);font-weight:600">P2</div><div style="font-family:var(--fm);font-size:.88rem;font-weight:700;color:#2563eb">'+ppPhasePoints[2]+'/'+ppMaxPoints[2]+'</div></div>'
+        +'<div style="text-align:center;padding:8px;background:var(--bgw);border-radius:var(--rs)"><div style="font-size:.62rem;color:var(--ink-l);font-weight:600">P3</div><div style="font-family:var(--fm);font-size:.88rem;font-weight:700;color:#d97706">'+ppPhasePoints[3]+'/'+ppMaxPoints[3]+'</div></div>'
+        +'<div style="text-align:center;padding:8px;background:var(--bgw);border-radius:var(--rs)"><div style="font-size:.62rem;color:var(--ink-l);font-weight:600">P4</div><div style="font-family:var(--fm);font-size:.88rem;font-weight:700;color:#7c3aed">'+(ppPhasePoints[4]||0)+'/'+ppMaxPoints[4]+'</div></div>'
+        +'<div style="text-align:center;padding:8px;background:var(--bgw);border-radius:var(--rs)"><div style="font-size:.62rem;color:var(--ink-l);font-weight:600">P5</div><div style="font-family:var(--fm);font-size:.88rem;font-weight:700;color:#be185d">'+(ppPhasePoints[5]||0)+'/'+ppMaxPoints[5]+'</div></div></div>'
         +'<div style="background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:var(--r);padding:16px 20px;margin:16px auto;max-width:500px;text-align:left">'
         +'<div style="font-size:.88rem;color:rgba(255,255,255,.8);line-height:1.75">'+verdict+'</div></div>'
         +'<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px">'
@@ -2978,31 +3123,41 @@ function ppAdvance(nextPhase){
         +'</div>';
       var emoji=document.getElementById('planCharEmoji');
       var label=document.getElementById('planCharLabel');
-      if(emoji){emoji.textContent='\ud83c\udfc6';emoji.style.fontSize='4rem';}
+      if(emoji) emoji.textContent='\ud83c\udfc6';
       if(label){label.textContent='Score: '+ppTotalPoints;label.style.background=gradeCol;label.style.color='#fff';}
       finish.scrollIntoView({behavior:'smooth',block:'center'});
     }
   }
 }
 
-function ppTransition(choice){
-  var result=document.getElementById('pp4_result');
-  if(!result)return;
-  ppPhasePoints[4]=choice==='preserve'?10:5;
+function ppPhase5(choice){
+  var result=document.getElementById('pp5_result');
+  if(!result) return;
+  ppPhasePoints[5]=choice==='preserve'?10:5;
   if(choice==='preserve'){
-    result.innerHTML='<div style="padding:16px;background:#f0fdf4;border:1px solid #86efac;border-radius:var(--rs);margin-top:14px;animation:ppCardIn .4s ease">'
-      +'<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><span style="font-size:1.5rem">\ud83c\udfc6</span><div><div style="font-family:var(--fs);font-size:.95rem;font-weight:600;color:#166534">Wise choice! +10 points</div></div></div>'
-      +'<div style="font-size:.84rem;color:#15803d;line-height:1.7;margin-bottom:12px">At this stage, capital preservation wins. Shift to 30-40% equity, 50-60% debt, 10% gold. The SWP (Systematic Withdrawal Plan) from balanced funds is your new best friend.</div>'
-      +'<button class="btn-p" style="padding:10px 24px" onclick="ppAdvance(5)">See My Final Score \u2192</button></div>';
+    result.innerHTML='<div style="padding:16px;background:#f0fdf4;border:1px solid #86efac;border-radius:var(--rs);margin-top:14px">'
+      +'<div style="font-family:var(--fs);font-size:.95rem;font-weight:600;color:#166534;margin-bottom:8px">Capital Preservation — the right call. +10 points</div>'
+      +'<div style="font-size:.84rem;color:#15803d;line-height:1.75;margin-bottom:12px">'
+      +'<strong>Portfolio at 60+:</strong> Equity 20-25% (inflation hedge only) | Debt 60-65% (SCSS, RBI Bonds, Debt MFs) | Gold 10% | Liquid 5-10%.<br><br>'
+      +'<strong>Income strategy:</strong> SWP at 3-4% of corpus per year — sustainable for 25+ years.<br><br>'
+      +'<strong>Rule:</strong> Keep 12-18 months of expenses in liquid fund. Never sell equity in a downturn to fund expenses.'
+      +'</div>'
+      +'<button class="btn-p" style="padding:10px 24px" onclick="ppAdvance(6)">See My Final Score \u2192</button></div>';
   } else {
-    result.innerHTML='<div style="padding:16px;background:#fffbeb;border:1px solid #fde047;border-radius:var(--rs);margin-top:14px;animation:ppCardIn .4s ease">'
-      +'<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><span style="font-size:1.5rem">\u26a0\ufe0f</span><div><div style="font-family:var(--fs);font-size:.95rem;font-weight:600;color:#854d0e">Let\'s reconsider... +5 points</div></div></div>'
-      +'<div style="font-size:.84rem;color:#92400e;line-height:1.7;margin-bottom:12px">At 50+, chasing high returns means risks you can\'t recover from. Capital preservation with modest growth (8-10%) is the winning strategy. The goal is for money to outlive you.</div>'
+    result.innerHTML='<div style="padding:16px;background:#fffbeb;border:1px solid #fde047;border-radius:var(--rs);margin-top:14px">'
+      +'<div style="font-family:var(--fs);font-size:.95rem;font-weight:600;color:#854d0e;margin-bottom:8px">Understood — but the rules change at 60. +5 points</div>'
+      +'<div style="font-size:.84rem;color:#92400e;line-height:1.75;margin-bottom:12px">'
+      +'A market correction at 65 with no employment income is unrecoverable. If you want growth:<br>'
+      +'Cap equity at 30% maximum | Keep 2 years expenses in liquid/debt | Use SWP for income, not aggressive equity.<br><br>'
+      +'Capital preservation + modest growth (8-10%) is achievable without gambling your retirement.'
+      +'</div>'
       +'<div style="display:flex;gap:8px;flex-wrap:wrap">'
-      +'<button class="btn-p" style="padding:10px 24px" onclick="ppAdvance(5)">See My Final Score \u2192</button>'
+      +'<button class="btn-p" style="padding:10px 24px" onclick="ppAdvance(6)">See My Final Score \u2192</button>'
       +'<button class="btn-o" style="padding:10px 24px" onclick="nav(\'contact\')">Book Consultation</button></div></div>';
   }
 }
+
+function ppTransition(choice){ ppPhase5(choice); }
 
 /* ── INSURANCE TAB SWITCH ── */
 function switchInsTab(t){
@@ -3050,6 +3205,9 @@ function openJyModal(step){
   title.innerHTML=content.title;
   body.innerHTML=content.body;
   modal.style.display='block';
+  modal.style.display='flex';
+  modal.style.alignItems='flex-start';
+  modal.style.justifyContent='center';
   document.body.style.overflow='hidden';
 }
 function closeJyModal(){
@@ -3059,7 +3217,7 @@ function closeJyModal(){
 }
 // Close on backdrop click
 document.addEventListener('click',function(e){
-  if(e.target.id==='jyModal') closeJyModal();
+  if(e.target.id==='jyModal'||e.target.id==='jyModalScroll') closeJyModal();
 });
 
 function jyComplete(step){
@@ -3148,7 +3306,7 @@ function jyStep1Answer(ans){
 function jyStep2Answer(ans){
   var r=document.getElementById('jym_result');if(!r)return;
   if(ans==='yes'){
-    r.innerHTML='<div class="jy-modal-result" style="background:#f0fdf4;border:1px solid #86efac;color:#166534">\ud83c\udf89 <strong>Smart move!</strong> Quick checks: Is there a co-pay clause? Room rent limit? Is cover at least \u20b910\u201315 lakh? Medical inflation is 14% per year. If any of these are issues, consider upgrading.</div>'
+    r.innerHTML='<div class="jy-modal-result" style="background:#f0fdf4;border:1px solid #86efac;color:#166534">\ud83c\udf89 <strong>Smart move!</strong> Quick checks: Is there a co-pay clause? Room rent limit? Is cover at least \u20b910\u201315 lakh? Medical inflation is 10201314% per year. If any of these are issues, consider upgrading.</div>'
       +'<button class="btn-p" style="width:100%;justify-content:center;margin-top:12px" onclick="jyComplete(2)">Got it! Next Step \u2192</button>';
   } else {
     r.innerHTML='<div class="jy-modal-result" style="background:#fef2f2;border:1px solid #fca5a5;color:#991b1b">\ud83d\udea8 <strong>Critical gap!</strong> One hospitalisation costs \u20b92\u201310 lakh. Get at least \u20b910 lakh cover. Premium is just \u20b98,000\u201315,000/year for a 30-year-old.</div>'
@@ -3273,7 +3431,7 @@ var goalCount=0;
 function addGoalRow(){
   goalCount++;
   var id=goalCount;
-  var emojis=['🎓','🏠','🚗','✈️','💍','👶','💻','🎯'];
+  var emojis=['\ud83c\udf93','\ud83c\udfe0','\ud83d\ude97','\u2708\ufe0f','\ud83d\udc8d','\ud83d\udc76','\ud83d\udcbb','\ud83c\udfaf'];
   var emoji=emojis[(id-1)%emojis.length];
   var container=document.getElementById('goalsList');
   var div=document.createElement('div');
@@ -3283,16 +3441,21 @@ function addGoalRow(){
     +'<span style="font-size:1.5rem">'+emoji+'</span>'
     +'<div style="flex:1"><div style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--pink);margin-bottom:2px">Goal Name</div>'
     +'<input type="text" class="fi-inp" id="gn_'+id+'" placeholder="e.g. Child\'s Education, Dream Car, World Trip..." style="padding:8px 12px;font-size:.95rem;font-weight:600;color:var(--ink);width:100%;border:1.5px solid var(--rule);border-radius:var(--rs);background:var(--bgw)"></div>'
-    +'<button onclick="removeGoal('+id+')" style="color:var(--ink-l);font-size:1rem;padding:6px 10px;flex-shrink:0" title="Remove goal">✕</button></div>'
-    +'<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px">'
-    +'<div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Target Amount (₹)</div><input class="fi-inp" type="number" id="gt_'+id+'" placeholder="e.g. 25,00,000" oninput="calcGoals()" style="padding:7px 8px;font-size:.84rem"></div>'
+    +'<select class="fi-inp" id="gpri_'+id+'" style="width:110px;padding:6px 8px;font-size:.8rem;margin-left:6px" onchange="calcGoals()">'
+    +'<option value="1">\ud83d\udd34 High</option><option value="2" selected>\ud83d\udfe1 Medium</option><option value="3">\ud83d\udfe2 Low</option></select>'
+    +'<button onclick="removeGoal('+id+')" style="color:var(--ink-l);font-size:1rem;padding:6px 10px;flex-shrink:0" title="Remove">&#x2715;</button></div>'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:8px">'
+    +'<div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Target Amount — Today\'s Value (&#x20b9;)</div><input class="fi-inp" type="number" id="gt_'+id+'" placeholder="e.g. 10,00,000" oninput="calcGoals()" style="padding:7px 8px;font-size:.84rem"></div>'
     +'<div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Years Away</div><input class="fi-inp" type="number" id="gy_'+id+'" value="10" oninput="calcGoals()" style="padding:7px 8px;font-size:.84rem"></div>'
+    +'<div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Inflation (%)</div><input class="fi-inp" type="number" id="ginf_'+id+'" value="6" step="0.5" oninput="calcGoals()" style="padding:7px 8px;font-size:.84rem"></div>'
+    +'</div>'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">'
     +'<div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Expected Return (%)</div><input class="fi-inp" type="number" id="gr_'+id+'" value="12" step="0.5" oninput="calcGoals()" style="padding:7px 8px;font-size:.84rem"></div>'
-    +'<div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Already Saved (₹)</div><input class="fi-inp" type="number" id="gs_'+id+'" value="0" oninput="calcGoals()" style="padding:7px 8px;font-size:.84rem"></div>'
+    +'<div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Already Saved (&#x20b9;)</div><input class="fi-inp" type="number" id="gs_'+id+'" value="0" oninput="calcGoals()" style="padding:7px 8px;font-size:.84rem"></div>'
+    +'<div class="fl" style="margin:0"><div class="fl-lbl" style="font-size:.65rem">Step-Up SIP (% p.a.) <span class="fl-opt">Optional</span></div><input class="fi-inp" type="number" id="gsu_'+id+'" value="0" step="1" oninput="calcGoals()" style="padding:7px 8px;font-size:.84rem"></div>'
     +'</div>'
     +'<div id="gr_'+id+'_result" style="margin-top:10px"></div>';
   container.appendChild(div);
-  // Focus on name field
   setTimeout(function(){var n=document.getElementById('gn_'+id);if(n)n.focus();},100);
   calcGoals();
 }
@@ -3302,7 +3465,7 @@ function removeGoal(id){
   calcGoals();
 }
 function calcGoals(){
-  var totalSIP=0;var totalCorpus=0;var goalResults=[];
+  var totalSIP=0;var totalSIPsu=0;var totalCorpus=0;var goalResults=[];
 
   // Calculate each custom goal
   for(var i=1;i<=goalCount;i++){
@@ -3313,22 +3476,42 @@ function calcGoals(){
     var years=parseFloat((document.getElementById('gy_'+i)||{}).value)||10;
     var ret=parseFloat((document.getElementById('gr_'+i)||{}).value)||12;
     var saved=parseFloat((document.getElementById('gs_'+i)||{}).value)||0;
+    var inf=parseFloat((document.getElementById('ginf_'+i)||{}).value)||6;
+    var su=parseFloat((document.getElementById('gsu_'+i)||{}).value)||0;
     if(!target) continue;
+    // FV of goal = FV(inflation, years, ,-PV)
+    var fvGoal=target*Math.pow(1+inf/100,years);
+    var fvSaved=saved*Math.pow(1+ret/100,years);
+    var gap=Math.max(0,fvGoal-fvSaved);
     var r=ret/100/12;
     var n=years*12;
-    var fvSaved=saved*Math.pow(1+ret/100,years);
-    var gap=Math.max(0,target-fvSaved);
+    // SIP = PMT(ret/12, months, ,-gap) end-of-period
     var sip=r>0?gap*r/(Math.pow(1+r,n)-1):gap/n;
+    // Step-up SIP (binary search)
+    var sipSU=sip;
+    if(su>0){
+      var gr2cg=Math.pow(1+ret/100,1/12)-1;
+      var gn2cg=years*12;
+      function simGoalCG(P){var c2=fvSaved,s2=P;for(var gm=1;gm<=gn2cg;gm++){if(gm>1&&(gm-1)%12===0)s2=s2*(1+su/100);c2=c2*(1+gr2cg)+s2;}return c2;}
+      var slo=0,shi=sip*3;
+      for(var si2=0;si2<60;si2++){var smid=(slo+shi)/2;if(simGoalCG(smid)<fvGoal)slo=smid;else shi=smid;}
+      sipSU=(slo+shi)/2;
+    }
     var resultEl=document.getElementById('gr_'+i+'_result');
     if(resultEl){
-      var col=sip>0?'var(--ink)':'var(--ok)';
-      resultEl.innerHTML='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">'
+      var yrsHint=years>7?'Suggested ~12% return (equity, long horizon)':years>=5?'Suggested ~10% return (balanced)':'Suggested 6-7% return (debt, short term)';
+      resultEl.innerHTML='<div style="font-size:.7rem;color:var(--teal);margin-bottom:6px">'+yrsHint+'</div>'
+        +'<div style="display:grid;grid-template-columns:1fr 1fr 1fr'+(su>0?' 1fr':'');+';gap:8px">'
+        +'<div style="background:var(--bgw);border-radius:6px;padding:8px;text-align:center"><div style="font-size:.62rem;color:var(--ink-l);font-weight:600;text-transform:uppercase">Future Value</div><div style="font-family:var(--fm);font-size:.9rem;font-weight:700;color:var(--ink)">'+fmt(fvGoal)+'</div></div>'
         +'<div style="background:var(--bgw);border-radius:6px;padding:8px;text-align:center"><div style="font-size:.62rem;color:var(--ink-l);font-weight:600;text-transform:uppercase">Monthly SIP</div><div style="font-family:var(--fm);font-size:.9rem;font-weight:700;color:var(--pink)">'+fmt(sip)+'</div></div>'
-        +'<div style="background:var(--bgw);border-radius:6px;padding:8px;text-align:center"><div style="font-size:.62rem;color:var(--ink-l);font-weight:600;text-transform:uppercase">Gap to Fill</div><div style="font-family:var(--fm);font-size:.9rem;font-weight:600;color:var(--ink)">'+fmt(gap)+'</div></div>'
-        +'<div style="background:var(--bgw);border-radius:6px;padding:8px;text-align:center"><div style="font-size:.62rem;color:var(--ink-l);font-weight:600;text-transform:uppercase">FV of Saved</div><div style="font-family:var(--fm);font-size:.9rem;font-weight:600;color:var(--ok)">'+fmt(fvSaved)+'</div></div></div>';
+        +'<div style="background:var(--bgw);border-radius:6px;padding:8px;text-align:center"><div style="font-size:.62rem;color:var(--ink-l);font-weight:600;text-transform:uppercase">FV of Saved</div><div style="font-family:var(--fm);font-size:.9rem;font-weight:600;color:var(--ok)">'+fmt(fvSaved)+'</div></div>'
+        +(su>0?'<div style="background:var(--teal-s);border-radius:6px;padding:8px;text-align:center"><div style="font-size:.62rem;color:var(--teal);font-weight:600;text-transform:uppercase">Step-Up SIP Start</div><div style="font-family:var(--fm);font-size:.9rem;font-weight:700;color:var(--teal)">'+fmt(sipSU)+'</div></div>':'')
+        +'</div>';
     }
-    totalSIP+=sip;totalCorpus+=target;
-    goalResults.push({name:name,target:target,sip:sip,years:years});
+    totalSIP+=sip;if(su>0)totalSIPsu+=sipSU;else totalSIPsu+=sip;totalCorpus+=fvGoal;
+    var gpri=parseInt((document.getElementById('gpri_'+i)||{}).value)||2;
+    var gemoji=['🎓','🏠','🚗','✈️','💍','👶','💻','🎯'][(i-1)%8];
+    goalResults.push({name:name,target:fvGoal,sip:sip,sipSU:su>0?sipSU:0,years:years,pri:gpri,emoji:gemoji,pv:target,inf:inf,ret:ret});
   }
 
   // Retirement goal
@@ -3340,35 +3523,131 @@ function calcGoals(){
   var retSaved=parseFloat((document.getElementById('gl_ret_saved')||{}).value)||0;
   var preRetRet=parseFloat((document.getElementById('gl_ret_pre')||{}).value)||12;
   var postRetRet=parseFloat((document.getElementById('gl_ret_post')||{}).value)||8;
+  var retSU=parseFloat((document.getElementById('gl_ret_su')||{}).value)||0;
   var yrsToRetire=retireAt-age;
   var yrsInRetire=life-retireAt;
   if(yrsToRetire>0&&yrsInRetire>0){
-    var expAtRetire=monthExp*12*Math.pow(1+inf/100,yrsToRetire);
-    var postRetReal=(postRetRet/100-inf/100)/(1+inf/100);
-    var corpus=postRetReal>0?expAtRetire*(1-Math.pow(1+postRetReal,-yrsInRetire))/postRetReal:expAtRetire*yrsInRetire;
+    var mExpAtRetire=monthExp*Math.pow(1+inf/100,yrsToRetire);
+    var annExpAtRetire=mExpAtRetire*12;
+    var netR2=(postRetRet-inf)/100;
+    var corpus=Math.abs(netR2)<1e-8?annExpAtRetire*yrsInRetire:annExpAtRetire*(1-Math.pow(1+netR2,-yrsInRetire))/netR2;
     var fvRetSaved=retSaved*Math.pow(1+preRetRet/100,yrsToRetire);
     var gap=Math.max(0,corpus-fvRetSaved);
     var r12=preRetRet/100/12;var n12=yrsToRetire*12;
     var retSIP=r12>0?gap*r12/(Math.pow(1+r12,n12)-1):gap/n12;
+    var retSIPsu=retSIP;
+    if(retSU>0){
+      var rr2g=Math.pow(1+preRetRet/100,1/12)-1;
+      var rn2g=yrsToRetire*12;
+      function simRetGoalCG(P){var c2=fvRetSaved,s2=P;for(var rm2=1;rm2<=rn2g;rm2++){if(rm2>1&&(rm2-1)%12===0)s2=s2*(1+retSU/100);c2=c2*(1+rr2g)+s2;}return c2;}
+      var rlo=0,rhi=retSIP*3;
+      for(var ri=0;ri<60;ri++){var rmid=(rlo+rhi)/2;if(simRetGoalCG(rmid)<corpus)rlo=rmid;else rhi=rmid;}
+      retSIPsu=(rlo+rhi)/2;
+    }
     var retEl=document.getElementById('gl_ret_result');
     if(retEl){
-      retEl.innerHTML='<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px">'
+      retEl.innerHTML='<div style="display:grid;grid-template-columns:1fr 1fr 1fr'+(retSU>0?' 1fr':'')+';gap:8px">'
         +'<div style="background:var(--bgw);border-radius:8px;padding:12px;text-align:center;border-bottom:3px solid var(--pink)"><div style="font-size:.62rem;color:var(--ink-l);font-weight:600;text-transform:uppercase;margin-bottom:4px">Corpus Needed</div><div style="font-family:var(--fm);font-size:1.05rem;font-weight:700;color:var(--pink)">'+fmt(corpus)+'</div></div>'
-        +'<div style="background:var(--bgw);border-radius:8px;padding:12px;text-align:center;border-bottom:3px solid var(--teal)"><div style="font-size:.62rem;color:var(--ink-l);font-weight:600;text-transform:uppercase;margin-bottom:4px">Monthly SIP</div><div style="font-family:var(--fm);font-size:1.05rem;font-weight:700;color:var(--teal)">'+fmt(retSIP)+'</div></div>'
-        +'<div style="background:var(--bgw);border-radius:8px;padding:12px;text-align:center"><div style="font-size:.62rem;color:var(--ink-l);font-weight:600;text-transform:uppercase;margin-bottom:4px">Monthly at Retire</div><div style="font-family:var(--fm);font-size:1.05rem;font-weight:700;color:var(--ink)">'+fmt(expAtRetire/12)+'</div></div>'
-        +'<div style="background:var(--bgw);border-radius:8px;padding:12px;text-align:center"><div style="font-size:.62rem;color:var(--ink-l);font-weight:600;text-transform:uppercase;margin-bottom:4px">Total SIP Invested</div><div style="font-family:var(--fm);font-size:1.05rem;font-weight:700;color:var(--ink)">'+fmt(retSIP*n12)+'</div></div></div>'
-        +'<div style="background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:var(--rs);padding:14px 16px;margin-top:12px;font-size:.8rem;color:rgba(255,255,255,.7);line-height:1.75">'
-        +'<strong style="color:#fbbf24">How it works:</strong> Your \u20b9'+Math.round(monthExp/1000)+'K/month expenses today become <strong style="color:#f472b6">\u20b9'+Math.round(expAtRetire/12/1000)+'K/month</strong> at age '+retireAt+' due to '+inf+'% inflation over '+yrsToRetire+' years. '
-        +'You need a corpus of <strong style="color:#f472b6">'+fmt(corpus)+'</strong> to sustain '+yrsInRetire+' years of retirement at '+postRetRet+'% post-retirement return. '
-        +'Investing <strong style="color:#4ade80">'+fmt(retSIP)+'/month</strong> at '+preRetRet+'% pre-retirement return builds this corpus.'
-        +(fvRetSaved>0?' Your existing savings of '+fmt(retSaved)+' will grow to '+fmt(fvRetSaved)+' by retirement, reducing the gap.':'')
+        +'<div style="background:var(--bgw);border-radius:8px;padding:12px;text-align:center;border-bottom:3px solid var(--teal)"><div style="font-size:.62rem;color:var(--ink-l);font-weight:600;text-transform:uppercase;margin-bottom:4px">Monthly SIP (Flat)</div><div style="font-family:var(--fm);font-size:1.05rem;font-weight:700;color:var(--teal)">'+fmt(retSIP)+'</div></div>'
+        +(retSU>0?'<div style="background:var(--teal-s);border-radius:8px;padding:12px;text-align:center;border-bottom:3px solid var(--teal)"><div style="font-size:.62rem;color:var(--teal);font-weight:600;text-transform:uppercase;margin-bottom:4px">Step-Up Start ('+retSU+'%)</div><div style="font-family:var(--fm);font-size:1.05rem;font-weight:700;color:var(--teal)">'+fmt(retSIPsu)+'</div></div>':'')
+        +'<div style="background:var(--bgw);border-radius:8px;padding:12px;text-align:center"><div style="font-size:.62rem;color:var(--ink-l);font-weight:600;text-transform:uppercase;margin-bottom:4px">Monthly at Retire</div><div style="font-family:var(--fm);font-size:1.05rem;font-weight:700;color:var(--ink)">'+fmt(mExpAtRetire)+'</div></div></div>'
+        +'<div style="background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:var(--rs);padding:12px 14px;margin-top:10px;font-size:.78rem;color:rgba(255,255,255,.7);line-height:1.72">'
+        +'\u20b9'+Math.round(monthExp/1000)+'K/mo today \u2192 <strong style="color:#f472b6">\u20b9'+Math.round(mExpAtRetire/1000)+'K/mo</strong> at '+retireAt+' | Corpus: <strong style="color:#f472b6">'+fmt(corpus)+'</strong> | SIP: <strong style="color:#4ade80">'+fmt(retSIP)+'/mo</strong>'
+        +(retSU>0?' | Step-up start: <strong style="color:#4ade80">'+fmt(retSIPsu)+'/mo</strong>':'')
+        +(fvRetSaved>0?' | Savings FV: '+fmt(fvRetSaved):'')
         +'</div>';
     }
-    totalSIP+=retSIP;totalCorpus+=corpus;
-    goalResults.push({name:'Retirement',target:corpus,sip:retSIP,years:yrsToRetire});
+    totalSIP+=retSIP;if(retSU>0)totalSIPsu+=retSIPsu;else totalSIPsu+=retSIP;totalCorpus+=corpus;
+    goalResults.push({name:'Retirement',target:corpus,sip:retSIP,sipSU:retSU>0?retSIPsu:0,years:yrsToRetire,isRetirement:true,emoji:'🏖️',pv:monthExp*12,inf:inf,ret:preRetRet,pri:0});
   }
 
-  // Summary
+  // Priority sort: High(1) first, Medium(2), Low(3), Retirement always at end of custom list
+  var customGoals=goalResults.filter(function(g){return !g.isRetirement;});
+  var retGoal=goalResults.filter(function(g){return g.isRetirement;});
+  customGoals.sort(function(a,b){return (a.pri||2)-(b.pri||2);});
+  goalResults=customGoals.concat(retGoal);
+
+  var priColors={1:{bg:'#fff1f2',border:'#fca5a5',label:'#ef4444',text:'High'},2:{bg:'#fffbeb',border:'#fcd34d',label:'#d97706',text:'Medium'},3:{bg:'#f0fdf4',border:'#86efac',label:'#16a34a',text:'Low'},0:{bg:'#fdf2f8',border:'#f9a8d4',label:'#db2777',text:'Retirement'}};
+
+  // Right panel
+  var rightPanel=document.getElementById('goalsRightPanel');
+  if(rightPanel&&goalResults.length>0){
+    var rh='';
+    rh+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px">'
+      +'<div style="background:var(--teal-s);border-radius:var(--rs);padding:12px;text-align:center">'
+      +'<div style="font-size:.6rem;color:var(--teal);font-weight:700;text-transform:uppercase;margin-bottom:2px">Total SIP (Flat)</div>'
+      +'<div style="font-family:var(--fm);font-size:1.1rem;font-weight:800;color:var(--teal)">'+fmt(totalSIP)+'</div></div>'
+      +'<div style="background:var(--pink-s);border-radius:var(--rs);padding:12px;text-align:center">'
+      +'<div style="font-size:.6rem;color:var(--pink);font-weight:700;text-transform:uppercase;margin-bottom:2px">Total Corpus</div>'
+      +'<div style="font-family:var(--fm);font-size:1.1rem;font-weight:800;color:var(--pink)">'+fmt(totalCorpus)+'</div></div>'
+      +'</div>';
+    if(totalSIPsu>0&&totalSIPsu!==totalSIP){
+      rh+='<div style="background:var(--bgw);border:1px solid var(--rule);border-radius:var(--rs);padding:8px 12px;margin-bottom:12px;font-size:.78rem;color:var(--ok);text-align:center">'
+        +'With step-up: start at <strong>'+fmt(totalSIPsu)+'</strong>/mo</div>';
+    }
+    goalResults.forEach(function(g){
+      var pc=priColors[g.isRetirement?0:(g.pri||2)];
+      var pct=totalSIP>0?(g.sip/totalSIP*100):0;
+      rh+='<div style="background:'+pc.bg+';border:1.5px solid '+pc.border+';border-radius:var(--rs);padding:10px 12px;margin-bottom:8px">'
+        +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">'
+        +'<div style="font-size:.8rem;font-weight:700;color:var(--ink)">'+(g.emoji||'🎯')+' '+g.name+'</div>'
+        +'<span style="font-size:.6rem;font-weight:700;color:'+pc.label+';background:'+pc.border+'55;padding:2px 7px;border-radius:10px">'+pc.text+'</span></div>'
+        +'<div style="font-size:.7rem;color:var(--ink-l);margin-bottom:6px">'+g.years+' yrs · FV: <strong>'+fmt(g.target)+'</strong></div>'
+        +'<div style="display:flex;gap:12px;justify-content:space-between">'
+        +'<div><div style="font-size:.58rem;color:var(--ink-l)">Flat SIP</div><div style="font-family:var(--fm);font-size:.85rem;font-weight:700;color:var(--ink)">'+fmt(g.sip)+'/mo</div></div>'
+        +(g.sipSU>0?'<div><div style="font-size:.58rem;color:var(--teal)">Step-Up Start</div><div style="font-family:var(--fm);font-size:.85rem;font-weight:700;color:var(--teal)">'+fmt(g.sipSU)+'/mo</div></div>':'')
+        +'<div style="text-align:right"><div style="font-size:.58rem;color:var(--ink-l)">Share</div><div style="font-size:.75rem;font-weight:700;color:var(--ink)">'+pct.toFixed(0)+'%</div></div></div>'
+        +'<div style="height:4px;background:rgba(0,0,0,.08);border-radius:2px;margin-top:6px;overflow:hidden"><div style="height:100%;width:'+pct+'%;background:'+pc.label+';border-radius:2px"></div></div>'
+        +'</div>';
+    });
+    rightPanel.innerHTML=rh;
+  }
+
+  // Breakdown table
+  var bwrap=document.getElementById('goalsBreakdownWrap');
+  var btable=document.getElementById('goalsBreakdownTable');
+  if(bwrap&&btable&&goalResults.length>0){
+    bwrap.style.display='block';
+    var th2='<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:.76rem">'
+      +'<thead><tr style="background:var(--bgw)">'
+      +'<th style="padding:8px 10px;text-align:left;border-bottom:2px solid var(--rule);font-size:.62rem;text-transform:uppercase;color:var(--ink-l)">Goal</th>'
+      +'<th style="padding:8px 10px;text-align:right;border-bottom:2px solid var(--rule);font-size:.62rem;text-transform:uppercase;color:var(--ink-l)">Present Value</th>'
+      +'<th style="padding:8px 10px;text-align:right;border-bottom:2px solid var(--rule);font-size:.62rem;text-transform:uppercase;color:var(--ink-l)">Yrs</th>'
+      +'<th style="padding:8px 10px;text-align:right;border-bottom:2px solid var(--rule);font-size:.62rem;text-transform:uppercase;color:var(--ink-l)">Infl%</th>'
+      +'<th style="padding:8px 10px;text-align:right;border-bottom:2px solid var(--rule);font-size:.62rem;text-transform:uppercase;color:var(--ink-l)">Ret%</th>'
+      +'<th style="padding:8px 10px;text-align:right;border-bottom:2px solid var(--rule);font-size:.62rem;text-transform:uppercase;color:var(--ink-l)">Future Value</th>'
+      +'<th style="padding:8px 10px;text-align:right;border-bottom:2px solid var(--rule);font-size:.62rem;text-transform:uppercase;color:var(--ink-l)">SIP Needed</th>'
+      +'<th style="padding:8px 10px;text-align:right;border-bottom:2px solid var(--rule);font-size:.62rem;text-transform:uppercase;color:var(--ink-l)">Step-Up SIP</th>'
+      +'</tr></thead><tbody>';
+    var sipTotal2=0,sipsuTotal2=0;
+    goalResults.forEach(function(g,idx){
+      var pc=priColors[g.isRetirement?0:(g.pri||2)];
+      var zb=idx%2===0?'background:var(--bgp)':'background:var(--bgw)';
+      th2+='<tr style="'+zb+';border-left:3px solid '+pc.label+'">'
+        +'<td style="padding:8px 10px"><span>'+( g.emoji||'🎯')+'</span> <strong>'+g.name+'</strong>'
+        +(g.isRetirement?' <span style="font-size:.6rem;background:#fce7f3;color:#db2777;padding:1px 6px;border-radius:8px;margin-left:4px">Retirement</span>':'')+'</td>'
+        +'<td style="padding:8px 10px;text-align:right;font-family:var(--fm)">'+fmt(g.pv||0)+'</td>'
+        +'<td style="padding:8px 10px;text-align:right">'+g.years+'</td>'
+        +'<td style="padding:8px 10px;text-align:right">'+(g.inf!==undefined?g.inf:'—')+'%</td>'
+        +'<td style="padding:8px 10px;text-align:right">'+(g.ret!==undefined?g.ret:'—')+'%</td>'
+        +'<td style="padding:8px 10px;text-align:right;font-family:var(--fm);font-weight:700">'+fmt(g.target)+'</td>'
+        +'<td style="padding:8px 10px;text-align:right;font-family:var(--fm);font-weight:700;color:var(--pink)">'+fmt(g.sip)+'/mo</td>'
+        +'<td style="padding:8px 10px;text-align:right;font-family:var(--fm);font-weight:700;color:var(--teal)">'+(g.sipSU>0?fmt(g.sipSU)+'/mo':'—')+'</td>'
+        +'</tr>';
+      sipTotal2+=g.sip;
+      sipsuTotal2+=g.sipSU>0?g.sipSU:g.sip;
+    });
+    th2+='<tr style="background:var(--ink);color:#fff">'
+      +'<td style="padding:10px;font-weight:700" colspan="5">TOTAL</td>'
+      +'<td style="padding:10px;text-align:right;font-family:var(--fm)"></td>'
+      +'<td style="padding:10px;text-align:right;font-family:var(--fm);font-weight:700;color:#4ade80">'+fmt(sipTotal2)+'/mo</td>'
+      +'<td style="padding:10px;text-align:right;font-family:var(--fm);font-weight:700;color:#34d399">'+fmt(sipsuTotal2)+'/mo</td>'
+      +'</tr>';
+    th2+='</tbody></table></div>';
+    btable.innerHTML=th2;
+  }
+
+  // Summary dark bar
   var summaryEl=document.getElementById('goalSummaryContent');
   if(summaryEl&&goalResults.length>0){
     document.getElementById('goalSummary').style.display='block';
@@ -3378,9 +3657,10 @@ function calcGoals(){
     html+='<div style="display:flex;flex-direction:column;gap:6px">';
     goalResults.forEach(function(g){
       var pct=totalSIP>0?(g.sip/totalSIP*100):0;
+      var bc=g.isRetirement?'#f472b6':g.pri===1?'#f87171':g.pri===3?'#4ade80':'#facc15';
       html+='<div style="display:flex;align-items:center;gap:10px">'
-        +'<div style="flex:1;font-size:.8rem;color:rgba(255,255,255,.7)">'+g.name+' ('+g.years+'y)</div>'
-        +'<div style="width:120px;height:6px;background:rgba(255,255,255,.1);border-radius:3px;overflow:hidden"><div style="height:100%;width:'+pct+'%;background:#4ade80;border-radius:3px"></div></div>'
+        +'<div style="flex:1;font-size:.8rem;color:rgba(255,255,255,.7)">'+(g.emoji||'🎯')+' '+g.name+' ('+g.years+'y)</div>'
+        +'<div style="width:120px;height:6px;background:rgba(255,255,255,.1);border-radius:3px;overflow:hidden"><div style="height:100%;width:'+pct+'%;background:'+bc+';border-radius:3px"></div></div>'
         +'<div style="font-family:var(--fm);font-size:.78rem;color:rgba(255,255,255,.8);width:80px;text-align:right">'+fmt(g.sip)+'</div>'
         +'</div>';
     });
@@ -4441,50 +4721,264 @@ function downloadPDF(calcType){
         addAdvice('Absolute returns show total growth but can be misleading for comparing investments of different durations. CAGR (annualised return) is better for comparison. XIRR is the most accurate for SIP or irregular cash flows.');
       }
       else if(calcType==='goals'){
-        addSection('Financial Goals Summary');
-        // Custom goals
+        // ── GOALS PDF: clean table format, priority sorted ──
+        var pdfGoals=[];
         for(var gi=1;gi<=goalCount;gi++){
-          var gel=document.getElementById('goal_'+gi);if(!gel)continue;
-          var gname=(document.getElementById('gn_'+gi)||{}).value||'Goal '+gi;
-          var gtarget=pdfNum((document.getElementById('gt_'+gi)||{}).value||0);
-          var gyears=(document.getElementById('gy_'+gi)||{}).value||'—';
-          var gret=(document.getElementById('gr_'+gi)||{}).value||'—';
-          var gresEl=document.getElementById('gr_'+gi+'_result');
-          addRow(gname,'Target: '+gtarget+' | '+gyears+' years | '+gret+'% return');
-          if(gresEl){
-            var sipV=gresEl.querySelector('.rb-v');
-            if(sipV) addRow('  Monthly SIP Required',pdfClean(sipV.textContent));
+          var gel2=document.getElementById('goal_'+gi);if(!gel2)continue;
+          var gname2=(document.getElementById('gn_'+gi)||{}).value||('Goal '+gi);
+          var gtarget2=parseFloat((document.getElementById('gt_'+gi)||{}).value)||0;
+          var gyears2=parseFloat((document.getElementById('gy_'+gi)||{}).value)||10;
+          var ginf2=parseFloat((document.getElementById('ginf_'+gi)||{}).value)||6;
+          var gret2=parseFloat((document.getElementById('gr_'+gi)||{}).value)||12;
+          var gsu2=parseFloat((document.getElementById('gsu_'+gi)||{}).value)||0;
+          var gpri2=parseInt((document.getElementById('gpri_'+gi)||{}).value)||2;
+          var gpriText=gpri2===1?'High':gpri2===3?'Low':'Medium';
+          var gfv2=gtarget2*Math.pow(1+ginf2/100,gyears2);
+          var gsaved2=parseFloat((document.getElementById('gs_'+gi)||{}).value)||0;
+          var gfvSaved2=gsaved2*Math.pow(1+gret2/100,gyears2);
+          var ggap2=Math.max(0,gfv2-gfvSaved2);
+          var gr2p=gret2/100/12,gn2p=gyears2*12;
+          var gsip2=gr2p>0?ggap2*gr2p/(Math.pow(1+gr2p,gn2p)-1):ggap2/gn2p;
+          var gsipsu2=0;
+          if(gsu2>0){var glo2=0,ghi2=gsip2*3;for(var gbi=0;gbi<60;gbi++){var gm2=(glo2+ghi2)/2,gc2=gfvSaved2,gs2=gm2;for(var gmo=1;gmo<=gn2p;gmo++){if(gmo>1&&(gmo-1)%12===0)gs2*=(1+gsu2/100);gc2=gc2*(1+Math.pow(1+gret2/100,1/12)-1)+gs2;}if(gc2<gfv2)glo2=gm2;else ghi2=gm2;}gsipsu2=(glo2+ghi2)/2;}
+          pdfGoals.push({name:gname2,pv:gtarget2,years:gyears2,inf:ginf2,ret:gret2,fv:gfv2,sip:gsip2,sipsu:gsipsu2,pri:gpri2,priText:gpriText,isRetirement:false});
+        }
+        pdfGoals.sort(function(a,b){return (a.pri||2)-(b.pri||2);});
+
+        // Retirement goal
+        var retAge2=parseFloat((document.getElementById('gl_ret_age')||{}).value)||30;
+        var retAt2=parseFloat((document.getElementById('gl_ret_at')||{}).value)||60;
+        var retLife2=parseFloat((document.getElementById('gl_ret_life')||{}).value)||85;
+        var retExp2=parseFloat((document.getElementById('gl_ret_exp')||{}).value)||50000;
+        var retInf2=parseFloat((document.getElementById('gl_ret_inf')||{}).value)||6;
+        var retPre2=parseFloat((document.getElementById('gl_ret_pre')||{}).value)||12;
+        var retPost2=parseFloat((document.getElementById('gl_ret_post')||{}).value)||8;
+        var retSaved2=parseFloat((document.getElementById('gl_ret_saved')||{}).value)||0;
+        var retSU2=parseFloat((document.getElementById('gl_ret_su')||{}).value)||0;
+        var retYrs2=retAt2-retAge2; var retDur2=retLife2-retAt2;
+        var retFvSaved2=0, retCorpus2=0, retSip2=0, retSipsu2=0, retMexp2=0;
+        if(retYrs2>0&&retDur2>0){
+          retMexp2=retExp2*Math.pow(1+retInf2/100,retYrs2);
+          var retAnn2=retMexp2*12; var netR3=(retPost2-retInf2)/100;
+          retCorpus2=Math.abs(netR3)<1e-8?retAnn2*retDur2:retAnn2*(1-Math.pow(1+netR3,-retDur2))/netR3;
+          retFvSaved2=retSaved2*Math.pow(1+retPre2/100,retYrs2);
+          var retGap2=Math.max(0,retCorpus2-retFvSaved2);
+          var rr3=retPre2/100/12,rn3=retYrs2*12;
+          retSip2=rr3>0?retGap2*rr3/(Math.pow(1+rr3,rn3)-1):retGap2/rn3;
+          if(retSU2>0){var rlo3=0,rhi3=retSip2*3;for(var rbi=0;rbi<60;rbi++){var rm3=(rlo3+rhi3)/2,rc3=retFvSaved2,rs3=rm3;for(var rmo=1;rmo<=rn3;rmo++){if(rmo>1&&(rmo-1)%12===0)rs3*=(1+retSU2/100);rc3=rc3*(1+Math.pow(1+retPre2/100,1/12)-1)+rs3;}if(rc3<retCorpus2)rlo3=rm3;else rhi3=rm3;}retSipsu2=(rlo3+rhi3)/2;}
+          pdfGoals.push({name:'Retirement',pv:retExp2*12,years:retYrs2,inf:retInf2,ret:retPre2,fv:retCorpus2,sip:retSip2,sipsu:retSipsu2,pri:0,priText:'RET',isRetirement:true});
+        }
+
+        if(pdfGoals.length===0){
+          doc.setFontSize(11);doc.setTextColor(100,100,100);
+          doc.text('No goals entered. Please add goals and calculate before downloading.',mx,y);
+          y+=20;
+        } else {
+          // ── Section title ──
+          doc.setFillColor(26,26,36);
+          doc.roundedRect(mx,y-2,W-mx*2,10,2,2,'F');
+          doc.setTextColor(255,255,255);doc.setFont('helvetica','bold');doc.setFontSize(9);
+          doc.text('FINANCIAL GOALS \u2014 COMPLETE PLAN',mx+5,y+5);
+          y+=16;
+
+          // ── Table setup: 8 columns, A4 width=210, margins=14 each side, usable=182mm ──
+          // Col: Goal(50) | PV(24) | Yrs(10) | Infl(10) | Ret(10) | FV(28) | SIP(25) | StepUp(25)
+          var cW2=[50,24,10,10,10,28,25,25];
+          var cX2=[mx];
+          for(var cj=1;cj<cW2.length;cj++) cX2.push(cX2[cj-1]+cW2[cj-1]);
+          var heads2=['Goal','Present Value','Yrs','Infl%','Ret%','Future Value','SIP Needed','Step-Up SIP'];
+          var rowH=8.5; // row height mm
+
+          // Table header
+          doc.setFillColor(26,26,36);
+          doc.rect(mx,y,W-mx*2,rowH,'F');
+          doc.setTextColor(255,255,255);doc.setFont('helvetica','bold');doc.setFontSize(6.2);
+          // Left-aligned for Goal col, right-aligned for numeric cols
+          doc.text(heads2[0],cX2[0]+2,y+5.5);
+          for(var hi=1;hi<heads2.length;hi++){
+            doc.text(heads2[hi],cX2[hi]+cW2[hi]-1,y+5.5,{align:'right'});
           }
-          y+=2;
-        }
-        // Retirement
-        y+=4;addSection('Retirement Goal');
-        addRow('Current Age',(document.getElementById('gl_ret_age')||{}).value||'—');
-        addRow('Retire At',(document.getElementById('gl_ret_at')||{}).value||'—');
-        addRow('Life Expectancy',(document.getElementById('gl_ret_life')||{}).value||'—');
-        addRow('Monthly Expenses Today',pdfNum((document.getElementById('gl_ret_exp')||{}).value||0));
-        addRow('Inflation',(document.getElementById('gl_ret_inf')||{}).value+'%');
-        addRow('Pre-Retirement Return',(document.getElementById('gl_ret_pre')||{}).value+'%');
-        addRow('Post-Retirement Return',(document.getElementById('gl_ret_post')||{}).value+'%');
-        addRow('Existing Retirement Savings',pdfNum((document.getElementById('gl_ret_saved')||{}).value||0));
-        var retResult=document.getElementById('gl_ret_result');
-        if(retResult){
-          var retVals=retResult.querySelectorAll('.rb-v');
-          var retKeys=retResult.querySelectorAll('.rb-k');
-          retVals.forEach(function(v,idx){if(retKeys[idx])addRow(pdfClean(retKeys[idx].textContent),pdfClean(v.textContent));});
-        }
-        // Total summary
-        y+=4;addSection('Total Requirement');
-        var sumEl=document.getElementById('goalSummaryContent');
-        if(sumEl){
-          var sumVals=sumEl.querySelectorAll('div[style*="font-weight:700"]');
-          if(sumVals.length>=2){
-            addBigResult('Total Monthly SIP',pdfClean(sumVals[0].textContent));
-            addRow('Total Corpus Target',pdfClean(sumVals[1].textContent));
+          y+=rowH;
+
+          var totalSipPdf=0,totalSipsuPdf=0,totalFvPdf=0;
+          var priColors2={
+            1:{bg:[254,242,242],pri:[220,38,38]},  // High - red
+            2:{bg:[255,251,235],pri:[217,119,6]},  // Medium - amber
+            3:{bg:[240,253,244],pri:[22,163,74]},  // Low - green
+            0:{bg:[253,242,248],pri:[157,23,77]}   // Retirement - pink
+          };
+
+          pdfGoals.forEach(function(g,gi2){
+            if(y>H-28){doc.addPage();y=16;
+              // Re-draw header on new page
+              doc.setFillColor(26,26,36);doc.rect(mx,y,W-mx*2,rowH,'F');
+              doc.setTextColor(255,255,255);doc.setFont('helvetica','bold');doc.setFontSize(6.2);
+              doc.text(heads2[0],cX2[0]+2,y+5.5);
+              for(var hi2=1;hi2<heads2.length;hi2++) doc.text(heads2[hi2],cX2[hi2]+cW2[hi2]-1,y+5.5,{align:'right'});
+              y+=rowH;
+            }
+            var pc2=priColors2[g.isRetirement?0:(g.pri||2)]||priColors2[2];
+            // Alternating row background
+            if(gi2%2===0){
+              doc.setFillColor(pc2.bg[0],pc2.bg[1],pc2.bg[2]);
+            } else {
+              // Slightly lighter
+              var lb=[Math.min(255,pc2.bg[0]+4),Math.min(255,pc2.bg[1]+4),Math.min(255,pc2.bg[2]+4)];
+              doc.setFillColor(lb[0],lb[1],lb[2]);
+            }
+            doc.rect(mx,y,W-mx*2,rowH,'F');
+
+            // Priority stripe on left edge
+            doc.setFillColor(pc2.pri[0],pc2.pri[1],pc2.pri[2]);
+            doc.rect(mx,y,2,rowH,'F');
+
+            doc.setFontSize(6.4);doc.setFont('helvetica','normal');
+            // Goal name + priority tag
+            var nameStr=g.name;
+            var tagStr=g.isRetirement?'[RET]':'['+g.priText+']';
+            doc.setTextColor(26,26,36);doc.setFont('helvetica','bold');
+            doc.text(nameStr,cX2[0]+4,y+5.5,{maxWidth:cW2[0]-6});
+            doc.setFont('helvetica','normal');doc.setFontSize(5.5);
+            doc.setTextColor(pc2.pri[0],pc2.pri[1],pc2.pri[2]);
+            // Only show tag if name short enough — approximate
+            if(nameStr.length<18) doc.text(tagStr,cX2[0]+4+doc.getTextWidth(nameStr)+2,y+5.5);
+
+            doc.setFontSize(6.4);doc.setTextColor(60,60,75);doc.setFont('helvetica','normal');
+            doc.text(pdfNum(g.pv),cX2[1]+cW2[1]-1,y+5.5,{align:'right'});
+            doc.text(String(g.years),cX2[2]+cW2[2]-1,y+5.5,{align:'right'});
+            doc.text(g.inf+'%',cX2[3]+cW2[3]-1,y+5.5,{align:'right'});
+            doc.text(g.ret+'%',cX2[4]+cW2[4]-1,y+5.5,{align:'right'});
+
+            doc.setFont('helvetica','bold');doc.setTextColor(26,26,36);
+            doc.text(pdfNum(g.fv),cX2[5]+cW2[5]-1,y+5.5,{align:'right'});
+
+            doc.setTextColor(180,20,50);
+            doc.text(pdfNum(g.sip)+'/mo',cX2[6]+cW2[6]-1,y+5.5,{align:'right'});
+
+            doc.setTextColor(20,90,90);
+            doc.text(g.sipsu>0?pdfNum(g.sipsu)+'/mo':'—',cX2[7]+cW2[7]-1,y+5.5,{align:'right'});
+
+            // Thin separator line
+            doc.setDrawColor(210,210,220);doc.setLineWidth(0.15);
+            doc.line(mx,y+rowH,mx+W-mx*2,y+rowH);
+            y+=rowH;
+            totalSipPdf+=g.sip;
+            totalSipsuPdf+=(g.sipsu>0?g.sipsu:g.sip);
+            totalFvPdf+=g.fv;
+          });
+
+          // Totals row
+          if(y>H-20){doc.addPage();y=16;}
+          doc.setFillColor(20,20,30);
+          doc.rect(mx,y,W-mx*2,9,'F');
+          doc.setTextColor(255,255,255);doc.setFont('helvetica','bold');doc.setFontSize(7);
+          doc.text('TOTAL MONTHLY SIP',cX2[0]+4,y+6);
+          doc.setTextColor(74,222,128);
+          doc.text(pdfNum(totalSipPdf)+'/mo',cX2[6]+cW2[6]-1,y+6,{align:'right'});
+          doc.setTextColor(52,211,153);
+          doc.text(totalSipsuPdf>0?pdfNum(totalSipsuPdf)+'/mo':'—',cX2[7]+cW2[7]-1,y+6,{align:'right'});
+          y+=14;
+
+          // ── Priority Legend ──
+          if(y>H-30){doc.addPage();y=16;}
+          doc.setFontSize(6.5);doc.setFont('helvetica','normal');doc.setTextColor(120,120,135);
+          doc.text('Priority:',mx,y);
+          var legendItems=[
+            {col:[220,38,38],label:'High — non-negotiable'},
+            {col:[217,119,6],label:'Medium — important'},
+            {col:[22,163,74],label:'Low — aspirational'},
+            {col:[157,23,77],label:'Retirement — always first'}
+          ];
+          var lx=mx+18;
+          legendItems.forEach(function(li){
+            doc.setFillColor(li.col[0],li.col[1],li.col[2]);
+            doc.rect(lx,y-3,3,3.5,'F');
+            doc.setTextColor(60,60,75);
+            doc.text(li.label,lx+4.5,y);
+            lx+=42;
+          });
+          y+=8;
+
+          // ── Retirement Detail ──
+          if(retCorpus2>0){
+            if(y>H-55){doc.addPage();y=16;}
+            // Section header
+            doc.setFillColor(157,23,77);
+            doc.roundedRect(mx,y-2,W-mx*2,10,2,2,'F');
+            doc.setTextColor(255,255,255);doc.setFont('helvetica','bold');doc.setFontSize(9);
+            doc.text('RETIREMENT GOAL \u2014 DETAILED BREAKDOWN',mx+5,y+5);
+            y+=16;
+
+            // Two-column detail layout
+            var halfW=(W-mx*2-8)/2;
+            var detailItems=[
+              ['Current Age',retAge2+' yrs'],
+              ['Target Retirement Age',retAt2+' yrs'],
+              ['Life Expectancy',retLife2+' yrs'],
+              ['Monthly Expenses Today',pdfNum(retExp2)],
+              ['Monthly Expenses at Retirement',pdfNum(retMexp2)],
+              ['Inflation Rate',retInf2+'%'],
+              ['Pre-Retirement Return',retPre2+'%'],
+              ['Post-Retirement Return',retPost2+'%'],
+            ];
+            if(retSaved2>0) detailItems.push(['Existing Savings (FV at retirement)',pdfNum(retFvSaved2)]);
+
+            var col1x=mx, col2x=mx+halfW+8;
+            var detY=y;
+            detailItems.forEach(function(di,dIdx){
+              var cx=dIdx%2===0?col1x:col2x;
+              var rowY=detY+Math.floor(dIdx/2)*10;
+              if(rowY>H-22){doc.addPage();detY=16-(Math.floor(dIdx/2)*10);rowY=16;}
+              doc.setFillColor(248,242,252);
+              doc.roundedRect(cx,rowY-3,halfW,8,1.5,1.5,'F');
+              doc.setFontSize(6);doc.setFont('helvetica','normal');doc.setTextColor(120,60,90);
+              doc.text(di[0],cx+4,rowY+1);
+              doc.setFontSize(8);doc.setFont('helvetica','bold');doc.setTextColor(26,26,36);
+              doc.text(di[1],cx+4,rowY+5.5);
+            });
+            y=detY+Math.ceil(detailItems.length/2)*10+6;
+
+            // Corpus highlight
+            if(y>H-30){doc.addPage();y=16;}
+            doc.setFillColor(157,23,77);
+            doc.roundedRect(mx,y-2,W-mx*2,22,3,3,'F');
+            doc.setTextColor(255,200,220);doc.setFont('helvetica','bold');doc.setFontSize(7);
+            doc.text('CORPUS NEEDED AT RETIREMENT',mx+5,y+5);
+            doc.setTextColor(255,255,255);doc.setFontSize(20);
+            doc.text(pdfNum(retCorpus2),mx+5,y+16);
+            y+=28;
+
+            // SIP amounts side by side
+            if(y>H-28){doc.addPage();y=16;}
+            var sipBoxW=(W-mx*2-6)/2;
+            doc.setFillColor(254,242,242);doc.roundedRect(mx,y-2,sipBoxW,16,2,2,'F');
+            doc.setTextColor(120,60,60);doc.setFont('helvetica','bold');doc.setFontSize(6.5);
+            doc.text('FLAT SIP REQUIRED / MONTH',mx+4,y+3);
+            doc.setTextColor(180,20,50);doc.setFontSize(13);
+            doc.text(pdfNum(retSip2),mx+4,y+12);
+
+            if(retSipsu2>0){
+              var b2x=mx+sipBoxW+6;
+              doc.setFillColor(240,253,244);doc.roundedRect(b2x,y-2,sipBoxW,16,2,2,'F');
+              doc.setTextColor(22,83,60);doc.setFont('helvetica','bold');doc.setFontSize(6.5);
+              doc.text('STEP-UP START SIP ('+retSU2+'% p.a.)',b2x+4,y+3);
+              doc.setTextColor(20,90,50);doc.setFontSize(13);
+              doc.text(pdfNum(retSipsu2),b2x+4,y+12);
+            }
+            y+=22;
+            if(y>H-20){doc.addPage();y=16;}
+            doc.setFontSize(7.5);doc.setFont('helvetica','italic');doc.setTextColor(140,60,80);
+            var retNote='Why this is non-negotiable: No loan, no scholarship, and no family can fully replace your retirement corpus. Start funding this before any other goal.';
+            var retNoteLines=doc.splitTextToSize(retNote,W-mx*2-8);
+            doc.setFillColor(253,232,240);doc.roundedRect(mx,y-3,W-mx*2,retNoteLines.length*4+9,2,2,'F');
+            doc.text(retNoteLines,mx+4,y+3);
+            y+=retNoteLines.length*4+14;
           }
         }
-        y+=4;
-        addAdvice('This goal sheet is your financial compass. Review it every 6 months. As your income grows, increase SIPs proportionally. Never sacrifice retirement for other goals — retirement has no loan, no scholarship, and no alternative. For a personalised implementation plan, consult a qualified financial advisor.');
+
+        // ── Advice ──
+        if(y>H-22){doc.addPage();y=16;}
+        addAdvice('Priority order matters: Fund High priority goals first, then Medium, then Low. Protect retirement above all — it has no alternative. Increase all SIPs by your annual salary growth rate. Review this plan every April.');
       }
       else if(calcType==='irr'){
         addSection('Policy Details');
@@ -4578,7 +5072,7 @@ function calcSIP() {
   if (!amt || !yrs || !rt) return;
   var r = rt/100/12, n = yrs*12;
   // Excel FV: =FV(rate,nper,-pmt,0,1) for SIP (beginning of period)
-  var sipFV  = amt * ((Math.pow(1+r,n)-1)/r) * (1+r);
+  var sipFV  = amt * ((Math.pow(1+r,n)-1)/r);
   // Lump sum: =FV(rate,nper,0,-pv) — compounds monthly
   var lumpFV = ls * Math.pow(1+r, n);
   var total  = sipFV + lumpFV;
@@ -4613,14 +5107,14 @@ function calcSU() {
   var periods = yrs * 12;
   var stepInterval = Math.max(1,Math.round(12/freq));
   for (var m=0; m<periods; m++) {
-    corpus = (corpus + s) * (1+r);
+    corpus = corpus * (1+r) + s;
     totalInv += s;
     if ((m+1) % stepInterval === 0) s *= (1 + su/100/(12/stepInterval));
   }
   var lumpFV = ls * Math.pow(1+r, periods);
   var total = corpus + lumpFV;
   totalInv += ls;
-  var flat = amt*((Math.pow(1+r,periods)-1)/r)*(1+r) + lumpFV;
+  var flat = amt*((Math.pow(1+r,periods)-1)/r) + lumpFV;
   document.getElementById('su_corpus').textContent = fmt(total);
   document.getElementById('su_inv').textContent    = fmt(totalInv);
   document.getElementById('su_gain').textContent   = fmt(total-totalInv);
@@ -4652,14 +5146,15 @@ function calcRet() {
   var yTR = ret - age;
   var retDur = life - ret;
   var mExpRet = exp * Math.pow(1+infl/100, yTR);
-  var realR = Math.pow((1+post/100)/(1+infl/100),1/12)-1;
+  var annExpRet = mExpRet * 12;
+  var netR = (post - infl) / 100;
   var corpusNeeded;
-  if (Math.abs(realR) < 1e-8) corpusNeeded = mExpRet * retDur * 12;
-  else corpusNeeded = mExpRet * (1-Math.pow(1+realR,-retDur*12)) / realR;
+  if (Math.abs(netR) < 1e-8) corpusNeeded = annExpRet * retDur;
+  else corpusNeeded = annExpRet * (1 - Math.pow(1+netR, -retDur)) / netR;
   var mr = pre/100/12, months = yTR*12;
   var savGrowth = sav > 0 ? sav*Math.pow(1+pre/100,yTR) : 0;
   var remaining = Math.max(corpusNeeded - savGrowth, 0);
-  var sipFlat = Math.abs(mr)<1e-8 ? remaining/months : remaining*mr/((Math.pow(1+mr,months)-1)*(1+mr));
+  var sipFlat = Math.abs(mr)<1e-8 ? remaining/months : remaining*mr/(Math.pow(1+mr,months)-1);
   document.getElementById('r_corpus').textContent  = fmt(corpusNeeded);
   document.getElementById('r_mneed').textContent   = fmt(mExpRet)+'/mo';
   document.getElementById('r_yleft').textContent   = yTR+' yrs';
@@ -4669,7 +5164,7 @@ function calcRet() {
     var lo=0, hi=sipFlat*2.5;
     for (var i=0;i<90;i++){
       var mid=(lo+hi)/2, c=savGrowth, s2=mid;
-      for (var y=0;y<yTR;y++){ for (var mm=0;mm<12;mm++) c=(c+s2)*(1+mr); s2*=(1+su/100); }
+      for (var y=0;y<yTR;y++){ for (var mm=0;mm<12;mm++) c=c*(1+mr)+s2; s2*=(1+su/100); }
       if(c<corpusNeeded) lo=mid; else hi=mid;
     }
     var st=(lo+hi)/2;
@@ -4711,7 +5206,15 @@ function copyRow(btn) {
   var tr = btn.closest('tr');
   var yr = parseInt(tr.cells[0].querySelector('input').value)||0;
   var am = tr.cells[1].querySelector('input').value;
-  addPRowAt(yr>0?yr+1:'', am); calcIRR();
+  // Find max year in table to always append after last row
+  var rows = document.getElementById('payoutBody').rows;
+  var maxYr = 0;
+  for (var i=0; i<rows.length; i++) {
+    var v = parseInt(rows[i].cells[0].querySelector('input').value)||0;
+    if (v > maxYr) maxYr = v;
+  }
+  var nextYr = maxYr > 0 ? maxYr + 1 : (yr > 0 ? yr + 1 : '');
+  addPRowAt(nextYr, am); calcIRR();
 }
 function repeatLastRow() {
   var rows = document.getElementById('payoutBody').rows;
@@ -4720,6 +5223,12 @@ function repeatLastRow() {
   var yr = parseInt(last.cells[0].querySelector('input').value)||0;
   var am = last.cells[1].querySelector('input').value;
   addPRowAt(yr>0?yr+1:'', am); calcIRR();
+  // After adding row, scroll so the Repeat Last button stays visible (not pushed down)
+  setTimeout(function(){
+    var btn = document.querySelector('.add-row[onclick="repeatLastRow()"]') ||
+              document.querySelector('[onclick="repeatLastRow()"]');
+    if (btn) btn.scrollIntoView({behavior:'smooth', block:'end', inline:'nearest'});
+  }, 60);
 }
 function calcIRR() {
   var prem = Math.abs(parseFloat(document.getElementById('ip_prem').value)||0);
@@ -6959,10 +7468,9 @@ function showContactError(msg){
 function showContactSuccess(){
   var el=document.getElementById('contact-msg');
   if(!el){el=document.createElement('div');el.id='contact-msg';var btn=document.querySelector('#page-contact .calbtn');if(btn)btn.after(el);}
-  el.style.cssText='margin-top:10px;padding:10px 14px;border-radius:6px;font-size:.82rem;background:#edf7f2;color:#1e5c3a;border:1px solid #bbdece';
-  el.textContent='\u2713 Message sent to info@zeronoisefinance.com. Nishant will reply within 24 hours.';
+  el.style.cssText='margin-top:10px;padding:10px 14px;border-radius:6px;font-size:.82rem;background:#edf7f2;color:#1e5c3a;border:1px solid #a7f3d0';
+  el.textContent='Message sent! We will get back to you soon.';
 }
-function clearContactError(){var el=document.getElementById('contact-msg');if(el) el.remove();}
 </script>
 </body>
 </html>
