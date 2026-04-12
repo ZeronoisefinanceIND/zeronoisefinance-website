@@ -394,6 +394,7 @@ nav.visible{opacity:1;pointer-events:all}
 .cs-2{background:linear-gradient(135deg,#1a0a18 0%,#2d1a10 100%)}
 .cs-3{background:linear-gradient(135deg,#0a1a2a 0%,#0d2d1a 100%)}
 .cs-4{background:linear-gradient(135deg,#1a0f0a 0%,#0d1a2a 100%)}
+.cs-5{background:linear-gradient(135deg,#061a0e 0%,#0a2a16 50%,#0d2218 100%)}
 .cs-label{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:rgba(255,255,255,.45);margin-bottom:10px}
 .cs-title{font-family:var(--fs);font-size:1.45rem;font-weight:700;color:#fff;line-height:1.25;margin-bottom:10px}
 .cs-desc{font-size:.85rem;color:rgba(255,255,255,.65);line-height:1.7;margin-bottom:18px;max-width:280px}
@@ -454,6 +455,7 @@ nav.visible{opacity:1;pointer-events:all}
   border-radius:var(--r);padding:0;
   box-shadow:0 12px 40px rgba(0,0,0,.14);
   max-width:320px;width:94vw;
+  max-height:80vh;display:flex;flex-direction:column;
   opacity:0;pointer-events:none;transform:scale(.95) translateY(4px);
   transition:opacity .2s,transform .2s;
 }
@@ -462,6 +464,7 @@ nav.visible{opacity:1;pointer-events:all}
   display:flex;align-items:center;gap:8px;
   padding:12px 14px 12px 16px;border-bottom:1px solid var(--rule);
   background:var(--bgw);border-radius:var(--r) var(--r) 0 0;
+  flex-shrink:0;
 }
 .ip-title{font-family:var(--fs);font-size:.88rem;font-weight:600;color:var(--ink);flex:1;min-width:0}
 .ip-lang-toggle{display:flex;gap:4px;flex-shrink:0}
@@ -471,7 +474,7 @@ nav.visible{opacity:1;pointer-events:all}
   transition:all .18s;white-space:nowrap;
 }
 .ip-lang-btn.active{border-color:var(--teal);color:var(--teal);background:var(--teal-s)}
-.ip-body{padding:12px 16px;font-size:.83rem;line-height:1.72;color:var(--ink-m)}
+.ip-body{padding:12px 16px;font-size:.83rem;line-height:1.72;color:var(--ink-m);overflow-y:auto;flex:1}
 .ip-close{
   flex-shrink:0;width:26px;height:26px;
   display:flex;align-items:center;justify-content:center;
@@ -1037,6 +1040,98 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
   #goalSummary{padding:14px 16px}
   #goalSummaryContent > div:first-child{grid-template-columns:1fr 1fr !important}
 }
+
+/* ─────────────────────────────────────
+   ZNF LEAD CAPTURE MODAL
+───────────────────────────────────── */
+#znf-lead-overlay{
+  position:fixed;inset:0;z-index:9500;
+  background:rgba(0,0,0,.58);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);
+  display:none;align-items:center;justify-content:center;
+  padding:20px;
+}
+#znf-lead-overlay.show{display:flex}
+#znf-lead-box{
+  background:var(--bgp);border-radius:16px;
+  width:100%;max-width:440px;
+  box-shadow:0 20px 60px rgba(0,0,0,.3);
+  border:1px solid var(--rule);
+  animation:jyModalIn .3s cubic-bezier(.22,1,.36,1);
+  overflow:hidden;
+}
+.znf-lead-hdr{
+  background:linear-gradient(135deg,var(--ink) 0%,#1a2a3a 100%);
+  padding:20px 22px 18px;position:relative;overflow:hidden;
+}
+.znf-lead-hdr::after{
+  content:'';position:absolute;top:-30px;right:-20px;
+  width:130px;height:130px;
+  background:radial-gradient(circle,rgba(212,43,81,.2),transparent);
+  border-radius:50%;pointer-events:none;
+}
+.znf-lead-hdr h3{font-family:var(--fs);font-size:1.08rem;font-weight:700;color:#fff;margin-bottom:4px;position:relative;z-index:1}
+.znf-lead-hdr p{font-size:.77rem;color:rgba(255,255,255,.5);line-height:1.5;position:relative;z-index:1}
+.znf-lead-body{padding:20px 22px}
+.znf-trust{
+  display:flex;align-items:flex-start;gap:9px;
+  background:var(--teal-s);border:1px solid #b2dfdb;
+  border-radius:var(--rs);padding:10px 13px;
+  font-size:.77rem;color:var(--teal);line-height:1.6;
+  margin-bottom:16px;
+}
+.znf-trust-icon{font-size:.95rem;flex-shrink:0;margin-top:1px}
+.znf-lead-success{text-align:center;padding:22px 16px;display:none}
+.znf-lead-success .ls-icon{font-size:3rem;margin-bottom:10px}
+.znf-lead-success h4{font-family:var(--fs);font-size:1.05rem;font-weight:700;color:var(--ink);margin-bottom:7px}
+.znf-lead-success p{font-size:.83rem;color:var(--ink-l);margin-bottom:18px;line-height:1.65}
+
+/* ─────────────────────────────────────
+   GOAL-BASED PLANNING FEATURE HIGHLIGHT
+───────────────────────────────────── */
+.znf-goal-banner{
+  margin:40px 24px 0;max-width:var(--max);margin-left:auto;margin-right:auto;
+  background:linear-gradient(135deg,#061a0e 0%,#0f2d1e 60%,#0a2010 100%);
+  border-radius:16px;overflow:hidden;padding:32px 36px;
+  position:relative;border:1px solid rgba(74,222,128,.15);
+  box-shadow:0 0 48px rgba(74,222,128,.06),var(--sh2);
+  display:grid;grid-template-columns:1fr auto;gap:28px;align-items:center;
+}
+.znf-goal-banner::before{
+  content:'';position:absolute;top:-40px;right:60px;
+  width:180px;height:180px;
+  background:radial-gradient(circle,rgba(74,222,128,.1),transparent);
+  border-radius:50%;pointer-events:none;
+}
+.znf-goal-banner .zgb-badge{
+  display:inline-flex;align-items:center;gap:5px;
+  background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.3);
+  border-radius:20px;padding:4px 12px;font-size:.64rem;
+  font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#4ade80;
+  margin-bottom:10px;
+}
+.znf-goal-banner h3{
+  font-family:var(--fs);font-size:1.5rem;font-weight:700;color:#fff;
+  line-height:1.2;margin-bottom:6px;
+}
+.znf-goal-banner .zgb-tagline{
+  font-family:var(--fs);font-size:1rem;color:rgba(255,255,255,.55);
+  font-style:italic;margin-bottom:10px;
+}
+.znf-goal-banner p{font-size:.84rem;color:rgba(255,255,255,.45);line-height:1.65;max-width:460px}
+.zgb-cta{
+  display:inline-flex;align-items:center;gap:6px;flex-shrink:0;
+  padding:12px 22px;background:rgba(74,222,128,.15);color:#4ade80;
+  border-radius:var(--rs);font-size:.85rem;font-weight:700;
+  border:1.5px solid rgba(74,222,128,.35);
+  transition:background .2s,transform .15s;cursor:pointer;white-space:nowrap;
+}
+.zgb-cta:hover{background:rgba(74,222,128,.28);transform:translateY(-1px);color:#4ade80;text-decoration:none}
+.zgb-icon{font-size:4.5rem;opacity:.18;position:absolute;right:160px;top:50%;transform:translateY(-50%);pointer-events:none}
+@media(max-width:640px){
+  .znf-goal-banner{grid-template-columns:1fr;padding:24px 22px}
+  .zgb-cta{width:100%;justify-content:center}
+  .zgb-icon{display:none}
+}
 </style>
 </head>
 <body>
@@ -1250,6 +1345,17 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
             <div class="cs-icon">⛓️</div>
           </div>
 
+          <!-- Slide 5: Goal-Based Planning -->
+          <div class="carousel-slide cs-5">
+            <div>
+              <div class="cs-label">Planning · Goal-Based</div>
+              <div class="cs-title">Your goals on<br>your fingertips.</div>
+              <div class="cs-desc">Retirement, education, home, travel — turn every dream into a precise monthly SIP. Prioritised, inflation-adjusted, and step-up ready.</div>
+              <button class="cs-btn" onclick="nav('goals')">Plan My Goals →</button>
+            </div>
+            <div class="cs-icon">🎯</div>
+          </div>
+
         </div>
         <!-- Dots -->
         <div class="carousel-dots" id="carouselDots"></div>
@@ -1261,6 +1367,24 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
   </div>
 
   <div class="rule"></div>
+
+  <!-- GOAL-BASED PLANNING FEATURE HIGHLIGHT -->
+  <div style="padding:0 24px;max-width:var(--max);margin:40px auto 0" class="fi">
+    <div class="znf-goal-banner">
+      <div style="position:relative;z-index:1">
+        <div class="zgb-badge">🎯 New Feature</div>
+        <h3>Goal-Based Financial Planning</h3>
+        <div class="zgb-tagline">"Your goals on your fingertips."</div>
+        <p>Turn every life dream — retirement, education, home, travel — into a precise monthly SIP number. Prioritised, inflated, and step-up ready. The only financial plan that starts with what you want, not what's trending.</p>
+      </div>
+      <div style="position:relative;z-index:1">
+        <div class="zgb-icon">🎯</div>
+        <button class="zgb-cta" onclick="nav('goals')">Plan My Goals →</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="rule" style="margin-top:40px"></div>
 
   <div class="section" id="journey-section">
     <div class="s-label fi">Your Financial Journey</div>
@@ -1497,7 +1621,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
         <div class="donut-wrap"><canvas id="sip_donut" width="140" height="140"></canvas></div>
         <div id="s_goal_box"></div>
         <div class="nudge"><strong>A note on planning:</strong> Calculators provide direction. A personalised financial plan accounts for your tax situation, life goals, and changing circumstances over time.</div>
-        <button class="calbtn" style="margin-top:14px;background:var(--teal)" onclick="downloadPDF('sip')">📥 Download Result as PDF</button>
+        <button class="calbtn" style="margin-top:14px;background:var(--teal)" onclick="showLeadModal('sip')">📥 Download Result as PDF</button>
       </div>
     </div>
   </div>
@@ -1565,7 +1689,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
         </div>
         <div id="su_goal_box"></div>
         <div class="nudge"><strong>Timing tip:</strong> Increasing the SIP amount every April — aligned with annual salary increments — is the simplest way to automate wealth acceleration without lifestyle disruption.</div>
-        <button class="calbtn" style="margin-top:14px;background:var(--teal)" onclick="downloadPDF('stepup')">📥 Download Result as PDF</button>
+        <button class="calbtn" style="margin-top:14px;background:var(--teal)" onclick="showLeadModal('stepup')">📥 Download Result as PDF</button>
       </div>
     </div>
   </div>
@@ -1620,7 +1744,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
         </div>
         <div id="r_goal_box"></div>
         <div class="nudge"><strong>Healthcare note:</strong> Medical costs in India inflate at ~10–12% annually. A separate health corpus or comprehensive insurance coverage is an essential component of retirement planning.</div>
-        <button class="calbtn" style="margin-top:14px;background:var(--teal)" onclick="downloadPDF('retirement')">📥 Download Result as PDF</button>
+        <button class="calbtn" style="margin-top:14px;background:var(--teal)" onclick="showLeadModal('retirement')">📥 Download Result as PDF</button>
       </div>
     </div>
   </div>
@@ -1717,7 +1841,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
         <div class="result-row" style="margin-top:12px" id="tx_rows"></div>
         <div id="tx_breakdown"></div>
         <div id="tx_note" style="margin-top:12px;font-size:.78rem;color:var(--ink-l);line-height:1.65"></div>
-        <button class="calbtn" style="margin-top:14px;background:var(--teal)" onclick="downloadPDF('tax')">📥 Download Result as PDF</button>
+        <button class="calbtn" style="margin-top:14px;background:var(--teal)" onclick="showLeadModal('tax')">📥 Download Result as PDF</button>
       </div>
     </div>
   </div>
@@ -1762,7 +1886,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
         <div class="rb" style="margin-bottom:12px"><div class="rb-v" id="em_total_pay">₹ —</div><div class="rb-k">Total Payment</div></div>
         <div class="donut-wrap"><canvas id="emi_donut" width="140" height="140"></canvas></div>
         <div id="em_afford"></div>
-        <button class="calbtn" style="margin-top:14px;background:var(--teal)" onclick="downloadPDF('emi')">📥 Download Result as PDF</button>
+        <button class="calbtn" style="margin-top:14px;background:var(--teal)" onclick="showLeadModal('emi')">📥 Download Result as PDF</button>
       </div>
     </div>
     <!-- Amortization Schedule (collapsible inline) -->
@@ -1777,7 +1901,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
             </div>
           </div>
           <div style="display:flex;align-items:center;gap:10px">
-            <button class="btn-o" style="padding:6px 14px;font-size:.78rem" onclick="event.stopPropagation();downloadPDF('emi')">📥 PDF</button>
+            <button class="btn-o" style="padding:6px 14px;font-size:.78rem" onclick="event.stopPropagation();showLeadModal('emi')">📥 PDF</button>
             <span id="emiScheduleArrow" style="font-size:.9rem;color:var(--ink-l);transition:transform .25s">▼</span>
           </div>
         </div>
@@ -1858,7 +1982,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
         </div>
         <div id="tp_verdict"></div>
         <div class="nudge" style="margin-top:12px"><strong>Tip:</strong> Get term insurance as early as possible — premiums are significantly lower when you're young and healthy. A 25-year-old can get ₹1 Cr cover for roughly ₹8,000–10,000/year.</div>
-        <button class="calbtn" style="margin-top:14px;background:var(--teal)" onclick="downloadPDF('termplan')">📥 Download Result as PDF</button>
+        <button class="calbtn" style="margin-top:14px;background:var(--teal)" onclick="showLeadModal('termplan')">📥 Download Result as PDF</button>
       </div>
     </div>
   </div>
@@ -1904,7 +2028,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
         <div class="r-sub" id="ret_sub">Enter investment details</div>
         <div id="ret_details"></div>
         <div class="nudge" style="margin-top:14px"><strong>What's the difference?</strong> Absolute return shows total growth. Annualised (CAGR) shows equivalent yearly growth rate — better for comparing investments of different durations. XIRR accounts for irregular cash flows and gives the most accurate picture for SIP investments.</div>
-        <button class="calbtn" style="margin-top:14px;background:var(--teal)" onclick="downloadPDF('returns')">📥 Download Result as PDF</button>
+        <button class="calbtn" style="margin-top:14px;background:var(--teal)" onclick="showLeadModal('returns')">📥 Download Result as PDF</button>
       </div>
     </div>
   </div>
@@ -1928,15 +2052,16 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
       <div style="font-family:var(--fs);font-size:.97rem;font-weight:600;color:var(--ink);margin-bottom:8px">How old are you?</div>
       <div style="font-size:.82rem;color:var(--ink-l);margin-bottom:14px">We'll jump you straight to your life stage.</div>
       <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:12px">
-        <button class="chip" onclick="startPlanAtAge(25)">21–30</button>
-        <button class="chip" onclick="startPlanAtAge(35)">31–40</button>
-        <button class="chip" onclick="startPlanAtAge(45)">41–50</button>
-        <button class="chip" onclick="startPlanAtAge(55)">51–59</button>
-        <button class="chip" onclick="startPlanAtAge(62)">60+</button>
+        <button class="chip" onclick="znfAgeTrigger(25)">21–30</button>
+        <button class="chip" onclick="znfAgeTrigger(35)">31–40</button>
+        <button class="chip" onclick="znfAgeTrigger(45)">41–50</button>
+        <button class="chip" onclick="znfAgeTrigger(55)">51–59</button>
+        <button class="chip" onclick="znfAgeTrigger(62)">60+</button>
       </div>
       <div style="display:flex;gap:8px;align-items:center;justify-content:center">
-        <input type="number" id="planAgeInput" class="fi-inp" placeholder="Enter exact age" min="18" max="85" style="width:140px;padding:9px;text-align:center">
-        <button class="btn-p" style="padding:9px 18px" onclick="startPlanAtAge(parseFloat(document.getElementById('planAgeInput').value)||25)">Go</button>
+        <input type="number" id="planAgeInput" class="fi-inp" placeholder="Enter exact age" min="18" max="85" style="width:140px;padding:9px;text-align:center"
+          oninput="var v=parseFloat(this.value);if(v>=18&&v<=85)znfAgeTrigger(v)">
+        <button class="btn-p" style="padding:9px 18px" onclick="znfAgeTrigger(parseFloat(document.getElementById('planAgeInput').value)||25)">Go</button>
       </div>
     </div>
   </div>
@@ -2169,7 +2294,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
           </div>
         </div>
         <div class="nudge" style="margin-top:14px"><strong>For clarity:</strong> A pure term life plan combined with disciplined investing typically delivers superior outcomes in both protection and wealth creation compared to traditional insurance-investment combinations.</div>
-        <button class="calbtn" style="margin-top:14px;background:var(--teal)" onclick="downloadPDF('irr')">📥 Download Result as PDF</button>
+        <button class="calbtn" style="margin-top:14px;background:var(--teal)" onclick="showLeadModal('irr')">📥 Download Result as PDF</button>
       </div>
     </div>
   </div>
@@ -2280,7 +2405,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
         </div>
 
         <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px">
-          <button class="calbtn" style="flex:1;background:var(--teal)" onclick="downloadPDF('goals')">📥 Download Goals PDF</button>
+          <button class="calbtn" style="flex:1;background:var(--teal)" onclick="showLeadModal('goals')">📥 Download Goals PDF</button>
           <button class="btn-p" style="flex:1;justify-content:center" onclick="nav('contact')">Book Consultation →</button>
         </div>
       </div>
@@ -3346,7 +3471,7 @@ function jyStep1Answer(ans){
 function jyStep2Answer(ans){
   var r=document.getElementById('jym_result');if(!r)return;
   if(ans==='yes'){
-    r.innerHTML='<div class="jy-modal-result" style="background:#f0fdf4;border:1px solid #86efac;color:#166534">\ud83c\udf89 <strong>Smart move!</strong> Quick checks: Is there a co-pay clause? Room rent limit? Is cover at least \u20b910\u201315 lakh? Medical inflation is 10-14% per year. If any of these are issues, consider upgrading.</div>'
+    r.innerHTML='<div class="jy-modal-result" style="background:#f0fdf4;border:1px solid #86efac;color:#166534">\ud83c\udf89 <strong>Smart move!</strong> Quick checks: Is there a co-pay clause? Room rent limit? Is cover at least \u20b910\u201315 lakh? Medical inflation is 10201314% per year. If any of these are issues, consider upgrading.</div>'
       +'<button class="btn-p" style="width:100%;justify-content:center;margin-top:12px" onclick="jyComplete(2)">Got it! Next Step \u2192</button>';
   } else {
     r.innerHTML='<div class="jy-modal-result" style="background:#fef2f2;border:1px solid #fca5a5;color:#991b1b">\ud83d\udea8 <strong>Critical gap!</strong> One hospitalisation costs \u20b92\u201310 lakh. Get at least \u20b910 lakh cover. Premium is just \u20b98,000\u201315,000/year for a 30-year-old.</div>'
@@ -3856,7 +3981,7 @@ function showPopup(el, title, what, why) {
 }
 
 /* ── CAROUSEL ── */
-var cIdx = 0, cTotal = 5, cTimer = null;
+var cIdx = 0, cTotal = 6, cTimer = null;
 function carouselInit() {
   try {
     cIdx = 0;
@@ -3907,6 +4032,35 @@ function carouselGoto(n) {
   } catch(e){ console.error('carouselGoto error:', e); }
 }
 carouselInit();
+
+/* ── CAROUSEL TOUCH & MOUSE SWIPE ── */
+(function(){
+  var el = document.getElementById('featureCarousel');
+  if (!el) return;
+  var touchStartX = 0, touchStartY = 0;
+  // Touch events (mobile)
+  el.addEventListener('touchstart', function(e){
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+  }, {passive:true});
+  el.addEventListener('touchend', function(e){
+    var dx = e.changedTouches[0].clientX - touchStartX;
+    var dy = Math.abs(e.changedTouches[0].clientY - touchStartY);
+    if (Math.abs(dx) > 44 && dy < 70) {
+      carouselMove(dx < 0 ? 1 : -1);
+    }
+  }, {passive:true});
+  // Mouse drag (desktop)
+  var mouseStartX = 0, mouseDown = false;
+  el.addEventListener('mousedown', function(e){ mouseStartX = e.clientX; mouseDown = true; });
+  window.addEventListener('mouseup', function(e){
+    if (!mouseDown) return;
+    mouseDown = false;
+    var dx = e.clientX - mouseStartX;
+    // Only swipe if the drag happened inside the carousel
+    if (Math.abs(dx) > 50 && el.matches(':hover')) carouselMove(dx < 0 ? 1 : -1);
+  });
+})();
 
 /* ── MARKET DATA ── */
 function refreshMarketData() {
@@ -7532,6 +7686,404 @@ function showContactSuccess(){
   el.textContent='Message sent! We will be in touch shortly.';
   setTimeout(function(){if(el&&el.parentNode)el.parentNode.removeChild(el);},6000);
 }
+
+/* ══════════════════════════════════
+   ZNF ANALYTICS — Precise URL Routing + GA4 Tracking
+   Every page · article · calculator · tool gets its own URL
+   Tracks: page_view · time_on_section · calculator_used
+══════════════════════════════════ */
+(function(){
+
+  /* ── Title map for every trackable URL ── */
+  var ZNF_TITLES = {
+    'home':                   'Home — Zero Noise Finance™',
+    'articles':               'Articles — Zero Noise Finance™',
+    'planning':               'Financial Planning — Zero Noise Finance™',
+    'calculators':            'Calculators — Zero Noise Finance™',
+    'calculators/returns':    'Returns Calculator — ZNF',
+    'calculators/sip':        'SIP Calculator — ZNF',
+    'calculators/stepup':     'Step-Up SIP Calculator — ZNF',
+    'calculators/emi':        'EMI Calculator — ZNF',
+    'calculators/tax':        'Income Tax Calculator — ZNF',
+    'calculators/retirement': 'Retirement Calculator — ZNF',
+    'calculators/termplan':   'Term Plan Calculator — ZNF',
+    'insurance':              'Insurance Analysis — ZNF',
+    'insurance/irr':          'Insurance IRR Calculator — ZNF',
+    'insurance/term':         'Term Cover Analysis — ZNF',
+    'goals':                  'Goal-Based Planning — ZNF',
+    'debt':                   'Debt Health Check — ZNF',
+    'funds':                  'Mutual Fund Explorer — ZNF',
+    'ratios':                 'Ratio Analysis — ZNF',
+    'faq':                    'FAQ — Zero Noise Finance™',
+    'contact':                'Consult Us — Zero Noise Finance™'
+  };
+
+  /* ── Time-on-section tracker ── */
+  var _tEntry = Date.now();
+  var _tPath  = 'home';
+
+  function _flushSection(nextPath) {
+    var secs = Math.round((Date.now() - _tEntry) / 1000);
+    if (secs >= 2 && typeof gtag === 'function') {
+      gtag('event', 'time_on_section', {
+        section_path:     _tPath,
+        section_title:    ZNF_TITLES[_tPath] || _tPath,
+        duration_seconds: secs
+      });
+    }
+    _tEntry = Date.now();
+    _tPath  = nextPath;
+  }
+
+  /* ── Core tracker: update URL + fire GA4 page_view ── */
+  window.znfTrack = function(path, titleOverride, skipPush) {
+    _flushSection(path);
+    var t = titleOverride || ZNF_TITLES[path] || 'Zero Noise Finance™';
+    document.title = t;
+    if (!skipPush) history.pushState(null, '', '#' + path);
+    if (typeof gtag === 'function') {
+      gtag('config', 'G-XYBSTTGGP8', {
+        page_title:    t,
+        page_location: window.location.href,
+        page_path:     '/#' + path,
+        send_page_view: true
+      });
+    }
+  };
+
+  /* ── Override nav() — all URL management goes through znfTrack ── */
+  var _navOrig = nav;
+  nav = function(p, skipHash) {
+    _navOrig(p, true);               // pass skipHash=true; we own the URL
+    znfTrack(p, null, !!skipHash);
+  };
+
+  /* ── Override switchCalc() ── */
+  var _scOrig = switchCalc;
+  switchCalc = function(id, btn) {
+    _scOrig(id, btn);
+    znfTrack('calculators/' + id);
+  };
+
+  /* ── Override switchInsTab() ── */
+  var _siOrig = switchInsTab;
+  switchInsTab = function(t) {
+    _siOrig(t);
+    znfTrack('insurance/' + t);
+  };
+
+  /* ── Override openArticle() ── */
+  var _oaOrig = openArticle;
+  openArticle = function(id) {
+    var a = (typeof ARTICLES !== 'undefined') && ARTICLES.find(function(x){ return x.id === id; });
+    _oaOrig(id);
+    if (a) znfTrack('article/' + id, a.title + ' — Zero Noise Finance™', true);
+  };
+
+  /* ── Override closeArticle() ── */
+  var _caOrig = closeArticle;
+  closeArticle = function() {
+    _caOrig();
+    znfTrack('articles', null, true);
+  };
+
+  /* ── Full upgraded handleRoute() ── */
+  handleRoute = function() {
+    var hash = window.location.hash.replace('#','');
+    if (!hash || hash === 'home') {
+      _navOrig('home', true); znfTrack('home', null, true); return;
+    }
+    // #article/id
+    if (hash.indexOf('article/') === 0) {
+      _navOrig('articles', true);
+      setTimeout(function(){ openArticle(hash.slice(8)); }, 150);
+      return;
+    }
+    // #calculators/tab  or legacy #calculator/tab
+    if (hash.indexOf('calculators/') === 0 || hash.indexOf('calculator/') === 0) {
+      var cId = hash.replace('calculators/','').replace('calculator/','');
+      _navOrig('calculators', true);
+      setTimeout(function(){ switchCalc(cId, null); }, 150);
+      return;
+    }
+    // #insurance/tab
+    if (hash.indexOf('insurance/') === 0) {
+      _navOrig('insurance', true);
+      setTimeout(function(){ switchInsTab(hash.slice(10)); }, 150);
+      return;
+    }
+    // #fund/code
+    if (hash.indexOf('fund/') === 0) {
+      _navOrig('funds', true);
+      setTimeout(function(){ if(typeof selectFund==='function') selectFund(parseInt(hash.slice(5))); }, 500);
+      znfTrack('funds', null, true);
+      return;
+    }
+    // #faq/item
+    if (hash.indexOf('faq/') === 0) {
+      var fId = hash.slice(4);
+      _navOrig('faq', true);
+      setTimeout(function(){ toggleFaqItem(fId); openFaq(fId); }, 200);
+      znfTrack('faq/' + fId, 'FAQ: ' + fId + ' — ZNF', true);
+      return;
+    }
+    // Standard pages
+    var VALID = ['articles','planning','calculators','insurance','goals','debt','ratios','funds','faq','contact'];
+    if (VALID.indexOf(hash) >= 0) {
+      _navOrig(hash, true); znfTrack(hash, null, true);
+    }
+  };
+
+  /* ── Track calculator_used on every .calbtn click ── */
+  document.addEventListener('click', function(e) {
+    var btn = e.target.closest('.calbtn');
+    if (!btn || typeof gtag !== 'function') return;
+    // Skip download/lead buttons
+    if (btn.id === 'znf-lead-submit' || btn.id === 'znf-verified-btn') return;
+    var calcTypes = ['sip','stepup','retirement','tax','emi','termplan','returns'];
+    for (var i = 0; i < calcTypes.length; i++) {
+      var panel = document.getElementById('panel-' + calcTypes[i]);
+      if (panel && panel.style.display !== 'none' && panel.contains(btn)) {
+        gtag('event','calculator_used',{calculator: calcTypes[i]}); return;
+      }
+    }
+    var activePageId = '';
+    document.querySelectorAll('.page.active').forEach(function(pg){ activePageId = pg.id; });
+    if (activePageId) {
+      gtag('event','calculator_used',{calculator: activePageId.replace('page-','')});
+    }
+  }, true);
+
+  /* ── Track tab hide/show (user switches tab or closes) ── */
+  document.addEventListener('visibilitychange', function(){
+    if (document.hidden) _flushSection(_tPath);
+    else _tEntry = Date.now();
+  });
+
+  /* ── Track download attempts ── */
+  var _slmOrig = showLeadModal;
+  window.showLeadModal = function(calcType, cb) {
+    if (typeof gtag === 'function' && calcType) {
+      gtag('event','download_attempted',{calculator: calcType});
+    }
+    _slmOrig(calcType, cb);
+  };
+
+  /* ── Fire initial page_view after loader ── */
+  setTimeout(function(){
+    var initHash = window.location.hash.replace('#','') || 'home';
+    if (ZNF_TITLES[initHash]) {
+      znfTrack(initHash, null, true);
+    } else {
+      znfTrack('home', null, true);
+    }
+  }, 3300);
+
+})();
+
+/* ══════════════════════════════════
+   ZNF LEAD CAPTURE SYSTEM — Web3Forms
+══════════════════════════════════ */
+var ZNF_LEAD_KEY = 'b54d2da6-ceaf-495a-aa05-f55331495fed';
+var znfLeadCaptured = (sessionStorage.getItem('znf_lead_ok') === '1');
+var znfPendingDownload = null;
+var znfPendingCallback = null;
+
+function showLeadModal(calcType, callback) {
+  // If already captured this session, proceed directly
+  if (znfLeadCaptured) {
+    if (calcType) downloadPDF(calcType);
+    if (callback) callback();
+    return;
+  }
+  znfPendingDownload = calcType || null;
+  znfPendingCallback = callback || null;
+
+  // Reset modal to form state
+  var formEl  = document.getElementById('znf-lead-form');
+  var succEl  = document.getElementById('znf-lead-success');
+  var errEl   = document.getElementById('znf-lead-err');
+  var btn     = document.getElementById('znf-lead-submit');
+  if (formEl) formEl.style.display = 'block';
+  if (succEl) succEl.style.display = 'none';
+  if (errEl)  errEl.style.display  = 'none';
+  if (btn)    { btn.textContent = 'Download My Sheet →'; btn.disabled = false; }
+
+  // Pre-fill name from session if returning
+  var storedName = sessionStorage.getItem('znf_lead_name');
+  if (storedName) {
+    var nameField = document.getElementById('znf_name');
+    if (nameField && !nameField.value) nameField.value = storedName;
+  }
+
+  var ovl = document.getElementById('znf-lead-overlay');
+  if (ovl) { ovl.classList.add('show'); document.body.style.overflow = 'hidden'; }
+}
+
+function closeLeadModal(proceedAnyway) {
+  var ovl = document.getElementById('znf-lead-overlay');
+  if (ovl) { ovl.classList.remove('show'); }
+  document.body.style.overflow = '';
+  if (proceedAnyway) {
+    var pd = znfPendingDownload;
+    var pc = znfPendingCallback;
+    znfPendingDownload = null; znfPendingCallback = null;
+    setTimeout(function(){
+      if (pd) downloadPDF(pd);
+      if (pc) pc();
+    }, 150);
+  }
+}
+
+async function submitZnfLead() {
+  var btn    = document.getElementById('znf-lead-submit');
+  var errEl  = document.getElementById('znf-lead-err');
+  var name   = (document.getElementById('znf_name').value  || '').trim();
+  var email  = (document.getElementById('znf_email').value || '').trim();
+  var phone  = (document.getElementById('znf_phone').value || '').trim();
+
+  if (errEl) errEl.style.display = 'none';
+
+  // Validate
+  if (!name || name.length < 2) {
+    if (errEl) { errEl.textContent = 'Please enter your full name.'; errEl.style.display = 'block'; }
+    return;
+  }
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    if (errEl) { errEl.textContent = 'Please enter a valid email address.'; errEl.style.display = 'block'; }
+    return;
+  }
+  if (name.length > 120 || email.length > 120) {
+    if (errEl) { errEl.textContent = 'Input too long. Please shorten.'; errEl.style.display = 'block'; }
+    return;
+  }
+
+  btn.textContent = 'Sending…'; btn.disabled = true;
+
+  try {
+    var res = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        access_key: ZNF_LEAD_KEY,
+        subject:    'ZNF Lead — ' + name + ' — ' + (znfPendingDownload || 'Planning Journey'),
+        from_name:  name,
+        replyto:    email,
+        name:       name,
+        email:      email,
+        phone:      phone || 'Not provided',
+        download:   znfPendingDownload || 'Planning Age Trigger',
+        source:     'ZNF Calculator Lead Capture',
+        botcheck:   ''
+      })
+    });
+    var data = await res.json();
+    if (data.success) {
+      znfLeadCaptured = true;
+      sessionStorage.setItem('znf_lead_ok', '1');
+      sessionStorage.setItem('znf_lead_name', name);
+      // Show success state
+      var formEl = document.getElementById('znf-lead-form');
+      var succEl = document.getElementById('znf-lead-success');
+      if (formEl) formEl.style.display = 'none';
+      if (succEl) succEl.style.display = 'block';
+      // Wire "Download Verified" button
+      var vbtn = document.getElementById('znf-verified-btn');
+      if (vbtn) {
+        vbtn.onclick = function() { closeLeadModal(true); };
+      }
+    } else {
+      throw new Error(data.message || 'Submission failed');
+    }
+  } catch(e) {
+    if (errEl) { errEl.textContent = 'Could not submit right now. You can skip to continue.'; errEl.style.display = 'block'; }
+    btn.textContent = 'Download My Sheet →';
+    btn.disabled = false;
+  }
+}
+
+/* ── Planning Age Trigger ── */
+var znfAgeTriggerFired = false;
+function znfAgeTrigger(age) {
+  if (znfLeadCaptured || znfAgeTriggerFired) {
+    startPlanAtAge(age);
+    return;
+  }
+  znfAgeTriggerFired = true;
+  showLeadModal(null, function(){ startPlanAtAge(age); });
+  // Also set up verified button to start journey
+  setTimeout(function(){
+    var vbtn = document.getElementById('znf-verified-btn');
+    if (vbtn) {
+      vbtn.onclick = function(){
+        znfLeadCaptured = true;
+        sessionStorage.setItem('znf_lead_ok','1');
+        var ovl = document.getElementById('znf-lead-overlay');
+        if(ovl) ovl.classList.remove('show');
+        document.body.style.overflow = '';
+        startPlanAtAge(age);
+      };
+    }
+  }, 200);
+}
+
+/* ── Keyboard / backdrop close ── */
+document.addEventListener('keydown', function(e){
+  if(e.key==='Escape'){
+    var ovl=document.getElementById('znf-lead-overlay');
+    if(ovl&&ovl.classList.contains('show')) closeLeadModal(false);
+  }
+});
 </script>
+
+<!-- ══════════════════════════════════
+     ZNF LEAD CAPTURE MODAL
+══════════════════════════════════ -->
+<div id="znf-lead-overlay">
+  <div id="znf-lead-box">
+    <div class="znf-lead-hdr">
+      <h3>📥 One step to your free download</h3>
+      <p>Your personalised result sheet is ready. Just tell us where to send it.</p>
+    </div>
+    <div class="znf-lead-body">
+      <div class="znf-trust">
+        <span class="znf-trust-icon">🔒</span>
+        <span>We respect your peace of mind. We assure you: <strong>No spam calls, just your requested sheet.</strong></span>
+      </div>
+      <!-- Form -->
+      <div id="znf-lead-form">
+        <div class="fl" style="margin-bottom:13px">
+          <div class="fl-lbl">Full Name</div>
+          <input class="fi-inp" type="text" id="znf_name" placeholder="e.g. Ravi Kumar" autocomplete="name">
+        </div>
+        <div class="fl" style="margin-bottom:13px">
+          <div class="fl-lbl">Email Address</div>
+          <input class="fi-inp" type="email" id="znf_email" placeholder="your@email.com" autocomplete="email">
+        </div>
+        <div class="fl" style="margin-bottom:18px">
+          <div class="fl-lbl">Phone Number <span class="fl-opt">Optional</span></div>
+          <input class="fi-inp opt" type="tel" id="znf_phone" placeholder="+91 98765 43210" autocomplete="tel">
+        </div>
+        <div id="znf-lead-err" style="display:none;padding:9px 13px;background:var(--err-bg);color:var(--err);border:1px solid #fcc;border-radius:var(--rs);font-size:.8rem;margin-bottom:12px"></div>
+        <button class="calbtn" id="znf-lead-submit" onclick="submitZnfLead()" style="margin-bottom:10px">
+          Download My Sheet →
+        </button>
+        <button onclick="closeLeadModal(true)" style="width:100%;padding:8px;font-size:.78rem;color:var(--ink-l);text-decoration:underline;background:none;border:none;cursor:pointer;display:block;text-align:center">
+          Skip — download without submitting
+        </button>
+      </div>
+      <!-- Success state -->
+      <div class="znf-lead-success" id="znf-lead-success">
+        <div class="ls-icon">✅</div>
+        <h4>Verified! Download ready.</h4>
+        <p>Thank you — your sheet is generating now. We'll also send it to your email shortly.</p>
+        <button class="calbtn" id="znf-verified-btn" style="background:var(--teal)">
+          📥 Download Verified Sheet →
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
