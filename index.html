@@ -3467,7 +3467,7 @@ function jyStep1Answer(ans){
 function jyStep2Answer(ans){
   var r=document.getElementById('jym_result');if(!r)return;
   if(ans==='yes'){
-    r.innerHTML='<div class="jy-modal-result" style="background:#f0fdf4;border:1px solid #86efac;color:#166534">\ud83c\udf89 <strong>Smart move!</strong> Quick checks: Is there a co-pay clause? Room rent limit? Is cover at least \u20b910\u201315 lakh? Medical inflation is 10201314% per year. If any of these are issues, consider upgrading.</div>'
+    r.innerHTML='<div class="jy-modal-result" style="background:#f0fdf4;border:1px solid #86efac;color:#166534">\ud83c\udf89 <strong>Smart move!</strong> Quick checks: Is there a co-pay clause? Room rent limit? Is cover at least \u20b910\u201315 lakh? Medical inflation is 10-14% per year. If any of these are issues, consider upgrading.</div>'
       +'<button class="btn-p" style="width:100%;justify-content:center;margin-top:12px" onclick="jyComplete(2)">Got it! Next Step \u2192</button>';
   } else {
     r.innerHTML='<div class="jy-modal-result" style="background:#fef2f2;border:1px solid #fca5a5;color:#991b1b">\ud83d\udea8 <strong>Critical gap!</strong> One hospitalisation costs \u20b92\u201310 lakh. Get at least \u20b910 lakh cover. Premium is just \u20b98,000\u201315,000/year for a 30-year-old.</div>'
