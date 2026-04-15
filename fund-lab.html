@@ -559,6 +559,7 @@ async function doLogin(){
       document.getElementById('app').style.display='block';
     },500);
     sessionStorage.setItem('znf_lab_auth','1');
+    localStorage.setItem('znf_lab_auth','1');
     initApp();
   } else {
     const err = document.getElementById('login-err');
@@ -569,18 +570,18 @@ async function doLogin(){
 
 function doLogout(){
   sessionStorage.removeItem('znf_lab_auth');
+  localStorage.removeItem('znf_lab_auth');
   location.reload();
 }
 
 // ═══════════════════════════════════════════
 // API KEY
 // ═══════════════════════════════════════════
-let CLAUDE_KEY = sessionStorage.getItem('znf_ckey')||'';
-if(CLAUDE_KEY){ document.getElementById('claude-api-key').value=CLAUDE_KEY; document.getElementById('api-ok-badge').style.display='flex'; }
+let CLAUDE_KEY = localStorage.getItem('znf_ckey')||'';
 
 function saveApiKey(v){
   CLAUDE_KEY=v.trim();
-  sessionStorage.setItem('znf_ckey',CLAUDE_KEY);
+  if(CLAUDE_KEY) localStorage.setItem('znf_ckey',CLAUDE_KEY);
   const badge = document.getElementById('api-ok-badge');
   badge.style.display = CLAUDE_KEY.startsWith('sk-ant') ? 'flex' : 'none';
 }
@@ -1574,18 +1575,13 @@ function renderPortfolioResults(funds,blended,sectors,holdings,ai){
 // CHECK SESSION
 // ═══════════════════════════════════════════
 window.addEventListener('load',()=>{
-  if(sessionStorage.getItem('znf_lab_auth')==='1'){
+  if(localStorage.getItem('znf_lab_auth')==='1'||sessionStorage.getItem('znf_lab_auth')==='1'){
     document.getElementById('login-screen').style.display='none';
     document.getElementById('app').style.display='block';
     initApp();
   }
-  // Pre-fill API key
-  const savedKey=sessionStorage.getItem('znf_ckey')||'';
-  if(savedKey){
-    document.getElementById('claude-api-key').value=savedKey;
-    CLAUDE_KEY=savedKey;
-    if(savedKey.startsWith('sk-ant')) document.getElementById('api-ok-badge').style.display='flex';
-  }
+  const saved=localStorage.getItem('znf_ckey')||'';
+  if(saved){ CLAUDE_KEY=saved; document.getElementById('claude-api-key').value=saved; document.getElementById('api-ok-badge').style.display='flex'; }
 });
 </script>
 </body>
