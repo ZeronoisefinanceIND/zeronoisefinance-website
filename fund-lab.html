@@ -249,7 +249,9 @@ input,select,textarea{font-family:var(--fb)}
     <div class="abt"><strong>Claude API Key</strong><span>Returns are free (mfapi.in). AI analysis needs your Anthropic key.</span></div>
     <input type="password" class="abinp" id="akey" placeholder="sk-ant-api03-...">
     <button class="absave" onclick="saveKey()">Save</button>
+    <button class="absave" style="background:var(--teal)" onclick="testKey()">Test</button>
     <div class="abok" id="akok">✅ Active</div>
+    <div class="abok" id="akfail" style="color:#f87171;display:none">❌ Key failed — check Console</div>
   </div>
   <div class="tabs">
     <div class="tabs-in">
@@ -323,6 +325,20 @@ function saveKey(){
   var v=(document.getElementById('akey').value||'').trim(); if(!v) return;
   CKEY=v; try{localStorage.setItem('znf_ckey',v);}catch(e){}
   document.getElementById('akok').style.display='flex';
+}
+function testKey(){
+  if(!CKEY){ alert('Enter and save your API key first.'); return; }
+  document.getElementById('akok').style.display='none';
+  document.getElementById('akfail').style.display='none';
+  callAI('Reply with exactly: OK').then(function(r){
+    if(r && r.trim().indexOf('OK')>=0){
+      document.getElementById('akok').style.display='flex';
+      alert('✅ API key working correctly!');
+    } else {
+      document.getElementById('akfail').style.display='flex';
+      alert('❌ API key test failed. Check browser Console (F12) for error details.');
+    }
+  });
 }
 function loadKey(){
   try{ var v=localStorage.getItem('znf_ckey')||''; if(v){CKEY=v;document.getElementById('akey').value=v;document.getElementById('akok').style.display='flex';} }catch(e){}
@@ -443,16 +459,42 @@ function handlePdf(file,id){
 }
 
 // NAV CALCS
-function pnd(str){ var p=str.split('-'); return new Date(p[2]+'-'+p[1]+'-'+p[0]); }
-function calcRet(nav,days){
-  if(!nav||nav.length<2) return null;
-  var ld=pnd(nav[0].date), td=new Date(ld); td.setDate(td.getDate()-days);
-  var best=null,bd=Infinity;
-  for(var i=0;i<nav.length;i++){var d=Math.abs(pnd(nav[i].date)-td);if(d<bd){bd=d;best=nav[i];}}
-  if(!best) return null;
-  return (((parseFloat(nav[0].nav)-parseFloat(best.nav))/parseFloat(best.nav))*100).toFixed(2);
+function pnd(str){ var p=str.split('-'); return new Date(parseInt(p[2]),parseInt(p[1])-1,parseInt(p[0])); }
+
+function navAtDate(nav, targetDate){
+  var best=null, bd=Infinity;
+  for(var i=0;i<nav.length;i++){
+    var diff=Math.abs(pnd(nav[i].date).getTime()-targetDate.getTime());
+    if(diff<bd){bd=diff;best=nav[i];}
+    if(diff>bd) break; // nav is newest-first, once diff grows we've passed it
+  }
+  return best;
 }
-function calcCAGR(nav,yr){ var r=calcRet(nav,Math.round(yr*365)); if(r===null) return null; return ((Math.pow(1+parseFloat(r)/100,1/yr)-1)*100).toFixed(2); }
+
+function calcRet(nav, months){
+  // Absolute return over N months
+  if(!nav||nav.length<2) return null;
+  var ld=pnd(nav[0].date);
+  var td=new Date(ld); td.setMonth(td.getMonth()-months);
+  var old=navAtDate(nav,td);
+  if(!old) return null;
+  return (((parseFloat(nav[0].nav)-parseFloat(old.nav))/parseFloat(old.nav))*100).toFixed(2);
+}
+
+function calcCAGR(nav, yr){
+  // True CAGR: find NAV exactly yr years ago, compute (end/start)^(1/yr)-1
+  if(!nav||nav.length<2) return null;
+  var ld=pnd(nav[0].date);
+  var td=new Date(ld); td.setFullYear(td.getFullYear()-yr);
+  var old=navAtDate(nav,td);
+  if(!old) return null;
+  var endNAV=parseFloat(nav[0].nav), startNAV=parseFloat(old.nav);
+  if(startNAV<=0) return null;
+  // Exact days between for precision
+  var exactYears=(ld.getTime()-pnd(old.date).getTime())/(365.25*24*3600*1000);
+  if(exactYears<0.1) return null;
+  return ((Math.pow(endNAV/startNAV, 1/exactYears)-1)*100).toFixed(2);
+}
 function getRolling(nav,pd){
   if(!nav||nav.length<pd+30) return null;
   var arr=nav.slice().reverse(), res=[];
@@ -466,14 +508,33 @@ function getRolling(nav,pd){
 
 // CLAUDE
 function callAI(prompt,pdf){
-  if(!CKEY) return Promise.resolve(null);
-  var cnt=pdf?[{type:'document',source:{type:'base64',media_type:'application/pdf',data:pdf}},{type:'text',text:prompt}]:[{type:'text',text:prompt}];
-  return fetch('https://api.anthropic.com/v1/messages',{method:'POST',
-    headers:{'Content-Type':'application/json','x-api-key':CKEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:2000,messages:[{role:'user',content:cnt}]})
-  }).then(function(r){if(!r.ok)throw new Error();return r.json();})
-  .then(function(d){return d.content.map(function(b){return b.type==='text'?b.text:'';}).join('');})
-  .catch(function(){return null;});
+  if(!CKEY){ console.warn('No API key set'); return Promise.resolve(null); }
+  var cnt=pdf
+    ? [{type:'document',source:{type:'base64',media_type:'application/pdf',data:pdf}},{type:'text',text:prompt}]
+    : [{type:'text',text:prompt}];
+  return fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{
+      'Content-Type':'application/json',
+      'x-api-key':CKEY,
+      'anthropic-version':'2023-06-01',
+      'anthropic-dangerous-direct-browser-access':'true'
+    },
+    body:JSON.stringify({
+      model:'claude-sonnet-4-5',
+      max_tokens:2500,
+      messages:[{role:'user',content:cnt}]
+    })
+  })
+  .then(function(r){
+    if(!r.ok) return r.text().then(function(t){ console.error('Claude API error '+r.status+':',t); return null; });
+    return r.json();
+  })
+  .then(function(d){
+    if(!d) return null;
+    return d.content.map(function(b){return b.type==='text'?b.text:'';}).join('');
+  })
+  .catch(function(e){ console.error('Claude fetch error:',e); return null; });
 }
 function extractFS(pdf,name){
   return callAI('Extract data for fund "'+name+'" from this factsheet. Return ONLY valid JSON:\n{"pe_ratio":null,"pb_ratio":null,"beta":null,"sharpe_ratio":null,"standard_deviation":null,"sortino_ratio":null,"alpha":null,"aum_cr":null,"expense_ratio":null,"exit_load":null,"fund_manager":null,"benchmark":null,"portfolio_turnover":null,"top_holdings":[{"name":"","weight":0}],"sector_allocation":[{"sector":"","weight":0}],"market_cap_split":{"large":null,"mid":null,"small":null},"equity_pct":null,"debt_pct":null,"cash_pct":null,"strategy_summary":""}',pdf)
@@ -498,8 +559,8 @@ function runCompare(){
   var chain=Promise.resolve();
   loaded.forEach(function(s){
     chain=chain.then(function(){
-      s.returns={'1W':calcRet(s.navHistory,7),'1M':calcRet(s.navHistory,30),'3M':calcRet(s.navHistory,91),'6M':calcRet(s.navHistory,182),'1Y':calcCAGR(s.navHistory,1),'2Y':calcCAGR(s.navHistory,2),'3Y':calcCAGR(s.navHistory,3),'5Y':calcCAGR(s.navHistory,5)};
-      s.rolling1Y=getRolling(s.navHistory,365);
+      s.returns={'1W':calcRet(s.navHistory,0.25),'1M':calcRet(s.navHistory,1),'3M':calcRet(s.navHistory,3),'6M':calcRet(s.navHistory,6),'1Y':calcCAGR(s.navHistory,1),'2Y':calcCAGR(s.navHistory,2),'3Y':calcCAGR(s.navHistory,3),'5Y':calcCAGR(s.navHistory,5)};
+      s.rolling1Y=getRolling(s.navHistory,252);
       var p=Promise.resolve();
       if(s.pdfBase64){msgEl.textContent='Extracting '+(s.schemeName||'').split(' ').slice(0,3).join(' ')+'...';p=p.then(function(){return extractFS(s.pdfBase64,s.schemeName||'');}).then(function(fd){s.factsheetData=fd;});}
       if(CKEY){p=p.then(function(){msgEl.textContent='AI analysing '+(s.schemeName||'').split(' ').slice(0,3).join(' ')+'...';return getAI(s.schemeName||'',s.factsheetData||{},s.returns,s.rolling1Y);}).then(function(ai){s.aiAnalysis=ai;});}
@@ -693,8 +754,8 @@ function runPort(){
   var chain=Promise.resolve();
   loaded.forEach(function(s){
     chain=chain.then(function(){
-      s.returns={'1Y':calcCAGR(s.navHistory,1),'3Y':calcCAGR(s.navHistory,3),'5Y':calcCAGR(s.navHistory,5)};
-      s.rolling1Y=getRolling(s.navHistory,365);
+      s.returns={'1Y':calcCAGR(s.navHistory,1),'3Y':calcCAGR(s.navHistory,3),'5Y':calcCAGR(s.navHistory,5),'10Y':calcCAGR(s.navHistory,10)};
+      s.rolling1Y=getRolling(s.navHistory,252);
       if(s.pdfBase64){msgEl.textContent='Extracting '+s.schemeName.split(' ').slice(0,3).join(' ')+'...';return extractFS(s.pdfBase64,s.schemeName).then(function(fd){s.factsheetData=fd;});}
     });
   });
