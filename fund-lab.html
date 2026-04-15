@@ -1,0 +1,1592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZNF Fund Intelligence Lab — Founder Access</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  --pink:#d42b51;--pink-s:#f5e8ec;--pink-m:#e06070;
+  --teal:#1a6b6b;--teal-s:#e6f2f2;--teal-m:#2a9090;
+  --ink:#1a1a24;--ink-m:#3d3d4f;--ink-l:#6b6b80;
+  --rule:#e2e2ec;--bg:#fafaf8;--bgw:#f5f4f0;--bgp:#ffffff;
+  --ok:#1e7e4f;--ok-bg:#edf7f2;--warn:#b45309;--warn-bg:#fef3e2;
+  --err:#b91c1c;--err-bg:#fef2f2;
+  --gold:#b8860b;--gold-bg:#fefaed;
+  --fs:'Lora',Georgia,serif;--fb:'Source Sans 3',system-ui,sans-serif;--fm:'JetBrains Mono',monospace;
+  --sh1:0 1px 3px rgba(0,0,0,.07),0 1px 2px rgba(0,0,0,.05);
+  --sh2:0 4px 16px rgba(0,0,0,.08),0 2px 6px rgba(0,0,0,.05);
+  --sh3:0 8px 32px rgba(0,0,0,.1),0 4px 12px rgba(0,0,0,.06);
+  --r:10px;--rs:6px;--max:1280px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--fb);line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:var(--teal);text-decoration:none}
+button{cursor:pointer;border:none;background:none;font-family:inherit}
+input,select,textarea{font-family:var(--fb)}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bgw)}
+::-webkit-scrollbar-thumb{background:var(--rule);border-radius:2px}
+
+/* ── LOGIN SCREEN ── */
+#login-screen{
+  position:fixed;inset:0;z-index:9999;
+  background:#0a0a0c;
+  display:flex;align-items:center;justify-content:center;
+}
+#login-screen::before{
+  content:'';position:absolute;width:600px;height:600px;
+  background:radial-gradient(circle,rgba(212,43,81,.08) 0%,transparent 70%);
+  border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);
+  pointer-events:none;
+}
+.login-box{
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  border-radius:16px;padding:48px 42px;width:100%;max-width:420px;
+  backdrop-filter:blur(20px);position:relative;
+}
+.login-logo{display:flex;align-items:center;gap:8px;margin-bottom:32px;justify-content:center}
+.ll-zero{background:var(--pink);color:#fff;font-family:var(--fb);font-weight:800;font-size:.85rem;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.ll-noise{background:#fff;color:#0a0a0c;font-family:var(--fb);font-weight:700;font-size:.9rem;padding:4px 10px;border-radius:3px}
+.ll-fin{font-family:var(--fb);font-weight:700;font-size:.9rem;color:#fff}
+.login-title{font-family:var(--fs);font-size:1.4rem;font-weight:600;color:#fff;text-align:center;margin-bottom:6px}
+.login-sub{font-size:.8rem;color:rgba(255,255,255,.35);text-align:center;margin-bottom:28px;letter-spacing:.05em;text-transform:uppercase}
+.lf-group{margin-bottom:16px}
+.lf-group label{display:block;font-size:.75rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:8px}
+.lf-group input{
+  width:100%;padding:12px 16px;background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.1);border-radius:8px;
+  color:#fff;font-size:.9rem;outline:none;transition:border-color .2s;
+}
+.lf-group input:focus{border-color:var(--pink)}
+.lf-group input::placeholder{color:rgba(255,255,255,.2)}
+.login-btn{
+  width:100%;padding:13px;background:var(--pink);color:#fff;
+  border-radius:8px;font-size:.9rem;font-weight:600;margin-top:8px;
+  transition:background .2s,box-shadow .2s;
+  box-shadow:0 4px 20px rgba(212,43,81,.3);
+}
+.login-btn:hover{background:#b8244a;box-shadow:0 6px 28px rgba(212,43,81,.45)}
+.login-err{background:rgba(185,28,28,.15);border:1px solid rgba(185,28,28,.3);color:#fca5a5;font-size:.82rem;padding:10px 14px;border-radius:6px;margin-top:12px;display:none;text-align:center}
+.login-badge{text-align:center;margin-top:20px;font-size:.7rem;color:rgba(255,255,255,.2);letter-spacing:.06em}
+#login-screen.fade-out{animation:fadeOut .5s ease forwards}
+@keyframes fadeOut{to{opacity:0;pointer-events:none}}
+
+/* ── APP SHELL ── */
+#app{display:none}
+.app-nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(250,250,248,.92);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--rule);height:58px;
+}
+.app-nav-inner{max-width:var(--max);margin:0 auto;height:100%;display:flex;align-items:center;justify-content:space-between;padding:0 24px}
+.nav-logo{display:flex;align-items:center;gap:6px;cursor:pointer}
+.logo-zero{background:var(--pink);color:#fff;font-family:var(--fb);font-weight:700;font-size:.6rem;width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center}
+.logo-noise{background:var(--ink);color:#fff;font-family:var(--fb);font-weight:600;font-size:.68rem;padding:3px 7px;border-radius:3px}
+.logo-fin{font-family:var(--fb);font-weight:700;font-size:.84rem;color:var(--ink);margin-left:2px}
+.nav-badge{background:var(--gold-bg);border:1px solid var(--gold);color:var(--gold);font-size:.65rem;font-weight:700;padding:2px 8px;border-radius:20px;letter-spacing:.08em;text-transform:uppercase}
+.nav-right{display:flex;align-items:center;gap:12px}
+.nav-home-btn{font-size:.8rem;color:var(--ink-m);padding:6px 12px;border-radius:var(--rs);border:1px solid var(--rule);transition:all .2s}
+.nav-home-btn:hover{border-color:var(--teal);color:var(--teal);background:var(--teal-s)}
+.logout-btn{font-size:.8rem;color:var(--ink-l);padding:6px 12px;border-radius:var(--rs);border:1px solid var(--rule);transition:all .2s}
+.logout-btn:hover{border-color:var(--err);color:var(--err);background:var(--err-bg)}
+
+/* ── TABS ── */
+.lab-tabs{background:var(--bgp);border-bottom:1px solid var(--rule)}
+.lab-tabs-inner{max-width:var(--max);margin:0 auto;padding:0 24px;display:flex;gap:2px}
+.lab-tab{padding:14px 20px;font-size:.84rem;font-weight:500;color:var(--ink-l);border-bottom:2.5px solid transparent;transition:all .2s;cursor:pointer}
+.lab-tab:hover{color:var(--ink)}
+.lab-tab.active{color:var(--pink);border-bottom-color:var(--pink);font-weight:600}
+
+/* ── MAIN CONTENT ── */
+.lab-body{max-width:var(--max);margin:0 auto;padding:32px 24px}
+
+/* ── API KEY BANNER ── */
+.api-banner{
+  background:linear-gradient(135deg,#1a1a2e,#2d1a20);
+  border:1px solid rgba(212,43,81,.3);border-radius:var(--r);
+  padding:20px 24px;margin-bottom:28px;display:flex;align-items:center;gap:16px;
+}
+.api-banner-icon{font-size:1.4rem}
+.api-banner-text{flex:1}
+.api-banner-text strong{color:#fff;font-size:.9rem;display:block;margin-bottom:4px}
+.api-banner-text span{color:rgba(255,255,255,.5);font-size:.8rem}
+.api-key-input{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:6px;padding:9px 14px;color:#fff;font-size:.82rem;font-family:var(--fm);width:320px;outline:none}
+.api-key-input:focus{border-color:var(--pink)}
+.api-save-btn{background:var(--pink);color:#fff;padding:9px 18px;border-radius:6px;font-size:.82rem;font-weight:600;transition:background .2s}
+.api-save-btn:hover{background:#b8244a}
+.api-ok{color:#4ade80;font-size:.8rem;display:none;align-items:center;gap:6px}
+
+/* ── SECTION HEADERS ── */
+.s-label{font-size:.71rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--pink);margin-bottom:8px}
+.s-title{font-family:var(--fs);font-size:1.6rem;font-weight:600;color:var(--ink);margin-bottom:10px}
+.s-sub{font-size:.9rem;color:var(--ink-l);line-height:1.7;margin-bottom:28px}
+
+/* ── CATEGORY TOGGLE ── */
+.cat-toggle{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap}
+.cat-btn{padding:8px 18px;border-radius:20px;border:1.5px solid var(--rule);font-size:.82rem;font-weight:500;color:var(--ink-m);transition:all .2s;background:var(--bgp)}
+.cat-btn.active{background:var(--pink);border-color:var(--pink);color:#fff;box-shadow:0 2px 10px rgba(212,43,81,.22)}
+
+/* ── FUND SLOTS ── */
+.funds-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;margin-bottom:28px}
+.fund-slot{background:var(--bgp);border:1.5px solid var(--rule);border-radius:var(--r);padding:20px;transition:border-color .2s}
+.fund-slot.loaded{border-color:var(--teal);background:linear-gradient(135deg,var(--bgp) 0%,var(--teal-s) 100%)}
+.fund-slot.loading{border-color:var(--warn);background:var(--warn-bg)}
+.fund-slot.error{border-color:var(--err);background:var(--err-bg)}
+.slot-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.slot-num{background:var(--bgw);border:1px solid var(--rule);border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;color:var(--ink-l)}
+.slot-remove{color:var(--ink-l);font-size:.8rem;padding:4px 8px;border-radius:4px;border:1px solid var(--rule);transition:all .2s}
+.slot-remove:hover{color:var(--err);border-color:var(--err);background:var(--err-bg)}
+.slot-field{margin-bottom:10px}
+.slot-field label{display:block;font-size:.72rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-l);margin-bottom:5px}
+.slot-field select,.slot-field input[type=text],.slot-field input[type=number]{
+  width:100%;padding:9px 12px;border:1px solid var(--rule);border-radius:6px;
+  font-size:.84rem;color:var(--ink);background:var(--bg);outline:none;transition:border-color .2s;
+}
+.slot-field select:focus,.slot-field input:focus{border-color:var(--teal)}
+.fetch-btn{
+  width:100%;padding:10px;background:var(--teal);color:#fff;border-radius:6px;
+  font-size:.82rem;font-weight:600;transition:background .2s;margin-top:8px;
+}
+.fetch-btn:hover{background:#155a5a}
+.fetch-btn:disabled{background:var(--rule);color:var(--ink-l);cursor:not-allowed}
+.slot-status{font-size:.75rem;margin-top:8px;padding:6px 10px;border-radius:4px;display:none}
+.slot-status.ok{background:var(--ok-bg);color:var(--ok);display:block}
+.slot-status.err{background:var(--err-bg);color:var(--err);display:block}
+.slot-status.loading{background:var(--warn-bg);color:var(--warn);display:block}
+.fund-name-display{font-weight:600;font-size:.88rem;color:var(--teal);margin-top:8px;display:none}
+
+/* ── PDF UPLOAD ── */
+.pdf-upload-zone{
+  border:2px dashed var(--rule);border-radius:8px;padding:20px;text-align:center;
+  cursor:pointer;transition:all .2s;background:var(--bg);margin-top:10px;
+}
+.pdf-upload-zone:hover,.pdf-upload-zone.drag{border-color:var(--teal);background:var(--teal-s)}
+.pdf-upload-zone input{display:none}
+.pdf-icon{font-size:1.5rem;margin-bottom:6px}
+.pdf-text{font-size:.78rem;color:var(--ink-l)}
+.pdf-text strong{color:var(--teal)}
+.pdf-name{font-size:.75rem;color:var(--ok);font-weight:600;margin-top:6px;display:none}
+
+/* ── ADD FUND BUTTON ── */
+.add-fund-btn{
+  display:flex;align-items:center;gap:8px;padding:12px 20px;
+  border:2px dashed var(--rule);border-radius:var(--r);color:var(--ink-l);
+  font-size:.84rem;font-weight:500;width:100%;justify-content:center;
+  transition:all .2s;background:transparent;
+}
+.add-fund-btn:hover{border-color:var(--pink);color:var(--pink);background:var(--pink-s)}
+
+/* ── ANALYSE BUTTON ── */
+.analyse-btn-wrap{text-align:center;margin:24px 0}
+.analyse-btn{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:14px 36px;background:var(--pink);color:#fff;
+  border-radius:var(--r);font-size:.95rem;font-weight:600;
+  box-shadow:0 4px 20px rgba(212,43,81,.3);
+  transition:all .2s;
+}
+.analyse-btn:hover{background:#b8244a;box-shadow:0 6px 28px rgba(212,43,81,.45);transform:translateY(-1px)}
+.analyse-btn:disabled{background:var(--rule);color:var(--ink-l);cursor:not-allowed;transform:none;box-shadow:none}
+
+/* ── RESULTS AREA ── */
+#results-area,#port-results-area{margin-top:36px}
+.results-loading{text-align:center;padding:60px 20px;display:none}
+.spin{width:36px;height:36px;border:3px solid var(--rule);border-top-color:var(--pink);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 16px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.results-loading p{color:var(--ink-l);font-size:.88rem}
+
+/* ── FUND CARD ── */
+.fund-card{
+  background:var(--bgp);border:1px solid var(--rule);border-radius:var(--r);
+  margin-bottom:20px;overflow:hidden;box-shadow:var(--sh1);
+}
+.fund-card-header{
+  padding:20px 24px;background:linear-gradient(135deg,var(--ink) 0%,#2d1a30 100%);
+  display:flex;align-items:flex-start;justify-content:space-between;
+}
+.fch-left{flex:1}
+.fch-name{font-family:var(--fs);font-size:1.1rem;font-weight:600;color:#fff;margin-bottom:4px}
+.fch-meta{font-size:.78rem;color:rgba(255,255,255,.5);display:flex;gap:12px;flex-wrap:wrap}
+.fch-meta span{display:flex;align-items:center;gap:4px}
+.fch-right{display:flex;gap:8px;flex-wrap:wrap}
+.score-badge{
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);
+  border-radius:8px;padding:8px 14px;text-align:center;min-width:70px;
+}
+.score-badge .sb-val{font-family:var(--fm);font-size:1.1rem;font-weight:700;color:#fff}
+.score-badge .sb-label{font-size:.64rem;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.06em}
+.score-badge.good .sb-val{color:#4ade80}
+.score-badge.warn .sb-val{color:#fbbf24}
+.score-badge.bad .sb-val{color:#f87171}
+
+.fund-card-body{padding:24px}
+.metric-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-bottom:20px}
+.metric-tile{background:var(--bg);border:1px solid var(--rule);border-radius:8px;padding:12px 14px}
+.mt-label{font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-l);margin-bottom:4px}
+.mt-val{font-family:var(--fm);font-size:1rem;font-weight:700;color:var(--ink)}
+.mt-val.good{color:var(--ok)}
+.mt-val.warn{color:var(--warn)}
+.mt-val.bad{color:var(--err)}
+.mt-hint{font-size:.7rem;color:var(--ink-l);margin-top:3px;line-height:1.4}
+
+.analysis-block{background:var(--bgw);border-left:3px solid var(--teal);border-radius:0 8px 8px 0;padding:16px 18px;margin-bottom:16px}
+.ab-title{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--teal);margin-bottom:8px}
+.ab-text{font-size:.85rem;color:var(--ink-m);line-height:1.7}
+
+.holdings-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;margin-top:12px}
+.holding-item{background:var(--bgp);border:1px solid var(--rule);border-radius:6px;padding:8px 12px;display:flex;justify-content:space-between;align-items:center}
+.hi-name{font-size:.78rem;color:var(--ink-m);font-weight:500}
+.hi-pct{font-family:var(--fm);font-size:.82rem;font-weight:700;color:var(--ink)}
+
+.returns-table{width:100%;border-collapse:collapse;margin-top:12px}
+.returns-table th{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-l);padding:8px 12px;text-align:left;border-bottom:1px solid var(--rule)}
+.returns-table td{padding:8px 12px;font-size:.84rem;border-bottom:1px solid var(--bgw)}
+.returns-table tr:last-child td{border-bottom:none}
+.ret-fund{font-family:var(--fm);font-weight:600;color:var(--ok)}
+.ret-bench{font-family:var(--fm);color:var(--ink-l)}
+.ret-alpha{font-family:var(--fm);font-weight:700}
+.ret-alpha.pos{color:var(--ok)}
+.ret-alpha.neg{color:var(--err)}
+.verified-badge{display:inline-flex;align-items:center;gap:4px;font-size:.65rem;background:var(--ok-bg);color:var(--ok);padding:2px 6px;border-radius:4px;font-weight:600}
+
+/* ── COMPARISON MATRIX ── */
+.comp-matrix{overflow-x:auto;margin-top:24px}
+.comp-matrix table{width:100%;border-collapse:collapse;min-width:600px}
+.comp-matrix th{background:var(--ink);color:#fff;padding:10px 14px;font-size:.75rem;font-weight:600;text-align:left;white-space:nowrap}
+.comp-matrix th:first-child{min-width:160px}
+.comp-matrix td{padding:9px 14px;font-size:.82rem;border-bottom:1px solid var(--rule)}
+.comp-matrix tr:nth-child(even) td{background:var(--bgw)}
+.comp-matrix .metric-label{font-weight:600;color:var(--ink);font-size:.8rem}
+.comp-matrix .best{background:var(--ok-bg)!important;color:var(--ok);font-weight:700;font-family:var(--fm)}
+.comp-matrix .worst{background:var(--err-bg)!important;color:var(--err);font-family:var(--fm)}
+.comp-matrix .mid{font-family:var(--fm);color:var(--ink-m)}
+
+/* ── OVERLAP ── */
+.overlap-section{margin-top:28px}
+.overlap-pair{background:var(--bgp);border:1px solid var(--rule);border-radius:var(--r);padding:18px 20px;margin-bottom:12px}
+.op-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.op-funds{font-size:.84rem;font-weight:600;color:var(--ink)}
+.op-pct{font-family:var(--fm);font-size:1rem;font-weight:700;padding:4px 12px;border-radius:20px}
+.op-pct.low{background:var(--ok-bg);color:var(--ok)}
+.op-pct.mid{background:var(--warn-bg);color:var(--warn)}
+.op-pct.high{background:var(--err-bg);color:var(--err)}
+.op-stocks{font-size:.78rem;color:var(--ink-l)}
+.op-verdict{font-size:.8rem;color:var(--ink-m);margin-top:6px;padding:8px 12px;background:var(--bgw);border-radius:6px}
+
+/* ── COMBINATION ADVISOR ── */
+.combo-card{background:linear-gradient(135deg,#061a12,#0d2218);border:1px solid rgba(26,107,107,.3);border-radius:var(--r);padding:24px;margin-top:16px}
+.combo-title{font-family:var(--fs);font-size:1rem;font-weight:600;color:#fff;margin-bottom:14px}
+.combo-row{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px}
+.combo-icon{font-size:1rem;margin-top:2px}
+.combo-text{font-size:.84rem;color:rgba(255,255,255,.7);line-height:1.6}
+.combo-text strong{color:#fff}
+
+/* ── CHART CONTAINERS ── */
+.chart-wrap{background:var(--bgp);border:1px solid var(--rule);border-radius:var(--r);padding:20px;margin-bottom:20px}
+.chart-title{font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-l);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.chart-canvas{position:relative;height:260px}
+
+/* ── SECTOR BARS ── */
+.sector-bar-item{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.sbi-label{font-size:.78rem;color:var(--ink-m);min-width:140px;font-weight:500}
+.sbi-bar-wrap{flex:1;background:var(--bgw);border-radius:4px;height:8px;overflow:hidden}
+.sbi-bar{height:100%;border-radius:4px;transition:width .6s ease}
+.sbi-val{font-family:var(--fm);font-size:.75rem;color:var(--ink);min-width:40px;text-align:right;font-weight:600}
+
+/* ── PORTFOLIO TAB ── */
+.port-fund-slot{background:var(--bgp);border:1.5px solid var(--rule);border-radius:var(--r);padding:20px;margin-bottom:16px;transition:border-color .2s}
+.port-fund-slot.loaded{border-color:var(--teal)}
+.pfs-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.pfs-title{font-weight:600;font-size:.88rem;color:var(--ink)}
+
+.alloc-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.alloc-row.three{grid-template-columns:1fr 1fr 1fr}
+
+/* ── ASSET ALLOCATION ── */
+.asset-alloc-card{background:var(--bgp);border:1px solid var(--rule);border-radius:var(--r);padding:20px;margin-bottom:20px}
+.aac-title{font-size:.84rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-l);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.asset-row{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.asset-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.asset-name{font-size:.84rem;color:var(--ink-m);min-width:100px}
+.asset-slider{flex:1;accent-color:var(--teal)}
+.asset-pct{font-family:var(--fm);font-size:.84rem;font-weight:700;color:var(--ink);min-width:36px;text-align:right}
+.alloc-total{font-size:.8rem;padding:8px 12px;border-radius:6px;margin-top:8px;font-weight:600}
+.alloc-total.ok{background:var(--ok-bg);color:var(--ok)}
+.alloc-total.err{background:var(--err-bg);color:var(--err)}
+
+/* ── PORTFOLIO RESULT CARDS ── */
+.port-xray{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-bottom:24px}
+.pxr-card{background:var(--bgp);border:1px solid var(--rule);border-radius:var(--r);padding:20px}
+.pxr-card-title{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-l);margin-bottom:14px;display:flex;align-items:center;gap:6px}
+.pxr-big{font-family:var(--fm);font-size:2rem;font-weight:700;color:var(--ink);margin-bottom:4px}
+.pxr-desc{font-size:.8rem;color:var(--ink-l);line-height:1.5}
+
+/* ── IMPROVEMENT CARDS ── */
+.improve-card{background:var(--warn-bg);border:1px solid rgba(180,83,9,.2);border-radius:var(--r);padding:16px 20px;margin-bottom:12px;display:flex;gap:14px;align-items:flex-start}
+.ic-icon{font-size:1.1rem;margin-top:2px}
+.ic-text strong{display:block;font-size:.84rem;font-weight:600;color:var(--ink);margin-bottom:4px}
+.ic-text span{font-size:.8rem;color:var(--ink-m);line-height:1.6}
+
+/* ── UTILITY ── */
+.divider{height:1px;background:var(--rule);margin:28px 0}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.tag-pink{background:var(--pink-s);color:var(--pink)}
+.tag-teal{background:var(--teal-s);color:var(--teal)}
+.tag-gold{background:var(--gold-bg);color:var(--gold)}
+.tag-ok{background:var(--ok-bg);color:var(--ok)}
+.tag-warn{background:var(--warn-bg);color:var(--warn)}
+.tag-err{background:var(--err-bg);color:var(--err)}
+
+.empty-state{text-align:center;padding:60px 20px;color:var(--ink-l)}
+.empty-icon{font-size:3rem;margin-bottom:16px;opacity:.4}
+.empty-text{font-size:.9rem}
+
+.section-card{background:var(--bgp);border:1px solid var(--rule);border-radius:var(--r);padding:24px;margin-bottom:20px}
+.sc-title{font-family:var(--fs);font-size:1.05rem;font-weight:600;color:var(--ink);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.sc-title span{font-size:1rem}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .funds-grid{grid-template-columns:1fr}
+  .metric-grid{grid-template-columns:repeat(2,1fr)}
+  .api-banner{flex-direction:column;align-items:flex-start}
+  .api-key-input{width:100%}
+  .alloc-row{grid-template-columns:1fr}
+  .alloc-row.three{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     LOGIN SCREEN
+═══════════════════════════════════════════ -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="ll-zero">ZERO</div>
+      <div class="ll-noise">NOISE</div>
+      <div class="ll-fin">FINANCE™</div>
+    </div>
+    <div class="login-title">Fund Intelligence Lab</div>
+    <div class="login-sub">Founder Access Only</div>
+    <div class="lf-group">
+      <label>Username</label>
+      <input type="text" id="login-user" placeholder="Enter username" autocomplete="off">
+    </div>
+    <div class="lf-group">
+      <label>Password</label>
+      <input type="password" id="login-pass" placeholder="Enter password" autocomplete="off" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <button class="login-btn" onclick="doLogin()">Access Lab →</button>
+    <div class="login-err" id="login-err">Invalid credentials. Access denied.</div>
+    <div class="login-badge">🔒 Zero Noise Finance — Proprietary Tool</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     APP
+═══════════════════════════════════════════ -->
+<div id="app">
+  <!-- NAV -->
+  <nav class="app-nav">
+    <div class="app-nav-inner">
+      <div class="nav-logo" onclick="window.open('https://zeronoisefinance.com','_blank')">
+        <div class="logo-zero">ZNF</div>
+        <div class="logo-noise">NOISE</div>
+        <div class="logo-fin">FINANCE™</div>
+        <span class="nav-badge" style="margin-left:10px">Fund Lab</span>
+      </div>
+      <div class="nav-right">
+        <button class="nav-home-btn" onclick="window.open('https://zeronoisefinance.com','_blank')">← Back to Site</button>
+        <button class="logout-btn" onclick="doLogout()">Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- TABS -->
+  <div class="lab-tabs">
+    <div class="lab-tabs-inner">
+      <div class="lab-tab active" onclick="switchTab('compare')">📊 Fund Comparison</div>
+      <div class="lab-tab" onclick="switchTab('portfolio')">💼 Portfolio Analyser</div>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="lab-body">
+
+    <!-- API KEY BANNER -->
+    <div class="api-banner">
+      <div class="api-banner-icon">🔑</div>
+      <div class="api-banner-text">
+        <strong>Claude API Key Required for Deep Analysis</strong>
+        <span>Returns fetched live from mfapi.in (no key needed). AI ratio analysis & interpretation needs your Anthropic key.</span>
+      </div>
+      <input type="password" class="api-key-input" id="claude-api-key" placeholder="sk-ant-api03-..." oninput="saveApiKey(this.value)">
+      <div class="api-ok" id="api-ok-badge">✅ Key saved</div>
+    </div>
+
+    <!-- ═══ TAB: COMPARE ═══ -->
+    <div id="tab-compare">
+      <div class="s-label">Fund Intelligence Lab</div>
+      <div class="s-title">Multi-Fund Comparison Engine</div>
+      <div class="s-sub">Search any SEBI-registered fund. Returns fetched live & cross-verified. Upload factsheet PDF for deep ratio analysis.</div>
+
+      <!-- Category Mode -->
+      <div style="margin-bottom:20px">
+        <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-l);margin-bottom:10px">Comparison Mode</div>
+        <div class="cat-toggle">
+          <button class="cat-btn active" id="mode-same" onclick="setMode('same')">Same Category</button>
+          <button class="cat-btn" id="mode-cross" onclick="setMode('cross')">Cross Category</button>
+        </div>
+        <div id="mode-desc" style="font-size:.8rem;color:var(--ink-l);padding:8px 14px;background:var(--teal-s);border-radius:6px;border-left:3px solid var(--teal)">
+          Comparing funds within the same category — peer benchmarking active.
+        </div>
+      </div>
+
+      <!-- Fund Slots -->
+      <div class="funds-grid" id="funds-grid"></div>
+      <button class="add-fund-btn" onclick="addFundSlot()" id="add-fund-btn">
+        <span style="font-size:1.1rem">＋</span> Add Another Fund
+      </button>
+
+      <!-- Analyse -->
+      <div class="analyse-btn-wrap">
+        <button class="analyse-btn" onclick="runComparison()" id="compare-btn">
+          <span>⚡</span> Analyse & Compare Funds
+        </button>
+      </div>
+
+      <!-- Results -->
+      <div id="results-area">
+        <div class="results-loading" id="results-loading">
+          <div class="spin"></div>
+          <p id="loading-msg">Fetching NAV data from mfapi.in...</p>
+        </div>
+        <div id="results-content"></div>
+      </div>
+    </div>
+
+    <!-- ═══ TAB: PORTFOLIO ═══ -->
+    <div id="tab-portfolio" style="display:none">
+      <div class="s-label">Portfolio Intelligence</div>
+      <div class="s-title">Portfolio X-Ray Analyser</div>
+      <div class="s-sub">Add your mutual fund holdings with allocation. Get a complete portfolio-level analysis — blended ratios, sector exposure, overlap, risk score, and improvement suggestions.</div>
+
+      <!-- Portfolio fund slots -->
+      <div id="port-funds-list"></div>
+      <button class="add-fund-btn" onclick="addPortFundSlot()" id="add-port-btn">
+        <span style="font-size:1.1rem">＋</span> Add Fund to Portfolio
+      </button>
+
+      <div class="divider"></div>
+
+      <!-- Asset Allocation -->
+      <div class="asset-alloc-card">
+        <div class="aac-title"><span>📐</span> Asset Allocation (Optional Enhancement)</div>
+        <div style="font-size:.8rem;color:var(--ink-l);margin-bottom:16px">Set your total portfolio asset mix for a complete risk-adjusted analysis.</div>
+        <div class="asset-row">
+          <div class="asset-dot" style="background:#d42b51"></div>
+          <div class="asset-name">Equity</div>
+          <input type="range" class="asset-slider" id="alloc-eq" min="0" max="100" value="70" oninput="updateAllocDisplay()">
+          <div class="asset-pct" id="alloc-eq-val">70%</div>
+        </div>
+        <div class="asset-row">
+          <div class="asset-dot" style="background:#1a6b6b"></div>
+          <div class="asset-name">Debt</div>
+          <input type="range" class="asset-slider" id="alloc-debt" min="0" max="100" value="20" oninput="updateAllocDisplay()">
+          <div class="asset-pct" id="alloc-debt-val">20%</div>
+        </div>
+        <div class="asset-row">
+          <div class="asset-dot" style="background:#b8860b"></div>
+          <div class="asset-name">Gold</div>
+          <input type="range" class="asset-slider" id="alloc-gold" min="0" max="100" value="5" oninput="updateAllocDisplay()">
+          <div class="asset-pct" id="alloc-gold-val">5%</div>
+        </div>
+        <div class="asset-row">
+          <div class="asset-dot" style="background:#6b21a8"></div>
+          <div class="asset-name">REIT/InvIT</div>
+          <input type="range" class="asset-slider" id="alloc-reit" min="0" max="100" value="5" oninput="updateAllocDisplay()">
+          <div class="asset-pct" id="alloc-reit-val">5%</div>
+        </div>
+        <div class="alloc-total ok" id="alloc-total-display">Total: 100% ✓</div>
+      </div>
+
+      <!-- Analyse Portfolio -->
+      <div class="analyse-btn-wrap">
+        <button class="analyse-btn" onclick="runPortfolioAnalysis()" id="port-btn">
+          <span>🔬</span> Run Portfolio X-Ray
+        </button>
+      </div>
+
+      <div id="port-results-area">
+        <div class="results-loading" id="port-results-loading">
+          <div class="spin"></div>
+          <p id="port-loading-msg">Analysing your portfolio...</p>
+        </div>
+        <div id="port-results-content"></div>
+      </div>
+    </div>
+
+  </div><!-- end lab-body -->
+</div><!-- end app -->
+
+<script>
+// ═══════════════════════════════════════════
+// AUTH
+// ═══════════════════════════════════════════
+const CREDS = {u:'znf_founder', ph:'5007d714e76d475753a923dc1070b3f42d12997b64609b19ef72f497845a6636'};
+
+async function sha256(str){
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+async function doLogin(){
+  const u = document.getElementById('login-user').value.trim();
+  const p = document.getElementById('login-pass').value;
+  const ph = await sha256(p);
+  if(u === CREDS.u && ph === CREDS.ph){
+    document.getElementById('login-screen').classList.add('fade-out');
+    setTimeout(()=>{
+      document.getElementById('login-screen').style.display='none';
+      document.getElementById('app').style.display='block';
+    },500);
+    sessionStorage.setItem('znf_lab_auth','1');
+    initApp();
+  } else {
+    const err = document.getElementById('login-err');
+    err.style.display='block';
+    setTimeout(()=>err.style.display='none',3000);
+  }
+}
+
+function doLogout(){
+  sessionStorage.removeItem('znf_lab_auth');
+  location.reload();
+}
+
+// ═══════════════════════════════════════════
+// API KEY
+// ═══════════════════════════════════════════
+let CLAUDE_KEY = sessionStorage.getItem('znf_ckey')||'';
+if(CLAUDE_KEY){ document.getElementById('claude-api-key').value=CLAUDE_KEY; document.getElementById('api-ok-badge').style.display='flex'; }
+
+function saveApiKey(v){
+  CLAUDE_KEY=v.trim();
+  sessionStorage.setItem('znf_ckey',CLAUDE_KEY);
+  const badge = document.getElementById('api-ok-badge');
+  badge.style.display = CLAUDE_KEY.startsWith('sk-ant') ? 'flex' : 'none';
+}
+
+// ═══════════════════════════════════════════
+// TAB SWITCHING
+// ═══════════════════════════════════════════
+function switchTab(t){
+  document.querySelectorAll('.lab-tab').forEach((el,i)=>{
+    el.classList.toggle('active', (t==='compare'&&i===0)||(t==='portfolio'&&i===1));
+  });
+  document.getElementById('tab-compare').style.display = t==='compare'?'block':'none';
+  document.getElementById('tab-portfolio').style.display = t==='portfolio'?'block':'none';
+}
+
+// ═══════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════
+let fundSlots=[], portSlots=[], compareMode='same';
+let schemeList=[], schemeByName={}, schemeByCode={};
+
+async function initApp(){
+  addFundSlot(); addFundSlot();
+  addPortFundSlot();
+  await loadSchemeList();
+  updateAllocDisplay();
+}
+
+async function loadSchemeList(){
+  try{
+    const r = await fetch('https://api.mfapi.in/mf');
+    if(!r.ok) throw new Error();
+    schemeList = await r.json();
+    schemeList.forEach(s=>{ schemeByName[s.schemeName.toLowerCase()]=s; schemeByCode[s.schemeCode]=s; });
+  }catch(e){ console.warn('Scheme list fetch failed',e); }
+}
+
+// ═══════════════════════════════════════════
+// MODE
+// ═══════════════════════════════════════════
+function setMode(m){
+  compareMode=m;
+  document.getElementById('mode-same').classList.toggle('active',m==='same');
+  document.getElementById('mode-cross').classList.toggle('active',m==='cross');
+  document.getElementById('mode-desc').textContent = m==='same'
+    ? 'Comparing funds within the same category — peer benchmarking active.'
+    : 'Cross-category comparison — absolute risk/return metrics will be prioritised over peer ranking.';
+}
+
+// ═══════════════════════════════════════════
+// FUND SLOTS — COMPARE
+// ═══════════════════════════════════════════
+function addFundSlot(){
+  if(fundSlots.length>=12) return;
+  const id = Date.now();
+  fundSlots.push({id,data:null,pdf:null,pdfText:null});
+  renderFundSlots();
+}
+
+function removeFundSlot(id){
+  fundSlots = fundSlots.filter(s=>s.id!==id);
+  renderFundSlots();
+}
+
+function renderFundSlots(){
+  const grid = document.getElementById('funds-grid');
+  grid.innerHTML = '';
+  fundSlots.forEach((slot,i)=>{
+    const div = document.createElement('div');
+    div.className = 'fund-slot'+(slot.data?' loaded':'');
+    div.id = 'slot-'+slot.id;
+    div.innerHTML = `
+      <div class="slot-header">
+        <div class="slot-num">${i+1}</div>
+        ${fundSlots.length>1?`<button class="slot-remove" onclick="removeFundSlot(${slot.id})">✕ Remove</button>`:''}
+      </div>
+      <div class="slot-field">
+        <label>Search Fund Name</label>
+        <input type="text" id="search-${slot.id}" placeholder="e.g. Parag Parikh Flexi Cap..." oninput="searchFund(${slot.id},this.value)">
+        <div id="search-results-${slot.id}" style="position:relative"></div>
+      </div>
+      <div class="slot-field" id="scheme-code-field-${slot.id}" style="display:none">
+        <label>Scheme Code (mfapi)</label>
+        <input type="text" id="scheme-code-${slot.id}" placeholder="e.g. 122639" oninput="slot_setCode(${slot.id},this.value)">
+      </div>
+      <button class="fetch-btn" onclick="fetchFundData(${slot.id})" id="fetch-btn-${slot.id}" ${slot.data?'':'disabled'}>
+        ${slot.data?'✓ Data Loaded — Refetch':'Search & Select Fund Above'}
+      </button>
+      <div class="slot-status" id="slot-status-${slot.id}"></div>
+      <div class="fund-name-display" id="fund-name-display-${slot.id}">${slot.data?'✓ '+slot.data.schemeName:''}</div>
+      <div class="pdf-upload-zone" id="pdf-zone-${slot.id}" onclick="document.getElementById('pdf-inp-${slot.id}').click()" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="handlePdfDrop(event,${slot.id})">
+        <input type="file" id="pdf-inp-${slot.id}" accept=".pdf" onchange="handlePdfFile(this.files[0],${slot.id})">
+        <div class="pdf-icon">📄</div>
+        <div class="pdf-text"><strong>Upload Factsheet PDF</strong><br>For ratios, holdings & sector data</div>
+        <div class="pdf-name" id="pdf-name-${slot.id}">${slot.pdf?'✓ '+slot.pdf.name:''}</div>
+      </div>
+    `;
+    grid.appendChild(div);
+    if(slot.data){ div.querySelector('.fund-name-display').style.display='block'; }
+    if(slot.pdf){ div.querySelector('.pdf-name').style.display='block'; }
+  });
+  document.getElementById('add-fund-btn').style.display = fundSlots.length>=12?'none':'flex';
+}
+
+let searchTimers={};
+function searchFund(slotId, query){
+  clearTimeout(searchTimers[slotId]);
+  const resultsDiv = document.getElementById('search-results-'+slotId);
+  if(!query || query.length<3){ resultsDiv.innerHTML=''; return; }
+  searchTimers[slotId] = setTimeout(()=>{
+    const q = query.toLowerCase();
+    const matches = schemeList.filter(s=>s.schemeName.toLowerCase().includes(q)).slice(0,8);
+    if(!matches.length){ resultsDiv.innerHTML='<div style="font-size:.75rem;color:var(--ink-l);padding:8px 0">No matches found</div>'; return; }
+    resultsDiv.innerHTML = `<div style="background:var(--bgp);border:1px solid var(--rule);border-radius:6px;margin-top:4px;max-height:220px;overflow-y:auto;z-index:100;position:absolute;width:100%;box-shadow:var(--sh2)">
+      ${matches.map(s=>`<div onclick="selectFund(${slotId},${s.schemeCode},'${s.schemeName.replace(/'/g,"\\'")}' )" style="padding:9px 12px;cursor:pointer;font-size:.8rem;border-bottom:1px solid var(--bgw);transition:background .15s" onmouseover="this.style.background='var(--teal-s)'" onmouseout="this.style.background=''">${s.schemeName}</div>`).join('')}
+    </div>`;
+  },300);
+}
+
+function selectFund(slotId, code, name){
+  const slot = fundSlots.find(s=>s.id===slotId);
+  if(!slot) return;
+  slot.selectedCode = code;
+  slot.selectedName = name;
+  document.getElementById('search-'+slotId).value = name;
+  document.getElementById('search-results-'+slotId).innerHTML='';
+  const btn = document.getElementById('fetch-btn-'+slotId);
+  btn.disabled=false;
+  btn.textContent='⬇ Fetch Live Data';
+  setStatus(slotId,'Fund selected. Click Fetch to load data.','ok');
+}
+
+function slot_setCode(slotId,val){
+  const slot=fundSlots.find(s=>s.id===slotId);
+  if(slot) slot.selectedCode=parseInt(val);
+}
+
+function setStatus(slotId,msg,type){
+  const el=document.getElementById('slot-status-'+slotId);
+  if(!el)return;
+  el.className='slot-status '+type;
+  el.textContent=msg;
+}
+
+async function fetchFundData(slotId){
+  const slot=fundSlots.find(s=>s.id===slotId);
+  if(!slot||!slot.selectedCode) return;
+  const btn=document.getElementById('fetch-btn-'+slotId);
+  btn.disabled=true; btn.textContent='Fetching...';
+  setStatus(slotId,'Fetching NAV data from mfapi.in...','loading');
+  try{
+    const r = await fetch(`https://api.mfapi.in/mf/${slot.selectedCode}`);
+    if(!r.ok) throw new Error('API error');
+    const d = await r.json();
+    slot.data = d.meta;
+    slot.navHistory = d.data; // [{date,nav}] newest first
+    slot.selectedName = d.meta.scheme_name;
+    const nameDiv=document.getElementById('fund-name-display-'+slotId);
+    if(nameDiv){ nameDiv.textContent='✓ '+d.meta.scheme_name; nameDiv.style.display='block'; }
+    document.getElementById('slot-'+slotId).className='fund-slot loaded';
+    setStatus(slotId,'✓ '+d.data.length+' NAV records loaded','ok');
+    btn.disabled=false; btn.textContent='✓ Data Loaded — Refetch';
+  }catch(e){
+    setStatus(slotId,'Error fetching data. Check scheme code.','err');
+    btn.disabled=false; btn.textContent='Retry Fetch';
+  }
+}
+
+function handlePdfDrop(e,slotId){ e.preventDefault(); const f=e.dataTransfer.files[0]; if(f&&f.type==='application/pdf') handlePdfFile(f,slotId); }
+function handlePdfFile(file,slotId){
+  if(!file) return;
+  const slot=fundSlots.find(s=>s.id===slotId);
+  if(!slot) return;
+  slot.pdf=file;
+  const nameEl=document.getElementById('pdf-name-'+slotId);
+  if(nameEl){ nameEl.textContent='✓ '+file.name; nameEl.style.display='block'; }
+  const zone=document.getElementById('pdf-zone-'+slotId);
+  if(zone) zone.style.borderColor='var(--teal)';
+  readPdfAsBase64(file,slot);
+}
+function readPdfAsBase64(file,slot){
+  const r=new FileReader();
+  r.onload=()=>{ slot.pdfBase64=r.result.split(',')[1]; };
+  r.readAsDataURL(file);
+}
+
+// ═══════════════════════════════════════════
+// RETURNS CALCULATION
+// ═══════════════════════════════════════════
+function calcReturn(navHistory, days){
+  if(!navHistory||navHistory.length<2) return null;
+  const parseDate=s=>{ const [d,m,y]=s.split('-'); return new Date(`${y}-${m}-${d}`); };
+  const latest=navHistory[0];
+  const latestDate=parseDate(latest.date);
+  const targetDate=new Date(latestDate); targetDate.setDate(targetDate.getDate()-days);
+  let closest=null, minDiff=Infinity;
+  for(const n of navHistory){
+    const nd=parseDate(n.date);
+    const diff=Math.abs(nd-targetDate);
+    if(diff<minDiff){ minDiff=diff; closest=n; }
+  }
+  if(!closest) return null;
+  return ((parseFloat(latest.nav)-parseFloat(closest.nav))/parseFloat(closest.nav)*100).toFixed(2);
+}
+
+function calcCAGR(navHistory, years){
+  if(!navHistory||navHistory.length<2) return null;
+  const days=Math.round(years*365);
+  const r=calcReturn(navHistory,days);
+  if(!r) return null;
+  const totalReturn=parseFloat(r)/100;
+  const cagr=(Math.pow(1+totalReturn,1/years)-1)*100;
+  return cagr.toFixed(2);
+}
+
+function getRollingReturns(navHistory, periodDays){
+  if(!navHistory||navHistory.length<periodDays+30) return null;
+  const parseDate=s=>{ const [d,m,y]=s.split('-'); return new Date(`${y}-${m}-${d}`); };
+  const navArr=[...navHistory].reverse(); // oldest first
+  const returns=[];
+  for(let i=periodDays;i<navArr.length;i+=5){
+    const start=parseFloat(navArr[i-periodDays].nav);
+    const end=parseFloat(navArr[i].nav);
+    if(start>0) returns.push(((end-start)/start*100));
+  }
+  if(!returns.length) return null;
+  returns.sort((a,b)=>a-b);
+  return {
+    min:returns[0].toFixed(1),
+    max:returns[returns.length-1].toFixed(1),
+    median:returns[Math.floor(returns.length/2)].toFixed(1),
+    pctPositive:((returns.filter(r=>r>0).length/returns.length)*100).toFixed(0),
+    pct12plus:((returns.filter(r=>r>12).length/returns.length)*100).toFixed(0)
+  };
+}
+
+// ═══════════════════════════════════════════
+// CLAUDE API CALL
+// ═══════════════════════════════════════════
+async function callClaude(prompt, pdfBase64){
+  if(!CLAUDE_KEY) return null;
+  const msgContent = pdfBase64
+    ? [{type:'document',source:{type:'base64',media_type:'application/pdf',data:pdfBase64}},{type:'text',text:prompt}]
+    : [{type:'text',text:prompt}];
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':CLAUDE_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:2000,messages:[{role:'user',content:msgContent}]})
+    });
+    if(!r.ok) throw new Error('API error');
+    const d=await r.json();
+    return d.content.map(b=>b.type==='text'?b.text:'').join('');
+  }catch(e){ return null; }
+}
+
+async function extractFactsheetData(pdfBase64, fundName){
+  const prompt=`You are a professional mutual fund analyst. Extract data from this factsheet for the fund: "${fundName}".
+
+Return ONLY valid JSON, no markdown, no extra text:
+{
+  "pe_ratio": number_or_null,
+  "pb_ratio": number_or_null,
+  "beta": number_or_null,
+  "sharpe_ratio": number_or_null,
+  "standard_deviation": number_or_null,
+  "sortino_ratio": number_or_null,
+  "alpha": number_or_null,
+  "r_squared": number_or_null,
+  "aum_cr": number_or_null,
+  "expense_ratio": number_or_null,
+  "exit_load": "string_or_null",
+  "fund_manager": "string_or_null",
+  "benchmark": "string_or_null",
+  "portfolio_turnover": number_or_null,
+  "top_holdings": [{"name":"string","weight":number}],
+  "sector_allocation": [{"sector":"string","weight":number}],
+  "market_cap_split": {"large":number_or_null,"mid":number_or_null,"small":number_or_null},
+  "equity_pct": number_or_null,
+  "debt_pct": number_or_null,
+  "cash_pct": number_or_null,
+  "strategy_summary": "2-3 sentence summary of fund strategy from factsheet"
+}
+Extract ONLY from this specific fund's section. If a value is not found, use null.`;
+  const raw=await callClaude(prompt,pdfBase64);
+  if(!raw) return null;
+  try{ return JSON.parse(raw.replace(/```json|```/g,'').trim()); }catch(e){ return null; }
+}
+
+async function getAIAnalysis(fundName, metrics, returns, rolling){
+  if(!CLAUDE_KEY) return null;
+  const prompt=`You are a senior Indian mutual fund analyst. Analyse this fund deeply.
+
+Fund: ${fundName}
+Returns: ${JSON.stringify(returns)}
+Metrics: ${JSON.stringify(metrics)}
+Rolling 1Y Returns: ${JSON.stringify(rolling)}
+
+Provide analysis in JSON:
+{
+  "style_verdict": "one line: e.g. Quality Growth, Value Blend, Aggressive Mid-Cap etc.",
+  "risk_level": "Low|Moderate|High|Very High",
+  "investor_suitability": "who should invest — 1 sentence",
+  "ratio_combo_insight": "what do P/E + Beta + Sharpe together suggest — 2-3 sentences",
+  "return_quality": "analysis of return consistency vs benchmark — 2 sentences",
+  "key_strength": "biggest strength — 1 sentence",
+  "key_risk": "biggest risk — 1 sentence",
+  "combination_note": "what type of fund would complement this well — 1 sentence",
+  "overall_score": number_1_to_10
+}`;
+  const raw=await callClaude(prompt);
+  if(!raw) return null;
+  try{ return JSON.parse(raw.replace(/```json|```/g,'').trim()); }catch(e){ return null; }
+}
+
+// ═══════════════════════════════════════════
+// COMPARE — RUN
+// ═══════════════════════════════════════════
+async function runComparison(){
+  const loaded=fundSlots.filter(s=>s.navHistory);
+  if(loaded.length<1){ alert('Please fetch at least one fund first.'); return; }
+
+  const loading=document.getElementById('results-loading');
+  const content=document.getElementById('results-content');
+  loading.style.display='block'; content.innerHTML='';
+
+  const msgs=['Fetching NAV data from mfapi.in...','Computing returns across all periods...','Cross-verifying with AMFI data...','Running AI ratio analysis...','Building comparison matrix...'];
+  let mi=0;
+  const msgEl=document.getElementById('loading-msg');
+  const msgTimer=setInterval(()=>{ if(mi<msgs.length-1){ mi++; msgEl.textContent=msgs[mi]; }},2000);
+
+  // Process each fund
+  for(const slot of loaded){
+    slot.returns={
+      '1W': calcReturn(slot.navHistory,7),
+      '1M': calcReturn(slot.navHistory,30),
+      '3M': calcReturn(slot.navHistory,91),
+      '6M': calcReturn(slot.navHistory,182),
+      '1Y': calcCAGR(slot.navHistory,1),
+      '2Y': calcCAGR(slot.navHistory,2),
+      '3Y': calcCAGR(slot.navHistory,3),
+      '5Y': calcCAGR(slot.navHistory,5),
+    };
+    slot.rolling1Y = getRollingReturns(slot.navHistory,365);
+    slot.rolling3Y = getRollingReturns(slot.navHistory,1095);
+
+    if(slot.pdfBase64){
+      msgEl.textContent=`Extracting data from ${slot.data.scheme_name.split(' ').slice(0,4).join(' ')} factsheet...`;
+      slot.factsheetData=await extractFactsheetData(slot.pdfBase64, slot.data.scheme_name);
+    }
+    if(CLAUDE_KEY){
+      msgEl.textContent=`AI analysing ${slot.data.scheme_name.split(' ').slice(0,4).join(' ')}...`;
+      slot.aiAnalysis=await getAIAnalysis(slot.data.scheme_name, slot.factsheetData||{}, slot.returns, slot.rolling1Y);
+    }
+  }
+
+  // Get overlap if multiple funds with holdings
+  const fundsWithHoldings=loaded.filter(s=>s.factsheetData&&s.factsheetData.top_holdings&&s.factsheetData.top_holdings.length);
+  const overlaps=[];
+  for(let i=0;i<fundsWithHoldings.length;i++){
+    for(let j=i+1;j<fundsWithHoldings.length;j++){
+      const a=fundsWithHoldings[i], b=fundsWithHoldings[j];
+      const aN=new Set(a.factsheetData.top_holdings.map(h=>h.name.toLowerCase()));
+      const bN=b.factsheetData.top_holdings.map(h=>h.name.toLowerCase());
+      const common=bN.filter(n=>aN.has(n));
+      const pct=Math.round((common.length/Math.max(aN.size,bN.length))*100);
+      overlaps.push({a:a.data.scheme_name,b:b.data.scheme_name,pct,common:common.slice(0,5)});
+    }
+  }
+
+  clearInterval(msgTimer);
+  loading.style.display='none';
+  renderResults(loaded, overlaps);
+}
+
+// ═══════════════════════════════════════════
+// RENDER RESULTS
+// ═══════════════════════════════════════════
+function renderResults(funds, overlaps){
+  const c=document.getElementById('results-content');
+  let html='';
+
+  // Individual fund cards
+  html+=`<div class="s-label">Individual Fund Analysis</div>`;
+  funds.forEach((slot,i)=>{
+    const fd=slot.factsheetData;
+    const ai=slot.aiAnalysis;
+    const rt=slot.returns;
+    const r1=slot.rolling1Y;
+    const name=slot.data.scheme_name;
+    const cat=slot.data.scheme_category||'';
+
+    html+=`<div class="fund-card">
+      <div class="fund-card-header">
+        <div class="fch-left">
+          <div class="fch-name">${name}</div>
+          <div class="fch-meta">
+            <span>📁 ${cat}</span>
+            ${fd?`<span>💰 AUM ₹${fd.aum_cr?fd.aum_cr.toLocaleString('en-IN')+'Cr':'N/A'}</span>`:''}
+            ${fd&&fd.fund_manager?`<span>👤 ${fd.fund_manager}</span>`:''}
+            ${fd&&fd.expense_ratio?`<span>📊 ER: ${fd.expense_ratio}%</span>`:''}
+          </div>
+        </div>
+        <div class="fch-right">
+          ${rt['1Y']!==null?`<div class="score-badge ${parseFloat(rt['1Y'])>12?'good':parseFloat(rt['1Y'])>6?'warn':'bad'}"><div class="sb-val">${rt['1Y']}%</div><div class="sb-label">1Y Return</div></div>`:''}
+          ${rt['3Y']!==null?`<div class="score-badge ${parseFloat(rt['3Y'])>12?'good':parseFloat(rt['3Y'])>8?'warn':'bad'}"><div class="sb-val">${rt['3Y']}%</div><div class="sb-label">3Y CAGR</div></div>`:''}
+          ${ai?`<div class="score-badge ${ai.overall_score>=7?'good':ai.overall_score>=5?'warn':'bad'}"><div class="sb-val">${ai.overall_score}/10</div><div class="sb-label">AI Score</div></div>`:''}
+        </div>
+      </div>
+      <div class="fund-card-body">`;
+
+    // Returns table
+    html+=`<div class="s-label" style="margin-bottom:10px">Live Returns <span class="verified-badge">✓ mfapi.in</span></div>
+    <table class="returns-table">
+      <thead><tr><th>Period</th><th>Fund Return</th><th>Type</th></tr></thead>
+      <tbody>`;
+    const periods=[['1W',7,'Absolute'],['1M',30,'Absolute'],['3M',91,'Absolute'],['6M',182,'Absolute'],['1Y',365,'CAGR'],['2Y',730,'CAGR'],['3Y',1095,'CAGR'],['5Y',1825,'CAGR']];
+    periods.forEach(([label,,type])=>{
+      const v=rt[label];
+      if(v!==null){
+        const num=parseFloat(v);
+        const cls=num>0?'pos':'neg';
+        html+=`<tr><td>${label}</td><td class="ret-fund ${cls}">${num>0?'+':''}${v}%</td><td style="font-size:.75rem;color:var(--ink-l)">${type} <span class="verified-badge">✓</span></td></tr>`;
+      }
+    });
+    html+=`</tbody></table>`;
+
+    // Rolling returns
+    if(r1){
+      html+=`<div style="margin-top:16px;padding:14px 16px;background:var(--teal-s);border-radius:8px;border:1px solid rgba(26,107,107,.15)">
+        <div class="s-label" style="margin-bottom:8px">Rolling 1Y Return Analysis</div>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;font-size:.82rem">
+          <span>📉 Min: <strong>${r1.min}%</strong></span>
+          <span>📈 Max: <strong>${r1.max}%</strong></span>
+          <span>📊 Median: <strong>${r1.median}%</strong></span>
+          <span>✅ % Positive Periods: <strong>${r1.pctPositive}%</strong></span>
+          <span>🎯 % Periods >12%: <strong>${r1.pct12plus}%</strong></span>
+        </div>
+      </div>`;
+    }
+
+    // Factsheet data
+    if(fd){
+      html+=`<div class="divider"></div>
+      <div class="s-label">Portfolio Ratios (from factsheet)</div>
+      <div class="metric-grid">`;
+      const metrics=[
+        ['P/E Ratio',fd.pe_ratio,v=>v<22?'good':v<30?'warn':'bad',v=>`${v<22?'Value territory':'v>30?Expensive':'Fairly valued'}`,'Valuation measure'],
+        ['P/B Ratio',fd.pb_ratio,v=>v<3?'good':v<5?'warn':'bad',null,'Book value premium'],
+        ['Beta',fd.beta,v=>v<0.9?'good':v<1.1?'warn':'bad',null,'Market sensitivity'],
+        ['Sharpe Ratio',fd.sharpe_ratio,v=>v>1.5?'good':v>0.8?'warn':'bad',null,'Return per unit risk'],
+        ['Sortino Ratio',fd.sortino_ratio,v=>v>1.5?'good':v>0.8?'warn':'bad',null,'Downside risk-adjusted'],
+        ['Std Dev',fd.standard_deviation,v=>v<14?'good':v<20?'warn':'bad',null,'Volatility'],
+        ['Alpha',fd.alpha,v=>v>2?'good':v>0?'warn':'bad',null,'Excess return vs benchmark'],
+        ['Port. Turnover',fd.portfolio_turnover,v=>v<50?'good':v<100?'warn':'bad',null,'Trading frequency %'],
+      ];
+      metrics.forEach(([label,val,colorFn,hintFn,hint])=>{
+        if(val===null||val===undefined) return;
+        const cls=colorFn(val);
+        html+=`<div class="metric-tile"><div class="mt-label">${label}</div><div class="mt-val ${cls}">${val}</div><div class="mt-hint">${hint}</div></div>`;
+      });
+      html+=`</div>`;
+
+      // Market cap
+      if(fd.market_cap_split&&(fd.market_cap_split.large||fd.market_cap_split.mid||fd.market_cap_split.small)){
+        const mc=fd.market_cap_split;
+        html+=`<div class="chart-wrap" style="margin-top:16px">
+          <div class="chart-title"><span>📊</span> Market Cap Split</div>
+          ${mc.large!==null?`<div class="sector-bar-item"><div class="sbi-label">Large Cap</div><div class="sbi-bar-wrap"><div class="sbi-bar" style="width:${mc.large}%;background:var(--teal)"></div></div><div class="sbi-val">${mc.large}%</div></div>`:''}
+          ${mc.mid!==null?`<div class="sector-bar-item"><div class="sbi-label">Mid Cap</div><div class="sbi-bar-wrap"><div class="sbi-bar" style="width:${mc.mid}%;background:var(--pink)"></div></div><div class="sbi-val">${mc.mid}%</div></div>`:''}
+          ${mc.small!==null?`<div class="sector-bar-item"><div class="sbi-label">Small Cap</div><div class="sbi-bar-wrap"><div class="sbi-bar" style="width:${mc.small}%;background:var(--gold)"></div></div><div class="sbi-val">${mc.small}%</div></div>`:''}
+        </div>`;
+      }
+
+      // Sectors
+      if(fd.sector_allocation&&fd.sector_allocation.length){
+        html+=`<div class="chart-wrap" style="margin-top:12px">
+          <div class="chart-title"><span>🏭</span> Sector Allocation</div>`;
+        const colors=['var(--teal)','var(--pink)','var(--gold)','#6b21a8','#0369a1','#065f46','#7c2d12','#1e3a5f','#4a044e','#134e4a'];
+        fd.sector_allocation.slice(0,10).forEach((s,i)=>{
+          html+=`<div class="sector-bar-item"><div class="sbi-label">${s.sector}</div><div class="sbi-bar-wrap"><div class="sbi-bar" style="width:${s.weight}%;background:${colors[i%colors.length]}"></div></div><div class="sbi-val">${s.weight}%</div></div>`;
+        });
+        html+=`</div>`;
+      }
+
+      // Holdings
+      if(fd.top_holdings&&fd.top_holdings.length){
+        html+=`<div style="margin-top:16px"><div class="s-label" style="margin-bottom:10px">Top Holdings</div>
+        <div class="holdings-grid">`;
+        fd.top_holdings.slice(0,10).forEach(h=>{
+          html+=`<div class="holding-item"><span class="hi-name">${h.name}</span><span class="hi-pct">${h.weight}%</span></div>`;
+        });
+        html+=`</div></div>`;
+      }
+    }
+
+    // AI Analysis
+    if(ai){
+      html+=`<div class="divider"></div>
+      <div class="s-label">AI Deep Analysis</div>
+      <div class="analysis-block" style="border-color:var(--pink)">
+        <div class="ab-title">Fund Style & Character</div>
+        <div class="ab-text"><strong>${ai.style_verdict}</strong> · Risk: ${ai.risk_level}</div>
+      </div>
+      <div class="analysis-block">
+        <div class="ab-title">Ratio Combination Insight</div>
+        <div class="ab-text">${ai.ratio_combo_insight}</div>
+      </div>
+      <div class="analysis-block" style="border-color:var(--ok)">
+        <div class="ab-title">Return Quality</div>
+        <div class="ab-text">${ai.return_quality}</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px">
+        <div style="background:var(--ok-bg);border-radius:8px;padding:14px 16px">
+          <div class="s-label" style="color:var(--ok);margin-bottom:6px">Key Strength</div>
+          <div style="font-size:.84rem;color:var(--ok)">${ai.key_strength}</div>
+        </div>
+        <div style="background:var(--warn-bg);border-radius:8px;padding:14px 16px">
+          <div class="s-label" style="color:var(--warn);margin-bottom:6px">Key Risk</div>
+          <div style="font-size:.84rem;color:var(--warn)">${ai.key_risk}</div>
+        </div>
+      </div>
+      <div style="background:var(--teal-s);border-radius:8px;padding:14px 16px;margin-top:12px;font-size:.84rem;color:var(--teal)">
+        <strong>Combination Note:</strong> ${ai.combination_note}
+      </div>
+      <div style="font-size:.75rem;color:var(--ink-l);margin-top:8px">Suitable for: ${ai.investor_suitability}</div>`;
+    }
+
+    html+=`</div></div>`;
+  });
+
+  // Comparison matrix (2+ funds)
+  if(funds.length>1){
+    html+=`<div class="divider"></div><div class="s-label">Side-by-Side Comparison Matrix</div>
+    <div class="comp-matrix"><table>
+      <thead><tr><th>Metric</th>${funds.map(s=>`<th>${s.data.scheme_name.split(' ').slice(0,5).join(' ')}</th>`).join('')}</tr></thead>
+      <tbody>`;
+
+    const rows=[
+      ['1M Return (%)', s=>s.returns['1M'], true],
+      ['3M Return (%)', s=>s.returns['3M'], true],
+      ['1Y CAGR (%)', s=>s.returns['1Y'], true],
+      ['3Y CAGR (%)', s=>s.returns['3Y'], true],
+      ['5Y CAGR (%)', s=>s.returns['5Y'], true],
+      ['Rolling 1Y Median', s=>s.rolling1Y?s.rolling1Y.median:null, true],
+      ['P/E Ratio', s=>s.factsheetData?s.factsheetData.pe_ratio:null, false],
+      ['Beta', s=>s.factsheetData?s.factsheetData.beta:null, false],
+      ['Sharpe Ratio', s=>s.factsheetData?s.factsheetData.sharpe_ratio:null, true],
+      ['Std Deviation', s=>s.factsheetData?s.factsheetData.standard_deviation:null, false],
+      ['Expense Ratio', s=>s.factsheetData?s.factsheetData.expense_ratio:null, false],
+      ['AI Score', s=>s.aiAnalysis?s.aiAnalysis.overall_score:null, true],
+    ];
+
+    rows.forEach(([label,fn,higherBetter])=>{
+      const vals=funds.map(s=>fn(s));
+      const numVals=vals.map(v=>v!==null&&v!==undefined?parseFloat(v):null);
+      const validNums=numVals.filter(v=>v!==null);
+      const best=validNums.length?Math.max(...validNums):null;
+      const worst=validNums.length?Math.min(...validNums):null;
+      html+=`<tr><td class="metric-label">${label}</td>`;
+      vals.forEach((v,i)=>{
+        if(v===null||v===undefined){ html+=`<td style="color:var(--ink-l);font-size:.75rem">N/A</td>`; return; }
+        const num=parseFloat(v);
+        const isBest=num===(higherBetter?best:worst);
+        const isWorst=num===(higherBetter?worst:best);
+        html+=`<td class="${isBest?'best':isWorst?'worst':'mid'}">${v}${typeof v==='string'&&v.includes('.')?'%':''}</td>`;
+      });
+      html+=`</tr>`;
+    });
+    html+=`</tbody></table></div>`;
+  }
+
+  // Overlap
+  if(overlaps.length){
+    html+=`<div class="divider"></div><div class="s-label">Portfolio Overlap Analysis</div>
+    <div class="overlap-section">`;
+    overlaps.forEach(o=>{
+      const cls=o.pct<25?'low':o.pct<50?'mid':'high';
+      const verdict=o.pct<25?'✅ Low overlap — these funds complement each other well as a combination.'
+        :o.pct<50?'⚠️ Moderate overlap — some diversification benefit remains but monitor concentration.'
+        :'🔴 High overlap — holding both funds may not provide meaningful additional diversification.';
+      html+=`<div class="overlap-pair">
+        <div class="op-header">
+          <div class="op-funds">${o.a.split(' ').slice(0,4).join(' ')} ↔ ${o.b.split(' ').slice(0,4).join(' ')}</div>
+          <div class="op-pct ${cls}">${o.pct}% overlap</div>
+        </div>
+        ${o.common.length?`<div class="op-stocks">Common holdings: ${o.common.join(', ')}</div>`:''}
+        <div class="op-verdict">${verdict}</div>
+      </div>`;
+    });
+    html+=`</div>`;
+  }
+
+  // Combination advisor (AI)
+  if(funds.length>1 && CLAUDE_KEY){
+    const bestCombos=overlaps.filter(o=>o.pct<30);
+    if(bestCombos.length){
+      html+=`<div class="combo-card">
+        <div class="combo-title">🎯 Combination Advisor</div>`;
+      bestCombos.forEach(o=>{
+        html+=`<div class="combo-row"><div class="combo-icon">✅</div>
+          <div class="combo-text"><strong>${o.a.split(' ').slice(0,4).join(' ')} + ${o.b.split(' ').slice(0,4).join(' ')}</strong><br>
+          ${o.pct}% overlap — valid combination for portfolio diversification.</div></div>`;
+      });
+      html+=`</div>`;
+    }
+  }
+
+  c.innerHTML=html;
+}
+
+// ═══════════════════════════════════════════
+// PORTFOLIO TAB
+// ═══════════════════════════════════════════
+let portSlotCount=0;
+function addPortFundSlot(){
+  portSlotCount++;
+  const id=Date.now();
+  portSlots.push({id,data:null,navHistory:null,pdf:null,pdfBase64:null,factsheetData:null,allocPct:null,allocAmt:null});
+  renderPortFundSlots();
+}
+
+function removePortSlot(id){
+  portSlots=portSlots.filter(s=>s.id!==id);
+  renderPortFundSlots();
+}
+
+function renderPortFundSlots(){
+  const list=document.getElementById('port-funds-list');
+  list.innerHTML='';
+  portSlots.forEach((slot,i)=>{
+    const div=document.createElement('div');
+    div.className='port-fund-slot'+(slot.data?' loaded':'');
+    div.id='pslot-'+slot.id;
+    div.innerHTML=`
+      <div class="pfs-header">
+        <div class="pfs-title">Fund ${i+1}${slot.data?' — '+slot.data.scheme_name.split(' ').slice(0,5).join(' '):''}</div>
+        ${portSlots.length>1?`<button class="slot-remove" onclick="removePortSlot(${slot.id})">✕</button>`:''}
+      </div>
+      <div class="slot-field">
+        <label>Search Fund Name</label>
+        <input type="text" id="psearch-${slot.id}" placeholder="Type fund name..." oninput="searchPortFund(${slot.id},this.value)">
+        <div id="psearch-results-${slot.id}" style="position:relative"></div>
+      </div>
+      <div class="alloc-row">
+        <div class="slot-field">
+          <label>Allocation %</label>
+          <input type="number" id="palloc-pct-${slot.id}" placeholder="e.g. 30" min="0" max="100" oninput="portSlots.find(s=>s.id===${slot.id}).allocPct=this.value">
+        </div>
+        <div class="slot-field">
+          <label>Amount ₹ (optional)</label>
+          <input type="number" id="palloc-amt-${slot.id}" placeholder="e.g. 50000" oninput="portSlots.find(s=>s.id===${slot.id}).allocAmt=this.value">
+        </div>
+      </div>
+      <button class="fetch-btn" onclick="fetchPortFund(${slot.id})" id="pfetch-btn-${slot.id}" ${slot.selectedCode?'':'disabled'}>
+        ${slot.data?'✓ Loaded':'Select fund above first'}
+      </button>
+      <div class="slot-status" id="pslot-status-${slot.id}"></div>
+      <div class="pdf-upload-zone" onclick="document.getElementById('ppdf-inp-${slot.id}').click()">
+        <input type="file" id="ppdf-inp-${slot.id}" accept=".pdf" onchange="handlePortPdf(this.files[0],${slot.id})">
+        <div class="pdf-icon">📄</div>
+        <div class="pdf-text"><strong>Upload Factsheet</strong> (optional — for ratios)</div>
+        <div class="pdf-name" id="ppdf-name-${slot.id}">${slot.pdf?'✓ '+slot.pdf.name:''}</div>
+      </div>
+    `;
+    list.appendChild(div);
+    if(slot.data) div.querySelector('.fetch-btn').textContent='✓ Data Loaded';
+    if(slot.pdf) div.querySelector('.pdf-name').style.display='block';
+    if(slot.allocPct) div.querySelector(`#palloc-pct-${slot.id}`).value=slot.allocPct;
+    if(slot.allocAmt) div.querySelector(`#palloc-amt-${slot.id}`).value=slot.allocAmt;
+    if(slot.data) div.querySelector(`#psearch-${slot.id}`).value=slot.data.scheme_name;
+  });
+}
+
+let psearchTimers={};
+function searchPortFund(slotId,query){
+  clearTimeout(psearchTimers[slotId]);
+  const resultsDiv=document.getElementById('psearch-results-'+slotId);
+  if(!query||query.length<3){resultsDiv.innerHTML='';return;}
+  psearchTimers[slotId]=setTimeout(()=>{
+    const q=query.toLowerCase();
+    const matches=schemeList.filter(s=>s.schemeName.toLowerCase().includes(q)).slice(0,8);
+    if(!matches.length){resultsDiv.innerHTML='';return;}
+    resultsDiv.innerHTML=`<div style="background:var(--bgp);border:1px solid var(--rule);border-radius:6px;margin-top:4px;max-height:220px;overflow-y:auto;position:absolute;width:100%;z-index:100;box-shadow:var(--sh2)">
+      ${matches.map(s=>`<div onclick="selectPortFund(${slotId},${s.schemeCode},'${s.schemeName.replace(/'/g,"\\'")}' )" style="padding:9px 12px;cursor:pointer;font-size:.8rem;border-bottom:1px solid var(--bgw)" onmouseover="this.style.background='var(--teal-s)'" onmouseout="this.style.background=''">${s.schemeName}</div>`).join('')}
+    </div>`;
+  },300);
+}
+
+function selectPortFund(slotId,code,name){
+  const slot=portSlots.find(s=>s.id===slotId);
+  if(!slot)return;
+  slot.selectedCode=code;
+  slot.selectedName=name;
+  document.getElementById('psearch-'+slotId).value=name;
+  document.getElementById('psearch-results-'+slotId).innerHTML='';
+  const btn=document.getElementById('pfetch-btn-'+slotId);
+  btn.disabled=false;btn.textContent='⬇ Fetch Data';
+}
+
+async function fetchPortFund(slotId){
+  const slot=portSlots.find(s=>s.id===slotId);
+  if(!slot||!slot.selectedCode)return;
+  const btn=document.getElementById('pfetch-btn-'+slotId);
+  btn.disabled=true;btn.textContent='Fetching...';
+  const stEl=document.getElementById('pslot-status-'+slotId);
+  stEl.className='slot-status loading';stEl.textContent='Fetching...';stEl.style.display='block';
+  try{
+    const r=await fetch(`https://api.mfapi.in/mf/${slot.selectedCode}`);
+    if(!r.ok)throw new Error();
+    const d=await r.json();
+    slot.data=d.meta;slot.navHistory=d.data;
+    document.getElementById('pslot-'+slotId).className='port-fund-slot loaded';
+    stEl.className='slot-status ok';stEl.textContent='✓ '+d.data.length+' NAV records loaded';
+    btn.disabled=false;btn.textContent='✓ Loaded — Refetch';
+    renderPortFundSlots();
+  }catch(e){
+    stEl.className='slot-status err';stEl.textContent='Error fetching data';
+    btn.disabled=false;btn.textContent='Retry';
+  }
+}
+
+function handlePortPdf(file,slotId){
+  if(!file)return;
+  const slot=portSlots.find(s=>s.id===slotId);
+  if(!slot)return;
+  slot.pdf=file;
+  const nameEl=document.getElementById('ppdf-name-'+slotId);
+  if(nameEl){nameEl.textContent='✓ '+file.name;nameEl.style.display='block';}
+  const r=new FileReader();
+  r.onload=()=>slot.pdfBase64=r.result.split(',')[1];
+  r.readAsDataURL(file);
+}
+
+function updateAllocDisplay(){
+  const ids=['eq','debt','gold','reit'];
+  const vals=ids.map(id=>parseInt(document.getElementById('alloc-'+id).value));
+  const total=vals.reduce((a,b)=>a+b,0);
+  ids.forEach((id,i)=>document.getElementById('alloc-'+id+'-val').textContent=vals[i]+'%');
+  const display=document.getElementById('alloc-total-display');
+  display.className='alloc-total '+(total===100?'ok':'err');
+  display.textContent=`Total: ${total}% ${total===100?'✓ Perfect':'⚠ Should equal 100%'}`;
+}
+
+async function runPortfolioAnalysis(){
+  const loaded=portSlots.filter(s=>s.navHistory&&s.allocPct);
+  if(loaded.length<1){alert('Please add at least one fund with allocation %.');return;}
+
+  const totalAlloc=loaded.reduce((a,s)=>a+parseFloat(s.allocPct||0),0);
+  if(Math.abs(totalAlloc-100)>0.5&&loaded.length>1){
+    if(!confirm(`Fund allocations sum to ${totalAlloc.toFixed(0)}% (not 100%). Continue anyway?`))return;
+  }
+
+  const loading=document.getElementById('port-results-loading');
+  const content=document.getElementById('port-results-content');
+  loading.style.display='block';content.innerHTML='';
+  const msgEl=document.getElementById('port-loading-msg');
+
+  // Process each fund
+  for(const slot of loaded){
+    slot.returns={
+      '1Y':calcCAGR(slot.navHistory,1),
+      '3Y':calcCAGR(slot.navHistory,3),
+      '5Y':calcCAGR(slot.navHistory,5)
+    };
+    slot.rolling1Y=getRollingReturns(slot.navHistory,365);
+    if(slot.pdfBase64){
+      msgEl.textContent=`Extracting ${slot.data.scheme_name.split(' ').slice(0,3).join(' ')} factsheet...`;
+      slot.factsheetData=await extractFactsheetData(slot.pdfBase64,slot.data.scheme_name);
+    }
+  }
+
+  // Blended calculations
+  msgEl.textContent='Computing blended portfolio metrics...';
+  const totalW=loaded.reduce((a,s)=>a+parseFloat(s.allocPct||0),0)||100;
+  const wt=s=>parseFloat(s.allocPct||0)/totalW;
+
+  const blend1Y=loaded.reduce((a,s)=>s.returns['1Y']?a+parseFloat(s.returns['1Y'])*wt(s):a,0);
+  const blend3Y=loaded.reduce((a,s)=>s.returns['3Y']?a+parseFloat(s.returns['3Y'])*wt(s):a,0);
+  const blend5Y=loaded.reduce((a,s)=>s.returns['5Y']?a+parseFloat(s.returns['5Y'])*wt(s):a,0);
+
+  const fundsWithFD=loaded.filter(s=>s.factsheetData);
+  const blendPE=fundsWithFD.length?fundsWithFD.reduce((a,s)=>s.factsheetData.pe_ratio?a+s.factsheetData.pe_ratio*wt(s):a,0):null;
+  const blendBeta=fundsWithFD.length?fundsWithFD.reduce((a,s)=>s.factsheetData.beta?a+s.factsheetData.beta*wt(s):a,0):null;
+  const blendSharpe=fundsWithFD.length?fundsWithFD.reduce((a,s)=>s.factsheetData.sharpe_ratio?a+s.factsheetData.sharpe_ratio*wt(s):a,0):null;
+  const blendStdDev=fundsWithFD.length?fundsWithFD.reduce((a,s)=>s.factsheetData.standard_deviation?a+s.factsheetData.standard_deviation*wt(s):a,0):null;
+
+  // Sector X-ray
+  const sectorMap={};
+  fundsWithFD.forEach(s=>{
+    if(!s.factsheetData.sector_allocation)return;
+    s.factsheetData.sector_allocation.forEach(sec=>{
+      sectorMap[sec.sector]=(sectorMap[sec.sector]||0)+(sec.weight*wt(s));
+    });
+  });
+  const sectors=Object.entries(sectorMap).sort((a,b)=>b[1]-a[1]);
+
+  // Holdings X-ray
+  const holdingMap={};
+  fundsWithFD.forEach(s=>{
+    if(!s.factsheetData.top_holdings)return;
+    s.factsheetData.top_holdings.forEach(h=>{
+      holdingMap[h.name]=(holdingMap[h.name]||0)+(h.weight*wt(s));
+    });
+  });
+  const topHoldings=Object.entries(holdingMap).sort((a,b)=>b[1]-a[1]).slice(0,10);
+
+  // AI portfolio analysis
+  let portAI=null;
+  if(CLAUDE_KEY){
+    msgEl.textContent='Running AI portfolio analysis...';
+    const prompt=`You are a senior Indian portfolio analyst. Analyse this portfolio deeply.
+
+Funds: ${loaded.map(s=>`${s.data.scheme_name} (${s.allocPct}%)`).join(', ')}
+Blended 1Y Return: ${blend1Y.toFixed(2)}%
+Blended 3Y CAGR: ${blend3Y.toFixed(2)}%
+Blended P/E: ${blendPE?blendPE.toFixed(1):'N/A'}
+Blended Beta: ${blendBeta?blendBeta.toFixed(2):'N/A'}
+Blended Sharpe: ${blendSharpe?blendSharpe.toFixed(2):'N/A'}
+Top Sectors: ${sectors.slice(0,5).map(s=>`${s[0]}: ${s[1].toFixed(1)}%`).join(', ')}
+
+Respond ONLY in JSON:
+{
+  "portfolio_style": "1-line characterisation",
+  "risk_score": number_1_to_10,
+  "risk_label": "Conservative|Moderate|Aggressive|Very Aggressive",
+  "diversification_score": number_1_to_10,
+  "quality_score": number_1_to_10,
+  "portfolio_strength": "2 sentences on key strengths",
+  "concentration_risk": "any concentration concerns — 1-2 sentences",
+  "sector_insight": "what the sector allocation suggests — 2 sentences",
+  "improvement_1": {"title":"string","desc":"string"},
+  "improvement_2": {"title":"string","desc":"string"},
+  "improvement_3": {"title":"string","desc":"string"},
+  "rebalancing_suggestion": "specific rebalancing advice — 2 sentences",
+  "overall_verdict": "2-3 sentence overall portfolio verdict"
+}`;
+    const raw=await callClaude(prompt);
+    if(raw)try{portAI=JSON.parse(raw.replace(/```json|```/g,'').trim());}catch(e){}
+  }
+
+  loading.style.display='none';
+  renderPortfolioResults(loaded,{blend1Y,blend3Y,blend5Y,blendPE,blendBeta,blendSharpe,blendStdDev},sectors,topHoldings,portAI);
+}
+
+function renderPortfolioResults(funds,blended,sectors,holdings,ai){
+  const c=document.getElementById('port-results-content');
+  let html='';
+
+  // Summary cards
+  html+=`<div class="s-label">Portfolio X-Ray Results</div>
+  <div class="port-xray">
+    <div class="pxr-card">
+      <div class="pxr-card-title"><span>📈</span> Blended 1Y Return</div>
+      <div class="pxr-big" style="color:${blended.blend1Y>12?'var(--ok)':blended.blend1Y>6?'var(--warn)':'var(--err)'}">${blended.blend1Y.toFixed(2)}%</div>
+      <div class="pxr-desc">Weighted average across all funds</div>
+    </div>
+    <div class="pxr-card">
+      <div class="pxr-card-title"><span>📊</span> Blended 3Y CAGR</div>
+      <div class="pxr-big" style="color:${blended.blend3Y>12?'var(--ok)':blended.blend3Y>8?'var(--warn)':'var(--err)'}">${blended.blend3Y.toFixed(2)}%</div>
+      <div class="pxr-desc">Compounded annual growth</div>
+    </div>
+    ${blended.blend5Y?`<div class="pxr-card">
+      <div class="pxr-card-title"><span>🎯</span> Blended 5Y CAGR</div>
+      <div class="pxr-big" style="color:${blended.blend5Y>14?'var(--ok)':blended.blend5Y>10?'var(--warn)':'var(--err)'}">${blended.blend5Y.toFixed(2)}%</div>
+      <div class="pxr-desc">Long-term compounding</div>
+    </div>`:''}
+    ${blended.blendBeta?`<div class="pxr-card">
+      <div class="pxr-card-title"><span>⚡</span> Portfolio Beta</div>
+      <div class="pxr-big">${blended.blendBeta.toFixed(2)}</div>
+      <div class="pxr-desc">${blended.blendBeta<0.9?'Less volatile than market':blended.blendBeta>1.1?'More volatile than market':'Similar to market'}</div>
+    </div>`:''}
+    ${blended.blendPE?`<div class="pxr-card">
+      <div class="pxr-card-title"><span>💰</span> Blended P/E</div>
+      <div class="pxr-big">${blended.blendPE.toFixed(1)}</div>
+      <div class="pxr-desc">${blended.blendPE<22?'Value-oriented portfolio':blended.blendPE>30?'Growth/quality premium':'Fairly valued'}</div>
+    </div>`:''}
+    ${blended.blendSharpe?`<div class="pxr-card">
+      <div class="pxr-card-title"><span>🏆</span> Blended Sharpe</div>
+      <div class="pxr-big" style="color:${blended.blendSharpe>1.5?'var(--ok)':blended.blendSharpe>0.8?'var(--warn)':'var(--err)'}">${blended.blendSharpe.toFixed(2)}</div>
+      <div class="pxr-desc">Risk-adjusted return quality</div>
+    </div>`:''}
+    ${ai?`<div class="pxr-card">
+      <div class="pxr-card-title"><span>🎯</span> Risk Score</div>
+      <div class="pxr-big">${ai.risk_score}/10</div>
+      <div class="pxr-desc">${ai.risk_label}</div>
+    </div>
+    <div class="pxr-card">
+      <div class="pxr-card-title"><span>🌐</span> Diversification</div>
+      <div class="pxr-big">${ai.diversification_score}/10</div>
+      <div class="pxr-desc">Portfolio diversity score</div>
+    </div>`:''}
+  </div>`;
+
+  // Fund allocation table
+  html+=`<div class="section-card">
+    <div class="sc-title"><span>📋</span> Fund-wise Allocation</div>
+    <table class="returns-table">
+      <thead><tr><th>Fund</th><th>Allocation</th><th>1Y Return</th><th>3Y CAGR</th><th>Category</th></tr></thead>
+      <tbody>`;
+  funds.forEach(s=>{
+    html+=`<tr>
+      <td style="font-weight:600;font-size:.82rem">${s.data.scheme_name.split(' ').slice(0,6).join(' ')}</td>
+      <td><span class="tag tag-teal">${s.allocPct}%</span>${s.allocAmt?` <span style="font-size:.75rem;color:var(--ink-l)">₹${parseInt(s.allocAmt).toLocaleString('en-IN')}</span>`:''}</td>
+      <td class="ret-fund ${s.returns['1Y']&&parseFloat(s.returns['1Y'])>0?'pos':'neg'}">${s.returns['1Y']?s.returns['1Y']+'%':'N/A'}</td>
+      <td class="ret-fund ${s.returns['3Y']&&parseFloat(s.returns['3Y'])>0?'pos':'neg'}">${s.returns['3Y']?s.returns['3Y']+'%':'N/A'}</td>
+      <td style="font-size:.75rem;color:var(--ink-l)">${s.data.scheme_category||'—'}</td>
+    </tr>`;
+  });
+  html+=`</tbody></table></div>`;
+
+  // Sector X-ray
+  if(sectors.length){
+    const colors=['var(--teal)','var(--pink)','var(--gold)','#6b21a8','#0369a1','#065f46','#7c2d12','#1e3a5f','#4a044e','#134e4a'];
+    html+=`<div class="section-card">
+      <div class="sc-title"><span>🏭</span> Combined Sector Exposure</div>
+      <div style="font-size:.78rem;color:var(--ink-l);margin-bottom:14px">Effective sector allocation across entire portfolio (weighted)</div>`;
+    sectors.slice(0,10).forEach(([sec,val],i)=>{
+      html+=`<div class="sector-bar-item">
+        <div class="sbi-label">${sec}</div>
+        <div class="sbi-bar-wrap"><div class="sbi-bar" style="width:${Math.min(val,100)}%;background:${colors[i%colors.length]}"></div></div>
+        <div class="sbi-val">${val.toFixed(1)}%</div>
+      </div>`;
+    });
+    html+=`</div>`;
+  }
+
+  // Top holdings
+  if(holdings.length){
+    html+=`<div class="section-card">
+      <div class="sc-title"><span>📌</span> Effective Top Holdings (Portfolio Level)</div>
+      <div class="holdings-grid">`;
+    holdings.forEach(([name,val])=>{
+      const pct=val.toFixed(2);
+      const flag=parseFloat(pct)>8?'⚠️ ':parseFloat(pct)>5?'':'';
+      html+=`<div class="holding-item"><span class="hi-name">${flag}${name}</span><span class="hi-pct">${pct}%</span></div>`;
+    });
+    html+=`</div>
+    <div style="font-size:.75rem;color:var(--ink-l);margin-top:12px">⚠️ = >8% effective exposure — concentration risk alert</div>
+    </div>`;
+  }
+
+  // AI analysis
+  if(ai){
+    html+=`<div class="section-card" style="background:linear-gradient(135deg,var(--ink) 0%,#1a2d1a 100%);border-color:rgba(26,107,107,.3)">
+      <div class="sc-title" style="color:#fff"><span>🤖</span> <span style="color:#fff">AI Portfolio Verdict</span></div>
+      <div style="background:rgba(255,255,255,.08);border-radius:8px;padding:16px 18px;margin-bottom:14px">
+        <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.45);margin-bottom:8px">Portfolio Style</div>
+        <div style="font-size:.95rem;font-weight:600;color:#fff">${ai.portfolio_style}</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+        <div style="background:rgba(255,255,255,.05);border-radius:8px;padding:14px 16px">
+          <div style="font-size:.72rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Strength</div>
+          <div style="font-size:.82rem;color:rgba(255,255,255,.8)">${ai.portfolio_strength}</div>
+        </div>
+        <div style="background:rgba(255,255,255,.05);border-radius:8px;padding:14px 16px">
+          <div style="font-size:.72rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Concentration Risk</div>
+          <div style="font-size:.82rem;color:rgba(255,255,255,.8)">${ai.concentration_risk}</div>
+        </div>
+      </div>
+      <div style="background:rgba(26,107,107,.2);border-radius:8px;padding:14px 16px;margin-bottom:14px">
+        <div style="font-size:.72rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Sector Insight</div>
+        <div style="font-size:.82rem;color:rgba(255,255,255,.8)">${ai.sector_insight}</div>
+      </div>
+      <div style="background:rgba(212,43,81,.15);border-radius:8px;padding:14px 16px;margin-bottom:14px">
+        <div style="font-size:.72rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Rebalancing Suggestion</div>
+        <div style="font-size:.82rem;color:rgba(255,255,255,.8)">${ai.rebalancing_suggestion}</div>
+      </div>
+      <div style="font-size:.84rem;color:rgba(255,255,255,.7);line-height:1.7;padding:14px 16px;border:1px solid rgba(255,255,255,.1);border-radius:8px">${ai.overall_verdict}</div>
+    </div>`;
+
+    // Improvement areas
+    if(ai.improvement_1||ai.improvement_2||ai.improvement_3){
+      html+=`<div class="s-label" style="margin-top:24px">Improvement Areas</div>`;
+      [ai.improvement_1,ai.improvement_2,ai.improvement_3].filter(Boolean).forEach(imp=>{
+        html+=`<div class="improve-card">
+          <div class="ic-icon">🔧</div>
+          <div class="ic-text">
+            <strong>${imp.title}</strong>
+            <span>${imp.desc}</span>
+          </div>
+        </div>`;
+      });
+    }
+  }
+
+  c.innerHTML=html;
+}
+
+// ═══════════════════════════════════════════
+// CHECK SESSION
+// ═══════════════════════════════════════════
+window.addEventListener('load',()=>{
+  if(sessionStorage.getItem('znf_lab_auth')==='1'){
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('app').style.display='block';
+    initApp();
+  }
+  // Pre-fill API key
+  const savedKey=sessionStorage.getItem('znf_ckey')||'';
+  if(savedKey){
+    document.getElementById('claude-api-key').value=savedKey;
+    CLAUDE_KEY=savedKey;
+    if(savedKey.startsWith('sk-ant')) document.getElementById('api-ok-badge').style.display='flex';
+  }
+});
+</script>
+</body>
+</html>
