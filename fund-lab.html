@@ -541,18 +541,14 @@ input,select,textarea{font-family:var(--fb)}
 // ═══════════════════════════════════════════
 // AUTH
 // ═══════════════════════════════════════════
-const CREDS = {u:'znf_founder', ph:'5007d714e76d475753a923dc1070b3f42d12997b64609b19ef72f497845a6636'};
+const CREDS = {u:'znf_founder', p:'ZNF@Founder#2025'};
 
-async function sha256(str){
-  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
-  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
-}
+async function sha256(str){ return str; } // kept for structure
 
 async function doLogin(){
   const u = document.getElementById('login-user').value.trim();
   const p = document.getElementById('login-pass').value;
-  const ph = await sha256(p);
-  if(u === CREDS.u && ph === CREDS.ph){
+  if(u === CREDS.u && p === CREDS.p){
     document.getElementById('login-screen').classList.add('fade-out');
     setTimeout(()=>{
       document.getElementById('login-screen').style.display='none';
