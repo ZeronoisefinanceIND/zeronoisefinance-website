@@ -541,26 +541,25 @@ input,select,textarea{font-family:var(--fb)}
 // ═══════════════════════════════════════════
 // AUTH
 // ═══════════════════════════════════════════
-const CREDS = {u:'znf_founder', p:'ZNF@Founder#2025'};
-
-async function sha256(str){ return str; } // kept for structure
-
-async function doLogin(){
-  const u = document.getElementById('login-user').value.trim();
-  const p = document.getElementById('login-pass').value;
-  if(u === CREDS.u && p === CREDS.p){
-    document.getElementById('login-screen').classList.add('fade-out');
-    setTimeout(()=>{
-      document.getElementById('login-screen').style.display='none';
-      document.getElementById('app').style.display='block';
+function doLogin(){
+  var u = document.getElementById('login-user').value.trim();
+  var p = document.getElementById('login-pass').value;
+  if(u === 'znf_founder' && p === 'ZNF@Founder#2025'){
+    var ls = document.getElementById('login-screen');
+    var app = document.getElementById('app');
+    ls.style.opacity='0';
+    ls.style.transition='opacity 0.5s';
+    setTimeout(function(){
+      ls.style.display='none';
+      app.style.display='block';
     },500);
-    sessionStorage.setItem('znf_lab_auth','1');
-    localStorage.setItem('znf_lab_auth','1');
+    try{ localStorage.setItem('znf_lab_auth','1'); }catch(e){}
+    try{ sessionStorage.setItem('znf_lab_auth','1'); }catch(e){}
     initApp();
   } else {
-    const err = document.getElementById('login-err');
+    var err = document.getElementById('login-err');
     err.style.display='block';
-    setTimeout(()=>err.style.display='none',3000);
+    setTimeout(function(){ err.style.display='none'; },3000);
   }
 }
 
@@ -1570,14 +1569,24 @@ function renderPortfolioResults(funds,blended,sectors,holdings,ai){
 // ═══════════════════════════════════════════
 // CHECK SESSION
 // ═══════════════════════════════════════════
-window.addEventListener('load',()=>{
-  if(localStorage.getItem('znf_lab_auth')==='1'||sessionStorage.getItem('znf_lab_auth')==='1'){
+window.addEventListener('load',function(){
+  var auth=false;
+  try{ auth=localStorage.getItem('znf_lab_auth')==='1'; }catch(e){}
+  try{ if(!auth) auth=sessionStorage.getItem('znf_lab_auth')==='1'; }catch(e){}
+  if(auth){
     document.getElementById('login-screen').style.display='none';
     document.getElementById('app').style.display='block';
     initApp();
   }
-  const saved=localStorage.getItem('znf_ckey')||'';
-  if(saved){ CLAUDE_KEY=saved; document.getElementById('claude-api-key').value=saved; document.getElementById('api-ok-badge').style.display='flex'; }
+  var saved='';
+  try{ saved=localStorage.getItem('znf_ckey')||''; }catch(e){}
+  if(saved){
+    CLAUDE_KEY=saved;
+    var ki=document.getElementById('claude-api-key');
+    if(ki) ki.value=saved;
+    var badge=document.getElementById('api-ok-badge');
+    if(badge) badge.style.display='flex';
+  }
 });
 </script>
 </body>
