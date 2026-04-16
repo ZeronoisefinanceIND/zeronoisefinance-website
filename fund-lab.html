@@ -5,223 +5,362 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ZNF Fund Intelligence Lab</title>
 <link rel="icon" type="image/png" href="favicon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
-:root{
-  --pink:#d42b51;--pink-s:#f5e8ec;
-  --teal:#1a6b6b;--teal-s:#e6f2f2;
-  --ink:#1a1a24;--ink-m:#3d3d4f;--ink-l:#6b6b80;
-  --rule:#e2e2ec;--bg:#fafaf8;--bgw:#f5f4f0;--bgp:#ffffff;
-  --ok:#1e7e4f;--ok-bg:#edf7f2;--warn:#b45309;--warn-bg:#fef3e2;
-  --err:#b91c1c;--err-bg:#fef2f2;--gold:#b8860b;--gold-bg:#fefaed;
-  --fs:'Lora',Georgia,serif;--fb:'Source Sans 3',system-ui,sans-serif;--fm:'JetBrains Mono',monospace;
-  --r:10px;--max:1280px;
+:root {
+  --bg:#080c10; --bg2:#0d1117; --bg3:#111820; --bg4:#161e28;
+  --border:#1e2d3d; --border2:#243444;
+  --text:#e2e8f0; --text2:#94a3b8; --text3:#64748b;
+  --green:#00d084; --green-d:#003d26; --green-s:rgba(0,208,132,.12);
+  --red:#ff4560; --red-d:#3d0010; --red-s:rgba(255,69,96,.12);
+  --gold:#f5a623; --gold-d:#3d2800; --gold-s:rgba(245,166,35,.12);
+  --blue:#3b82f6; --blue-s:rgba(59,130,246,.12);
+  --purple:#a855f7; --purple-s:rgba(168,85,247,.12);
+  --teal:#06b6d4; --teal-s:rgba(6,182,212,.12);
+  --pink:#d42b51; --pink-s:rgba(212,43,81,.12);
+  --fm:'IBM Plex Mono',monospace;
+  --fb:'DM Sans',system-ui,sans-serif;
+  --fs:'Playfair Display',Georgia,serif;
+  --r:8px; --max:1400px;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--ink);font-family:var(--fb);line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-button{cursor:pointer;border:none;background:none;font-family:inherit}
+body{background:var(--bg);color:var(--text);font-family:var(--fb);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+button{cursor:pointer;border:none;background:none;font-family:var(--fb)}
 input,select,textarea{font-family:var(--fb)}
-::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bgw)}::-webkit-scrollbar-thumb{background:var(--rule);border-radius:2px}
 
-#login-screen{position:fixed;inset:0;z-index:9999;background:#0a0a0c;display:flex;align-items:center;justify-content:center}
-#login-screen::before{content:'';position:absolute;width:500px;height:500px;background:radial-gradient(circle,rgba(212,43,81,.1) 0%,transparent 70%);border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
-.lbox{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:44px 38px;width:100%;max-width:400px;position:relative;z-index:1}
-.llogo{display:flex;align-items:center;gap:7px;margin-bottom:28px;justify-content:center}
-.lz{background:var(--pink);color:#fff;font-weight:800;font-size:.8rem;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center}
-.ln{background:#fff;color:#0a0a0c;font-weight:700;font-size:.85rem;padding:4px 9px;border-radius:3px}
-.lf{font-weight:700;font-size:.85rem;color:#fff}
-.ltitle{font-family:var(--fs);font-size:1.35rem;font-weight:600;color:#fff;text-align:center;margin-bottom:4px}
-.lsub{font-size:.72rem;color:rgba(255,255,255,.3);text-align:center;margin-bottom:24px;letter-spacing:.06em;text-transform:uppercase}
-.ll{display:block;font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:6px;margin-top:14px}
-.li{width:100%;padding:11px 14px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:7px;color:#fff;font-size:.88rem;outline:none;transition:border-color .2s}
+/* ── LOGIN ── */
+#login{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;align-items:center;justify-content:center}
+#login::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 0%,rgba(212,43,81,.08) 0%,transparent 70%);pointer-events:none}
+.lbox{position:relative;z-index:1;width:100%;max-width:400px;padding:48px 40px;background:var(--bg2);border:1px solid var(--border2);border-radius:16px}
+.llogo{display:flex;align-items:center;gap:8px;justify-content:center;margin-bottom:32px}
+.lz{background:var(--pink);color:#fff;font-weight:800;font-size:.78rem;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;letter-spacing:.02em}
+.ln{background:#fff;color:#080c10;font-weight:700;font-size:.82rem;padding:3px 8px;border-radius:3px}
+.lf{font-weight:700;font-size:.82rem;color:var(--text)}
+.ltitle{font-family:var(--fs);font-size:1.4rem;color:var(--text);text-align:center;margin-bottom:4px}
+.lsub{font-size:.72rem;color:var(--text3);text-align:center;margin-bottom:28px;letter-spacing:.1em;text-transform:uppercase}
+.ll{display:block;font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:6px;margin-top:16px}
+.li{width:100%;padding:11px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:.88rem;outline:none;transition:border-color .2s}
 .li:focus{border-color:var(--pink)}
-.li::placeholder{color:rgba(255,255,255,.2)}
-.lbtn{width:100%;padding:12px;background:var(--pink);color:#fff;border-radius:7px;font-size:.9rem;font-weight:600;margin-top:18px;box-shadow:0 4px 18px rgba(212,43,81,.3);transition:background .2s}
-.lbtn:hover{background:#b8244a}
-.lerr{background:rgba(185,28,28,.2);border:1px solid rgba(185,28,28,.4);color:#fca5a5;font-size:.8rem;padding:9px 13px;border-radius:6px;margin-top:12px;display:none;text-align:center}
-.lfoot{text-align:center;margin-top:18px;font-size:.68rem;color:rgba(255,255,255,.18);letter-spacing:.05em}
+.li::placeholder{color:var(--text3)}
+.lbtn{width:100%;padding:12px;background:var(--pink);color:#fff;border-radius:6px;font-size:.88rem;font-weight:600;margin-top:20px;transition:all .2s;letter-spacing:.02em}
+.lbtn:hover{background:#b8244a;box-shadow:0 0 24px rgba(212,43,81,.3)}
+.lerr{background:var(--red-s);border:1px solid var(--red);color:var(--red);font-size:.78rem;padding:9px 12px;border-radius:5px;margin-top:12px;display:none;text-align:center}
+.lfoot{text-align:center;margin-top:20px;font-size:.66rem;color:var(--text3);letter-spacing:.06em}
 
+/* ── APP SHELL ── */
 #app{display:none;min-height:100vh}
-.anav{position:sticky;top:0;z-index:100;background:rgba(250,250,248,.93);backdrop-filter:blur(16px);border-bottom:1px solid var(--rule);height:56px}
-.anav-in{max-width:var(--max);margin:0 auto;height:100%;display:flex;align-items:center;justify-content:space-between;padding:0 22px}
-.nlogo{display:flex;align-items:center;gap:5px}
-.nz{background:var(--pink);color:#fff;font-weight:700;font-size:.58rem;width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center}
-.nn{background:var(--ink);color:#fff;font-weight:600;font-size:.66rem;padding:2px 6px;border-radius:3px}
-.nf{font-weight:700;font-size:.82rem;color:var(--ink);margin-left:2px}
-.nbadge{background:var(--gold-bg);border:1px solid var(--gold);color:var(--gold);font-size:.62rem;font-weight:700;padding:2px 7px;border-radius:20px;letter-spacing:.07em;text-transform:uppercase;margin-left:8px}
-.nright{display:flex;gap:10px}
-.nbtn{font-size:.78rem;color:var(--ink-m);padding:5px 11px;border-radius:6px;border:1px solid var(--rule);transition:all .2s;background:transparent}
-.nbtn:hover{border-color:var(--teal);color:var(--teal);background:var(--teal-s)}
-.nbtn.out:hover{border-color:var(--err);color:var(--err);background:var(--err-bg)}
 
-.apibanner{background:linear-gradient(135deg,#12121e,#1e1220);border:1px solid rgba(212,43,81,.25);border-radius:var(--r);padding:14px 18px;margin:18px 22px 0;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-.abt{flex:1;min-width:160px}
-.abt strong{color:#fff;font-size:.83rem;display:block;margin-bottom:2px}
-.abt span{color:rgba(255,255,255,.42);font-size:.73rem}
-.abinp{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);border-radius:6px;padding:8px 11px;color:#fff;font-size:.77rem;font-family:var(--fm);width:260px;outline:none}
-.abinp:focus{border-color:var(--pink)}
-.absave{background:var(--pink);color:#fff;padding:8px 14px;border-radius:6px;font-size:.77rem;font-weight:600}
-.abok{color:#4ade80;font-size:.74rem;display:none;align-items:center;gap:4px;font-weight:600}
+/* ── TOP NAV ── */
+.tnav{height:52px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;position:sticky;top:0;z-index:100}
+.tnav-in{max-width:var(--max);margin:0 auto;width:100%;padding:0 20px;display:flex;align-items:center;justify-content:space-between}
+.tlogo{display:flex;align-items:center;gap:6px}
+.tz{background:var(--pink);color:#fff;font-weight:800;font-size:.6rem;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.tn{background:var(--text);color:var(--bg);font-weight:700;font-size:.64rem;padding:2px 6px;border-radius:2px}
+.tf{font-weight:700;font-size:.8rem;color:var(--text);margin-left:2px}
+.tbadge{background:var(--gold-s);border:1px solid var(--gold);color:var(--gold);font-size:.6rem;font-weight:700;padding:2px 7px;border-radius:12px;letter-spacing:.08em;text-transform:uppercase;margin-left:8px}
+.tright{display:flex;gap:8px}
+.tbtn{font-size:.76rem;color:var(--text2);padding:5px 10px;border-radius:5px;border:1px solid var(--border);transition:all .2s}
+.tbtn:hover{border-color:var(--teal);color:var(--teal);background:var(--teal-s)}
+.tbtn.out:hover{border-color:var(--red);color:var(--red);background:var(--red-s)}
 
-.tabs{background:var(--bgp);border-bottom:1px solid var(--rule);margin-top:18px}
-.tabs-in{max-width:var(--max);margin:0 auto;padding:0 22px;display:flex;gap:2px}
-.tab{padding:12px 18px;font-size:.82rem;font-weight:500;color:var(--ink-l);border-bottom:2.5px solid transparent;transition:all .2s;cursor:pointer;user-select:none}
-.tab:hover{color:var(--ink)}
+/* ── API BAR ── */
+.apibar{background:linear-gradient(90deg,var(--bg2),var(--bg3));border-bottom:1px solid var(--border);padding:10px 20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.apibar-max{max-width:var(--max);margin:0 auto;width:100%;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.api-label{font-size:.72rem;font-weight:600;color:var(--text2);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.api-inp{background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:6px 12px;color:var(--text);font-size:.76rem;font-family:var(--fm);width:300px;outline:none}
+.api-inp:focus{border-color:var(--pink)}
+.api-save{background:var(--pink);color:#fff;padding:6px 14px;border-radius:5px;font-size:.74rem;font-weight:600;transition:background .2s}
+.api-save:hover{background:#b8244a}
+.api-test{background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:6px 14px;border-radius:5px;font-size:.74rem;font-weight:600;transition:all .2s}
+.api-test:hover{border-color:var(--teal);color:var(--teal)}
+.api-status{font-size:.72rem;font-weight:600;display:none;align-items:center;gap:4px}
+.api-ok{color:var(--green)}
+.api-fail{color:var(--red)}
+
+/* ── TABS ── */
+.tabs{background:var(--bg2);border-bottom:1px solid var(--border)}
+.tabs-in{max-width:var(--max);margin:0 auto;padding:0 20px;display:flex}
+.tab{padding:13px 20px;font-size:.82rem;font-weight:500;color:var(--text3);border-bottom:2px solid transparent;transition:all .2s;cursor:pointer;letter-spacing:.02em}
+.tab:hover{color:var(--text)}
 .tab.active{color:var(--pink);border-bottom-color:var(--pink);font-weight:600}
 
-.lbody{max-width:var(--max);margin:0 auto;padding:26px 22px}
-.slabel{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--pink);margin-bottom:7px}
-.stitle{font-family:var(--fs);font-size:1.5rem;font-weight:600;color:var(--ink);margin-bottom:8px}
-.ssub{font-size:.87rem;color:var(--ink-l);line-height:1.7;margin-bottom:22px}
+/* ── BODY ── */
+.body{max-width:var(--max);margin:0 auto;padding:24px 20px}
 
-.cattog{display:flex;gap:8px;margin-bottom:9px;flex-wrap:wrap}
-.catbtn{padding:7px 16px;border-radius:20px;border:1.5px solid var(--rule);font-size:.8rem;font-weight:500;color:var(--ink-m);background:var(--bgp);transition:all .2s;cursor:pointer}
-.catbtn.active{background:var(--pink);border-color:var(--pink);color:#fff}
-.modedesc{font-size:.77rem;color:var(--ink-l);padding:7px 12px;background:var(--teal-s);border-radius:6px;border-left:3px solid var(--teal);margin-bottom:18px}
+/* ── SECTION LABELS ── */
+.sec-label{font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:var(--pink);margin-bottom:6px}
+.sec-title{font-family:var(--fs);font-size:1.5rem;color:var(--text);margin-bottom:8px}
+.sec-sub{font-size:.84rem;color:var(--text2);line-height:1.65;margin-bottom:22px}
 
-.fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(295px,1fr));gap:13px;margin-bottom:18px}
-.fslot{background:var(--bgp);border:1.5px solid var(--rule);border-radius:var(--r);padding:17px}
-.fslot.loaded{border-color:var(--teal);background:linear-gradient(135deg,#fff,var(--teal-s))}
-.sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px}
-.snum{background:var(--bgw);border:1px solid var(--rule);border-radius:50%;width:23px;height:23px;display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:700;color:var(--ink-l)}
-.srem{color:var(--ink-l);font-size:.73rem;padding:3px 7px;border-radius:4px;border:1px solid var(--rule);transition:all .2s}
-.srem:hover{color:var(--err);border-color:var(--err);background:var(--err-bg)}
-.sfl{display:block;font-size:.69rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-l);margin-bottom:5px;margin-top:9px}
-.sfi{width:100%;padding:8px 11px;border:1px solid var(--rule);border-radius:6px;font-size:.82rem;color:var(--ink);background:var(--bg);outline:none;transition:border-color .2s}
-.sfi:focus{border-color:var(--teal)}
-.sdd{background:var(--bgp);border:1px solid var(--rule);border-radius:6px;margin-top:3px;max-height:200px;overflow-y:auto;position:absolute;width:100%;z-index:200;box-shadow:0 4px 16px rgba(0,0,0,.08);display:none}
+/* ── MODE TOGGLE ── */
+.modetog{display:flex;gap:6px;margin-bottom:8px}
+.modebtn{padding:6px 16px;border-radius:20px;border:1px solid var(--border);font-size:.78rem;font-weight:500;color:var(--text2);background:transparent;transition:all .2s}
+.modebtn.active{background:var(--pink);border-color:var(--pink);color:#fff}
+.modedesc{font-size:.76rem;color:var(--text2);padding:7px 12px;background:var(--bg3);border-radius:5px;border-left:2px solid var(--teal);margin-bottom:18px}
+
+/* ── FUND GRID ── */
+.fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin-bottom:16px}
+.fcard-slot{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:16px;transition:border-color .3s}
+.fcard-slot.loaded{border-color:rgba(0,208,132,.4)}
+.slot-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.slot-num{background:var(--bg3);border:1px solid var(--border);width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.66rem;font-weight:700;color:var(--text3);font-family:var(--fm)}
+.slot-rem{color:var(--text3);font-size:.72rem;padding:2px 7px;border-radius:4px;border:1px solid var(--border);transition:all .2s}
+.slot-rem:hover{color:var(--red);border-color:var(--red);background:var(--red-s)}
+.fl{display:block;font-size:.66rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--text3);margin-bottom:5px;margin-top:10px}
+.fi{width:100%;padding:8px 11px;background:var(--bg);border:1px solid var(--border);border-radius:5px;color:var(--text);font-size:.8rem;outline:none;transition:border-color .2s}
+.fi:focus{border-color:var(--teal)}
+.fi::placeholder{color:var(--text3)}
+.sdd{background:var(--bg3);border:1px solid var(--border2);border-radius:6px;margin-top:3px;max-height:190px;overflow-y:auto;position:absolute;width:100%;z-index:300;box-shadow:0 8px 24px rgba(0,0,0,.5);display:none}
 .sdd.show{display:block}
-.sddi{padding:8px 11px;cursor:pointer;font-size:.78rem;border-bottom:1px solid var(--bgw)}
-.sddi:hover{background:var(--teal-s)}
-.fbtn{width:100%;padding:9px;background:var(--teal);color:#fff;border-radius:6px;font-size:.79rem;font-weight:600;margin-top:9px;transition:background .2s}
-.fbtn:hover{background:#155a5a}
-.fbtn:disabled{background:var(--rule);color:var(--ink-l);cursor:not-allowed}
-.sst{font-size:.71rem;margin-top:6px;padding:5px 9px;border-radius:4px;display:none}
-.sst.ok{background:var(--ok-bg);color:var(--ok);display:block}
-.sst.err{background:var(--err-bg);color:var(--err);display:block}
-.sst.loading{background:var(--warn-bg);color:var(--warn);display:block}
-.pdfz{border:2px dashed var(--rule);border-radius:7px;padding:14px;text-align:center;cursor:pointer;margin-top:9px;transition:all .2s}
-.pdfz:hover{border-color:var(--teal);background:var(--teal-s)}
-.pdfzt{font-size:.74rem;color:var(--ink-l)}
-.pdfzt strong{color:var(--teal)}
-.pdfzn{font-size:.71rem;color:var(--ok);font-weight:600;margin-top:4px}
+.sddi{padding:8px 11px;cursor:pointer;font-size:.76rem;border-bottom:1px solid var(--border);color:var(--text2);transition:all .15s}
+.sddi:hover{background:var(--bg4);color:var(--text)}
+.fbtn{width:100%;padding:9px;border-radius:5px;font-size:.78rem;font-weight:600;margin-top:9px;transition:all .2s;letter-spacing:.02em}
+.fbtn-fetch{background:var(--teal);color:#080c10}
+.fbtn-fetch:hover{background:#0891b2}
+.fbtn-fetch:disabled{background:var(--border);color:var(--text3);cursor:not-allowed}
+.fbtn-loaded{background:var(--green-d);color:var(--green);border:1px solid rgba(0,208,132,.3)}
+.sst{font-size:.7rem;margin-top:6px;padding:5px 9px;border-radius:4px;display:none}
+.sst.ok{background:var(--green-s);color:var(--green);border:1px solid rgba(0,208,132,.2);display:block}
+.sst.err{background:var(--red-s);color:var(--red);border:1px solid rgba(255,69,96,.2);display:block}
+.sst.loading{background:var(--gold-s);color:var(--gold);border:1px solid rgba(245,166,35,.2);display:block}
+.pdfzone{border:1px dashed var(--border2);border-radius:6px;padding:14px;text-align:center;cursor:pointer;margin-top:10px;transition:all .2s}
+.pdfzone:hover{border-color:var(--teal);background:var(--teal-s)}
+.pdfzone-txt{font-size:.72rem;color:var(--text3)}
+.pdfzone-txt strong{color:var(--teal)}
+.pdfzone-name{font-size:.7rem;color:var(--green);font-weight:600;margin-top:4px}
 
-.addbtn{display:flex;align-items:center;gap:7px;padding:10px 16px;border:2px dashed var(--rule);border-radius:var(--r);color:var(--ink-l);font-size:.81rem;font-weight:500;width:100%;justify-content:center;transition:all .2s;background:transparent;margin-bottom:18px}
+/* ── BUTTONS ── */
+.addbtn{display:flex;align-items:center;gap:7px;padding:10px 16px;border:1px dashed var(--border2);border-radius:var(--r);color:var(--text3);font-size:.8rem;font-weight:500;width:100%;justify-content:center;transition:all .2s;margin-bottom:16px}
 .addbtn:hover{border-color:var(--pink);color:var(--pink);background:var(--pink-s)}
+.runbtn-wrap{text-align:center;margin:20px 0}
+.runbtn{display:inline-flex;align-items:center;gap:8px;padding:12px 32px;background:var(--pink);color:#fff;border-radius:6px;font-size:.88rem;font-weight:600;box-shadow:0 4px 20px rgba(212,43,81,.25);transition:all .2s;letter-spacing:.02em}
+.runbtn:hover{background:#b8244a;transform:translateY(-1px);box-shadow:0 6px 28px rgba(212,43,81,.4)}
+.runbtn:disabled{background:var(--border);color:var(--text3);cursor:not-allowed;transform:none;box-shadow:none}
 
-.awrap{text-align:center;margin:18px 0}
-.abtn{display:inline-flex;align-items:center;gap:8px;padding:12px 30px;background:var(--pink);color:#fff;border-radius:var(--r);font-size:.9rem;font-weight:600;box-shadow:0 4px 16px rgba(212,43,81,.26);transition:all .2s}
-.abtn:hover{background:#b8244a;transform:translateY(-1px)}
-.abtn:disabled{background:var(--rule);color:var(--ink-l);cursor:not-allowed;transform:none;box-shadow:none}
-
-.swrap{text-align:center;padding:48px 20px;display:none}
-.spin{width:32px;height:32px;border:3px solid var(--rule);border-top-color:var(--pink);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 13px}
+/* ── LOADING ── */
+.loadwrap{text-align:center;padding:48px 20px;display:none}
+.spin{width:32px;height:32px;border:2px solid var(--border2);border-top-color:var(--pink);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 14px}
 @keyframes spin{to{transform:rotate(360deg)}}
-.smsg{font-size:.84rem;color:var(--ink-l)}
+.loadmsg{font-size:.82rem;color:var(--text2);font-family:var(--fm)}
 
-.fcard{background:var(--bgp);border:1px solid var(--rule);border-radius:var(--r);margin-bottom:16px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.07)}
-.fch{padding:17px 21px;background:linear-gradient(135deg,#1a1a24,#2a1428);display:flex;align-items:flex-start;justify-content:space-between;gap:11px;flex-wrap:wrap}
-.fchn{font-family:var(--fs);font-size:1.03rem;font-weight:600;color:#fff;margin-bottom:4px}
-.fchm{font-size:.74rem;color:rgba(255,255,255,.44);display:flex;gap:9px;flex-wrap:wrap}
-.fcbb{display:flex;gap:7px;flex-wrap:wrap}
-.sbadge{background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.13);border-radius:7px;padding:6px 11px;text-align:center;min-width:62px}
-.sbv{font-family:var(--fm);font-size:.96rem;font-weight:700;color:#fff}
-.sbl{font-size:.6rem;color:rgba(255,255,255,.38);text-transform:uppercase;letter-spacing:.05em}
-.sbg .sbv{color:#4ade80}.sbw .sbv{color:#fbbf24}.sbb .sbv{color:#f87171}
-.fcb{padding:19px 21px}
+/* ── RESULTS: FUND CARD ── */
+.res-fund-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;margin-bottom:24px;overflow:hidden}
 
-.mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:9px;margin-bottom:16px}
-.mtile{background:var(--bg);border:1px solid var(--rule);border-radius:7px;padding:10px 12px}
-.mtl{font-size:.64rem;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-l);margin-bottom:3px}
-.mtv{font-family:var(--fm);font-size:.93rem;font-weight:700;color:var(--ink)}
-.mtv.good{color:var(--ok)}.mtv.warn{color:var(--warn)}.mtv.bad{color:var(--err)}
-.mth{font-size:.66rem;color:var(--ink-l);margin-top:2px}
+/* header band */
+.rfc-head{padding:20px 24px;background:linear-gradient(135deg,var(--bg3) 0%,var(--bg4) 100%);border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.rfc-name{font-family:var(--fs);font-size:1.15rem;color:var(--text);margin-bottom:6px}
+.rfc-meta{display:flex;gap:10px;flex-wrap:wrap}
+.rfc-tag{font-size:.68rem;font-weight:600;padding:2px 8px;border-radius:12px;letter-spacing:.05em}
+.tag-cat{background:var(--blue-s);color:var(--blue);border:1px solid rgba(59,130,246,.25)}
+.tag-amc{background:var(--purple-s);color:var(--purple);border:1px solid rgba(168,85,247,.25)}
+.tag-bench{background:var(--gold-s);color:var(--gold);border:1px solid rgba(245,166,35,.25)}
+.rfc-scores{display:flex;gap:8px;flex-wrap:wrap}
+.rscore{background:var(--bg);border:1px solid var(--border2);border-radius:8px;padding:8px 14px;text-align:center;min-width:72px}
+.rscore-val{font-family:var(--fm);font-size:1.05rem;font-weight:600}
+.rscore-lbl{font-size:.6rem;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+.rs-green .rscore-val{color:var(--green)}
+.rs-gold .rscore-val{color:var(--gold)}
+.rs-red .rscore-val{color:var(--red)}
 
-.rtable{width:100%;border-collapse:collapse;margin-top:9px;margin-bottom:14px}
-.rtable th{font-size:.69rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-l);padding:6px 10px;text-align:left;border-bottom:1px solid var(--rule)}
-.rtable td{padding:6px 10px;font-size:.81rem;border-bottom:1px solid var(--bgw)}
-.rtable tr:last-child td{border-bottom:none}
-.rp{font-family:var(--fm);font-weight:600;color:var(--ok)}.rn{font-family:var(--fm);font-weight:600;color:var(--err)}
-.vbdg{display:inline-flex;align-items:center;gap:3px;font-size:.61rem;background:var(--ok-bg);color:var(--ok);padding:1px 5px;border-radius:3px;font-weight:600}
+/* body */
+.rfc-body{padding:22px 24px}
 
-.ab{background:var(--bgw);border-left:3px solid var(--teal);border-radius:0 7px 7px 0;padding:12px 15px;margin-bottom:12px}
-.abt2{font-size:.69rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--teal);margin-bottom:5px}
-.abtx{font-size:.82rem;color:var(--ink-m);line-height:1.62}
+/* grid layouts */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px}
+.four-col{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
 
-.sbar{display:flex;align-items:center;gap:9px;margin-bottom:6px}
-.sbl2{font-size:.75rem;color:var(--ink-m);min-width:126px;font-weight:500}
-.sbt{flex:1;background:var(--bgw);border-radius:4px;height:7px;overflow:hidden}
-.sbf{height:100%;border-radius:4px;transition:width .5s}
-.sbv2{font-family:var(--fm);font-size:.71rem;color:var(--ink);min-width:34px;text-align:right;font-weight:600}
+/* ── INFO CARDS ── */
+.info-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px}
+.ic-label{font-size:.64rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text3);margin-bottom:5px}
+.ic-val{font-family:var(--fm);font-size:.92rem;font-weight:600;color:var(--text)}
+.ic-val.green{color:var(--green)}.ic-val.red{color:var(--red)}.ic-val.gold{color:var(--gold)}
+.ic-sub{font-size:.68rem;color:var(--text3);margin-top:3px;line-height:1.4}
+.ic-signal{display:inline-block;font-size:.62rem;font-weight:700;padding:2px 7px;border-radius:12px;margin-top:4px;letter-spacing:.04em}
+.sig-g{background:var(--green-s);color:var(--green);border:1px solid rgba(0,208,132,.2)}
+.sig-a{background:var(--gold-s);color:var(--gold);border:1px solid rgba(245,166,35,.2)}
+.sig-r{background:var(--red-s);color:var(--red);border:1px solid rgba(255,69,96,.2)}
 
-.hgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px;margin-top:9px}
-.hi{background:var(--bgp);border:1px solid var(--rule);border-radius:5px;padding:6px 10px;display:flex;justify-content:space-between;align-items:center}
-.hin{font-size:.75rem;color:var(--ink-m);font-weight:500}
-.hip{font-family:var(--fm);font-size:.77rem;font-weight:700;color:var(--ink)}
+/* ── CHART BOXES ── */
+.chart-box{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:16px}
+.chart-title{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text2);margin-bottom:14px;display:flex;align-items:center;gap:7px}
+.chart-title .ct-dot{width:6px;height:6px;border-radius:50%}
+.chart-canvas-wrap{position:relative;height:200px}
+.chart-canvas-wrap.tall{height:260px}
+.chart-canvas-wrap.short{height:160px}
 
+/* ── RETURNS TABLE ── */
+.ret-table{width:100%;border-collapse:collapse}
+.ret-table thead tr{border-bottom:1px solid var(--border2)}
+.ret-table th{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--text3);padding:6px 10px;text-align:left}
+.ret-table td{padding:7px 10px;font-size:.8rem;border-bottom:1px solid rgba(30,45,61,.5)}
+.ret-table tr:last-child td{border-bottom:none}
+.ret-table tr:hover td{background:var(--bg4)}
+.rf{font-family:var(--fm);font-weight:600}
+.rf.pos{color:var(--green)}.rf.neg{color:var(--red)}.rf.neu{color:var(--text2)}
+.vbdg{display:inline-flex;align-items:center;gap:3px;font-size:.6rem;background:var(--green-s);color:var(--green);padding:1px 5px;border-radius:3px;font-weight:600;border:1px solid rgba(0,208,132,.2)}
+.alpha-pos{color:var(--green);font-family:var(--fm);font-size:.76rem;font-weight:600}
+.alpha-neg{color:var(--red);font-family:var(--fm);font-size:.76rem;font-weight:600}
+
+/* ── SECTOR BARS ── */
+.sbar-row{display:flex;align-items:center;gap:10px;margin-bottom:7px}
+.sbar-label{font-size:.74rem;color:var(--text2);min-width:140px;font-weight:500}
+.sbar-track{flex:1;background:var(--bg);border-radius:3px;height:6px;overflow:hidden;position:relative}
+.sbar-fill{height:100%;border-radius:3px;transition:width .6s ease}
+.sbar-bench{position:absolute;top:0;height:100%;width:2px;background:rgba(255,255,255,.3)}
+.sbar-val{font-family:var(--fm);font-size:.7rem;color:var(--text2);min-width:38px;text-align:right;font-weight:600}
+.sbar-diff{font-family:var(--fm);font-size:.68rem;min-width:42px;text-align:right}
+.sbar-diff.ow{color:var(--green)}.sbar-diff.uw{color:var(--red)}.sbar-diff.neu{color:var(--text3)}
+
+/* ── HOLDINGS TABLE ── */
+.hold-table{width:100%;border-collapse:collapse}
+.hold-table th{font-size:.64rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--text3);padding:5px 10px;text-align:left;border-bottom:1px solid var(--border2)}
+.hold-table td{padding:7px 10px;font-size:.78rem;border-bottom:1px solid rgba(30,45,61,.4)}
+.hold-table tr:hover td{background:var(--bg4)}
+.hold-flag{font-size:.62rem;font-weight:700;padding:1px 5px;border-radius:3px;margin-left:4px}
+.hf-warn{background:var(--gold-s);color:var(--gold)}
+.hf-alert{background:var(--red-s);color:var(--red)}
+
+/* ── RATIO GRID ── */
+.ratio-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-bottom:18px}
+.ratio-tile{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:13px 15px;position:relative;overflow:hidden}
+.ratio-tile::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.ratio-tile.sig-g::before{background:var(--green)}
+.ratio-tile.sig-a::before{background:var(--gold)}
+.ratio-tile.sig-r::before{background:var(--red)}
+.rt-label{font-size:.64rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--text3);margin-bottom:4px}
+.rt-val{font-family:var(--fm);font-size:1.1rem;font-weight:600;color:var(--text);margin-bottom:4px}
+.rt-interp{font-size:.68rem;color:var(--text2);line-height:1.45}
+.rt-combo{font-size:.66rem;color:var(--text3);margin-top:5px;padding-top:5px;border-top:1px solid var(--border);line-height:1.4;font-style:italic}
+
+/* ── ANALYSIS BLOCKS ── */
+.analysis-block{background:var(--bg3);border-left:2px solid var(--teal);border-radius:0 var(--r) var(--r) 0;padding:14px 16px;margin-bottom:12px}
+.ab-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--teal);margin-bottom:7px}
+.ab-text{font-size:.82rem;color:var(--text2);line-height:1.65}
+
+/* strength/risk row */
+.sr-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.sr-card{border-radius:var(--r);padding:13px 15px}
+.sr-strength{background:var(--green-s);border:1px solid rgba(0,208,132,.2)}
+.sr-risk{background:var(--red-s);border:1px solid rgba(255,69,96,.2)}
+.src-title{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;margin-bottom:6px}
+.src-title.g{color:var(--green)}.src-title.r{color:var(--red)}
+.src-text{font-size:.8rem;line-height:1.55}
+.src-text.g{color:rgba(0,208,132,.85)}.src-text.r{color:rgba(255,69,96,.85)}
+
+/* investor suitability */
+.suitability-card{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);padding:16px 18px;margin-bottom:14px}
+.suit-head{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.suit-badge{font-size:.72rem;font-weight:700;padding:4px 12px;border-radius:16px;letter-spacing:.05em}
+.sb-aggressive{background:var(--red-s);color:var(--red);border:1px solid rgba(255,69,96,.3)}
+.sb-moderate{background:var(--gold-s);color:var(--gold);border:1px solid rgba(245,166,35,.3)}
+.sb-conservative{background:var(--green-s);color:var(--green);border:1px solid rgba(0,208,132,.3)}
+.suit-row{display:flex;align-items:flex-start;gap:10px;font-size:.8rem;margin-bottom:7px;color:var(--text2)}
+.suit-icon{font-size:.9rem;flex-shrink:0;margin-top:1px}
+
+/* credit quality */
+.cq-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.cq-label{font-size:.72rem;font-weight:600;min-width:40px;color:var(--text2)}
+.cq-track{flex:1;background:var(--bg);border-radius:3px;height:8px;overflow:hidden}
+.cq-fill{height:100%;border-radius:3px}
+.cq-val{font-family:var(--fm);font-size:.7rem;min-width:36px;text-align:right;font-weight:600}
+
+/* ── COMPARISON MATRIX ── */
 .cmatrix{overflow-x:auto;margin-top:18px}
-.cmatrix table{width:100%;border-collapse:collapse;min-width:480px}
-.cmatrix th{background:var(--ink);color:#fff;padding:8px 12px;font-size:.72rem;font-weight:600;text-align:left;white-space:nowrap}
-.cmatrix td{padding:7px 12px;font-size:.79rem;border-bottom:1px solid var(--rule)}
-.cmatrix tr:nth-child(even) td{background:var(--bgw)}
-.cml{font-weight:600;color:var(--ink);font-size:.77rem}
-.cbest{background:var(--ok-bg)!important;color:var(--ok);font-weight:700;font-family:var(--fm)}
-.cworst{background:var(--err-bg)!important;color:var(--err);font-family:var(--fm)}
-.cmid{font-family:var(--fm);color:var(--ink-m)}
+.cmatrix table{width:100%;border-collapse:collapse;min-width:600px}
+.cmatrix th{background:var(--bg3);color:var(--text2);padding:9px 13px;font-size:.68rem;font-weight:700;text-align:left;white-space:nowrap;letter-spacing:.06em;text-transform:uppercase;border-bottom:1px solid var(--border2)}
+.cmatrix th.fund-col{color:var(--text);font-size:.74rem;max-width:140px;font-family:var(--fb)}
+.cmatrix td{padding:8px 13px;font-size:.78rem;border-bottom:1px solid rgba(30,45,61,.5)}
+.cmatrix tr:hover td{background:var(--bg3)}
+.cml{font-weight:600;color:var(--text2);font-size:.76rem}
+.cm-best{background:var(--green-s)!important;color:var(--green);font-weight:700;font-family:var(--fm)}
+.cm-worst{background:var(--red-s)!important;color:var(--red);font-family:var(--fm)}
+.cm-mid{font-family:var(--fm);color:var(--text2)}
+.cm-na{color:var(--text3);font-size:.7rem}
 
-.ocard{background:var(--bgp);border:1px solid var(--rule);border-radius:var(--r);padding:15px 17px;margin-bottom:9px}
-.och{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
-.ocf{font-size:.81rem;font-weight:600;color:var(--ink)}
-.ocp{font-family:var(--fm);font-size:.9rem;font-weight:700;padding:3px 9px;border-radius:14px}
-.oclow{background:var(--ok-bg);color:var(--ok)}.ocmid{background:var(--warn-bg);color:var(--warn)}.ochigh{background:var(--err-bg);color:var(--err)}
-.ocs{font-size:.75rem;color:var(--ink-l);margin-bottom:5px}
-.ocv{font-size:.77rem;color:var(--ink-m);padding:6px 9px;background:var(--bgw);border-radius:5px}
+/* ── OVERLAP ── */
+.overlap-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:15px 17px;margin-bottom:10px}
+.oc-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;gap:10px;flex-wrap:wrap}
+.oc-funds{font-size:.8rem;font-weight:600;color:var(--text)}
+.oc-pct{font-family:var(--fm);font-size:.88rem;font-weight:700;padding:3px 10px;border-radius:12px}
+.oc-low{background:var(--green-s);color:var(--green);border:1px solid rgba(0,208,132,.2)}
+.oc-mid{background:var(--gold-s);color:var(--gold);border:1px solid rgba(245,166,35,.2)}
+.oc-high{background:var(--red-s);color:var(--red);border:1px solid rgba(255,69,96,.2)}
+.oc-stocks{font-size:.74rem;color:var(--text3);margin-bottom:6px}
+.oc-verdict{font-size:.76rem;color:var(--text2);padding:7px 10px;background:var(--bg4);border-radius:5px;line-height:1.5}
 
-.pslot{background:var(--bgp);border:1.5px solid var(--rule);border-radius:var(--r);padding:17px;margin-bottom:13px}
-.pslot.loaded{border-color:var(--teal)}
-.psh{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px}
-.pst{font-weight:600;font-size:.85rem;color:var(--ink)}
-.arow{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:9px}
+/* ── COMBO ADVISOR ── */
+.combo-card{background:linear-gradient(135deg,var(--bg3),var(--bg4));border:1px solid rgba(6,182,212,.2);border-radius:var(--r);padding:18px 20px;margin-top:14px}
+.combo-title{font-size:.76rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--teal);margin-bottom:12px}
+.combo-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;font-size:.8rem;color:var(--text2);line-height:1.55}
 
-.assetc{background:var(--bgp);border:1px solid var(--rule);border-radius:var(--r);padding:17px;margin-bottom:17px}
-.assetct{font-size:.79rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-l);margin-bottom:11px;display:flex;align-items:center;gap:6px}
-.asr{display:flex;align-items:center;gap:9px;margin-bottom:8px}
-.asd{width:9px;height:9px;border-radius:50%;flex-shrink:0}
-.asn{font-size:.81rem;color:var(--ink-m);min-width:88px}
-.asl{flex:1;accent-color:var(--teal)}
-.asp{font-family:var(--fm);font-size:.81rem;font-weight:700;min-width:33px;text-align:right}
-.atot{font-size:.77rem;padding:6px 10px;border-radius:5px;margin-top:6px;font-weight:600}
-.atok{background:var(--ok-bg);color:var(--ok)}.aterr{background:var(--err-bg);color:var(--err)}
+/* ── PORTFOLIO TAB ── */
+.port-slot{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:16px;margin-bottom:12px}
+.port-slot.loaded{border-color:rgba(0,208,132,.3)}
+.ps-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.ps-title{font-weight:600;font-size:.84rem;color:var(--text)}
+.alloc-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:9px}
 
-.pxg{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:12px;margin-bottom:18px}
-.pxc{background:var(--bgp);border:1px solid var(--rule);border-radius:var(--r);padding:15px}
-.pxt{font-size:.69rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-l);margin-bottom:9px}
-.pxb{font-family:var(--fm);font-size:1.65rem;font-weight:700;color:var(--ink);margin-bottom:3px}
-.pxd{font-size:.74rem;color:var(--ink-l);line-height:1.42}
+/* asset allocation */
+.asset-panel{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:18px}
+.ap-title{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text2);margin-bottom:14px;display:flex;align-items:center;gap:7px}
+.ap-row{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+.ap-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.ap-name{font-size:.8rem;color:var(--text2);min-width:90px}
+.ap-slider{flex:1;accent-color:var(--teal)}
+.ap-pct{font-family:var(--fm);font-size:.8rem;font-weight:600;color:var(--text);min-width:34px;text-align:right}
+.ap-total{font-size:.76rem;padding:6px 10px;border-radius:5px;margin-top:8px;font-weight:600;font-family:var(--fm)}
+.ap-ok{background:var(--green-s);color:var(--green);border:1px solid rgba(0,208,132,.2)}
+.ap-err{background:var(--red-s);color:var(--red);border:1px solid rgba(255,69,96,.2)}
 
-.sc{background:var(--bgp);border:1px solid var(--rule);border-radius:var(--r);padding:19px;margin-bottom:16px}
-.sct{font-family:var(--fs);font-size:.98rem;font-weight:600;color:var(--ink);margin-bottom:13px;display:flex;align-items:center;gap:6px}
+/* portfolio results */
+.pxr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-bottom:20px}
+.pxr-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:15px}
+.pxr-title{font-size:.64rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--text3);margin-bottom:8px}
+.pxr-big{font-family:var(--fm);font-size:1.6rem;font-weight:600;color:var(--text);margin-bottom:3px;line-height:1}
+.pxr-desc{font-size:.72rem;color:var(--text3);line-height:1.4}
 
-.impc{background:var(--warn-bg);border:1px solid rgba(180,83,9,.2);border-radius:var(--r);padding:13px 16px;margin-bottom:9px;display:flex;gap:11px;align-items:flex-start}
-.impt strong{display:block;font-size:.82rem;font-weight:600;color:var(--ink);margin-bottom:3px}
-.impt span{font-size:.77rem;color:var(--ink-m);line-height:1.52}
+/* section divider */
+.divider{height:1px;background:var(--border);margin:20px 0}
+.section-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:16px}
+.sc-title{font-size:.76rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text2);margin-bottom:14px;display:flex;align-items:center;gap:7px}
 
-.divider{height:1px;background:var(--rule);margin:20px 0}
-.tteal{background:var(--teal-s);color:var(--teal);padding:2px 7px;border-radius:4px;font-size:.66rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
-.rbox{margin-top:13px;padding:12px 14px;background:var(--teal-s);border-radius:7px;border:1px solid rgba(26,107,107,.14)}
-.rrow{display:flex;gap:13px;flex-wrap:wrap;font-size:.79rem;color:var(--ink-m)}
-.rrow strong{color:var(--teal)}
+/* improve cards */
+.imp-card{background:var(--gold-s);border:1px solid rgba(245,166,35,.2);border-radius:var(--r);padding:13px 16px;margin-bottom:10px;display:flex;gap:11px;align-items:flex-start}
+.imp-text strong{display:block;font-size:.82rem;font-weight:600;color:var(--text);margin-bottom:3px}
+.imp-text span{font-size:.76rem;color:var(--text2);line-height:1.55}
 
-@media(max-width:768px){.fgrid{grid-template-columns:1fr}.mgrid{grid-template-columns:1fr 1fr}.apibanner{flex-direction:column;align-items:flex-start}.abinp{width:100%}.arow{grid-template-columns:1fr}.pxg{grid-template-columns:1fr 1fr}}
+/* rolling box */
+.rolling-box{background:var(--teal-s);border:1px solid rgba(6,182,212,.2);border-radius:6px;padding:12px 14px;margin-top:12px}
+.rolling-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:8px}
+.rg-item{text-align:center}
+.rg-val{font-family:var(--fm);font-size:.88rem;font-weight:600;color:var(--teal)}
+.rg-label{font-size:.62rem;color:var(--text3);margin-top:2px;text-transform:uppercase;letter-spacing:.06em}
+
+/* tags */
+.tteal{background:var(--teal-s);color:var(--teal);padding:2px 7px;border-radius:3px;font-size:.65rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;border:1px solid rgba(6,182,212,.2)}
+
+@media(max-width:900px){
+  .two-col,.three-col,.four-col{grid-template-columns:1fr}
+  .fgrid{grid-template-columns:1fr}
+  .sr-row{grid-template-columns:1fr}
+  .rolling-grid{grid-template-columns:repeat(3,1fr)}
+  .ratio-grid{grid-template-columns:1fr 1fr}
+  .pxr-grid{grid-template-columns:1fr 1fr}
+}
 </style>
 </head>
 <body>
 
-<div id="login-screen">
+<!-- LOGIN -->
+<div id="login">
   <div class="lbox">
-    <div class="llogo"><div class="lz">ZERO</div><div class="ln">NOISE</div><div class="lf">FINANCE™</div></div>
+    <div class="llogo"><div class="lz">ZNF</div><div class="ln">NOISE</div><div class="lf">FINANCE™</div></div>
     <div class="ltitle">Fund Intelligence Lab</div>
     <div class="lsub">Founder Access Only</div>
     <label class="ll">Username</label>
@@ -234,65 +373,85 @@ input,select,textarea{font-family:var(--fb)}
   </div>
 </div>
 
+<!-- APP -->
 <div id="app">
-  <nav class="anav">
-    <div class="anav-in">
-      <div class="nlogo"><div class="nz">ZNF</div><div class="nn">NOISE</div><div class="nf">FINANCE™</div><span class="nbadge">Fund Lab</span></div>
-      <div class="nright">
-        <button class="nbtn" onclick="window.open('https://zeronoisefinance.com','_blank')">← Site</button>
-        <button class="nbtn out" onclick="doLogout()">Logout</button>
+  <nav class="tnav">
+    <div class="tnav-in">
+      <div class="tlogo"><div class="tz">ZNF</div><div class="tn">NOISE</div><div class="tf">FINANCE™</div><span class="tbadge">Fund Lab</span></div>
+      <div class="tright">
+        <button class="tbtn" onclick="window.open('https://zeronoisefinance.com','_blank')">← Site</button>
+        <button class="tbtn out" onclick="doLogout()">Logout</button>
       </div>
     </div>
   </nav>
-  <div class="apibanner">
-    <span style="font-size:1.2rem">🔑</span>
-    <div class="abt"><strong>Claude API Key</strong><span>Returns are free (mfapi.in). AI analysis needs your Anthropic key.</span></div>
-    <input type="password" class="abinp" id="akey" placeholder="sk-ant-api03-...">
-    <button class="absave" onclick="saveKey()">Save</button>
-    <button class="absave" style="background:var(--teal)" onclick="testKey()">Test</button>
-    <div class="abok" id="akok">✅ Active</div>
-    <div class="abok" id="akfail" style="color:#f87171;display:none">❌ Key failed — check Console</div>
-  </div>
-  <div class="tabs">
-    <div class="tabs-in">
-      <div class="tab active" id="tbc" onclick="switchTab('compare')">📊 Fund Comparison</div>
-      <div class="tab" id="tbp" onclick="switchTab('portfolio')">💼 Portfolio Analyser</div>
+
+  <div class="apibar">
+    <div class="apibar-max">
+      <span class="api-label">🔑 Claude API</span>
+      <input type="password" class="api-inp" id="akey" placeholder="sk-ant-api03-... (for PDF extraction & analysis)">
+      <button class="api-save" onclick="saveKey()">Save</button>
+      <button class="api-test" onclick="testKey()">Test Key</button>
+      <div class="api-status api-ok" id="aok">✅ Active</div>
+      <div class="api-status api-fail" id="afail">❌ Failed — check key or credits</div>
     </div>
   </div>
-  <div class="lbody">
 
-    <div id="tc">
-      <div class="slabel">Fund Intelligence Lab</div>
-      <div class="stitle">Multi-Fund Comparison Engine</div>
-      <div class="ssub">Search any AMFI fund. Live returns from mfapi.in. Upload factsheet PDF for deep ratio analysis.</div>
-      <div style="font-size:.74rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-l);margin-bottom:8px">Mode</div>
-      <div class="cattog"><button class="catbtn active" id="ms" onclick="setMode('same')">Same Category</button><button class="catbtn" id="mc" onclick="setMode('cross')">Cross Category</button></div>
-      <div class="modedesc" id="mdesc">Same category — peer benchmarking active.</div>
+  <div class="tabs">
+    <div class="tabs-in">
+      <div class="tab active" id="tab1" onclick="switchTab(1)">📊 Fund Analysis & Compare</div>
+      <div class="tab" id="tab2" onclick="switchTab(2)">💼 Portfolio X-Ray</div>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <!-- TAB 1: COMPARE -->
+    <div id="t1">
+      <div class="sec-label">Fund Intelligence Lab</div>
+      <div class="sec-title">Fund Analysis & Comparison Engine</div>
+      <div class="sec-sub">Upload factsheet PDFs for full Morningstar-level analysis. Returns extracted directly from factsheet — no estimation. Up to 12 funds.</div>
+
+      <div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text3);margin-bottom:8px">Comparison Mode</div>
+      <div class="modetog">
+        <button class="modebtn active" id="ms" onclick="setMode('same')">Same Category</button>
+        <button class="modebtn" id="mc" onclick="setMode('cross')">Cross Category</button>
+      </div>
+      <div class="modedesc" id="mdesc">Same category — peer ranking and category average benchmarking active.</div>
+
       <div class="fgrid" id="fgrid"></div>
-      <button class="addbtn" id="addbtn" onclick="addSlot()">＋ Add Fund</button>
-      <div class="awrap"><button class="abtn" onclick="runCompare()">⚡ Analyse &amp; Compare</button></div>
-      <div class="swrap" id="cload"><div class="spin"></div><div class="smsg" id="cmsg">Loading...</div></div>
+      <button class="addbtn" id="addbtn" onclick="addSlot()">＋ Add Fund (up to 12)</button>
+      <div class="runbtn-wrap">
+        <button class="runbtn" onclick="runAnalysis()">⚡ Run Deep Analysis</button>
+      </div>
+      <div class="loadwrap" id="cload"><div class="spin"></div><div class="loadmsg" id="cmsg">Initialising...</div></div>
       <div id="cres"></div>
     </div>
 
-    <div id="tp" style="display:none">
-      <div class="slabel">Portfolio Intelligence</div>
-      <div class="stitle">Portfolio X-Ray Analyser</div>
-      <div class="ssub">Add your funds with allocation. Get blended ratios, sector exposure, overlap, risk score & AI suggestions.</div>
+    <!-- TAB 2: PORTFOLIO -->
+    <div id="t2" style="display:none">
+      <div class="sec-label">Portfolio Intelligence</div>
+      <div class="sec-title">Portfolio X-Ray Analyser</div>
+      <div class="sec-sub">Add funds with allocation weights. Get complete portfolio-level analysis — blended ratios, sector overweight/underweight vs benchmark, holdings concentration, risk score, and improvement suggestions.</div>
+
       <div id="plist"></div>
-      <button class="addbtn" onclick="addPortSlot()">＋ Add Fund</button>
+      <button class="addbtn" onclick="addPortSlot()">＋ Add Fund to Portfolio</button>
       <div class="divider"></div>
-      <div class="assetc">
-        <div class="assetct">📐 Asset Allocation (optional)</div>
-        <div style="font-size:.76rem;color:var(--ink-l);margin-bottom:12px">Set full portfolio mix for risk-adjusted analysis.</div>
-        <div class="asr"><div class="asd" style="background:#d42b51"></div><div class="asn">Equity</div><input type="range" class="asl" id="aleq" min="0" max="100" value="70" oninput="updAlloc()"><div class="asp" id="aleqv">70%</div></div>
-        <div class="asr"><div class="asd" style="background:#1a6b6b"></div><div class="asn">Debt</div><input type="range" class="asl" id="aldt" min="0" max="100" value="20" oninput="updAlloc()"><div class="asp" id="aldtv">20%</div></div>
-        <div class="asr"><div class="asd" style="background:#b8860b"></div><div class="asn">Gold</div><input type="range" class="asl" id="algd" min="0" max="100" value="5" oninput="updAlloc()"><div class="asp" id="algdv">5%</div></div>
-        <div class="asr"><div class="asd" style="background:#6b21a8"></div><div class="asn">REIT/InvIT</div><input type="range" class="asl" id="alrt" min="0" max="100" value="5" oninput="updAlloc()"><div class="asp" id="alrtv">5%</div></div>
-        <div class="atot atok" id="atot">Total: 100% ✓</div>
+
+      <div class="asset-panel">
+        <div class="ap-title">📐 Total Asset Allocation</div>
+        <div style="font-size:.75rem;color:var(--text3);margin-bottom:14px">Set your complete portfolio asset mix for risk-adjusted analysis.</div>
+        <div class="ap-row"><div class="ap-dot" style="background:var(--pink)"></div><div class="ap-name">Equity MFs</div><input type="range" class="ap-slider" id="al-eq" min="0" max="100" value="70" oninput="updAlloc()"><div class="ap-pct" id="al-eq-v">70%</div></div>
+        <div class="ap-row"><div class="ap-dot" style="background:var(--teal)"></div><div class="ap-name">Debt MFs</div><input type="range" class="ap-slider" id="al-dt" min="0" max="100" value="20" oninput="updAlloc()"><div class="ap-pct" id="al-dt-v">20%</div></div>
+        <div class="ap-row"><div class="ap-dot" style="background:var(--gold)"></div><div class="ap-name">Gold</div><input type="range" class="ap-slider" id="al-gd" min="0" max="100" value="5" oninput="updAlloc()"><div class="ap-pct" id="al-gd-v">5%</div></div>
+        <div class="ap-row"><div class="ap-dot" style="background:var(--purple)"></div><div class="ap-name">REIT/InvIT</div><input type="range" class="ap-slider" id="al-rt" min="0" max="100" value="5" oninput="updAlloc()"><div class="ap-pct" id="al-rt-v">5%</div></div>
+        <div class="ap-row"><div class="ap-dot" style="background:var(--blue)"></div><div class="ap-name">International</div><input type="range" class="ap-slider" id="al-intl" min="0" max="100" value="0" oninput="updAlloc()"><div class="ap-pct" id="al-intl-v">0%</div></div>
+        <div class="ap-total ap-ok" id="ap-tot">Total: 100% ✓</div>
       </div>
-      <div class="awrap"><button class="abtn" onclick="runPort()">🔬 Run Portfolio X-Ray</button></div>
-      <div class="swrap" id="pload"><div class="spin"></div><div class="smsg" id="pmsg">Analysing...</div></div>
+
+      <div class="runbtn-wrap">
+        <button class="runbtn" onclick="runPortfolio()">🔬 Run Portfolio X-Ray</button>
+      </div>
+      <div class="loadwrap" id="pload"><div class="spin"></div><div class="loadmsg" id="pmsg">Analysing portfolio...</div></div>
       <div id="pres"></div>
     </div>
 
@@ -300,532 +459,1197 @@ input,select,textarea{font-family:var(--fb)}
 </div>
 
 <script>
-// AUTH
+// ═══════════════════ AUTH ═══════════════════
 document.getElementById('lbtn').addEventListener('click', doLogin);
-document.getElementById('lp').addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); doLogin(); } });
+document.getElementById('lp').addEventListener('keydown', function(e){ if(e.key==='Enter'){e.preventDefault();doLogin();} });
 
 function doLogin(){
-  var u = document.getElementById('lu').value.trim();
-  var p = document.getElementById('lp').value;
+  var u=document.getElementById('lu').value.trim();
+  var p=document.getElementById('lp').value;
   if(u==='znf_founder' && p==='ZNF@Founder#2025'){
-    try{ localStorage.setItem('znf_lab','1'); }catch(e){}
-    document.getElementById('login-screen').style.display='none';
+    try{localStorage.setItem('znf_lab','1');}catch(e){}
+    document.getElementById('login').style.display='none';
     document.getElementById('app').style.display='block';
     startApp();
   } else {
     var el=document.getElementById('lerr'); el.style.display='block';
-    setTimeout(function(){ el.style.display='none'; },3000);
+    setTimeout(function(){el.style.display='none';},3000);
   }
 }
 function doLogout(){ try{localStorage.removeItem('znf_lab');}catch(e){} location.reload(); }
 
-// API KEY
+// ═══════════════════ API KEY ═══════════════════
 var CKEY='';
 function saveKey(){
   var v=(document.getElementById('akey').value||'').trim(); if(!v) return;
   CKEY=v; try{localStorage.setItem('znf_ckey',v);}catch(e){}
-  document.getElementById('akok').style.display='flex';
+  document.getElementById('aok').style.display='flex';
+  document.getElementById('afail').style.display='none';
 }
 function testKey(){
-  if(!CKEY){ alert('Enter and save your API key first.'); return; }
-  document.getElementById('akok').style.display='none';
-  document.getElementById('akfail').style.display='none';
-  callAI('Reply with exactly: OK').then(function(r){
-    if(r && r.trim().indexOf('OK')>=0){
-      document.getElementById('akok').style.display='flex';
-      alert('✅ API key working correctly!');
+  if(!CKEY){alert('Save your API key first.');return;}
+  document.getElementById('aok').style.display='none';
+  document.getElementById('afail').style.display='none';
+  callClaude('Say exactly: PING_OK').then(function(r){
+    if(r&&r.indexOf('PING_OK')>=0){
+      document.getElementById('aok').style.display='flex';
+      alert('✅ API key working!');
     } else {
-      document.getElementById('akfail').style.display='flex';
-      alert('❌ API key test failed. Check browser Console (F12) for error details.');
+      document.getElementById('afail').style.display='flex';
+      alert('❌ API failed. Check console for details.');
     }
   });
 }
 function loadKey(){
-  try{ var v=localStorage.getItem('znf_ckey')||''; if(v){CKEY=v;document.getElementById('akey').value=v;document.getElementById('akok').style.display='flex';} }catch(e){}
+  try{var v=localStorage.getItem('znf_ckey')||'';if(v){CKEY=v;document.getElementById('akey').value=v;document.getElementById('aok').style.display='flex';}}catch(e){}
 }
 
-// TABS
-function switchTab(t){
-  document.getElementById('tc').style.display=t==='compare'?'block':'none';
-  document.getElementById('tp').style.display=t==='portfolio'?'block':'none';
-  document.getElementById('tbc').className='tab'+(t==='compare'?' active':'');
-  document.getElementById('tbp').className='tab'+(t==='portfolio'?' active':'');
+// ═══════════════════ TABS ═══════════════════
+function switchTab(n){
+  document.getElementById('t1').style.display=n===1?'block':'none';
+  document.getElementById('t2').style.display=n===2?'block':'none';
+  document.getElementById('tab1').className='tab'+(n===1?' active':'');
+  document.getElementById('tab2').className='tab'+(n===2?' active':'');
 }
 
-// STATE
-var cSlots=[], pSlots=[], schemes=[], cMode='same';
+// ═══════════════════ STATE ═══════════════════
+var slots=[], portSlots=[], schemes=[], cMode='same', chartRegistry={};
 
 function startApp(){
-  loadKey();
+  loadKey(); updAlloc();
   addSlot(); addSlot();
   addPortSlot();
-  updAlloc();
-  fetch('https://api.mfapi.in/mf').then(function(r){return r.json();}).then(function(d){schemes=d;}).catch(function(){});
+  fetch('https://api.mfapi.in/mf')
+    .then(function(r){return r.json();})
+    .then(function(d){schemes=d; console.log('Schemes loaded:',d.length);})
+    .catch(function(e){console.warn('Schemes failed:',e);});
 }
 
 function setMode(m){
   cMode=m;
-  document.getElementById('ms').className='catbtn'+(m==='same'?' active':'');
-  document.getElementById('mc').className='catbtn'+(m==='cross'?' active':'');
-  document.getElementById('mdesc').textContent=m==='same'?'Same category — peer benchmarking active.':'Cross category — absolute metrics prioritised.';
+  document.getElementById('ms').className='modebtn'+(m==='same'?' active':'');
+  document.getElementById('mc').className='modebtn'+(m==='cross'?' active':'');
+  document.getElementById('mdesc').textContent=m==='same'
+    ?'Same category — peer ranking and category average benchmarking active.'
+    :'Cross category — absolute risk/return metrics used for comparison.';
 }
 
-// SLOTS
-var stimers={};
-function uid(){ return 'id'+Date.now()+Math.random().toString(36).slice(2,6); }
+// ═══════════════════ SLOTS ═══════════════════
+var stm={}, uid_c=0;
+function uid(){ return 'id'+(Date.now())+(uid_c++); }
 
 function addSlot(){
-  if(cSlots.length>=12) return;
-  cSlots.push({id:uid(),navHistory:null,selectedCode:null,schemeName:null,data:null,returns:null,rolling1Y:null,factsheetData:null,aiAnalysis:null,pdfBase64:null,pdfName:null});
+  if(slots.length>=12) return;
+  slots.push({id:uid(),navHistory:null,selectedCode:null,schemeName:null,data:null,fd:null,returns:null,rolling:null,pdfBase64:null,pdfName:null});
   renderSlots();
 }
-function removeSlot(id){ cSlots=cSlots.filter(function(s){return s.id!==id;}); renderSlots(); }
+function removeSlot(id){ slots=slots.filter(function(s){return s.id!==id;}); renderSlots(); }
 
 function renderSlots(){
   var g=document.getElementById('fgrid'); if(!g) return;
   g.innerHTML='';
-  cSlots.forEach(function(slot,i){
+  slots.forEach(function(slot,i){
     var d=document.createElement('div');
-    d.className='fslot'+(slot.navHistory?' loaded':'');
+    d.className='fcard-slot'+(slot.navHistory?' loaded':'');
     d.id='fs'+slot.id;
+    var rem=slots.length>1?'<button class="slot-rem" onclick="removeSlot(\''+slot.id+'\')">✕</button>':'';
+    var fbtnClass=slot.navHistory?'fbtn fbtn-loaded':'fbtn fbtn-fetch';
+    var fbtnTxt=slot.navHistory?'✓ Loaded — Refetch':slot.selectedCode?'⬇ Fetch Live NAV':'Search above first';
+    var fbtnDis=slot.selectedCode?'':' disabled';
     d.innerHTML=
-      '<div class="sh"><div class="snum">'+(i+1)+'</div>'+(cSlots.length>1?'<button class="srem" onclick="removeSlot(\''+slot.id+'\')">✕</button>':'')+'</div>'+
-      '<label class="sfl">Search Fund</label>'+
+      '<div class="slot-hd"><div class="slot-num">'+(i+1)+'</div>'+rem+'</div>'+
+      '<label class="fl">Search Fund Name</label>'+
       '<div style="position:relative">'+
-        '<input type="text" class="sfi" id="si'+slot.id+'" placeholder="e.g. Parag Parikh Flexi Cap..." value="'+(slot.schemeName||'')+'" oninput="sfSearch(\''+slot.id+'\',this.value)">'+
+        '<input type="text" class="fi" id="si'+slot.id+'" placeholder="e.g. Parag Parikh Flexi Cap..." value="'+(slot.schemeName||'')+'" oninput="sfSearch(\''+slot.id+'\',this.value)">'+
         '<div class="sdd" id="sd'+slot.id+'"></div>'+
       '</div>'+
-      '<button class="fbtn" id="fb'+slot.id+'" onclick="fetchSlot(\''+slot.id+'\')" '+(slot.selectedCode?'':'disabled')+'>'+(slot.navHistory?'✓ Loaded — Refetch':slot.selectedCode?'⬇ Fetch Live Data':'Search above first')+'</button>'+
+      '<button class="'+fbtnClass+'" id="fb'+slot.id+'"'+fbtnDis+' onclick="fetchSlot(\''+slot.id+'\')">'+fbtnTxt+'</button>'+
       '<div class="sst" id="ss'+slot.id+'"></div>'+
-      '<div class="pdfz" onclick="document.getElementById(\'pf'+slot.id+'\').click()">'+
+      '<div class="pdfzone" onclick="document.getElementById(\'pf'+slot.id+'\').click()">'+
         '<input type="file" id="pf'+slot.id+'" accept=".pdf" style="display:none" onchange="handlePdf(this.files[0],\''+slot.id+'\')">'+
-        '<div class="pdfzt"><strong>📄 Upload Factsheet PDF</strong><br>For ratios, holdings & sectors</div>'+
-        (slot.pdfName?'<div class="pdfzn">✓ '+slot.pdfName+'</div>':'')+
+        '<div class="pdfzone-txt"><strong>📄 Upload Factsheet PDF</strong><br>Claude extracts data directly from the sheet</div>'+
+        (slot.pdfName?'<div class="pdfzone-name">✓ '+slot.pdfName+'</div>':'')+
       '</div>';
     g.appendChild(d);
   });
-  var ab=document.getElementById('addbtn'); if(ab) ab.style.display=cSlots.length>=12?'none':'flex';
+  var ab=document.getElementById('addbtn'); if(ab) ab.style.display=slots.length>=12?'none':'flex';
 }
 
 function sfSearch(id,q){
-  clearTimeout(stimers[id]);
+  clearTimeout(stm[id]);
   var dd=document.getElementById('sd'+id); if(!dd) return;
   if(!q||q.length<2){dd.className='sdd';dd.innerHTML='';return;}
-  stimers[id]=setTimeout(function(){
+  stm[id]=setTimeout(function(){
     var ql=q.toLowerCase();
-    var m=schemes.filter(function(s){return s.schemeName.toLowerCase().indexOf(ql)>=0;}).slice(0,8);
+    var m=schemes.filter(function(s){return s.schemeName.toLowerCase().indexOf(ql)>=0;}).slice(0,9);
     if(!m.length){dd.className='sdd';return;}
-    dd.innerHTML=m.map(function(s){return '<div class="sddi" onclick="sfSelect(\''+id+'\','+s.schemeCode+',\''+s.schemeName.replace(/'/g,'&#39;')+'\')">'+s.schemeName+'</div>';}).join('');
+    dd.innerHTML=m.map(function(s){return '<div class="sddi" onclick="sfSel(\''+id+'\','+s.schemeCode+',\''+s.schemeName.replace(/'/g,'&#39;')+'\')" >'+s.schemeName+'</div>';}).join('');
     dd.className='sdd show';
   },280);
 }
 
-function sfSelect(id,code,name){
-  var s=cSlots.find(function(x){return x.id===id;}); if(!s) return;
+function sfSel(id,code,name){
+  var s=slots.find(function(x){return x.id===id;}); if(!s) return;
   s.selectedCode=code; s.schemeName=name;
   var i=document.getElementById('si'+id); if(i) i.value=name;
   var dd=document.getElementById('sd'+id); if(dd){dd.className='sdd';dd.innerHTML='';}
-  var b=document.getElementById('fb'+id); if(b){b.disabled=false;b.textContent='⬇ Fetch Live Data';}
-  setSt(id,'Selected. Click Fetch.','ok');
+  var b=document.getElementById('fb'+id); if(b){b.disabled=false;b.className='fbtn fbtn-fetch';b.textContent='⬇ Fetch Live NAV';}
+  setSt(id,'Fund selected. Click Fetch to load NAV data.','ok');
 }
 
-function setSt(id,msg,t){
-  var el=document.getElementById('ss'+id); if(!el) return;
-  el.className='sst '+t; el.textContent=msg;
-}
+function setSt(id,msg,t){ var el=document.getElementById('ss'+id); if(!el) return; el.className='sst '+t; el.textContent=msg; }
 
 function fetchSlot(id){
-  var s=cSlots.find(function(x){return x.id===id;}); if(!s||!s.selectedCode) return;
+  var s=slots.find(function(x){return x.id===id;}); if(!s||!s.selectedCode) return;
   var b=document.getElementById('fb'+id); if(b){b.disabled=true;b.textContent='Fetching...';}
-  setSt(id,'Fetching from mfapi.in...','loading');
+  setSt(id,'Fetching NAV history from mfapi.in...','loading');
   fetch('https://api.mfapi.in/mf/'+s.selectedCode)
     .then(function(r){if(!r.ok)throw new Error();return r.json();})
     .then(function(d){
       s.data=d.meta; s.navHistory=d.data; s.schemeName=d.meta.scheme_name;
-      var el=document.getElementById('fs'+id); if(el) el.className='fslot loaded';
+      document.getElementById('fs'+id).className='fcard-slot loaded';
       setSt(id,'✓ '+d.data.length+' NAV records loaded','ok');
-      if(b){b.disabled=false;b.textContent='✓ Loaded — Refetch';}
-      var i=document.getElementById('si'+id); if(i) i.value=d.meta.scheme_name;
+      if(b){b.disabled=false;b.className='fbtn fbtn-loaded';b.textContent='✓ Loaded — Refetch';}
+      var inp=document.getElementById('si'+id); if(inp) inp.value=d.meta.scheme_name;
     })
-    .catch(function(){ setSt(id,'Error. Check connection.','err'); if(b){b.disabled=false;b.textContent='Retry';} });
+    .catch(function(){setSt(id,'Error. Check connection.','err');if(b){b.disabled=false;b.className='fbtn fbtn-fetch';b.textContent='Retry';}});
 }
 
 function handlePdf(file,id){
   if(!file) return;
-  var s=cSlots.find(function(x){return x.id===id;}); if(!s) return;
+  var s=slots.find(function(x){return x.id===id;}); if(!s) return;
   s.pdfName=file.name;
   var r=new FileReader(); r.onload=function(){s.pdfBase64=r.result.split(',')[1];}; r.readAsDataURL(file);
   renderSlots();
 }
 
-// NAV CALCS
+// ═══════════════════ NAV CALCS ═══════════════════
 function pnd(str){ var p=str.split('-'); return new Date(parseInt(p[2]),parseInt(p[1])-1,parseInt(p[0])); }
 
-function navAtDate(nav, targetDate){
-  var best=null, bd=Infinity;
+function navAtExact(nav, targetDate){
+  var best=null,bd=Infinity;
   for(var i=0;i<nav.length;i++){
     var diff=Math.abs(pnd(nav[i].date).getTime()-targetDate.getTime());
     if(diff<bd){bd=diff;best=nav[i];}
-    if(diff>bd) break; // nav is newest-first, once diff grows we've passed it
+    if(pnd(nav[i].date)<targetDate&&diff>bd) break;
   }
   return best;
 }
 
-function calcRet(nav, months){
-  // Absolute return over N months
-  if(!nav||nav.length<2) return null;
+function calcCAGR(nav,yr){
+  if(!nav||nav.length<10) return null;
+  var ld=pnd(nav[0].date);
+  var td=new Date(ld); td.setFullYear(td.getFullYear()-yr);
+  var old=navAtExact(nav,td); if(!old) return null;
+  var endN=parseFloat(nav[0].nav), startN=parseFloat(old.nav);
+  if(startN<=0) return null;
+  var exactYrs=(ld.getTime()-pnd(old.date).getTime())/(365.25*24*3600*1000);
+  if(exactYrs<0.08) return null;
+  return ((Math.pow(endN/startN,1/exactYrs)-1)*100).toFixed(2);
+}
+
+function calcAbs(nav,months){
+  if(!nav||nav.length<5) return null;
   var ld=pnd(nav[0].date);
   var td=new Date(ld); td.setMonth(td.getMonth()-months);
-  var old=navAtDate(nav,td);
-  if(!old) return null;
+  var old=navAtExact(nav,td); if(!old) return null;
   return (((parseFloat(nav[0].nav)-parseFloat(old.nav))/parseFloat(old.nav))*100).toFixed(2);
 }
 
-function calcCAGR(nav, yr){
-  // True CAGR: find NAV exactly yr years ago, compute (end/start)^(1/yr)-1
-  if(!nav||nav.length<2) return null;
-  var ld=pnd(nav[0].date);
-  var td=new Date(ld); td.setFullYear(td.getFullYear()-yr);
-  var old=navAtDate(nav,td);
-  if(!old) return null;
-  var endNAV=parseFloat(nav[0].nav), startNAV=parseFloat(old.nav);
-  if(startNAV<=0) return null;
-  // Exact days between for precision
-  var exactYears=(ld.getTime()-pnd(old.date).getTime())/(365.25*24*3600*1000);
-  if(exactYears<0.1) return null;
-  return ((Math.pow(endNAV/startNAV, 1/exactYears)-1)*100).toFixed(2);
-}
-function getRolling(nav,pd){
-  if(!nav||nav.length<pd+30) return null;
-  var arr=nav.slice().reverse(), res=[];
-  for(var i=pd;i<arr.length;i+=5){ var s=parseFloat(arr[i-pd].nav),e=parseFloat(arr[i].nav); if(s>0) res.push((e-s)/s*100); }
+function getRolling(nav,tradingDays){
+  if(!nav||nav.length<tradingDays+30) return null;
+  var arr=nav.slice().reverse(),res=[];
+  for(var i=tradingDays;i<arr.length;i+=5){
+    var s=parseFloat(arr[i-tradingDays].nav),e=parseFloat(arr[i].nav);
+    if(s>0) res.push((e-s)/s*100);
+  }
   if(!res.length) return null;
   res.sort(function(a,b){return a-b;});
-  return {min:res[0].toFixed(1),max:res[res.length-1].toFixed(1),median:res[Math.floor(res.length/2)].toFixed(1),
+  return {
+    min:res[0].toFixed(1), max:res[res.length-1].toFixed(1),
+    median:res[Math.floor(res.length/2)].toFixed(1),
+    avg:(res.reduce(function(a,b){return a+b;},0)/res.length).toFixed(1),
     pctPos:((res.filter(function(r){return r>0;}).length/res.length)*100).toFixed(0),
-    pct12:((res.filter(function(r){return r>12;}).length/res.length)*100).toFixed(0)};
+    pct12:((res.filter(function(r){return r>12;}).length/res.length)*100).toFixed(0),
+    pct15:((res.filter(function(r){return r>15;}).length/res.length)*100).toFixed(0),
+    pct20:((res.filter(function(r){return r>20;}).length/res.length)*100).toFixed(0)
+  };
 }
 
-// CLAUDE
-function callAI(prompt,pdf){
-  if(!CKEY){ console.warn('No API key set'); return Promise.resolve(null); }
+// ═══════════════════ CLAUDE API ═══════════════════
+function callClaude(prompt,pdf){
+  if(!CKEY) return Promise.resolve(null);
   var cnt=pdf
-    ? [{type:'document',source:{type:'base64',media_type:'application/pdf',data:pdf}},{type:'text',text:prompt}]
-    : [{type:'text',text:prompt}];
+    ?[{type:'document',source:{type:'base64',media_type:'application/pdf',data:pdf}},{type:'text',text:prompt}]
+    :[{type:'text',text:prompt}];
   return fetch('https://api.anthropic.com/v1/messages',{
     method:'POST',
-    headers:{
-      'Content-Type':'application/json',
-      'x-api-key':CKEY,
-      'anthropic-version':'2023-06-01',
-      'anthropic-dangerous-direct-browser-access':'true'
-    },
-    body:JSON.stringify({
-      model:'claude-sonnet-4-5',
-      max_tokens:2500,
-      messages:[{role:'user',content:cnt}]
-    })
+    headers:{'Content-Type':'application/json','x-api-key':CKEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:3000,messages:[{role:'user',content:cnt}]})
   })
   .then(function(r){
-    if(!r.ok) return r.text().then(function(t){ console.error('Claude API error '+r.status+':',t); return null; });
+    if(!r.ok) return r.text().then(function(t){console.error('Claude API '+r.status+':',t);return null;});
     return r.json();
   })
-  .then(function(d){
-    if(!d) return null;
-    return d.content.map(function(b){return b.type==='text'?b.text:'';}).join('');
-  })
-  .catch(function(e){ console.error('Claude fetch error:',e); return null; });
-}
-function extractFS(pdf,name){
-  return callAI('Extract data for fund "'+name+'" from this factsheet. Return ONLY valid JSON:\n{"pe_ratio":null,"pb_ratio":null,"beta":null,"sharpe_ratio":null,"standard_deviation":null,"sortino_ratio":null,"alpha":null,"aum_cr":null,"expense_ratio":null,"exit_load":null,"fund_manager":null,"benchmark":null,"portfolio_turnover":null,"top_holdings":[{"name":"","weight":0}],"sector_allocation":[{"sector":"","weight":0}],"market_cap_split":{"large":null,"mid":null,"small":null},"equity_pct":null,"debt_pct":null,"cash_pct":null,"strategy_summary":""}',pdf)
-  .then(function(r){if(!r)return null;try{return JSON.parse(r.replace(/```json|```/g,'').trim());}catch(e){return null;}});
-}
-function getAI(name,metrics,rets,rolling){
-  if(!CKEY) return Promise.resolve(null);
-  return callAI('Senior Indian MF analyst. Fund: '+name+'\nReturns: '+JSON.stringify(rets)+'\nMetrics: '+JSON.stringify(metrics)+'\nRolling 1Y: '+JSON.stringify(rolling)+'\nReturn ONLY JSON:\n{"style_verdict":"","risk_level":"Moderate","investor_suitability":"","ratio_combo_insight":"","return_quality":"","key_strength":"","key_risk":"","combination_note":"","overall_score":7}')
-  .then(function(r){if(!r)return null;try{return JSON.parse(r.replace(/```json|```/g,'').trim());}catch(e){return null;}});
+  .then(function(d){ if(!d) return null; return d.content.map(function(b){return b.type==='text'?b.text:'';}).join(''); })
+  .catch(function(e){console.error('Claude fetch:',e);return null;});
 }
 
-// RUN COMPARE
-function runCompare(){
-  var loaded=cSlots.filter(function(s){return s.navHistory;});
+// MASTER EXTRACTION PROMPT — extracts everything directly from factsheet
+function extractFactsheet(pdfBase64, fundName){
+  var prompt = 'You are a professional Indian mutual fund analyst. Extract ALL data EXACTLY AS PRINTED in this factsheet for the fund: "'+fundName+'". Do NOT calculate or estimate — extract only what is printed.\n\nReturn ONLY valid JSON, no markdown, no commentary:\n{\n"fund_manager":"exact name as printed",\n"benchmark":"exact benchmark name",\n"inception_date":"DD-MMM-YYYY",\n"aum_cr":number_or_null,\n"expense_ratio":number_or_null,\n"exit_load":"exact text",\n"portfolio_turnover":number_or_null,\n"pe_ratio":number_or_null,\n"pb_ratio":number_or_null,\n"beta":number_or_null,\n"sharpe_ratio":number_or_null,\n"sortino_ratio":number_or_null,\n"standard_deviation":number_or_null,\n"alpha":number_or_null,\n"r_squared":number_or_null,\n"treynor_ratio":number_or_null,\n"jensens_alpha":number_or_null,\n"return_1m":number_or_null,\n"return_3m":number_or_null,\n"return_6m":number_or_null,\n"return_1y":number_or_null,\n"return_3y":number_or_null,\n"return_5y":number_or_null,\n"return_7y":number_or_null,\n"return_10y":number_or_null,\n"return_since_inception":number_or_null,\n"benchmark_return_1y":number_or_null,\n"benchmark_return_3y":number_or_null,\n"benchmark_return_5y":number_or_null,\n"category_avg_1y":number_or_null,\n"category_avg_3y":number_or_null,\n"equity_pct":number_or_null,\n"debt_pct":number_or_null,\n"cash_pct":number_or_null,\n"reit_pct":number_or_null,\n"international_pct":number_or_null,\n"large_cap_pct":number_or_null,\n"mid_cap_pct":number_or_null,\n"small_cap_pct":number_or_null,\n"top_holdings":[{"name":"","weight":0,"sector":""}],\n"sector_allocation":[{"sector":"","weight":0}],\n"credit_quality":[{"rating":"","weight":0}],\n"modified_duration":number_or_null,\n"ytm":number_or_null,\n"avg_maturity":number_or_null,\n"fund_style":"Value|Growth|Blend|Quality Growth|Aggressive Growth|Defensive",\n"number_of_stocks":number_or_null,\n"number_of_bonds":number_or_null,\n"strategy_note":"2 sentence strategy summary from factsheet"\n}';
+  return callClaude(prompt,pdfBase64)
+    .then(function(raw){
+      if(!raw) return null;
+      var clean=raw.replace(/```json|```/g,'').trim();
+      var start=clean.indexOf('{'); var end=clean.lastIndexOf('}');
+      if(start<0||end<0) return null;
+      try{return JSON.parse(clean.slice(start,end+1));}catch(e){console.error('JSON parse:',e,clean.slice(0,200));return null;}
+    });
+}
+
+// ═══════════════════ LOGIC ENGINE ═══════════════════
+// Nifty 500 benchmark sector weights (approximate, published)
+var NIFTY500_SECTORS = {
+  'Financial Services':29.2,'IT':12.8,'Consumer Discretionary':10.1,'Healthcare':7.4,
+  'Industrials':7.2,'Energy':6.8,'Materials':5.9,'Consumer Staples':5.4,'Telecom':3.8,'Real Estate':2.1,'Utilities':1.9,'Others':7.4
+};
+
+function ratioSignal(metric, val){
+  var rules = {
+    pe_ratio:     {good:[0,22],warn:[22,30],bad:[30,999]},
+    pb_ratio:     {good:[0,3],warn:[3,5],bad:[5,999]},
+    beta:         {good:[0,0.9],warn:[0.9,1.1],bad:[1.1,999]},
+    sharpe_ratio: {bad:[0,0.8],warn:[0.8,1.5],good:[1.5,999]},
+    sortino_ratio:{bad:[0,1],warn:[1,1.8],good:[1.8,999]},
+    standard_deviation:{good:[0,13],warn:[13,20],bad:[20,999]},
+    alpha:        {bad:[-999,0],warn:[0,2],good:[2,999]},
+    portfolio_turnover:{good:[0,50],warn:[50,100],bad:[100,999]}
+  };
+  if(!rules[metric]||val===null||val===undefined) return 'neu';
+  var r=rules[metric];
+  if(val>=r.good[0]&&val<r.good[1]) return 'good';
+  if(val>=r.warn[0]&&val<r.warn[1]) return 'warn';
+  return 'bad';
+}
+
+function ratioInterpretation(metric, val){
+  if(val===null||val===undefined) return '';
+  var v=parseFloat(val);
+  var interps = {
+    pe_ratio: v<18?'Deep value — trading significantly below market average. Suggests either undervaluation or declining growth expectations.'
+              :v<22?'Value zone — below Nifty 500 avg. Attractive entry for long-term investors.'
+              :v<28?'Fairly valued — in line with broad market. Neither cheap nor expensive.'
+              :v<35?'Growth premium — investors paying above-average for expected earnings growth.'
+              :'Expensive — significant growth expectations priced in. High disappointment risk.',
+    pb_ratio: v<2?'Trading near or below book — deep value signal or stressed balance sheet, investigate further.'
+              :v<3?'Reasonable price-to-book — moderate premium over asset value.'
+              :v<5?'Above-average premium — market expects strong ROE and asset utilization.'
+              :'High premium — depends on ROE quality. Justifiable only for compounders.',
+    beta: v<0.7?'Highly defensive — moves significantly less than market. Suitable for capital preservation.'
+          :v<0.9?'Defensive tilt — below-market volatility. Suitable for moderate investors.'
+          :v<1.1?'Market-neutral — moves broadly with Nifty. Standard equity exposure.'
+          :v<1.3?'Slightly aggressive — amplifies market moves. Needs higher risk tolerance.'
+          :'Highly aggressive — significant amplification of market swings. Only for high-risk investors.',
+    sharpe_ratio: v<0.5?'Poor — very low return per unit of risk. Not compensating adequately.'
+                  :v<1?'Below average — some compensation but not efficient.'
+                  :v<1.5?'Good — reasonable risk-adjusted performance.'
+                  :v<2?'Very good — strong risk-adjusted returns, well-managed risk.'
+                  :'Excellent — exceptional risk-adjusted performance, top-quartile.',
+    standard_deviation: v<10?'Very low volatility — bond-like behaviour, limited upside/downside.'
+                        :v<14?'Low volatility — stable returns, suitable for conservative equity investors.'
+                        :v<18?'Moderate volatility — typical for diversified equity funds.'
+                        :v<22?'High volatility — significant swings, needs 5yr+ horizon.'
+                        :'Very high volatility — sector/thematic behaviour, only for aggressive investors.',
+    alpha: v<0?'Negative alpha — underperforming benchmark on risk-adjusted basis. Manager not adding value.'
+           :v<2?'Marginal alpha — barely beating benchmark after risk adjustment.'
+           :v<5?'Good alpha — fund manager adding meaningful value over benchmark.'
+           :'Strong alpha — consistent outperformance, high-quality active management.',
+    portfolio_turnover: v<30?'Very low churn — buy-and-hold philosophy, low transaction costs, tax efficient.'
+                        :v<60?'Low churn — disciplined investing with selective changes.'
+                        :v<100?'Moderate churn — active management with regular rebalancing.'
+                        :v<150?'High churn — frequent trading, watch for higher costs.'
+                        :'Very high churn — highly active, significant transaction cost drag.'
+  };
+  return interps[metric]||'';
+}
+
+function ratioComboInsight(fd){
+  if(!fd) return '';
+  var insights=[];
+  if(fd.pe_ratio&&fd.beta&&fd.sharpe_ratio){
+    var pe=parseFloat(fd.pe_ratio), b=parseFloat(fd.beta), sh=parseFloat(fd.sharpe_ratio);
+    if(pe>27&&b<0.95&&sh>1.2) insights.push('High P/E with low Beta and strong Sharpe = Quality Growth profile. Fund pays growth premium but manages downside well — characteristic of quality-focused managers like PPFAS or Mirae.');
+    if(pe<22&&b>1.05&&sh<1) insights.push('Low P/E with high Beta = Cyclical/Value fund. Cheap but volatile — performs strongly in bull markets, bleeds in corrections.');
+    if(pe<20&&b<0.9&&sh>1.2) insights.push('Low P/E + Defensive Beta + Good Sharpe = Classic Value with Margin of Safety. Rare combination — potential compounding candidate.');
+    if(pe>30&&b>1.1&&sh<0.8) insights.push('High P/E + Aggressive Beta + Low Sharpe = Expensive and volatile with poor risk compensation. Approach with caution.');
+  }
+  if(fd.alpha&&fd.standard_deviation){
+    var al=parseFloat(fd.alpha), sd=parseFloat(fd.standard_deviation);
+    if(al>3&&sd<16) insights.push('Strong alpha with controlled volatility = skilled active management. The manager is generating excess returns without taking proportionally more risk.');
+    if(al<0&&sd>20) insights.push('Negative alpha + high volatility = worst combination. Underperforming benchmark while taking more risk than necessary.');
+  }
+  return insights.length?insights.join(' '):'Ratio combination suggests '+classifyStyle(fd)+' fund profile.';
+}
+
+function classifyStyle(fd){
+  if(!fd) return 'Diversified Equity';
+  var pe=fd.pe_ratio?parseFloat(fd.pe_ratio):25;
+  var b=fd.beta?parseFloat(fd.beta):1;
+  var large=fd.large_cap_pct?parseFloat(fd.large_cap_pct):60;
+  var small=fd.small_cap_pct?parseFloat(fd.small_cap_pct):10;
+  if(pe>28&&b<0.95&&large>65) return 'Quality Large Cap Growth';
+  if(pe<20&&b<0.95) return 'Defensive Value';
+  if(pe>28&&small>20) return 'Aggressive Small-Mid Cap Growth';
+  if(pe>=20&&pe<=27&&large>=50&&large<=70) return 'Blend / Core Equity';
+  if(small>30) return 'Small & Mid Cap Aggressive';
+  if(large>75) return 'Large Cap Core';
+  if(fd.equity_pct&&parseFloat(fd.equity_pct)<80) return 'Conservative Hybrid / Multi-Asset';
+  return 'Flexi-Cap / Multi-Cap';
+}
+
+function getRiskLevel(fd){
+  if(!fd) return {level:'Moderate',score:5};
+  var score=5;
+  if(fd.beta){ var b=parseFloat(fd.beta); score+=(b-1)*3; }
+  if(fd.standard_deviation){ var sd=parseFloat(fd.standard_deviation); if(sd>20)score+=2;else if(sd<12)score-=2; }
+  if(fd.small_cap_pct){ var sc=parseFloat(fd.small_cap_pct); score+=sc/20; }
+  if(fd.equity_pct){ var eq=parseFloat(fd.equity_pct); if(eq<70)score-=2; }
+  score=Math.max(1,Math.min(10,Math.round(score)));
+  var level=score<=3?'Low':score<=5?'Moderate':score<=7?'High':'Very High';
+  return {level:level,score:score};
+}
+
+function getSuitability(fd,style){
+  var risk=getRiskLevel(fd);
+  var horizon=risk.score<=3?'3+ years':risk.score<=5?'5+ years':risk.score<=7?'7+ years':'10+ years';
+  var suitable=[], notSuitable=[];
+  if(risk.score>=7){
+    suitable.push('Aggressive investors comfortable with 40-50% portfolio drawdowns');
+    suitable.push('Investors with 10+ year investment horizon');
+    suitable.push('Young investors (20s-30s) in accumulation phase');
+    notSuitable.push('Conservative or moderate risk investors');
+    notSuitable.push('Investors needing funds within 5 years');
+    notSuitable.push('Retirees or those near retirement');
+  } else if(risk.score>=5){
+    suitable.push('Moderate to moderately-aggressive investors');
+    suitable.push('Core portfolio allocation (40-60% of equity allocation)');
+    suitable.push('Investors with 5-7 year horizon');
+    notSuitable.push('Very conservative investors or those with <3 year horizon');
+    notSuitable.push('Investors who cannot tolerate 30% temporary drawdowns');
+  } else {
+    suitable.push('Conservative to moderate investors');
+    suitable.push('Investors with 3-5 year horizon');
+    suitable.push('First-time equity investors or near-retirement allocation');
+    notSuitable.push('Aggressive growth seekers');
+    notSuitable.push('Investors seeking high short-term returns');
+  }
+  if(fd&&fd.equity_pct&&parseFloat(fd.equity_pct)>=65&&parseFloat(fd.equity_pct)<=80){
+    suitable.push('Ideal for Section 80C tax saving (if ELSS) or balanced equity exposure');
+  }
+  if(fd&&fd.international_pct&&parseFloat(fd.international_pct)>10){
+    suitable.push('Investors wanting geographical diversification and USD/global exposure');
+  }
+  return {risk:risk,horizon:horizon,suitable:suitable,notSuitable:notSuitable};
+}
+
+function getCombinationAdvice(style,fd){
+  var combos=[];
+  if(style.indexOf('Large Cap')>=0||style.indexOf('Quality')>=0){
+    combos.push({pair:'Mid Cap Fund (15-25% allocation)',reason:'Adds growth kicker to your quality base. Large cap provides stability, mid cap provides alpha potential.'});
+    combos.push({pair:'International/US Fund (10-15%)',reason:'Geographic diversification, USD exposure, access to global tech and innovation not available in Indian markets.'});
+    combos.push({pair:'Short Duration Debt Fund (20-30%)',reason:'Balances equity volatility. Acts as shock absorber during corrections.'});
+  } else if(style.indexOf('Small')>=0||style.indexOf('Aggressive')>=0){
+    combos.push({pair:'Large Cap or Index Fund (40-50%)',reason:'Provides stable core to anchor your aggressive satellite. Reduces overall portfolio volatility significantly.'});
+    combos.push({pair:'AAA Debt / Liquid Fund (20-30%)',reason:'Essential counterbalance. Small caps can fall 50-60% — debt allocation cushions the fall.'});
+    combos.push({pair:'Gold Fund (5-10%)',reason:'Negative correlation with equities. Provides portfolio insurance during equity crashes.'});
+  } else {
+    combos.push({pair:'Sectoral/Thematic Fund (5-10% satellite)',reason:'Adds concentrated alpha opportunity on top of diversified core.'});
+    combos.push({pair:'Arbitrage/Low Duration Debt (15-25%)',reason:'Reduces volatility while maintaining tax efficiency.'});
+    combos.push({pair:'Gold or REIT (5-10%)',reason:'Asset class diversification beyond equity-debt binary.'});
+  }
+  return combos;
+}
+
+// ═══════════════════ RUN ANALYSIS ═══════════════════
+function runAnalysis(){
+  var loaded=slots.filter(function(s){return s.navHistory;});
   if(!loaded.length){alert('Please fetch at least one fund first.');return;}
+
   document.getElementById('cload').style.display='block';
   document.getElementById('cres').innerHTML='';
-  var msgEl=document.getElementById('cmsg'), mi=0;
-  var msgs=['Fetching NAV data...','Computing returns...','Running AI analysis...','Building comparison...'];
-  msgEl.textContent=msgs[0];
-  var mt=setInterval(function(){if(mi<msgs.length-1){mi++;msgEl.textContent=msgs[mi];}},2000);
+
+  var msgs=['Loading NAV histories...','Extracting factsheet data...','Running ratio analysis...','Classifying fund styles...','Building comparison matrix...','Generating insights...'];
+  var mi=0; var msgEl=document.getElementById('cmsg'); msgEl.textContent=msgs[0];
+  var mt=setInterval(function(){if(mi<msgs.length-1){mi++;msgEl.textContent=msgs[mi];}},2500);
+
   var chain=Promise.resolve();
   loaded.forEach(function(s){
     chain=chain.then(function(){
-      s.returns={'1W':calcRet(s.navHistory,0.25),'1M':calcRet(s.navHistory,1),'3M':calcRet(s.navHistory,3),'6M':calcRet(s.navHistory,6),'1Y':calcCAGR(s.navHistory,1),'2Y':calcCAGR(s.navHistory,2),'3Y':calcCAGR(s.navHistory,3),'5Y':calcCAGR(s.navHistory,5)};
+      // Compute NAV-based returns as fallback
+      s.navReturns={
+        '1M':calcAbs(s.navHistory,1),
+        '3M':calcAbs(s.navHistory,3),
+        '6M':calcAbs(s.navHistory,6),
+        '1Y':calcCAGR(s.navHistory,1),
+        '2Y':calcCAGR(s.navHistory,2),
+        '3Y':calcCAGR(s.navHistory,3),
+        '5Y':calcCAGR(s.navHistory,5),
+        '7Y':calcCAGR(s.navHistory,7),
+        '10Y':calcCAGR(s.navHistory,10)
+      };
       s.rolling1Y=getRolling(s.navHistory,252);
-      var p=Promise.resolve();
-      if(s.pdfBase64){msgEl.textContent='Extracting '+(s.schemeName||'').split(' ').slice(0,3).join(' ')+'...';p=p.then(function(){return extractFS(s.pdfBase64,s.schemeName||'');}).then(function(fd){s.factsheetData=fd;});}
-      if(CKEY){p=p.then(function(){msgEl.textContent='AI analysing '+(s.schemeName||'').split(' ').slice(0,3).join(' ')+'...';return getAI(s.schemeName||'',s.factsheetData||{},s.returns,s.rolling1Y);}).then(function(ai){s.aiAnalysis=ai;});}
-      return p;
+      s.rolling3Y=getRolling(s.navHistory,756);
+      if(s.pdfBase64){
+        msgEl.textContent='Extracting '+(s.schemeName||'').split(' ').slice(0,4).join(' ')+' factsheet...';
+        return extractFactsheet(s.pdfBase64,s.schemeName||'').then(function(fd){
+          s.fd=fd;
+          if(fd){
+            // Merge factsheet returns over NAV returns — factsheet is source of truth
+            s.returns={
+              '1M': fd.return_1m!==null?fd.return_1m:s.navReturns['1M'],
+              '3M': fd.return_3m!==null?fd.return_3m:s.navReturns['3M'],
+              '6M': fd.return_6m!==null?fd.return_6m:s.navReturns['6M'],
+              '1Y': fd.return_1y!==null?fd.return_1y:s.navReturns['1Y'],
+              '2Y': s.navReturns['2Y'],
+              '3Y': fd.return_3y!==null?fd.return_3y:s.navReturns['3Y'],
+              '5Y': fd.return_5y!==null?fd.return_5y:s.navReturns['5Y'],
+              '7Y': fd.return_7y!==null?fd.return_7y:s.navReturns['7Y'],
+              '10Y': fd.return_10y!==null?fd.return_10y:s.navReturns['10Y'],
+              'SI': fd.return_since_inception
+            };
+          } else { s.returns=s.navReturns; }
+        });
+      } else { s.returns=s.navReturns; return Promise.resolve(); }
     });
   });
+
   chain.then(function(){
     var overlaps=[];
-    var wh=loaded.filter(function(s){return s.factsheetData&&s.factsheetData.top_holdings&&s.factsheetData.top_holdings.length;});
-    for(var i=0;i<wh.length;i++){for(var j=i+1;j<wh.length;j++){
-      var a=wh[i],b=wh[j];
-      var an=a.factsheetData.top_holdings.map(function(h){return (h.name||'').toLowerCase();});
-      var bn=b.factsheetData.top_holdings.map(function(h){return (h.name||'').toLowerCase();});
-      var cm=an.filter(function(n){return bn.indexOf(n)>=0;});
-      overlaps.push({a:a.schemeName,b:b.schemeName,pct:Math.round((cm.length/Math.max(an.length,bn.length))*100),common:cm.slice(0,5)});
-    }}
+    var wh=loaded.filter(function(s){return s.fd&&s.fd.top_holdings&&s.fd.top_holdings.length>2;});
+    for(var i=0;i<wh.length;i++){
+      for(var j=i+1;j<wh.length;j++){
+        var a=wh[i],b=wh[j];
+        var an=a.fd.top_holdings.map(function(h){return (h.name||'').toLowerCase().trim();});
+        var bn=b.fd.top_holdings.map(function(h){return (h.name||'').toLowerCase().trim();});
+        var cm=an.filter(function(n){return bn.indexOf(n)>=0&&n.length>2;});
+        var unionSize=new Set(an.concat(bn)).size;
+        var pct=Math.round((cm.length/unionSize)*100);
+        overlaps.push({a:a.schemeName,b:b.schemeName,aFd:a.fd,bFd:b.fd,pct:pct,common:cm.slice(0,6)});
+      }
+    }
     clearInterval(mt);
     document.getElementById('cload').style.display='none';
-    renderCompare(loaded,overlaps);
+    renderAnalysis(loaded,overlaps);
   });
 }
 
-var cols=['#1a6b6b','#d42b51','#b8860b','#6b21a8','#0369a1','#065f46','#7c2d12','#1e3a5f'];
+// ═══════════════════ RENDER ═══════════════════
+var CHART_COLORS=['#00d084','#3b82f6','#f5a623','#a855f7','#06b6d4','#ff4560','#10b981','#f97316','#8b5cf6','#ec4899','#14b8a6','#ef4444'];
 
-function renderCompare(funds,overlaps){
-  var c=document.getElementById('cres'),html='';
-  html+='<div class="slabel" style="margin-bottom:13px">Individual Fund Analysis</div>';
-  funds.forEach(function(s){
-    var fd=s.factsheetData,ai=s.aiAnalysis,rt=s.returns,r1=s.rolling1Y;
+function destroyChart(id){ if(chartRegistry[id]){chartRegistry[id].destroy();delete chartRegistry[id];} }
+
+function makeChart(id,config){
+  destroyChart(id);
+  var canvas=document.getElementById(id);
+  if(!canvas) return;
+  chartRegistry[id]=new Chart(canvas.getContext('2d'),config);
+}
+
+function renderAnalysis(funds,overlaps){
+  var c=document.getElementById('cres'); var html='';
+
+  // ── INDIVIDUAL FUND CARDS ──
+  html+='<div class="sec-label" style="margin-bottom:14px">Deep Fund Analysis</div>';
+
+  funds.forEach(function(s,fi){
+    var fd=s.fd; var rt=s.returns; var r1=s.rolling1Y; var r3=s.rolling3Y;
     var name=s.schemeName||(s.data&&s.data.scheme_name)||'Fund';
     var cat=(s.data&&s.data.scheme_category)||'';
-    var b1=rt['1Y']!==null?'<div class="sbadge '+(parseFloat(rt['1Y'])>12?'sbg':parseFloat(rt['1Y'])>6?'sbw':'sbb')+'"><div class="sbv">'+rt['1Y']+'%</div><div class="sbl">1Y</div></div>':'';
-    var b3=rt['3Y']!==null?'<div class="sbadge '+(parseFloat(rt['3Y'])>12?'sbg':parseFloat(rt['3Y'])>8?'sbw':'sbb')+'"><div class="sbv">'+rt['3Y']+'%</div><div class="sbl">3Y</div></div>':'';
-    var bai=ai?'<div class="sbadge '+(ai.overall_score>=7?'sbg':ai.overall_score>=5?'sbw':'sbb')+'"><div class="sbv">'+ai.overall_score+'/10</div><div class="sbl">AI</div></div>':'';
-    html+='<div class="fcard"><div class="fch"><div><div class="fchn">'+name+'</div><div class="fchm"><span>📁 '+cat+'</span>'+(fd&&fd.aum_cr?'<span>₹'+fd.aum_cr+'Cr</span>':'')+(fd&&fd.fund_manager?'<span>'+fd.fund_manager+'</span>':'')+(fd&&fd.expense_ratio?'<span>ER:'+fd.expense_ratio+'%</span>':'')+'</div></div><div class="fcbb">'+b1+b3+bai+'</div></div><div class="fcb">';
-    html+='<div class="slabel">Live Returns <span class="vbdg">✓ mfapi.in</span></div><table class="rtable"><thead><tr><th>Period</th><th>Return</th><th>Type</th></tr></thead><tbody>';
-    [['1W','Abs'],['1M','Abs'],['3M','Abs'],['6M','Abs'],['1Y','CAGR'],['2Y','CAGR'],['3Y','CAGR'],['5Y','CAGR']].forEach(function(p){
-      var v=rt[p[0]]; if(v===null) return;
-      html+='<tr><td>'+p[0]+'</td><td class="'+(parseFloat(v)>=0?'rp':'rn')+'">'+(parseFloat(v)>0?'+':'')+v+'%</td><td style="font-size:.71rem;color:var(--ink-l)">'+p[1]+' <span class="vbdg">✓</span></td></tr>';
+    var style=classifyStyle(fd);
+    var risk=getRiskLevel(fd);
+    var suit=getSuitability(fd,style);
+
+    // Return badges
+    var ret1Y=rt['1Y']!==null?parseFloat(rt['1Y']):null;
+    var ret3Y=rt['3Y']!==null?parseFloat(rt['3Y']):null;
+    var b1=ret1Y!==null?'<div class="rscore '+(ret1Y>15?'rs-green':ret1Y>8?'rs-gold':'rs-red')+'"><div class="rscore-val">'+ret1Y+'%</div><div class="rscore-lbl">1Y CAGR</div></div>':'';
+    var b3=ret3Y!==null?'<div class="rscore '+(ret3Y>15?'rs-green':ret3Y>10?'rs-gold':'rs-red')+'"><div class="rscore-val">'+ret3Y+'%</div><div class="rscore-lbl">3Y CAGR</div></div>':'';
+    var bstyle='<div class="rscore"><div class="rscore-val" style="font-size:.68rem;color:var(--teal)">'+style+'</div><div class="rscore-lbl">Style</div></div>';
+    var brisk='<div class="rscore '+(risk.score>=7?'rs-red':risk.score>=5?'rs-gold':'rs-green')+'"><div class="rscore-val">'+risk.score+'/10</div><div class="rscore-lbl">Risk</div></div>';
+
+    html+='<div class="res-fund-card" id="rfc'+s.id+'">';
+
+    // Header
+    html+='<div class="rfc-head">';
+    html+='<div><div class="rfc-name">'+name+'</div><div class="rfc-meta">';
+    if(cat) html+='<span class="rfc-tag tag-cat">'+cat+'</span>';
+    if(fd&&fd.fund_manager) html+='<span class="rfc-tag tag-amc">'+fd.fund_manager+'</span>';
+    if(fd&&fd.benchmark) html+='<span class="rfc-tag tag-bench">vs '+fd.benchmark+'</span>';
+    html+='</div></div>';
+    html+='<div class="rfc-scores">'+b1+b3+brisk+bstyle+'</div></div>';
+
+    // Body
+    html+='<div class="rfc-body">';
+
+    // ── SECTION 1: FUND IDENTITY ──
+    html+='<div class="sec-label" style="font-size:.62rem">Fund Identity</div>';
+    html+='<div class="four-col">';
+    var infoTiles=[
+      ['AUM',fd&&fd.aum_cr?'₹'+Number(fd.aum_cr).toLocaleString('en-IN')+' Cr':'N/A',''],
+      ['Expense Ratio',fd&&fd.expense_ratio!==null?fd.expense_ratio+'%':'N/A',fd&&fd.expense_ratio?fd.expense_ratio<1?'✓ Low':'fd.expense_ratio<1.5?Avg:High':''],
+      ['Exit Load',fd&&fd.exit_load?fd.exit_load:'N/A',''],
+      ['Portfolio Turnover',fd&&fd.portfolio_turnover!==null?fd.portfolio_turnover+'%':'N/A',''],
+      ['Stocks/Securities',fd&&fd.number_of_stocks?fd.number_of_stocks:fd&&fd.number_of_bonds?fd.number_of_bonds:'N/A',''],
+      ['Inception',fd&&fd.inception_date?fd.inception_date:'N/A',''],
+      ['Benchmark',fd&&fd.benchmark?fd.benchmark.split(' ').slice(0,4).join(' '):'N/A',''],
+      ['Portfolio Turnover',fd&&fd.portfolio_turnover?fd.portfolio_turnover+'%':'N/A','']
+    ];
+    // dedupe
+    var shown={};
+    infoTiles.forEach(function(t){
+      if(shown[t[0]]) return; shown[t[0]]=1;
+      html+='<div class="info-card"><div class="ic-label">'+t[0]+'</div><div class="ic-val">'+t[1]+'</div></div>';
     });
+    html+='</div>';
+
+    // ── SECTION 2: ASSET ALLOCATION CHART ──
+    html+='<div class="divider"></div>';
+    html+='<div class="two-col">';
+
+    // Donut chart
+    html+='<div class="chart-box"><div class="chart-title"><div class="ct-dot" style="background:var(--pink)"></div>Asset Allocation</div>';
+    html+='<div class="chart-canvas-wrap short"><canvas id="aa'+s.id+'"></canvas></div>';
+    if(fd&&(fd.equity_pct||fd.debt_pct)){
+      var eq=fd.equity_pct||0,dt=fd.debt_pct||0,ca=fd.cash_pct||0,re=fd.reit_pct||0,intl=fd.international_pct||0;
+      var eqText=eq?'Equity '+eq+'%, ':''; var dtText=dt?'Debt '+dt+'%, ':''; var caText=ca?'Cash '+ca+'%':'';
+      html+='<div style="font-size:.72rem;color:var(--text3);margin-top:8px;text-align:center">'+eqText+dtText+caText+'</div>';
+      // interpretation
+      var allocInterp=eq>=90?'Pure equity mandate — maximum growth orientation. Zero capital protection. Suitable only for long-horizon aggressive investors.'
+        :eq>=75&&eq<90?'Equity-oriented hybrid/flexi — primarily growth with small buffer. Balanced for moderate-aggressive investors.'
+        :eq>=60&&eq<75?'Aggressive hybrid — meaningful equity exposure with debt cushion. Good for moderately aggressive investors.'
+        :eq>=40&&eq<60?'Balanced allocation — roughly equal equity-debt. Suitable for moderate investors nearing goals.'
+        :'Debt-oriented or conservative — capital preservation focus. Suitable for conservative investors or short-term goals.';
+      html+='<div style="font-size:.74rem;color:var(--text2);margin-top:8px;line-height:1.5">'+allocInterp+'</div>';
+    } else {
+      html+='<div style="font-size:.72rem;color:var(--text3);text-align:center;margin-top:20px">Upload factsheet PDF for allocation data</div>';
+    }
+    html+='</div>';
+
+    // Market cap chart
+    html+='<div class="chart-box"><div class="chart-title"><div class="ct-dot" style="background:var(--blue)"></div>Market Cap Allocation</div>';
+    html+='<div class="chart-canvas-wrap short"><canvas id="mc'+s.id+'"></canvas></div>';
+    if(fd&&(fd.large_cap_pct||fd.mid_cap_pct||fd.small_cap_pct)){
+      var lg=fd.large_cap_pct||0,md=fd.mid_cap_pct||0,sm=fd.small_cap_pct||0;
+      var mcStyle=lg>75?'Large Cap Biased — low volatility, stable earnings, limited alpha':
+        lg>50&&md>20?'Multi-Cap Core — balanced exposure across market cap spectrum':
+        md>40?'Mid Cap Heavy — higher growth potential, higher volatility':
+        sm>25?'Small Cap Tilt — maximum growth potential, maximum volatility, 10yr+ horizon needed':
+        'Blend — diversified across market cap';
+      html+='<div style="font-size:.74rem;color:var(--text2);margin-top:8px;line-height:1.5">'+mcStyle+'</div>';
+    }
+    html+='</div>';
+    html+='</div>'; // end two-col
+
+    // ── SECTION 3: RETURNS ──
+    html+='<div class="divider"></div>';
+    html+='<div class="sec-label" style="font-size:.62rem">Returns Analysis '+(fd&&fd.return_1y!==null?'<span class="vbdg">✓ From Factsheet</span>':'<span style="font-size:.6rem;color:var(--gold)">⚡ Computed from NAV</span>')+'</div>';
+    html+='<div class="two-col">';
+    html+='<div class="chart-box"><div class="chart-title"><div class="ct-dot" style="background:var(--green)"></div>Period Returns vs Benchmark</div><div class="chart-canvas-wrap"><canvas id="ret'+s.id+'"></canvas></div></div>';
+
+    html+='<div>';
+    html+='<table class="ret-table"><thead><tr><th>Period</th><th>Fund</th><th>Benchmark</th><th>Alpha</th><th>Category Avg</th></tr></thead><tbody>';
+    var retPeriods=[
+      ['1M','1M',false],['3M','3M',false],['6M','6M',false],
+      ['1Y','1Y',true],['2Y','2Y',true],['3Y','3Y',true],['5Y','5Y',true],
+      ['7Y','7Y',true],['10Y','10Y',true]
+    ];
+    retPeriods.forEach(function(p){
+      var v=rt[p[0]];
+      if(v===null||v===undefined) return;
+      var vn=parseFloat(v);
+      var bench=fd&&fd['benchmark_return_'+p[0].toLowerCase()]!==null?fd['benchmark_return_'+p[0].toLowerCase()]:null;
+      var catAvg=fd&&fd['category_avg_'+p[0].toLowerCase()]!==null?fd['category_avg_'+p[0].toLowerCase()]:null;
+      var alpha=bench!==null?((vn-parseFloat(bench)).toFixed(2)):null;
+      html+='<tr>';
+      html+='<td style="font-weight:600;color:var(--text3);font-size:.74rem">'+p[0]+'</td>';
+      html+='<td class="rf '+(vn>=0?'pos':'neg')+'">'+(vn>0?'+':'')+vn+'%</td>';
+      html+='<td class="rf neu">'+(bench!==null?bench+'%':'—')+'</td>';
+      html+='<td class="'+(alpha!==null?parseFloat(alpha)>=0?'alpha-pos':'alpha-neg':'')+'">'+( alpha!==null?(parseFloat(alpha)>0?'+':'')+alpha+'%':'—')+'</td>';
+      html+='<td style="font-family:var(--fm);font-size:.74rem;color:var(--text3)">'+(catAvg!==null?catAvg+'%':'—')+'</td>';
+      html+='</tr>';
+    });
+    if(rt['SI']!==null&&rt['SI']!==undefined){
+      html+='<tr><td style="font-weight:600;color:var(--pink);font-size:.74rem">Since Inception</td><td class="rf '+(parseFloat(rt['SI'])>=0?'pos':'neg')+'">'+(parseFloat(rt['SI'])>0?'+':'')+rt['SI']+'%</td><td colspan="3" style="font-size:.72rem;color:var(--text3)">CAGR since launch</td></tr>';
+    }
     html+='</tbody></table>';
-    if(r1) html+='<div class="rbox"><div class="slabel" style="margin-bottom:5px">Rolling 1Y</div><div class="rrow"><span>Min: <strong>'+r1.min+'%</strong></span><span>Max: <strong>'+r1.max+'%</strong></span><span>Median: <strong>'+r1.median+'%</strong></span><span>+ve: <strong>'+r1.pctPos+'%</strong></span><span>&gt;12%: <strong>'+r1.pct12+'%</strong></span></div></div>';
+
+    // Rolling returns
+    if(r1){
+      html+='<div class="rolling-box" style="margin-top:12px">';
+      html+='<div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--teal)">Rolling 1Y Returns Analysis</div>';
+      html+='<div class="rolling-grid">';
+      html+='<div class="rg-item"><div class="rg-val">'+r1.min+'%</div><div class="rg-label">Worst 1Y</div></div>';
+      html+='<div class="rg-item"><div class="rg-val" style="color:var(--gold)">'+r1.median+'%</div><div class="rg-label">Median</div></div>';
+      html+='<div class="rg-item"><div class="rg-val">'+r1.max+'%</div><div class="rg-label">Best 1Y</div></div>';
+      html+='<div class="rg-item"><div class="rg-val">'+r1.pctPos+'%</div><div class="rg-label">% Positive</div></div>';
+      html+='<div class="rg-item"><div class="rg-val">'+r1.pct12+'%</div><div class="rg-label">&gt;12% periods</div></div>';
+      html+='</div>';
+      var consistencyNote=parseFloat(r1.pctPos)>85&&parseFloat(r1.pct12)>60?'High consistency — this fund has delivered >12% returns in most 1-year rolling periods. Strong track record.'
+        :parseFloat(r1.pctPos)>70?'Moderate consistency — positive most of the time, but 12% hurdle not always crossed. Suitable for SIP investors.'
+        :'Volatile consistency — significant periods of negative or sub-par returns. Requires patience and long horizon.';
+      html+='<div style="font-size:.72rem;color:var(--text2);margin-top:7px;line-height:1.5">'+consistencyNote+'</div>';
+      html+='</div>';
+    }
+    html+='</div>'; // end right col
+    html+='</div>'; // end two-col returns
+
+    // ── SECTION 4: RATIO DASHBOARD ──
     if(fd){
-      html+='<div class="divider"></div><div class="slabel">Factsheet Ratios</div><div class="mgrid">';
-      [['P/E',fd.pe_ratio,function(v){return v<22?'good':v<30?'warn':'bad';},'Valuation'],['P/B',fd.pb_ratio,function(v){return v<3?'good':v<5?'warn':'bad';},'Book val'],['Beta',fd.beta,function(v){return v<0.9?'good':v<1.1?'warn':'bad';},'Mkt sens'],['Sharpe',fd.sharpe_ratio,function(v){return v>1.5?'good':v>0.8?'warn':'bad';},'Risk-adj'],['Sortino',fd.sortino_ratio,function(v){return v>1.5?'good':v>0.8?'warn':'bad';},'Downside'],['StdDev',fd.standard_deviation,function(v){return v<14?'good':v<20?'warn':'bad';},'Volatility'],['Alpha',fd.alpha,function(v){return v>2?'good':v>0?'warn':'bad';},'Excess ret'],['Turnover',fd.portfolio_turnover,function(v){return v<50?'good':v<100?'warn':'bad';},'Trade freq']].forEach(function(m){
-        if(m[1]===null||m[1]===undefined) return;
-        html+='<div class="mtile"><div class="mtl">'+m[0]+'</div><div class="mtv '+m[2](m[1])+'">'+m[1]+'</div><div class="mth">'+m[3]+'</div></div>';
+      html+='<div class="divider"></div>';
+      html+='<div class="sec-label" style="font-size:.62rem">Risk & Valuation Ratios</div>';
+      html+='<div class="ratio-grid">';
+      var ratios=[
+        {key:'pe_ratio',label:'P/E Ratio',suffix:'x'},
+        {key:'pb_ratio',label:'P/B Ratio',suffix:'x'},
+        {key:'beta',label:'Beta',suffix:''},
+        {key:'sharpe_ratio',label:'Sharpe Ratio',suffix:''},
+        {key:'sortino_ratio',label:'Sortino Ratio',suffix:''},
+        {key:'standard_deviation',label:'Std Deviation',suffix:'%'},
+        {key:'alpha',label:'Alpha',suffix:'%'},
+        {key:'portfolio_turnover',label:'Port. Turnover',suffix:'%'},
+        {key:'r_squared',label:'R-Squared',suffix:''},
+        {key:'treynor_ratio',label:'Treynor Ratio',suffix:''}
+      ];
+      ratios.forEach(function(r){
+        var val=fd[r.key];
+        if(val===null||val===undefined) return;
+        var sig=ratioSignal(r.key,parseFloat(val));
+        var sigClass=sig==='good'?'sig-g':sig==='bad'?'sig-r':'sig-a';
+        var interp=ratioInterpretation(r.key,val);
+        html+='<div class="ratio-tile '+sigClass+'">';
+        html+='<div class="rt-label">'+r.label+'</div>';
+        html+='<div class="rt-val">'+val+r.suffix+'</div>';
+        if(interp) html+='<div class="rt-interp">'+interp+'</div>';
+        html+='</div>';
       });
       html+='</div>';
-      if(fd.market_cap_split){var mc=fd.market_cap_split;html+='<div style="margin-top:12px"><div class="slabel">Market Cap</div>';if(mc.large!==null)html+='<div class="sbar"><div class="sbl2">Large</div><div class="sbt"><div class="sbf" style="width:'+mc.large+'%;background:var(--teal)"></div></div><div class="sbv2">'+mc.large+'%</div></div>';if(mc.mid!==null)html+='<div class="sbar"><div class="sbl2">Mid</div><div class="sbt"><div class="sbf" style="width:'+mc.mid+'%;background:var(--pink)"></div></div><div class="sbv2">'+mc.mid+'%</div></div>';if(mc.small!==null)html+='<div class="sbar"><div class="sbl2">Small</div><div class="sbt"><div class="sbf" style="width:'+mc.small+'%;background:var(--gold)"></div></div><div class="sbv2">'+mc.small+'%</div></div>';html+='</div>';}
-      if(fd.sector_allocation&&fd.sector_allocation.length){html+='<div style="margin-top:12px"><div class="slabel">Sectors</div>';fd.sector_allocation.slice(0,10).forEach(function(sec,i){html+='<div class="sbar"><div class="sbl2">'+sec.sector+'</div><div class="sbt"><div class="sbf" style="width:'+sec.weight+'%;background:'+cols[i%cols.length]+'"></div></div><div class="sbv2">'+sec.weight+'%</div></div>';});html+='</div>';}
-      if(fd.top_holdings&&fd.top_holdings.length){html+='<div style="margin-top:12px"><div class="slabel">Top Holdings</div><div class="hgrid">';fd.top_holdings.slice(0,10).forEach(function(h){html+='<div class="hi"><span class="hin">'+h.name+'</span><span class="hip">'+h.weight+'%</span></div>';});html+='</div></div>';}
+
+      // Ratio combo insight
+      var comboInsight=ratioComboInsight(fd);
+      if(comboInsight){
+        html+='<div class="analysis-block" style="border-left-color:var(--gold)">';
+        html+='<div class="ab-title">Combined Ratio Intelligence</div>';
+        html+='<div class="ab-text">'+comboInsight+'</div>';
+        html+='</div>';
+      }
     }
-    if(ai){
-      html+='<div class="divider"></div><div class="slabel">AI Analysis</div>';
-      html+='<div class="ab" style="border-color:var(--pink)"><div class="abt2">Style</div><div class="abtx"><strong>'+ai.style_verdict+'</strong> · '+ai.risk_level+'</div></div>';
-      html+='<div class="ab"><div class="abt2">Ratio Insight</div><div class="abtx">'+ai.ratio_combo_insight+'</div></div>';
-      html+='<div class="ab" style="border-color:var(--ok)"><div class="abt2">Return Quality</div><div class="abtx">'+ai.return_quality+'</div></div>';
-      html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:9px"><div style="background:var(--ok-bg);border-radius:7px;padding:11px 13px"><div class="slabel" style="color:var(--ok);margin-bottom:4px">Strength</div><div style="font-size:.8rem;color:var(--ok)">'+ai.key_strength+'</div></div><div style="background:var(--warn-bg);border-radius:7px;padding:11px 13px"><div class="slabel" style="color:var(--warn);margin-bottom:4px">Risk</div><div style="font-size:.8rem;color:var(--warn)">'+ai.key_risk+'</div></div></div>';
-      html+='<div style="background:var(--teal-s);border-radius:7px;padding:11px 13px;margin-top:9px;font-size:.8rem;color:var(--teal)"><strong>Pair well with:</strong> '+ai.combination_note+'</div>';
+
+    // ── SECTION 5: SECTOR ALLOCATION ──
+    if(fd&&fd.sector_allocation&&fd.sector_allocation.length>2){
+      html+='<div class="divider"></div>';
+      html+='<div class="sec-label" style="font-size:.62rem">Sector Allocation vs Nifty 500 Benchmark</div>';
+      html+='<div class="two-col">';
+      html+='<div class="chart-box"><div class="chart-title"><div class="ct-dot" style="background:var(--purple)"></div>Sector Weights</div><div class="chart-canvas-wrap"><canvas id="sec'+s.id+'"></canvas></div></div>';
+      html+='<div>';
+      html+='<div style="font-size:.64rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--text3);margin-bottom:8px;display:grid;grid-template-columns:140px 1fr 46px 50px;gap:4px"><span>Sector</span><span></span><span>Fund%</span><span>vs N500</span></div>';
+      fd.sector_allocation.slice(0,10).forEach(function(sec){
+        var bw=NIFTY500_SECTORS[sec.sector]||0;
+        var diff=(sec.weight-bw).toFixed(1);
+        var diffCls=parseFloat(diff)>2?'ow':parseFloat(diff)<-2?'uw':'neu';
+        var fillW=Math.min(sec.weight*2.5,100);
+        html+='<div class="sbar-row">';
+        html+='<div class="sbar-label">'+sec.sector+'</div>';
+        html+='<div class="sbar-track"><div class="sbar-fill" style="width:'+fillW+'%;background:'+CHART_COLORS[fd.sector_allocation.indexOf(sec)%CHART_COLORS.length]+'"></div>'+(bw?'<div class="sbar-bench" style="left:'+Math.min(bw*2.5,100)+'%"></div>':'')+'</div>';
+        html+='<div class="sbar-val">'+sec.weight+'%</div>';
+        html+='<div class="sbar-diff '+diffCls+'">'+(parseFloat(diff)>0?'+':'')+diff+'%</div>';
+        html+='</div>';
+      });
+      html+='<div style="font-size:.66rem;color:var(--text3);margin-top:8px">│ = Nifty 500 benchmark weight. Green = Overweight, Red = Underweight</div>';
+
+      // Sector strategy interpretation
+      var topSectors=fd.sector_allocation.slice(0,3).map(function(s){return s.sector;}).join(', ');
+      var topSectorWt=fd.sector_allocation.slice(0,3).reduce(function(a,s){return a+s.weight;},0);
+      var sectorNote=topSectorWt>60?'Highly concentrated in top 3 sectors ('+topSectors+') — '+topSectorWt.toFixed(1)+'% of portfolio. Sector-specific risk is elevated. Suitable for investors with conviction in these sectors.'
+        :topSectorWt>45?'Moderate concentration in '+topSectors+'. Provides meaningful sector bets while maintaining diversification.'
+        :'Well-diversified across sectors. Reduces sector-specific risk but may limit alpha from concentrated bets.';
+      html+='<div class="analysis-block" style="margin-top:12px;border-left-color:var(--purple)"><div class="ab-title">Sector Strategy</div><div class="ab-text">'+sectorNote+'</div></div>';
+      html+='</div></div>'; // end two-col sectors
     }
-    html+='</div></div>';
+
+    // ── SECTION 6: TOP HOLDINGS ──
+    if(fd&&fd.top_holdings&&fd.top_holdings.length>2){
+      html+='<div class="divider"></div>';
+      html+='<div class="sec-label" style="font-size:.62rem">Top Holdings</div>';
+      html+='<table class="hold-table"><thead><tr><th>#</th><th>Stock / Security</th><th>Sector</th><th>Weight</th><th>Signal</th></tr></thead><tbody>';
+      fd.top_holdings.slice(0,12).forEach(function(h,hi){
+        var wt=parseFloat(h.weight);
+        var flag=wt>8?'<span class="hold-flag hf-alert">CONCENTRATED</span>':wt>5?'<span class="hold-flag hf-warn">WATCH</span>':'';
+        html+='<tr><td style="color:var(--text3);font-family:var(--fm);font-size:.72rem">'+(hi+1)+'</td>';
+        html+='<td style="font-weight:600;font-size:.8rem">'+h.name+flag+'</td>';
+        html+='<td style="font-size:.74rem;color:var(--text3)">'+( h.sector||'—')+'</td>';
+        html+='<td style="font-family:var(--fm);font-weight:600;color:'+(wt>7?'var(--red)':wt>5?'var(--gold)':'var(--text)')+'">'+h.weight+'%</td>';
+        html+='<td>'+(wt>8?'<span class="ic-signal sig-r">HIGH RISK</span>':wt>5?'<span class="ic-signal sig-a">MONITOR</span>':'<span class="ic-signal sig-g">OK</span>')+'</td>';
+        html+='</tr>';
+      });
+      html+='</tbody></table>';
+      var topHoldWt=fd.top_holdings.slice(0,5).reduce(function(a,h){return a+parseFloat(h.weight);},0);
+      html+='<div style="font-size:.74rem;color:var(--text2);margin-top:9px">Top 5 holdings = <strong>'+topHoldWt.toFixed(1)+'%</strong> of portfolio. '+(topHoldWt>40?'High concentration — single stock events significantly impact NAV.':topHoldWt>30?'Moderate concentration — some idiosyncratic risk present.':'Well-distributed — no single stock dominates.')+'</div>';
+    }
+
+    // ── SECTION 7: CREDIT QUALITY (debt funds) ──
+    if(fd&&fd.credit_quality&&fd.credit_quality.length>1){
+      html+='<div class="divider"></div>';
+      html+='<div class="sec-label" style="font-size:.62rem">Credit Quality & Debt Profile</div>';
+      html+='<div class="two-col">';
+      html+='<div class="chart-box"><div class="chart-title"><div class="ct-dot" style="background:var(--green)"></div>Credit Rating Distribution</div>';
+      var cqColors={'AAA':'#00d084','AA':'#3b82f6','A':'#f5a623','BBB':'#f97316','Below BBB':'#ff4560','Cash/Equiv':'#94a3b8'};
+      fd.credit_quality.forEach(function(cq){
+        var color=cqColors[cq.rating]||'#64748b';
+        html+='<div class="cq-bar-row"><div class="cq-label" style="color:'+color+'">'+cq.rating+'</div><div class="cq-track"><div class="cq-fill" style="width:'+cq.weight+'%;background:'+color+'"></div></div><div class="cq-val" style="color:'+color+'">'+cq.weight+'%</div></div>';
+      });
+      html+='</div>';
+      html+='<div class="chart-box">';
+      html+='<div class="chart-title"><div class="ct-dot" style="background:var(--teal)"></div>Debt Metrics</div>';
+      if(fd.modified_duration) html+='<div class="info-card" style="margin-bottom:8px"><div class="ic-label">Modified Duration</div><div class="ic-val">'+fd.modified_duration+' yrs</div><div class="ic-sub">'+(parseFloat(fd.modified_duration)>5?'High interest rate sensitivity':'Low-moderate rate sensitivity')+'</div></div>';
+      if(fd.ytm) html+='<div class="info-card" style="margin-bottom:8px"><div class="ic-label">Yield to Maturity</div><div class="ic-val green">'+fd.ytm+'%</div><div class="ic-sub">Expected yield if held to maturity</div></div>';
+      if(fd.avg_maturity) html+='<div class="info-card"><div class="ic-label">Average Maturity</div><div class="ic-val">'+fd.avg_maturity+' yrs</div></div>';
+      var aaaWt=fd.credit_quality.find(function(c){return c.rating==='AAA';});
+      if(aaaWt){
+        var aaaPct=parseFloat(aaaWt.weight);
+        html+='<div style="font-size:.74rem;color:var(--text2);margin-top:10px;line-height:1.5">'+(aaaPct>80?'AAA-dominant portfolio — maximum credit safety. Default risk near zero. Suitable as stable income anchor.'
+          :aaaPct>60?'Predominantly AAA with some AA/A exposure — good credit quality with slight yield pickup.'
+          :'Significant sub-AAA allocation — higher yield but elevated credit risk. Carefully assess in credit stress scenarios.')+'</div>';
+      }
+      html+='</div>';
+      html+='</div>'; // end two-col
+    }
+
+    // ── SECTION 8: INVESTOR SUITABILITY ──
+    html+='<div class="divider"></div>';
+    html+='<div class="sec-label" style="font-size:.62rem">Investor Suitability & Profile</div>';
+    html+='<div class="suitability-card">';
+    html+='<div class="suit-head">';
+    var riskBadgeClass=risk.level==='Very High'?'sb-aggressive':risk.level==='High'?'sb-aggressive':risk.level==='Moderate'?'sb-moderate':'sb-conservative';
+    html+='<span class="suit-badge '+riskBadgeClass+'">'+risk.level+' Risk</span>';
+    html+='<span class="suit-badge sb-conservative" style="background:var(--blue-s);color:var(--blue);border-color:rgba(59,130,246,.3)">Min Horizon: '+suit.horizon+'</span>';
+    html+='<span class="suit-badge sb-conservative" style="background:var(--purple-s);color:var(--purple);border-color:rgba(168,85,247,.3)">'+style+'</span>';
+    html+='</div>';
+    html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">';
+    html+='<div>';
+    html+='<div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--green);margin-bottom:7px">✓ Suitable For</div>';
+    suit.suitable.forEach(function(s2){ html+='<div class="suit-row"><span class="suit-icon">✅</span><span>'+s2+'</span></div>'; });
+    html+='</div>';
+    html+='<div>';
+    html+='<div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--red);margin-bottom:7px">✕ Not Suitable For</div>';
+    suit.notSuitable.forEach(function(s2){ html+='<div class="suit-row"><span class="suit-icon">❌</span><span>'+s2+'</span></div>'; });
+    html+='</div>';
+    html+='</div>';
+    html+='</div>'; // end suitability card
+
+    // ── SECTION 9: STRENGTH / RISK ──
+    html+='<div class="sr-row">';
+    var strengthText=fd?
+      (fd.sharpe_ratio&&parseFloat(fd.sharpe_ratio)>1.5?'Strong risk-adjusted returns with Sharpe of '+fd.sharpe_ratio+'. ':'')+
+      (fd.alpha&&parseFloat(fd.alpha)>2?'Consistent alpha generation ('+fd.alpha+'%) over benchmark. ':'')+
+      (fd.beta&&parseFloat(fd.beta)<0.9?'Defensive profile with Beta '+fd.beta+' — protects capital in downturns. ':'')+
+      (fd.return_5y&&parseFloat(fd.return_5y)>14?'Strong long-term compounding with 5Y CAGR of '+fd.return_5y+'%. ':'')
+      :'Upload factsheet for detailed strength analysis.';
+    var riskText=fd?
+      (fd.standard_deviation&&parseFloat(fd.standard_deviation)>20?'High volatility (StdDev '+fd.standard_deviation+'%) — significant NAV swings expected. ':'')+
+      (fd.pe_ratio&&parseFloat(fd.pe_ratio)>32?'Elevated valuation (P/E '+fd.pe_ratio+'x) — vulnerable to de-rating if growth disappoints. ':'')+
+      (fd.portfolio_turnover&&parseFloat(fd.portfolio_turnover)>120?'High churn ('+fd.portfolio_turnover+'% turnover) increases transaction costs. ':'')+
+      (fd.small_cap_pct&&parseFloat(fd.small_cap_pct)>30?'High small-cap allocation ('+fd.small_cap_pct+'%) — liquidity risk and volatility amplification in bear markets. ':'')
+      :'Upload factsheet for risk assessment.';
+    if(!strengthText.trim()) strengthText='Good diversification and NAV growth track record based on available data.';
+    if(!riskText.trim()) riskText='Market-linked risk — subject to equity market volatility. No specific risk flags detected.';
+    html+='<div class="sr-card sr-strength"><div class="src-title g">Key Strengths</div><div class="src-text g">'+strengthText+'</div></div>';
+    html+='<div class="sr-card sr-risk"><div class="src-title r">Key Risks</div><div class="src-text r">'+riskText+'</div></div>';
+    html+='</div>';
+
+    // ── SECTION 10: COMBINATION ADVICE ──
+    var combos=getCombinationAdvice(style,fd);
+    html+='<div class="combo-card">';
+    html+='<div class="combo-title">🎯 Ideal Fund Combinations — Risk-Wise</div>';
+    combos.forEach(function(cb){
+      html+='<div class="combo-row"><span style="color:var(--teal);font-size:1rem">→</span><span><strong style="color:var(--text)">'+cb.pair+'</strong><br>'+cb.reason+'</span></div>';
+    });
+    html+='</div>';
+
+    html+='</div></div>'; // end rfc-body, res-fund-card
   });
+
+  // ── COMPARISON MATRIX ──
   if(funds.length>1){
-    html+='<div class="divider"></div><div class="slabel">Comparison Matrix</div><div class="cmatrix"><table><thead><tr><th>Metric</th>';
-    funds.forEach(function(s){html+='<th>'+(s.schemeName||'Fund').split(' ').slice(0,5).join(' ')+'</th>';});
+    html+='<div class="divider"></div>';
+    html+='<div class="sec-label" style="margin-bottom:13px">Side-by-Side Comparison Matrix</div>';
+    html+='<div class="cmatrix"><table><thead><tr><th>Metric</th>';
+    funds.forEach(function(s){ html+='<th class="fund-col">'+(s.schemeName||'Fund').split(' ').slice(0,5).join(' ')+'</th>'; });
     html+='</tr></thead><tbody>';
-    [['1M Ret',function(s){return s.returns['1M'];},true],['3M Ret',function(s){return s.returns['3M'];},true],['1Y CAGR',function(s){return s.returns['1Y'];},true],['3Y CAGR',function(s){return s.returns['3Y'];},true],['5Y CAGR',function(s){return s.returns['5Y'];},true],['Rolling Median',function(s){return s.rolling1Y?s.rolling1Y.median:null;},true],['P/E',function(s){return s.factsheetData?s.factsheetData.pe_ratio:null;},false],['Beta',function(s){return s.factsheetData?s.factsheetData.beta:null;},false],['Sharpe',function(s){return s.factsheetData?s.factsheetData.sharpe_ratio:null;},true],['Exp Ratio',function(s){return s.factsheetData?s.factsheetData.expense_ratio:null;},false],['AI Score',function(s){return s.aiAnalysis?s.aiAnalysis.overall_score:null;},true]].forEach(function(row){
+
+    var mrows=[
+      ['1M Return',function(s){return s.returns&&s.returns['1M'];},true,true],
+      ['3M Return',function(s){return s.returns&&s.returns['3M'];},true,true],
+      ['6M Return',function(s){return s.returns&&s.returns['6M'];},true,true],
+      ['1Y CAGR',function(s){return s.returns&&s.returns['1Y'];},true,true],
+      ['3Y CAGR',function(s){return s.returns&&s.returns['3Y'];},true,true],
+      ['5Y CAGR',function(s){return s.returns&&s.returns['5Y'];},true,true],
+      ['10Y CAGR',function(s){return s.returns&&s.returns['10Y'];},true,true],
+      ['Rolling 1Y Median',function(s){return s.rolling1Y?s.rolling1Y.median:null;},true,true],
+      ['Rolling 1Y >12%',function(s){return s.rolling1Y?s.rolling1Y.pct12:null;},true,true],
+      ['P/E Ratio',function(s){return s.fd?s.fd.pe_ratio:null;},false,false],
+      ['P/B Ratio',function(s){return s.fd?s.fd.pb_ratio:null;},false,false],
+      ['Beta',function(s){return s.fd?s.fd.beta:null;},false,false],
+      ['Sharpe',function(s){return s.fd?s.fd.sharpe_ratio:null;},true,false],
+      ['Sortino',function(s){return s.fd?s.fd.sortino_ratio:null;},true,false],
+      ['Std Dev',function(s){return s.fd?s.fd.standard_deviation:null;},false,false],
+      ['Alpha',function(s){return s.fd?s.fd.alpha:null;},true,false],
+      ['Expense Ratio',function(s){return s.fd?s.fd.expense_ratio:null;},false,false],
+      ['AUM (Cr)',function(s){return s.fd?s.fd.aum_cr:null;},true,false],
+      ['Port. Turnover',function(s){return s.fd?s.fd.portfolio_turnover:null;},false,false]
+    ];
+
+    mrows.forEach(function(row){
       var vals=funds.map(row[1]);
       var nums=vals.map(function(v){return v!==null&&v!==undefined?parseFloat(v):null;});
       var valid=nums.filter(function(v){return v!==null;});
-      var best=valid.length?Math.max.apply(null,valid):null;
-      var worst=valid.length?Math.min.apply(null,valid):null;
+      if(!valid.length){return;}
+      var best=Math.max.apply(null,valid), worst=Math.min.apply(null,valid);
       html+='<tr><td class="cml">'+row[0]+'</td>';
       vals.forEach(function(v){
-        if(v===null||v===undefined){html+='<td style="color:var(--ink-l);font-size:.72rem">—</td>';return;}
-        var n=parseFloat(v),isBest=n===(row[2]?best:worst),isWorst=n===(row[2]?worst:best);
-        html+='<td class="'+(isBest?'cbest':isWorst?'cworst':'cmid')+'">'+v+'</td>';
+        if(v===null||v===undefined){html+='<td class="cm-na">—</td>';return;}
+        var n=parseFloat(v);
+        var isBest=n===(row[2]?best:worst);
+        var isWorst=n===(row[2]?worst:best);
+        html+='<td class="'+(isBest?'cm-best':isWorst?'cm-worst':'cm-mid')+'">'+v+(row[3]?'%':'')+'</td>';
       });
       html+='</tr>';
     });
     html+='</tbody></table></div>';
+
+    // ── OVERLAP ANALYSIS ──
+    if(overlaps.length){
+      html+='<div class="divider"></div>';
+      html+='<div class="sec-label" style="margin-bottom:13px">Portfolio Overlap Analysis</div>';
+      overlaps.forEach(function(o){
+        var cls=o.pct<20?'oc-low':o.pct<45?'oc-mid':'oc-high';
+        var verdict=o.pct<20?'✅ Low overlap ('+o.pct+'%) — excellent combination. These funds have genuinely different stock universes and provide real diversification benefit.'
+          :o.pct<45?'⚠️ Moderate overlap ('+o.pct+'%) — some diversification benefit but meaningful overlap exists. Consider allocation weights carefully.'
+          :'🔴 High overlap ('+o.pct+'%) — limited diversification benefit. Holding both is largely redundant — equivalent to increasing concentration in the same stocks.';
+        html+='<div class="overlap-card"><div class="oc-head"><div class="oc-funds">'+o.a.split(' ').slice(0,5).join(' ')+' ↔ '+o.b.split(' ').slice(0,5).join(' ')+'</div><div class="oc-pct '+cls+'">'+o.pct+'% overlap</div></div>';
+        if(o.common.length) html+='<div class="oc-stocks">Common holdings: '+o.common.join(', ')+'</div>';
+        html+='<div class="oc-verdict">'+verdict+'</div></div>';
+      });
+    }
   }
-  if(overlaps.length){
-    html+='<div class="divider"></div><div class="slabel">Overlap Analysis</div>';
-    overlaps.forEach(function(o){
-      var cls=o.pct<25?'oclow':o.pct<50?'ocmid':'ochigh';
-      html+='<div class="ocard"><div class="och"><div class="ocf">'+o.a.split(' ').slice(0,4).join(' ')+' ↔ '+o.b.split(' ').slice(0,4).join(' ')+'</div><div class="ocp '+cls+'">'+o.pct+'%</div></div>';
-      if(o.common.length) html+='<div class="ocs">Common: '+o.common.join(', ')+'</div>';
-      html+='<div class="ocv">'+(o.pct<25?'✅ Low overlap — good combination.':o.pct<50?'⚠️ Moderate overlap — partial diversification.':'🔴 High overlap — limited diversification benefit.')+'</div></div>';
+
+  c.innerHTML = html;
+
+  // ── DRAW ALL CHARTS AFTER DOM IS READY ──
+  setTimeout(function(){
+    funds.forEach(function(s){
+      var fd=s.fd;
+
+      // Asset Allocation Donut
+      if(fd&&(fd.equity_pct||fd.debt_pct)){
+        var aaData=[], aaLabels=[], aaColors=[];
+        if(fd.equity_pct){aaLabels.push('Equity');aaData.push(fd.equity_pct);aaColors.push('#d42b51');}
+        if(fd.international_pct&&fd.international_pct>0){aaLabels.push('International');aaData.push(fd.international_pct);aaColors.push('#3b82f6');}
+        if(fd.debt_pct&&fd.debt_pct>0){aaLabels.push('Debt');aaData.push(fd.debt_pct);aaColors.push('#06b6d4');}
+        if(fd.reit_pct&&fd.reit_pct>0){aaLabels.push('REIT');aaData.push(fd.reit_pct);aaColors.push('#a855f7');}
+        if(fd.cash_pct&&fd.cash_pct>0){aaLabels.push('Cash');aaData.push(fd.cash_pct);aaColors.push('#94a3b8');}
+        makeChart('aa'+s.id,{type:'doughnut',data:{labels:aaLabels,datasets:[{data:aaData,backgroundColor:aaColors,borderWidth:0,hoverOffset:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{color:'#94a3b8',font:{size:10},boxWidth:10}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+ctx.raw+'%';}}}},cutout:'65%'}});
+      }
+
+      // Market Cap Donut
+      if(fd&&(fd.large_cap_pct||fd.mid_cap_pct||fd.small_cap_pct)){
+        var mcData=[], mcLabels=[], mcColors=[];
+        if(fd.large_cap_pct&&fd.large_cap_pct>0){mcLabels.push('Large');mcData.push(fd.large_cap_pct);mcColors.push('#3b82f6');}
+        if(fd.mid_cap_pct&&fd.mid_cap_pct>0){mcLabels.push('Mid');mcData.push(fd.mid_cap_pct);mcColors.push('#f5a623');}
+        if(fd.small_cap_pct&&fd.small_cap_pct>0){mcLabels.push('Small');mcData.push(fd.small_cap_pct);mcColors.push('#ff4560');}
+        var mcRem=100-(fd.large_cap_pct||0)-(fd.mid_cap_pct||0)-(fd.small_cap_pct||0);
+        if(mcRem>1){mcLabels.push('Other');mcData.push(mcRem);mcColors.push('#64748b');}
+        makeChart('mc'+s.id,{type:'doughnut',data:{labels:mcLabels,datasets:[{data:mcData,backgroundColor:mcColors,borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{color:'#94a3b8',font:{size:10},boxWidth:10}},tooltip:{callbacks:{label:function(ctx){return ctx.label+' Cap: '+ctx.raw+'%';}}}},cutout:'65%'}});
+      }
+
+      // Returns Bar Chart
+      var retLabels=[], fundVals=[], benchVals=[];
+      var retMap={
+        '1Y':[s.returns&&s.returns['1Y'],fd&&fd.benchmark_return_1y],
+        '3Y':[s.returns&&s.returns['3Y'],fd&&fd.benchmark_return_3y],
+        '5Y':[s.returns&&s.returns['5Y'],fd&&fd.benchmark_return_5y]
+      };
+      Object.keys(retMap).forEach(function(p){ var v=retMap[p]; if(v[0]!==null&&v[0]!==undefined){retLabels.push(p+' CAGR');fundVals.push(parseFloat(v[0]));benchVals.push(v[1]!==null&&v[1]!==undefined?parseFloat(v[1]):null);} });
+      if(retLabels.length){
+        makeChart('ret'+s.id,{type:'bar',data:{labels:retLabels,datasets:[{label:'Fund',data:fundVals,backgroundColor:'rgba(212,43,81,.8)',borderRadius:4},{label:'Benchmark',data:benchVals.map(function(v){return v===null?0:v;}),backgroundColor:'rgba(59,130,246,.5)',borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#94a3b8',font:{size:10}}},tooltip:{callbacks:{label:function(ctx){return ctx.dataset.label+': '+ctx.raw+'%';}}}},scales:{x:{ticks:{color:'#64748b',font:{size:10}},grid:{color:'rgba(30,45,61,.5)'}},y:{ticks:{color:'#64748b',font:{size:10},callback:function(v){return v+'%';}},grid:{color:'rgba(30,45,61,.5)'}}}}}); 
+      }
+
+      // Sector Bar Chart
+      if(fd&&fd.sector_allocation&&fd.sector_allocation.length>2){
+        var secLabels=fd.sector_allocation.slice(0,8).map(function(x){return x.sector.length>14?x.sector.slice(0,12)+'..':x.sector;});
+        var secFund=fd.sector_allocation.slice(0,8).map(function(x){return x.weight;});
+        var secBench=fd.sector_allocation.slice(0,8).map(function(x){return NIFTY500_SECTORS[x.sector]||0;});
+        makeChart('sec'+s.id,{type:'bar',data:{labels:secLabels,datasets:[{label:'Fund',data:secFund,backgroundColor:'rgba(168,85,247,.75)',borderRadius:3},{label:'Nifty 500',data:secBench,backgroundColor:'rgba(100,116,139,.4)',borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{labels:{color:'#94a3b8',font:{size:10}}}},scales:{x:{ticks:{color:'#64748b',font:{size:9},callback:function(v){return v+'%';}},grid:{color:'rgba(30,45,61,.5)'}},y:{ticks:{color:'#94a3b8',font:{size:9}},grid:{display:false}}}}});
+      }
     });
-  }
-  c.innerHTML=html;
+  }, 100);
 }
 
-// PORTFOLIO
-var ptimers={};
+// ═══════════════════ PORTFOLIO SLOTS ═══════════════════
+var pstm={};
 function addPortSlot(){
-  pSlots.push({id:uid(),navHistory:null,selectedCode:null,schemeName:null,data:null,returns:null,rolling1Y:null,factsheetData:null,pdfBase64:null,pdfName:null,allocPct:'',allocAmt:''});
-  renderPort();
+  portSlots.push({id:uid(),navHistory:null,selectedCode:null,schemeName:null,data:null,fd:null,returns:null,pdfBase64:null,pdfName:null,allocPct:'',allocAmt:''});
+  renderPortSlots();
 }
-function removePortSlot(id){ pSlots=pSlots.filter(function(s){return s.id!==id;}); renderPort(); }
+function removePortSlot(id){ portSlots=portSlots.filter(function(s){return s.id!==id;}); renderPortSlots(); }
 
-function renderPort(){
+function renderPortSlots(){
   var l=document.getElementById('plist'); if(!l) return;
   l.innerHTML='';
-  pSlots.forEach(function(slot,i){
+  portSlots.forEach(function(slot,i){
     var d=document.createElement('div');
-    d.className='pslot'+(slot.navHistory?' loaded':'');
-    d.id='ps'+slot.id;
+    d.className='port-slot'+(slot.navHistory?' loaded':'');
+    d.id='psl'+slot.id;
+    var rem=portSlots.length>1?'<button class="slot-rem" onclick="removePortSlot(\''+slot.id+'\')">✕</button>':'';
     d.innerHTML=
-      '<div class="psh"><div class="pst">Fund '+(i+1)+(slot.schemeName?' — '+slot.schemeName.split(' ').slice(0,5).join(' '):'')+' '+(slot.navHistory?'<span style="color:var(--ok);font-size:.72rem">✓</span>':'')+'</div>'+(pSlots.length>1?'<button class="srem" onclick="removePortSlot(\''+slot.id+'\')">✕</button>':'')+'</div>'+
-      '<label class="sfl">Search Fund</label>'+
-      '<div style="position:relative"><input type="text" class="sfi" id="psi'+slot.id+'" placeholder="Type fund name..." value="'+(slot.schemeName||'')+'" oninput="psSearch(\''+slot.id+'\',this.value)"><div class="sdd" id="psd'+slot.id+'"></div></div>'+
-      '<div class="arow">'+
-        '<div><label class="sfl">Allocation %</label><input type="number" class="sfi" id="pa'+slot.id+'" placeholder="e.g. 30" min="0" max="100" value="'+(slot.allocPct||'')+'" oninput="pSlots.find(function(s){return s.id===\''+slot.id+'\';}).allocPct=this.value"></div>'+
-        '<div><label class="sfl">Amount ₹</label><input type="number" class="sfi" id="pam'+slot.id+'" placeholder="optional" value="'+(slot.allocAmt||'')+'" oninput="pSlots.find(function(s){return s.id===\''+slot.id+'\';}).allocAmt=this.value"></div>'+
+      '<div class="ps-head"><div class="ps-title">Fund '+(i+1)+(slot.schemeName?' — '+slot.schemeName.split(' ').slice(0,5).join(' '):'')+(slot.navHistory?' <span style="color:var(--green);font-size:.72rem">✓</span>':'')+'</div>'+rem+'</div>'+
+      '<label class="fl">Search Fund</label>'+
+      '<div style="position:relative"><input type="text" class="fi" id="psi'+slot.id+'" placeholder="Type fund name..." value="'+(slot.schemeName||'')+'" oninput="psSearch(\''+slot.id+'\',this.value)"><div class="sdd" id="psd'+slot.id+'"></div></div>'+
+      '<div class="alloc-row">'+
+        '<div><label class="fl">Allocation %</label><input type="number" class="fi" id="pa'+slot.id+'" placeholder="e.g. 30" min="0" max="100" value="'+(slot.allocPct||'')+'" oninput="portSlots.find(function(s){return s.id===\''+slot.id+'\';}).allocPct=this.value"></div>'+
+        '<div><label class="fl">Amount ₹</label><input type="number" class="fi" id="pam'+slot.id+'" placeholder="optional" value="'+(slot.allocAmt||'')+'" oninput="portSlots.find(function(s){return s.id===\''+slot.id+'\';}).allocAmt=this.value"></div>'+
       '</div>'+
-      '<button class="fbtn" id="pfb'+slot.id+'" onclick="fetchPort(\''+slot.id+'\')" '+(slot.selectedCode?'':'disabled')+'>'+(slot.navHistory?'✓ Loaded':slot.selectedCode?'⬇ Fetch':'Select fund above')+'</button>'+
+      '<button class="fbtn '+(slot.navHistory?'fbtn-loaded':'fbtn-fetch')+'" id="pfb'+slot.id+'" onclick="fetchPort(\''+slot.id+'\')" '+(slot.selectedCode?'':'disabled')+'>'+(slot.navHistory?'✓ Loaded':slot.selectedCode?'⬇ Fetch':'Select fund above')+'</button>'+
       '<div class="sst" id="pss'+slot.id+'"></div>'+
-      '<div class="pdfz" onclick="document.getElementById(\'ppf'+slot.id+'\').click()"><input type="file" id="ppf'+slot.id+'" accept=".pdf" style="display:none" onchange="handlePortPdf(this.files[0],\''+slot.id+'\')"><div class="pdfzt"><strong>📄 Factsheet</strong> (optional)</div>'+(slot.pdfName?'<div class="pdfzn">✓ '+slot.pdfName+'</div>':'')+'</div>';
+      '<div class="pdfzone" onclick="document.getElementById(\'ppf'+slot.id+'\').click()"><input type="file" id="ppf'+slot.id+'" accept=".pdf" style="display:none" onchange="handlePortPdf(this.files[0],\''+slot.id+'\')"><div class="pdfzone-txt"><strong>📄 Upload Factsheet</strong> (optional — for ratio depth)</div>'+(slot.pdfName?'<div class="pdfzone-name">✓ '+slot.pdfName+'</div>':'')+'</div>';
     l.appendChild(d);
   });
 }
 
 function psSearch(id,q){
-  clearTimeout(ptimers[id]);
-  var dd=document.getElementById('psd'+id); if(!dd) return;
+  clearTimeout(pstm[id]); var dd=document.getElementById('psd'+id); if(!dd) return;
   if(!q||q.length<2){dd.className='sdd';dd.innerHTML='';return;}
-  ptimers[id]=setTimeout(function(){
+  pstm[id]=setTimeout(function(){
     var ql=q.toLowerCase();
     var m=schemes.filter(function(s){return s.schemeName.toLowerCase().indexOf(ql)>=0;}).slice(0,8);
     if(!m.length){dd.className='sdd';return;}
-    dd.innerHTML=m.map(function(s){return '<div class="sddi" onclick="psSelect(\''+id+'\','+s.schemeCode+',\''+s.schemeName.replace(/'/g,'&#39;')+'\')">'+s.schemeName+'</div>';}).join('');
+    dd.innerHTML=m.map(function(s){return '<div class="sddi" onclick="psSel(\''+id+'\','+s.schemeCode+',\''+s.schemeName.replace(/'/g,'&#39;')+'\')" >'+s.schemeName+'</div>';}).join('');
     dd.className='sdd show';
   },280);
 }
 
-function psSelect(id,code,name){
-  var s=pSlots.find(function(x){return x.id===id;}); if(!s) return;
+function psSel(id,code,name){
+  var s=portSlots.find(function(x){return x.id===id;}); if(!s) return;
   s.selectedCode=code; s.schemeName=name;
   var i=document.getElementById('psi'+id); if(i) i.value=name;
   var dd=document.getElementById('psd'+id); if(dd){dd.className='sdd';dd.innerHTML='';}
-  var b=document.getElementById('pfb'+id); if(b){b.disabled=false;b.textContent='⬇ Fetch';}
+  var b=document.getElementById('pfb'+id); if(b){b.disabled=false;b.className='fbtn fbtn-fetch';b.textContent='⬇ Fetch';}
 }
 
 function fetchPort(id){
-  var s=pSlots.find(function(x){return x.id===id;}); if(!s||!s.selectedCode) return;
+  var s=portSlots.find(function(x){return x.id===id;}); if(!s||!s.selectedCode) return;
   var b=document.getElementById('pfb'+id),st=document.getElementById('pss'+id);
   if(b){b.disabled=true;b.textContent='Fetching...';}
-  if(st){st.className='sst loading';st.textContent='Fetching...';}
+  if(st){st.className='sst loading';st.textContent='Fetching NAV data...';}
   fetch('https://api.mfapi.in/mf/'+s.selectedCode)
     .then(function(r){if(!r.ok)throw new Error();return r.json();})
     .then(function(d){
       s.data=d.meta;s.navHistory=d.data;s.schemeName=d.meta.scheme_name;
-      document.getElementById('ps'+id).className='pslot loaded';
-      if(st){st.className='sst ok';st.textContent='✓ '+d.data.length+' records';}
-      if(b){b.disabled=false;b.textContent='✓ Loaded';}
-      renderPort();
+      document.getElementById('psl'+id).className='port-slot loaded';
+      if(st){st.className='sst ok';st.textContent='✓ '+d.data.length+' records loaded';}
+      if(b){b.disabled=false;b.className='fbtn fbtn-loaded';b.textContent='✓ Loaded';}
+      renderPortSlots();
     })
-    .catch(function(){if(st){st.className='sst err';st.textContent='Error.';}if(b){b.disabled=false;b.textContent='Retry';}});
+    .catch(function(){if(st){st.className='sst err';st.textContent='Error.';}if(b){b.disabled=false;b.className='fbtn fbtn-fetch';b.textContent='Retry';}});
 }
 
 function handlePortPdf(file,id){
   if(!file) return;
-  var s=pSlots.find(function(x){return x.id===id;}); if(!s) return;
+  var s=portSlots.find(function(x){return x.id===id;}); if(!s) return;
   s.pdfName=file.name;
   var r=new FileReader();r.onload=function(){s.pdfBase64=r.result.split(',')[1];};r.readAsDataURL(file);
-  renderPort();
+  renderPortSlots();
 }
 
 function updAlloc(){
-  var ids=['eq','dt','gd','rt'],tot=0;
-  ids.forEach(function(id,i){
-    var key=['aleq','aldt','algd','alrt'][i];
-    var vkey=['aleqv','aldtv','algdv','alrtv'][i];
-    var v=parseInt(document.getElementById(key).value)||0;
-    document.getElementById(vkey).textContent=v+'%';tot+=v;
+  var ids=['eq','dt','gd','rt','intl'],tot=0;
+  ids.forEach(function(id){
+    var v=parseInt(document.getElementById('al-'+id).value)||0;
+    document.getElementById('al-'+id+'-v').textContent=v+'%'; tot+=v;
   });
-  var el=document.getElementById('atot');
-  el.className='atot '+(tot===100?'atok':'aterr');
-  el.textContent='Total: '+tot+'% '+(tot===100?'✓':'⚠ should be 100%');
+  var el=document.getElementById('ap-tot');
+  el.className='ap-total '+(tot===100?'ap-ok':'ap-err');
+  el.textContent='Total: '+tot+'% '+(tot===100?'✓ Perfect':'⚠ Must equal 100%');
 }
 
-function runPort(){
-  var loaded=pSlots.filter(function(s){return s.navHistory&&s.allocPct;});
+// ═══════════════════ RUN PORTFOLIO ═══════════════════
+function runPortfolio(){
+  var loaded=portSlots.filter(function(s){return s.navHistory&&s.allocPct;});
   if(!loaded.length){alert('Add at least one fund with allocation %.');return;}
   document.getElementById('pload').style.display='block';
   document.getElementById('pres').innerHTML='';
-  var msgEl=document.getElementById('pmsg'); msgEl.textContent='Analysing...';
+  var msgEl=document.getElementById('pmsg'); msgEl.textContent='Computing portfolio metrics...';
+
   var chain=Promise.resolve();
   loaded.forEach(function(s){
     chain=chain.then(function(){
-      s.returns={'1Y':calcCAGR(s.navHistory,1),'3Y':calcCAGR(s.navHistory,3),'5Y':calcCAGR(s.navHistory,5),'10Y':calcCAGR(s.navHistory,10)};
+      s.returns={'1Y':calcCAGR(s.navHistory,1),'3Y':calcCAGR(s.navHistory,3),'5Y':calcCAGR(s.navHistory,5)};
       s.rolling1Y=getRolling(s.navHistory,252);
-      if(s.pdfBase64){msgEl.textContent='Extracting '+s.schemeName.split(' ').slice(0,3).join(' ')+'...';return extractFS(s.pdfBase64,s.schemeName).then(function(fd){s.factsheetData=fd;});}
+      if(s.pdfBase64){
+        msgEl.textContent='Extracting '+s.schemeName.split(' ').slice(0,3).join(' ')+'...';
+        return extractFactsheet(s.pdfBase64,s.schemeName).then(function(fd){s.fd=fd;});
+      }
     });
   });
+
   chain.then(function(){
-    msgEl.textContent='Computing blended metrics...';
     var tw=loaded.reduce(function(a,s){return a+parseFloat(s.allocPct||0);},0)||100;
     var wt=function(s){return parseFloat(s.allocPct||0)/tw;};
-    var b1Y=loaded.reduce(function(a,s){return s.returns['1Y']?a+parseFloat(s.returns['1Y'])*wt(s):a;},0);
-    var b3Y=loaded.reduce(function(a,s){return s.returns['3Y']?a+parseFloat(s.returns['3Y'])*wt(s):a;},0);
-    var b5Y=loaded.reduce(function(a,s){return s.returns['5Y']?a+parseFloat(s.returns['5Y'])*wt(s):a;},0);
-    var fwfd=loaded.filter(function(s){return s.factsheetData;});
-    var bPE=fwfd.reduce(function(a,s){return s.factsheetData.pe_ratio?a+s.factsheetData.pe_ratio*wt(s):a;},0);
-    var bBeta=fwfd.reduce(function(a,s){return s.factsheetData.beta?a+s.factsheetData.beta*wt(s):a;},0);
-    var bSh=fwfd.reduce(function(a,s){return s.factsheetData.sharpe_ratio?a+s.factsheetData.sharpe_ratio*wt(s):a;},0);
-    var sm={};fwfd.forEach(function(s){if(!s.factsheetData.sector_allocation)return;s.factsheetData.sector_allocation.forEach(function(sec){sm[sec.sector]=(sm[sec.sector]||0)+sec.weight*wt(s);});});
-    var sectors=Object.keys(sm).map(function(k){return[k,sm[k]];}).sort(function(a,b){return b[1]-a[1];});
-    var hm={};fwfd.forEach(function(s){if(!s.factsheetData.top_holdings)return;s.factsheetData.top_holdings.forEach(function(h){hm[h.name]=(hm[h.name]||0)+h.weight*wt(s);});});
-    var holdings=Object.keys(hm).map(function(k){return[k,hm[k]];}).sort(function(a,b){return b[1]-a[1];}).slice(0,10);
-    var aiP=Promise.resolve(null);
-    if(CKEY){
-      msgEl.textContent='Running AI portfolio analysis...';
-      var pr='Senior Indian portfolio analyst.\nFunds: '+loaded.map(function(s){return (s.schemeName||'')+'('+s.allocPct+'%)';}).join(', ')+'\n1Y:'+b1Y.toFixed(2)+'% 3Y:'+b3Y.toFixed(2)+'% P/E:'+(bPE?bPE.toFixed(1):'N/A')+' Beta:'+(bBeta?bBeta.toFixed(2):'N/A')+' Sharpe:'+(bSh?bSh.toFixed(2):'N/A')+'\nSectors: '+sectors.slice(0,5).map(function(s){return s[0]+':'+s[1].toFixed(1)+'%';}).join(',')+'\nReturn ONLY JSON:\n{"portfolio_style":"","risk_score":7,"risk_label":"Moderate","diversification_score":7,"portfolio_strength":"","concentration_risk":"","sector_insight":"","improvement_1":{"title":"","desc":""},"improvement_2":{"title":"","desc":""},"improvement_3":{"title":"","desc":""},"rebalancing_suggestion":"","overall_verdict":""}';
-      aiP=callAI(pr).then(function(r){if(!r)return null;try{return JSON.parse(r.replace(/```json|```/g,'').trim());}catch(e){return null;}});
-    }
-    aiP.then(function(ai){
-      document.getElementById('pload').style.display='none';
-      renderPortResult(loaded,{b1Y:b1Y,b3Y:b3Y,b5Y:b5Y,bPE:bPE,bBeta:bBeta,bSh:bSh},sectors,holdings,ai);
+    var b1=loaded.reduce(function(a,s){return s.returns['1Y']?a+parseFloat(s.returns['1Y'])*wt(s):a;},0);
+    var b3=loaded.reduce(function(a,s){return s.returns['3Y']?a+parseFloat(s.returns['3Y'])*wt(s):a;},0);
+    var b5=loaded.reduce(function(a,s){return s.returns['5Y']?a+parseFloat(s.returns['5Y'])*wt(s):a;},0);
+    var fwfd=loaded.filter(function(s){return s.fd;});
+    var bPE=fwfd.length?fwfd.reduce(function(a,s){return s.fd.pe_ratio?a+s.fd.pe_ratio*wt(s):a;},0):null;
+    var bBeta=fwfd.length?fwfd.reduce(function(a,s){return s.fd.beta?a+s.fd.beta*wt(s):a;},0):null;
+    var bSh=fwfd.length?fwfd.reduce(function(a,s){return s.fd.sharpe_ratio?a+s.fd.sharpe_ratio*wt(s):a;},0):null;
+    var bSD=fwfd.length?fwfd.reduce(function(a,s){return s.fd.standard_deviation?a+s.fd.standard_deviation*wt(s):a;},0):null;
+    var bAlpha=fwfd.length?fwfd.reduce(function(a,s){return s.fd.alpha?a+s.fd.alpha*wt(s):a;},0):null;
+
+    // Sector blend
+    var sm={};
+    fwfd.forEach(function(s){
+      if(!s.fd.sector_allocation) return;
+      s.fd.sector_allocation.forEach(function(sec){sm[sec.sector]=(sm[sec.sector]||0)+sec.weight*wt(s);});
     });
+    var sectors=Object.keys(sm).map(function(k){return[k,sm[k]];}).sort(function(a,b){return b[1]-a[1];});
+
+    // Holdings blend
+    var hm={};
+    fwfd.forEach(function(s){
+      if(!s.fd.top_holdings) return;
+      s.fd.top_holdings.forEach(function(h){hm[h.name]=(hm[h.name]||0)+h.weight*wt(s);});
+    });
+    var holdings=Object.keys(hm).map(function(k){return[k,hm[k]];}).sort(function(a,b){return b[1]-a[1];}).slice(0,12);
+
+    // Overlap between portfolio funds
+    var portOverlaps=[];
+    var wh=fwfd.filter(function(s){return s.fd.top_holdings&&s.fd.top_holdings.length>2;});
+    for(var i=0;i<wh.length;i++){for(var j=i+1;j<wh.length;j++){
+      var a=wh[i],b=wh[j];
+      var an=a.fd.top_holdings.map(function(h){return (h.name||'').toLowerCase();});
+      var bn=b.fd.top_holdings.map(function(h){return (h.name||'').toLowerCase();});
+      var cm=an.filter(function(n){return bn.indexOf(n)>=0&&n.length>2;});
+      portOverlaps.push({a:a.schemeName,b:b.schemeName,pct:Math.round((cm.length/Math.max(an.length,bn.length))*100),common:cm.slice(0,5)});
+    }}
+
+    // Portfolio risk score
+    var portRisk=5;
+    if(bBeta) portRisk+=(bBeta-1)*2;
+    if(bSD) portRisk+=(bSD-16)/4;
+    portRisk=Math.max(1,Math.min(10,Math.round(portRisk)));
+
+    // Improvement areas
+    var improvements=[];
+    var hasIntl=loaded.some(function(s){return s.fd&&s.fd.international_pct&&parseFloat(s.fd.international_pct)>5;});
+    var hasDebt=loaded.some(function(s){return s.fd&&s.fd.debt_pct&&parseFloat(s.fd.debt_pct)>10;});
+    var hasSmallCap=loaded.some(function(s){return s.fd&&s.fd.small_cap_pct&&parseFloat(s.fd.small_cap_pct)>20;});
+    if(!hasIntl) improvements.push({t:'Add International Exposure',d:'No meaningful international allocation detected. 10-15% in a US/global fund adds USD diversification and access to global tech compounders (Alphabet, Meta, Microsoft) absent from Indian markets.'});
+    if(!hasDebt) improvements.push({t:'Add Debt Allocation',d:'Portfolio appears 100% equity. Even 15-20% in a short-duration debt fund significantly reduces portfolio volatility without meaningfully impacting long-term returns.'});
+    if(portOverlaps.some(function(o){return o.pct>45;})) improvements.push({t:'Reduce Fund Overlap',d:'Two or more funds in your portfolio share >45% holdings. This creates false diversification. Consider replacing one overlapping fund with a genuinely different style (e.g., value fund vs growth fund).'});
+    if(bPE&&bPE>32) improvements.push({t:'Valuation Risk — Consider Value Allocation',d:'Blended portfolio P/E of '+bPE.toFixed(1)+'x is elevated. Adding a value-oriented fund (low P/E, high dividend yield) would balance the portfolio and provide downside protection in valuation corrections.'});
+    if(holdings.some(function(h){return parseFloat(h[1])>8;})) improvements.push({t:'Stock Concentration Risk',d:'One or more stocks represent >8% of effective portfolio. This creates significant single-stock event risk. Optimal portfolio should have no single stock above 6-7% at portfolio level.'});
+
+    document.getElementById('pload').style.display='none';
+    renderPortResult(loaded,{b1:b1,b3:b3,b5:b5,bPE:bPE,bBeta:bBeta,bSh:bSh,bSD:bSD,bAlpha:bAlpha,portRisk:portRisk},sectors,holdings,portOverlaps,improvements);
   });
 }
 
-function renderPortResult(funds,bl,sectors,holdings,ai){
-  var c=document.getElementById('pres'),html='';
-  html+='<div class="slabel" style="margin-bottom:13px">Portfolio X-Ray</div><div class="pxg">';
-  html+='<div class="pxc"><div class="pxt">📈 1Y Return</div><div class="pxb" style="color:'+(bl.b1Y>12?'var(--ok)':bl.b1Y>6?'var(--warn)':'var(--err)')+'">'+bl.b1Y.toFixed(2)+'%</div><div class="pxd">Weighted avg</div></div>';
-  html+='<div class="pxc"><div class="pxt">📊 3Y CAGR</div><div class="pxb" style="color:'+(bl.b3Y>12?'var(--ok)':bl.b3Y>8?'var(--warn)':'var(--err)')+'">'+bl.b3Y.toFixed(2)+'%</div><div class="pxd">Compounded</div></div>';
-  if(bl.b5Y) html+='<div class="pxc"><div class="pxt">🎯 5Y CAGR</div><div class="pxb">'+bl.b5Y.toFixed(2)+'%</div><div class="pxd">Long-term</div></div>';
-  if(bl.bBeta) html+='<div class="pxc"><div class="pxt">⚡ Beta</div><div class="pxb">'+bl.bBeta.toFixed(2)+'</div><div class="pxd">'+(bl.bBeta<0.9?'Less volatile':bl.bBeta>1.1?'More volatile':'Market-like')+'</div></div>';
-  if(bl.bPE) html+='<div class="pxc"><div class="pxt">💰 P/E</div><div class="pxb">'+bl.bPE.toFixed(1)+'</div><div class="pxd">'+(bl.bPE<22?'Value tilt':bl.bPE>30?'Growth premium':'Fairly valued')+'</div></div>';
-  if(bl.bSh) html+='<div class="pxc"><div class="pxt">🏆 Sharpe</div><div class="pxb" style="color:'+(bl.bSh>1.5?'var(--ok)':bl.bSh>0.8?'var(--warn)':'var(--err)')+'">'+bl.bSh.toFixed(2)+'</div><div class="pxd">Risk-adj</div></div>';
-  if(ai) html+='<div class="pxc"><div class="pxt">🎯 Risk Score</div><div class="pxb">'+ai.risk_score+'/10</div><div class="pxd">'+ai.risk_label+'</div></div><div class="pxc"><div class="pxt">🌐 Diversif.</div><div class="pxb">'+ai.diversification_score+'/10</div><div class="pxd">Portfolio diversity</div></div>';
+function renderPortResult(funds,bl,sectors,holdings,overlaps,improvements){
+  var c=document.getElementById('pres'); var html='';
+  html+='<div class="sec-label" style="margin-bottom:14px">Portfolio X-Ray Results</div>';
+
+  // Summary metrics
+  html+='<div class="pxr-grid">';
+  html+='<div class="pxr-card"><div class="pxr-title">1Y Blended Return</div><div class="pxr-big" style="color:'+(bl.b1>15?'var(--green)':bl.b1>8?'var(--gold)':'var(--red)')+'">'+bl.b1.toFixed(2)+'%</div><div class="pxr-desc">Weighted CAGR</div></div>';
+  html+='<div class="pxr-card"><div class="pxr-title">3Y Blended CAGR</div><div class="pxr-big" style="color:'+(bl.b3>15?'var(--green)':bl.b3>10?'var(--gold)':'var(--red)')+'">'+bl.b3.toFixed(2)+'%</div><div class="pxr-desc">Compounded</div></div>';
+  if(bl.b5) html+='<div class="pxr-card"><div class="pxr-title">5Y Blended CAGR</div><div class="pxr-big">'+bl.b5.toFixed(2)+'%</div><div class="pxr-desc">Long-term</div></div>';
+  if(bl.bBeta) html+='<div class="pxr-card"><div class="pxr-title">Portfolio Beta</div><div class="pxr-big">'+bl.bBeta.toFixed(2)+'</div><div class="pxr-desc">'+(bl.bBeta<0.9?'Defensive':bl.bBeta>1.1?'Aggressive':'Market-neutral')+'</div></div>';
+  if(bl.bPE) html+='<div class="pxr-card"><div class="pxr-title">Blended P/E</div><div class="pxr-big">'+bl.bPE.toFixed(1)+'x</div><div class="pxr-desc">'+(bl.bPE<22?'Value tilt':bl.bPE>30?'Growth premium':'Fair value')+'</div></div>';
+  if(bl.bSh) html+='<div class="pxr-card"><div class="pxr-title">Blended Sharpe</div><div class="pxr-big" style="color:'+(bl.bSh>1.5?'var(--green)':bl.bSh>0.8?'var(--gold)':'var(--red)')+'">'+bl.bSh.toFixed(2)+'</div><div class="pxr-desc">Risk-adjusted</div></div>';
+  if(bl.bAlpha) html+='<div class="pxr-card"><div class="pxr-title">Blended Alpha</div><div class="pxr-big" style="color:'+(bl.bAlpha>2?'var(--green)':bl.bAlpha>0?'var(--gold)':'var(--red)')+'">'+bl.bAlpha.toFixed(2)+'%</div><div class="pxr-desc">vs benchmark</div></div>';
+  html+='<div class="pxr-card"><div class="pxr-title">Portfolio Risk</div><div class="pxr-big" style="color:'+(bl.portRisk>=7?'var(--red)':bl.portRisk>=5?'var(--gold)':'var(--green)')+'">'+bl.portRisk+'/10</div><div class="pxr-desc">'+(bl.portRisk>=7?'Aggressive':bl.portRisk>=5?'Moderate':'Conservative')+'</div></div>';
   html+='</div>';
-  html+='<div class="sc"><div class="sct">📋 Fund Allocation</div><table class="rtable"><thead><tr><th>Fund</th><th>Alloc</th><th>1Y</th><th>3Y</th></tr></thead><tbody>';
+
+  // Fund allocation table
+  html+='<div class="section-card"><div class="sc-title">📋 Fund-wise Allocation & Returns</div>';
+  html+='<table class="ret-table"><thead><tr><th>Fund</th><th>Allocation</th><th>Amount</th><th>1Y CAGR</th><th>3Y CAGR</th><th>Style</th></tr></thead><tbody>';
   funds.forEach(function(s){
-    html+='<tr><td style="font-size:.79rem;font-weight:600">'+(s.schemeName||'').split(' ').slice(0,6).join(' ')+'</td><td><span class="tteal">'+s.allocPct+'%</span>'+(s.allocAmt?' <span style="font-size:.71rem;color:var(--ink-l)">₹'+parseInt(s.allocAmt).toLocaleString('en-IN')+'</span>':'')+'</td><td class="'+(s.returns['1Y']&&parseFloat(s.returns['1Y'])>0?'rp':'rn')+'">'+(s.returns['1Y']?s.returns['1Y']+'%':'—')+'</td><td class="'+(s.returns['3Y']&&parseFloat(s.returns['3Y'])>0?'rp':'rn')+'">'+(s.returns['3Y']?s.returns['3Y']+'%':'—')+'</td></tr>';
+    var style=classifyStyle(s.fd);
+    html+='<tr><td style="font-size:.78rem;font-weight:600;max-width:180px">'+(s.schemeName||'').split(' ').slice(0,6).join(' ')+'</td>';
+    html+='<td><span class="tteal">'+s.allocPct+'%</span></td>';
+    html+='<td style="font-size:.74rem;color:var(--text3)">'+(s.allocAmt?'₹'+parseInt(s.allocAmt).toLocaleString('en-IN'):'—')+'</td>';
+    html+='<td class="rf '+(s.returns['1Y']&&parseFloat(s.returns['1Y'])>0?'pos':'neg')+'">'+(s.returns['1Y']?s.returns['1Y']+'%':'—')+'</td>';
+    html+='<td class="rf '+(s.returns['3Y']&&parseFloat(s.returns['3Y'])>0?'pos':'neg')+'">'+(s.returns['3Y']?s.returns['3Y']+'%':'—')+'</td>';
+    html+='<td style="font-size:.72rem;color:var(--teal)">'+style+'</td>';
+    html+='</tr>';
   });
   html+='</tbody></table></div>';
-  if(sectors.length){html+='<div class="sc"><div class="sct">🏭 Sector Exposure</div>';sectors.slice(0,10).forEach(function(s,i){html+='<div class="sbar"><div class="sbl2">'+s[0]+'</div><div class="sbt"><div class="sbf" style="width:'+Math.min(s[1],100)+'%;background:'+cols[i%cols.length]+'"></div></div><div class="sbv2">'+s[1].toFixed(1)+'%</div></div>';});html+='</div>';}
-  if(holdings.length){html+='<div class="sc"><div class="sct">📌 Portfolio Holdings</div><div class="hgrid">';holdings.forEach(function(h){html+='<div class="hi"><span class="hin">'+(parseFloat(h[1])>8?'⚠️ ':'')+h[0]+'</span><span class="hip">'+h[1].toFixed(2)+'%</span></div>';});html+='</div><div style="font-size:.7rem;color:var(--ink-l);margin-top:9px">⚠️ = >8% concentration</div></div>';}
-  if(ai){
-    html+='<div class="sc" style="background:linear-gradient(135deg,var(--ink),#1a2d1a);border-color:rgba(26,107,107,.3)"><div class="sct" style="color:#fff">🤖 AI Portfolio Verdict</div>';
-    html+='<div style="background:rgba(255,255,255,.07);border-radius:7px;padding:12px 15px;margin-bottom:11px"><div style="font-size:.69rem;color:rgba(255,255,255,.38);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px">Style</div><div style="font-size:.9rem;font-weight:600;color:#fff">'+ai.portfolio_style+'</div></div>';
-    html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:11px"><div style="background:rgba(255,255,255,.05);border-radius:7px;padding:11px 13px"><div style="font-size:.69rem;color:rgba(255,255,255,.35);text-transform:uppercase;margin-bottom:4px">Strength</div><div style="font-size:.79rem;color:rgba(255,255,255,.73)">'+ai.portfolio_strength+'</div></div><div style="background:rgba(255,255,255,.05);border-radius:7px;padding:11px 13px"><div style="font-size:.69rem;color:rgba(255,255,255,.35);text-transform:uppercase;margin-bottom:4px">Concentration</div><div style="font-size:.79rem;color:rgba(255,255,255,.73)">'+ai.concentration_risk+'</div></div></div>';
-    html+='<div style="background:rgba(26,107,107,.2);border-radius:7px;padding:11px 13px;margin-bottom:11px"><div style="font-size:.69rem;color:rgba(255,255,255,.35);text-transform:uppercase;margin-bottom:4px">Sector Insight</div><div style="font-size:.79rem;color:rgba(255,255,255,.73)">'+ai.sector_insight+'</div></div>';
-    html+='<div style="background:rgba(212,43,81,.15);border-radius:7px;padding:11px 13px;margin-bottom:11px"><div style="font-size:.69rem;color:rgba(255,255,255,.35);text-transform:uppercase;margin-bottom:4px">Rebalancing</div><div style="font-size:.79rem;color:rgba(255,255,255,.73)">'+ai.rebalancing_suggestion+'</div></div>';
-    html+='<div style="font-size:.81rem;color:rgba(255,255,255,.68);line-height:1.62;padding:11px 13px;border:1px solid rgba(255,255,255,.08);border-radius:7px">'+ai.overall_verdict+'</div></div>';
-    if(ai.improvement_1||ai.improvement_2||ai.improvement_3){
-      html+='<div class="slabel" style="margin-top:18px">Improvement Areas</div>';
-      [ai.improvement_1,ai.improvement_2,ai.improvement_3].filter(Boolean).forEach(function(imp){html+='<div class="impc"><span>🔧</span><div class="impt"><strong>'+imp.title+'</strong><span>'+imp.desc+'</span></div></div>';});
-    }
+
+  // Sector x-ray
+  if(sectors.length){
+    html+='<div class="section-card"><div class="sc-title">🏭 Combined Sector Exposure vs Nifty 500</div>';
+    html+='<div style="font-size:.74rem;color:var(--text3);margin-bottom:14px">Effective sector allocation across entire portfolio (allocation-weighted). vs column shows deviation from Nifty 500.</div>';
+    sectors.slice(0,10).forEach(function(s,i){
+      var bw=NIFTY500_SECTORS[s[0]]||0;
+      var diff=(s[1]-bw).toFixed(1);
+      var diffCls=parseFloat(diff)>3?'ow':parseFloat(diff)<-3?'uw':'neu';
+      html+='<div class="sbar-row"><div class="sbar-label">'+s[0]+'</div><div class="sbar-track"><div class="sbar-fill" style="width:'+Math.min(s[1]*2.5,100)+'%;background:'+CHART_COLORS[i%CHART_COLORS.length]+'"></div>'+(bw?'<div class="sbar-bench" style="left:'+Math.min(bw*2.5,100)+'%"></div>':'')+'</div><div class="sbar-val">'+s[1].toFixed(1)+'%</div><div class="sbar-diff '+diffCls+'">'+(parseFloat(diff)>0?'+':'')+diff+'%</div></div>';
+    });
+    html+='<div style="font-size:.66rem;color:var(--text3);margin-top:9px">│ = Nifty 500 weight. +ve% = Overweight (green). -ve% = Underweight (red).</div></div>';
   }
+
+  // Holdings concentration
+  if(holdings.length){
+    html+='<div class="section-card"><div class="sc-title">📌 Effective Portfolio Holdings (Weighted)</div>';
+    html+='<table class="hold-table"><thead><tr><th>Stock / Security</th><th>Effective Weight</th><th>Signal</th></tr></thead><tbody>';
+    holdings.forEach(function(h){
+      var wt=parseFloat(h[1]);
+      html+='<tr><td style="font-size:.8rem;font-weight:500">'+(wt>8?'⚠️ ':'')+h[0]+'</td>';
+      html+='<td style="font-family:var(--fm);font-weight:600;color:'+(wt>8?'var(--red)':wt>5?'var(--gold)':'var(--text)')+'">'+h[1].toFixed(2)+'%</td>';
+      html+='<td>'+(wt>8?'<span class="ic-signal sig-r">CONCENTRATED</span>':wt>5?'<span class="ic-signal sig-a">MONITOR</span>':'<span class="ic-signal sig-g">OK</span>')+'</td></tr>';
+    });
+    html+='</tbody></table><div style="font-size:.72rem;color:var(--text3);margin-top:9px">⚠️ >8% effective weight = single-stock concentration risk at portfolio level.</div></div>';
+  }
+
+  // Overlap in portfolio
+  if(overlaps.length){
+    html+='<div class="section-card"><div class="sc-title">🔗 Portfolio Fund Overlap</div>';
+    overlaps.forEach(function(o){
+      var cls=o.pct<20?'oc-low':o.pct<45?'oc-mid':'oc-high';
+      html+='<div class="overlap-card"><div class="oc-head"><div class="oc-funds">'+o.a.split(' ').slice(0,4).join(' ')+' ↔ '+o.b.split(' ').slice(0,4).join(' ')+'</div><div class="oc-pct '+cls+'">'+o.pct+'% overlap</div></div>';
+      if(o.common.length) html+='<div class="oc-stocks">Common: '+o.common.join(', ')+'</div>';
+      html+='<div class="oc-verdict">'+(o.pct<20?'✅ Genuine diversification — different stock universes.':o.pct<45?'⚠️ Partial overlap — evaluate if both funds are necessary.':'🔴 High overlap — consider replacing one fund.')+'</div></div>';
+    });
+    html+='</div>';
+  }
+
+  // Improvements
+  if(improvements.length){
+    html+='<div class="sec-label" style="margin-top:22px;margin-bottom:12px">Portfolio Improvement Areas</div>';
+    improvements.forEach(function(imp){
+      html+='<div class="imp-card"><span style="font-size:1rem">⚡</span><div class="imp-text"><strong>'+imp.t+'</strong><span>'+imp.d+'</span></div></div>';
+    });
+  }
+
   c.innerHTML=html;
 }
 
-// BOOT
+// ═══════════════════ BOOT ═══════════════════
 (function(){
   var auth=false;
   try{auth=localStorage.getItem('znf_lab')==='1';}catch(e){}
   if(auth){
-    document.getElementById('login-screen').style.display='none';
+    document.getElementById('login').style.display='none';
     document.getElementById('app').style.display='block';
     startApp();
   }
