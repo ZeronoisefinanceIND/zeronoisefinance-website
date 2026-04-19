@@ -651,21 +651,39 @@ nav.visible{opacity:1;pointer-events:all}
 /* ─────────────────────────────────────
    ARTICLES
 ───────────────────────────────────── */
-.articles-intro{background:var(--bgw);border-bottom:1px solid var(--rule);padding:80px 24px 46px}
+.articles-intro{background:var(--bgp);border-bottom:1px solid var(--rule);padding:80px 24px 46px}
 .articles-intro-in{max-width:var(--max);margin:0 auto}
 .articles-body{padding:46px 24px;max-width:var(--max);margin:0 auto}
 .articles-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:22px}
-.ac{background:var(--bgp);border:1px solid var(--rule);border-radius:var(--r);overflow:hidden;transition:box-shadow .28s,transform .28s,border-color .3s}
-.ac:hover{box-shadow:var(--sh3);transform:translateY(-4px);border-color:rgba(26,107,107,.2)}
-.ac-thumb{height:154px;background:var(--bgw);display:flex;align-items:center;justify-content:center;font-size:2.3rem;border-bottom:1px solid var(--rule);position:relative}
-.ac-tag{position:absolute;top:10px;left:10px;padding:3px 9px;border-radius:11px;font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;background:var(--pink);color:#fff}
-.ac-body{padding:18px}
-.ac-meta{font-size:.7rem;color:var(--ink-l);font-family:var(--fm);margin-bottom:7px}
-.ac-title{font-family:var(--fs);font-size:1.02rem;font-weight:600;line-height:1.38;margin-bottom:7px;color:var(--ink)}
-.ac-exc{font-size:.84rem;color:var(--ink-l);line-height:1.68}
+
+/* ── Article card — editorial, magazine style ── */
+.ac{background:var(--bgp);border:1px solid var(--rule);border-radius:var(--r);overflow:hidden;cursor:pointer;display:flex;flex-direction:column;transition:box-shadow .28s,transform .28s,border-color .3s;position:relative}
+.ac:hover{box-shadow:var(--sh3);transform:translateY(-4px);border-color:rgba(212,43,81,.15)}
+/* Thumb area */
+.ac-thumb{height:154px;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--bgw);border-bottom:1px solid var(--rule);flex-shrink:0}
+.ac-thumb-img{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .4s ease}
+.ac:hover .ac-thumb-img{transform:scale(1.04)}
+.ac-thumb-emoji{font-size:2.6rem;position:relative;z-index:1;filter:drop-shadow(0 2px 6px rgba(0,0,0,.12));line-height:1;transition:transform .28s ease}
+.ac:hover .ac-thumb-emoji{transform:scale(1.07)}
+.ac-thumb-scrim{position:absolute;bottom:0;left:0;right:0;height:48px;background:linear-gradient(to bottom,transparent,rgba(0,0,0,.18));pointer-events:none;z-index:1}
+/* Tag pill */
+.ac-tag{position:absolute;bottom:9px;left:10px;z-index:2;padding:3px 9px;border-radius:11px;font-size:.63rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;background:rgba(255,255,255,.92);backdrop-filter:blur(6px);box-shadow:0 1px 4px rgba(0,0,0,.1)}
+/* Body */
+.ac-body{padding:18px;flex:1;display:flex;flex-direction:column}
+.ac-meta{font-size:.7rem;color:var(--ink-l);margin-bottom:7px;display:flex;align-items:center;gap:5px}
+.ac-meta-dot{width:3px;height:3px;border-radius:50%;background:var(--rule);display:inline-block;flex-shrink:0}
+.ac-title{font-family:var(--fs);font-size:1.02rem;font-weight:600;line-height:1.38;margin-bottom:7px;color:var(--ink);transition:color .2s}
+.ac:hover .ac-title{color:var(--pink)}
+.ac-exc{font-size:.84rem;color:var(--ink-l);line-height:1.68;flex:1}
+/* Footer */
 .ac-foot{display:flex;justify-content:space-between;align-items:center;padding:11px 18px;border-top:1px solid var(--rule)}
-.read-link{font-size:.79rem;font-weight:600;color:var(--teal);display:flex;align-items:center;gap:4px;transition:gap .2s}
-.ac:hover .read-link{gap:8px}
+.read-link{font-size:.79rem;font-weight:600;color:var(--teal);display:flex;align-items:center;gap:4px;transition:gap .2s,color .2s}
+.read-link-arrow{display:inline-block;transition:transform .2s}
+.ac:hover .read-link{gap:7px;color:var(--teal-m)}
+.ac:hover .read-link-arrow{transform:translateX(3px)}
+/* Rating badge */
+.ac-rating{font-size:.68rem;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.25);color:#92400e;padding:2px 8px;border-radius:10px;font-weight:600;
+}
 
 /* ─────────────────────────────────────
    CALCULATOR COMMON
@@ -5122,7 +5140,7 @@ var ADMIN_FUND_ANALYSIS = JSON.parse(localStorage.getItem('znf_admin_fund_analys
 var _artTab = 'articles'; // 'articles' | 'funds'
 var _artQ   = '';         // search query
 var _adminAuthed = false;
-var _adminTab = 'articles';
+var _adminTab = 'write';
 var _ADMIN_PASS = 'znf@admin2025!'; // ← change this password
 
 /* ── Runtime admin article arrays (merged with static arrays on render) ── */
@@ -5193,31 +5211,44 @@ function renderArticles(filter){
     return;
   }
 
-  var tagColors = {
-    'Tax':'linear-gradient(135deg,#312e81,#1e1b4b)',
-    'Investing':'linear-gradient(135deg,#7f1d1d,#450a0a)',
-    'Planning':'linear-gradient(135deg,#064e3b,#022c22)',
-    'Insurance':'linear-gradient(135deg,#1e3a5f,#0f172a)',
-    'Debt':'linear-gradient(135deg,#78350f,#451a03)',
-    'Basics':'linear-gradient(135deg,#1e40af,#1e3a8a)',
-    'Equity':'linear-gradient(135deg,#0f172a,#1e3a5f)',
-    'Comparison':'linear-gradient(135deg,#1a1a2e,#16213e)'
+  // Soft gradient palettes per tag — subtle, not heavy
+  var tagPalettes = {
+    'Tax':        {bg:'#f0f4ff',accent:'#4f46e5'},
+    'Investing':  {bg:'#fff7ed',accent:'#d97706'},
+    'Planning':   {bg:'#f0fdf4',accent:'#16a34a'},
+    'Insurance':  {bg:'#f0f9ff',accent:'#0284c7'},
+    'Debt':       {bg:'#fef3c7',accent:'#92400e'},
+    'Basics':     {bg:'#fdf4ff',accent:'#9333ea'},
+    'Equity':     {bg:'#fff1f2',accent:'#e11d48'},
+    'Comparison': {bg:'#f8fafc',accent:'#475569'}
   };
 
   grid.innerHTML = filtered.map(function(a){
-    var bg = tagColors[a.tag] || 'linear-gradient(135deg,#1e293b,#0f172a)';
-    var ratings = JSON.parse(localStorage.getItem('znf_ratings_'+a.id)||'[]');
-    var rb = '';
+    var pal    = tagPalettes[a.tag] || {bg:'#f8fafc',accent:'#475569'};
+    var ratings= JSON.parse(localStorage.getItem('znf_ratings_'+a.id)||'[]');
+    var ratingHtml = '';
     if(ratings.length){
-      var avg = (ratings.reduce(function(x,y){return x+y;},0)/ratings.length).toFixed(1);
-      rb = '<span style="font-size:.7rem;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.3);color:#b45309;padding:2px 8px;border-radius:10px;margin-left:6px">★ '+avg+'</span>';
+      var avg=(ratings.reduce(function(x,y){return x+y;},0)/ratings.length).toFixed(1);
+      ratingHtml='<span class="ac-rating">★ '+avg+'</span>';
     }
-    var thumbStyle = a.coverImg ? 'background:url('+a.coverImg+') center/cover no-repeat' : 'background:'+bg;
-    return '<div class="ac fi" onclick="openArticle(\''+a.id+'\')" style="cursor:pointer">'
-      +'<div class="ac-thumb" style="'+thumbStyle+'"><span style="font-size:2.8rem;filter:drop-shadow(0 2px 8px rgba(0,0,0,.3))'+(a.coverImg?';display:none':'')+'">'+a.emoji+'</span><span class="ac-tag">'+a.tag+'</span></div>'
-      +'<div class="ac-body"><div class="ac-meta">'+a.date+' · '+a.readTime+rb+'</div>'
-      +'<div class="ac-title">'+a.title+'</div><div class="ac-exc">'+a.excerpt+'</div></div>'
-      +'<div class="ac-foot"><span class="read-link">Read article →</span></div></div>';
+    // Thumb: cover image or soft gradient with emoji
+    var thumbHtml = a.coverImg
+      ? '<div class="ac-thumb-img" style="background-image:url('+a.coverImg+')"></div>'
+      : '<div class="ac-thumb-img" style="background:'+pal.bg+'"></div>'
+        + '<span class="ac-thumb-emoji">'+a.emoji+'</span>';
+    return '<div class="ac fi" onclick="openArticle(\''+a.id+'\')">'
+      +'<div class="ac-thumb">'+thumbHtml
+      +'<div class="ac-thumb-scrim"></div>'
+      +'<span class="ac-tag" style="color:'+pal.accent+'">'+a.tag+'</span>'
+      +'</div>'
+      +'<div class="ac-body">'
+      +'<div class="ac-meta"><span>'+a.date+'</span><span class="ac-meta-dot"></span><span>'+a.readTime+'</span></div>'
+      +'<div class="ac-title">'+a.title+'</div>'
+      +'<div class="ac-exc">'+a.excerpt+'</div>'
+      +'</div>'
+      +'<div class="ac-foot"><span class="read-link">Read article <span class="read-link-arrow">→</span></span>'
+      +ratingHtml+'</div>'
+      +'</div>';
   }).join('');
 
   grid.querySelectorAll('.fi').forEach(function(el){ obs.observe(el); });
@@ -5471,6 +5502,8 @@ function openAdmin(){
   if(!_adminAuthed){
     document.getElementById('adminAuthGate').style.display  = 'block';
     document.getElementById('adminContent').style.display   = 'none';
+  } else {
+    adminSwitchTab('write');
   }
 }
 
@@ -5486,119 +5519,311 @@ function checkAdminPass(){
   if(inp.value === _ADMIN_PASS){
     _adminAuthed = true;
     document.getElementById('adminAuthGate').style.display = 'none';
-    document.getElementById('adminContent').style.display  = 'block';
-    adminSwitchTab(_adminTab);
+    var ac = document.getElementById('adminContent');
+    ac.style.display = 'flex';
+    adminSwitchTab('write');
+    adminLoadManage();
   } else {
     inp.value = '';
-    if(err){ err.style.display='block'; err.textContent='Incorrect password.'; }
+    if(err){ err.style.display='block'; }
   }
 }
 
 function adminSwitchTab(tab){
   _adminTab = tab;
-  ['articles','funds','manage'].forEach(function(t){
+  ['write','manage','funds'].forEach(function(t){
     var btn = document.getElementById('aTab_'+t);
-    if(!btn) return;
-    var active = t===tab;
-    var col = t==='articles' ? 'var(--pink)' : t==='funds' ? 'var(--teal)' : 'var(--ink)';
-    btn.style.background   = active ? col : 'var(--bgw)';
-    btn.style.color        = active ? '#fff' : 'var(--ink-m)';
-    btn.style.borderColor  = active ? col : 'var(--rule)';
+    var pane = document.getElementById('adm-pane-'+t);
+    if(btn) btn.classList.toggle('on', t===tab);
+    if(pane) pane.style.display = t===tab ? 'block' : 'none';
   });
-  var form   = document.getElementById('adminForm');
-  var manage = document.getElementById('adminManage');
-  if(form)   form.style.display   = tab==='manage' ? 'none' : 'block';
-  if(manage) manage.style.display = tab==='manage' ? 'block' : 'none';
   if(tab==='manage') adminLoadManage();
+  // scroll to top of admin scroll
+  var sc = document.getElementById('adminScroll');
+  if(sc) sc.scrollTop = 0;
+}
+
+/* ── Smart extract: guess title/excerpt/tag from pasted content ── */
+function adminSmartExtract(){
+  var body = (document.getElementById('aFBody').value||'').trim();
+  if(!body){ adminShowMsg('adminMsg','Paste some content first.','err'); return; }
+  // Extract title: first line or first <h1>/<h2>
+  var title = '';
+  var h1m = body.match(/<h[12][^>]*>(.*?)<\/h[12]>/i);
+  if(h1m){ title = h1m[1].replace(/<[^>]+>/g,'').trim(); }
+  else {
+    var lines = body.split('\n').map(function(l){return l.trim();}).filter(Boolean);
+    // Try markdown heading
+    if(lines[0] && lines[0].match(/^#+\s/)) title = lines[0].replace(/^#+\s+/,'').trim();
+    else title = lines[0]||'';
+    // Strip trailing sentence fragments
+    title = title.replace(/\*\*/g,'').substring(0,100);
+  }
+  // Extract excerpt: first plain paragraph
+  var plain = body.replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim();
+  var sentences = plain.split(/(?<=[.!?])\s+/);
+  var excerpt = sentences.slice(0,2).join(' ').trim().substring(0,200);
+  // Guess tag
+  var tags = ['Tax','Investing','Insurance','Debt','Planning','Equity','Comparison','Basics','Mutual Fund','NPS','PPF','ELSS','SIP'];
+  var lc = body.toLowerCase();
+  var guessedTag = 'Investing';
+  for(var i=0;i<tags.length;i++){
+    if(lc.indexOf(tags[i].toLowerCase())>=0){ guessedTag=tags[i]; break; }
+  }
+  // Guess emoji
+  var emojiMap = {'Tax':'📋','Investing':'📈','Insurance':'🛡️','Debt':'💳','Planning':'🗺️','Equity':'📊','Comparison':'⚖️','Basics':'📚','Mutual Fund':'📈','NPS':'🏛️','PPF':'🏦','ELSS':'💹','SIP':'🔄'};
+  var guessedEmoji = emojiMap[guessedTag]||'📝';
+  // Estimate read time
+  var words = plain.split(/\s+/).length;
+  var mins  = Math.max(2, Math.round(words/200));
+  var rt    = mins+' min read';
+  // Fill form
+  if(title)   document.getElementById('aFTitle').value   = title;
+  if(excerpt) document.getElementById('aFExcerpt').value = excerpt;
+  document.getElementById('aFTag').value      = guessedTag;
+  document.getElementById('aFEmoji').value    = guessedEmoji;
+  document.getElementById('aFReadTime').value = rt;
+  if(!document.getElementById('aFDate').value){
+    document.getElementById('aFDate').value = new Date().toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+  }
+  adminShowMsg('adminMsg','⚡ Auto-filled! Review and tweak anything that needs changing.','ok');
+}
+
+function adminSmartExtractFund(){
+  var body = (document.getElementById('aFFBody').value||'').trim();
+  if(!body){ adminShowMsg('adminMsgF','Paste some content first.','err'); return; }
+  var lines = body.split('\n').map(function(l){return l.trim();}).filter(Boolean);
+  var title = lines[0].replace(/^#+\s+/,'').replace(/<[^>]+>/g,'').trim().substring(0,100);
+  var plain = body.replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim();
+  var sentences = plain.split(/(?<=[.!?])\s+/);
+  var excerpt = sentences.slice(0,2).join(' ').trim().substring(0,200);
+  var words = plain.split(/\s+/).length;
+  var rt = Math.max(2,Math.round(words/200))+' min read';
+  if(title)   document.getElementById('aFFTitle').value   = title;
+  if(excerpt) document.getElementById('aFFExcerpt').value = excerpt;
+  if(!document.getElementById('aFFTag').value) document.getElementById('aFFTag').value = 'Equity';
+  if(!document.getElementById('aFFEmoji').value) document.getElementById('aFFEmoji').value = '📊';
+  document.getElementById('aFFReadTime').value = rt;
+  if(!document.getElementById('aFFDate').value){
+    document.getElementById('aFFDate').value = new Date().toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+  }
+  adminShowMsg('adminMsgF','⚡ Auto-filled! Review before publishing.','ok');
+}
+
+function adminShowMsg(elId, text, type){
+  var el = document.getElementById(elId);
+  if(!el) return;
+  el.textContent = text;
+  el.className = 'adm-msg '+(type||'ok');
+  if(type==='ok') setTimeout(function(){ el.style.display='none'; el.textContent=''; }, 3500);
 }
 
 function adminPreview(){
-  var body    = document.getElementById('aFBody').value;
+  var body = document.getElementById('aFBody').value;
   var preview = document.getElementById('adminBodyPreview');
   if(!preview) return;
-  preview.style.display = 'block';
   preview.innerHTML = processArticleBody(body);
+  preview.style.display = preview.innerHTML.trim() ? 'block' : 'none';
 }
 
-function adminSave(){
+function adminPreviewFund(){
+  var body = document.getElementById('aFFBody').value;
+  var preview = document.getElementById('adminFundPreview');
+  if(!preview) return;
+  preview.innerHTML = processArticleBody(body);
+  preview.style.display = preview.innerHTML.trim() ? 'block' : 'none';
+}
+
+/* ── Image upload: convert to data URL ── */
+function adminHandleImgUpload(inp){
+  if(!inp.files||!inp.files[0]) return;
+  var file = inp.files[0];
+  var reader = new FileReader();
+  reader.onload = function(e){
+    document.getElementById('aFImg').value = e.target.result;
+    adminImgPreview();
+  };
+  reader.readAsDataURL(file);
+}
+
+function adminImgPreview(){
+  var url = document.getElementById('aFImg').value.trim();
+  var prev = document.getElementById('aImgPreview');
+  if(!prev) return;
+  if(url){ prev.src=url; prev.style.display='block'; }
+  else { prev.style.display='none'; }
+}
+
+/* ── Save article (new or edit) ── */
+function adminSaveArticle(){
   var title   = (document.getElementById('aFTitle').value||'').trim();
   var tag     = (document.getElementById('aFTag').value||'').trim();
   var excerpt = (document.getElementById('aFExcerpt').value||'').trim();
   var body    = (document.getElementById('aFBody').value||'').trim();
-  var emoji   = (document.getElementById('aFEmoji').value||'').trim() || '📝';
-  var date    = (document.getElementById('aFDate').value||'').trim()  || new Date().toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
-  var rt      = (document.getElementById('aFReadTime').value||'').trim() || '5 min read';
+  var emoji   = (document.getElementById('aFEmoji').value||'').trim()  || '📝';
+  var date    = (document.getElementById('aFDate').value||'').trim()   || new Date().toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+  var rt      = (document.getElementById('aFReadTime').value||'').trim()|| '5 min read';
   var img     = (document.getElementById('aFImg').value||'').trim();
-  var err     = document.getElementById('adminFormErr');
+  var editId  = (document.getElementById('aFEditId').value||'').trim();
+  var errEl   = document.getElementById('adminFormErr');
 
-  if(!title||!tag||!excerpt||!body){
-    if(err){ err.style.color='var(--pink)'; err.style.display='block'; err.textContent='Fill in Title, Tag, Excerpt and Content.'; }
+  if(!title||!tag||!body){
+    if(errEl){ errEl.textContent='Please fill in Title, Category and Content.'; errEl.className='adm-msg err'; }
     return;
   }
-  if(err) err.style.display='none';
+  if(errEl) errEl.className='adm-msg err'; // hide
 
-  var id = title.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'')+'-'+Date.now();
-  var art = {id:id,title:title,tag:tag,excerpt:excerpt,emoji:emoji,date:date,readTime:rt,body:processArticleBody(body)};
+  var art = {
+    id: editId || (title.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'')+'-'+Date.now()),
+    title:title, tag:tag, excerpt:excerpt||title, emoji:emoji,
+    date:date, readTime:rt, body:processArticleBody(body)
+  };
   if(img) art.coverImg = img;
 
-  var lsKey = _adminTab==='funds' ? 'znf_admin_fund_analysis' : 'znf_admin_articles';
-  var arr   = JSON.parse(localStorage.getItem(lsKey)||'[]');
-  arr.unshift(art);
-  localStorage.setItem(lsKey, JSON.stringify(arr));
-  if(_adminTab==='funds'){ ADMIN_FUND_ANALYSIS.unshift(art); } else { ADMIN_ARTICLES.unshift(art); }
-  _gsIndex = null; // rebuild search index next time
+  var arr = JSON.parse(localStorage.getItem('znf_admin_articles')||'[]');
+  if(editId){
+    // Update existing
+    var idx = arr.findIndex(function(x){ return x.id===editId; });
+    if(idx>=0){ arr[idx]=art; } else { arr.unshift(art); }
+    var lIdx = ADMIN_ARTICLES.findIndex(function(x){ return x.id===editId; });
+    if(lIdx>=0){ ADMIN_ARTICLES[lIdx]=art; } else { ADMIN_ARTICLES.unshift(art); }
+  } else {
+    arr.unshift(art);
+    ADMIN_ARTICLES.unshift(art);
+  }
+  localStorage.setItem('znf_admin_articles', JSON.stringify(arr));
+  _gsIndex = null;
 
-  ['aFTitle','aFTag','aFExcerpt','aFBody','aFEmoji','aFDate','aFReadTime','aFImg'].forEach(function(fid){
-    var el = document.getElementById(fid); if(el) el.value='';
+  adminClearForm();
+  adminShowMsg('adminMsg', editId ? '✅ Article updated!' : '✅ Published! Visible in the articles section now.', 'ok');
+  if(document.getElementById('articlesGrid')) renderArticles('all');
+  adminLoadManage();
+}
+
+function adminSaveFund(){
+  var title   = (document.getElementById('aFFTitle').value||'').trim();
+  var tag     = (document.getElementById('aFFTag').value||'').trim();
+  var excerpt = (document.getElementById('aFFExcerpt').value||'').trim();
+  var body    = (document.getElementById('aFFBody').value||'').trim();
+  var emoji   = (document.getElementById('aFFEmoji').value||'').trim() || '📊';
+  var date    = (document.getElementById('aFFDate').value||'').trim()  || new Date().toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+  var rt      = (document.getElementById('aFFReadTime').value||'').trim()|| '6 min read';
+  var errEl   = document.getElementById('adminFundFormErr');
+
+  if(!title||!tag||!body){
+    if(errEl){ errEl.textContent='Please fill in Title, Category and Content.'; errEl.className='adm-msg err'; }
+    return;
+  }
+  if(errEl) errEl.className='adm-msg err';
+
+  var art = {
+    id:title.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'')+'-'+Date.now(),
+    title:title,tag:tag,excerpt:excerpt||title,emoji:emoji,
+    date:date,readTime:rt,body:processArticleBody(body)
+  };
+  var arr = JSON.parse(localStorage.getItem('znf_admin_fund_analysis')||'[]');
+  arr.unshift(art);
+  localStorage.setItem('znf_admin_fund_analysis', JSON.stringify(arr));
+  ADMIN_FUND_ANALYSIS.unshift(art);
+  _gsIndex = null;
+
+  ['aFFTitle','aFFTag','aFFExcerpt','aFFBody','aFFEmoji','aFFDate','aFFReadTime'].forEach(function(id){
+    var el=document.getElementById(id); if(el) el.value='';
   });
-  document.getElementById('adminBodyPreview').style.display='none';
-  if(err){ err.style.color='#16a34a'; err.style.display='block'; err.textContent='✅ Published successfully!'; setTimeout(function(){ err.style.display='none'; },3000); }
+  document.getElementById('adminFundPreview').style.display='none';
+  adminShowMsg('adminMsgF','✅ Fund analysis published!','ok');
   if(document.getElementById('articlesGrid')) renderArticles('all');
 }
 
+function adminClearForm(){
+  ['aFTitle','aFTag','aFExcerpt','aFBody','aFEmoji','aFDate','aFReadTime','aFImg','aFEditId'].forEach(function(id){
+    var el=document.getElementById(id); if(el) el.value='';
+  });
+  var prev=document.getElementById('adminBodyPreview'); if(prev){ prev.style.display='none'; prev.innerHTML=''; }
+  var img=document.getElementById('aImgPreview'); if(img){ img.style.display='none'; img.src=''; }
+  var pb=document.getElementById('adminPublishBtn'); if(pb) pb.textContent='✅ Publish Article';
+  var cb=document.getElementById('adminCancelEditBtn'); if(cb) cb.style.display='none';
+}
+
+function adminCancelEdit(){
+  adminClearForm();
+  adminShowMsg('adminMsg','Edit cancelled.','ok');
+}
+
+/* ── Edit an existing article ── */
+function adminEditArticle(id){
+  var arr = JSON.parse(localStorage.getItem('znf_admin_articles')||'[]');
+  var a = arr.find(function(x){return x.id===id;});
+  if(!a) return;
+  adminSwitchTab('write');
+  document.getElementById('aFTitle').value   = a.title||'';
+  document.getElementById('aFTag').value     = a.tag||'';
+  document.getElementById('aFExcerpt').value = a.excerpt||'';
+  // Put raw body back (strip processed html if it's not raw)
+  document.getElementById('aFBody').value    = a.body||'';
+  document.getElementById('aFEmoji').value   = a.emoji||'';
+  document.getElementById('aFDate').value    = a.date||'';
+  document.getElementById('aFReadTime').value= a.readTime||'';
+  document.getElementById('aFImg').value     = a.coverImg||'';
+  document.getElementById('aFEditId').value  = a.id;
+  adminImgPreview();
+  var pb=document.getElementById('adminPublishBtn'); if(pb) pb.textContent='💾 Update Article';
+  var cb=document.getElementById('adminCancelEditBtn'); if(cb) cb.style.display='block';
+  var sc=document.getElementById('adminScroll'); if(sc) sc.scrollTop=0;
+}
+
+/* ── Load manage list ── */
 function adminLoadManage(){
   var arts  = JSON.parse(localStorage.getItem('znf_admin_articles')||'[]');
   var funds = JSON.parse(localStorage.getItem('znf_admin_fund_analysis')||'[]');
-  function makeList(arr, key, elId){
-    var el = document.getElementById(elId);
-    if(!el) return;
-    if(!arr.length){ el.innerHTML='<div style="font-size:.78rem;color:var(--ink-l);padding:8px 0">Nothing added via admin panel yet.</div>'; return; }
-    el.innerHTML = arr.map(function(a,i){
-      return '<div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border:1px solid var(--rule);border-radius:var(--rs);margin-bottom:6px;background:var(--bgp)">'
-        +'<span>'+a.emoji+'</span>'
-        +'<div style="flex:1;min-width:0"><div style="font-size:.82rem;font-weight:600;color:var(--ink)">'+a.title+'</div>'
-        +'<div style="font-size:.7rem;color:var(--ink-l)">'+a.date+' · '+a.tag+'</div></div>'
-        +'<button onclick="adminDelete(\''+key+'\','+i+')" style="font-size:.78rem;color:var(--pink);padding:3px 8px;border:1px solid rgba(212,43,81,.3);border-radius:6px">Delete</button>'
-        +'</div>';
-    }).join('');
+  var el = document.getElementById('adminManageList');
+  if(!el) return;
+  var all = arts.map(function(a){return {a:a,key:'znf_admin_articles',arr:arts};})
+    .concat(funds.map(function(a){return {a:a,key:'znf_admin_fund_analysis',arr:funds};}));
+  if(!all.length){
+    el.innerHTML='<div style="color:var(--ink-l);font-size:.82rem;padding:20px 0;text-align:center">Nothing published via admin yet.</div>';
+    return;
   }
-  makeList(arts,  'znf_admin_articles',       'adminManageList');
-  makeList(funds, 'znf_admin_fund_analysis',  'adminManageFundList');
+  el.innerHTML = all.map(function(obj,i){
+    var a=obj.a, key=obj.key;
+    var isArticle = key==='znf_admin_articles';
+    return '<div class="adm-manage-item">'
+      +'<div class="adm-manage-emoji">'+a.emoji+'</div>'
+      +'<div class="adm-manage-info">'
+      +'<div class="adm-manage-title">'+a.title+'</div>'
+      +'<div class="adm-manage-sub">'+a.date+' · '+a.tag+'</div>'
+      +'</div>'
+      +'<div class="adm-manage-actions">'
+      +(isArticle?'<button class="adm-edit-btn" onclick="adminEditArticle(\''+a.id+'\')">Edit</button>':'')
+      +'<button class="adm-del-btn" onclick="adminDeleteItem(\''+key+'\',\''+a.id+'\')">Delete</button>'
+      +'</div>'
+      +'</div>';
+  }).join('');
 }
 
-function adminDelete(key,i){
+function adminDeleteItem(key, id){
+  if(!confirm('Delete this article? This cannot be undone.')) return;
   var arr = JSON.parse(localStorage.getItem(key)||'[]');
-  arr.splice(i,1);
-  localStorage.setItem(key,JSON.stringify(arr));
-  if(key==='znf_admin_articles') ADMIN_ARTICLES.splice(i,1);
-  else ADMIN_FUND_ANALYSIS.splice(i,1);
+  arr = arr.filter(function(x){return x.id!==id;});
+  localStorage.setItem(key, JSON.stringify(arr));
+  if(key==='znf_admin_articles') ADMIN_ARTICLES = arr;
+  else ADMIN_FUND_ANALYSIS = arr;
   _gsIndex = null;
   adminLoadManage();
   if(document.getElementById('articlesGrid')) renderArticles('all');
 }
 
-function adminExportCode(){
-  var box  = document.getElementById('adminExportBox');
-  var code = document.getElementById('adminExportCode');
-  if(!box||!code) return;
-  box.style.display = 'block';
+function adminShowExport(){
+  var box = document.getElementById('adm-export-box');
+  if(!box) return;
   var arts  = JSON.parse(localStorage.getItem('znf_admin_articles')||'[]');
   var funds = JSON.parse(localStorage.getItem('znf_admin_fund_analysis')||'[]');
-  var out = '/* Paste into ARTICLES array */\n';
-  arts.forEach(function(a){ out += JSON.stringify(a,null,2)+',\n'; });
-  out += '\n/* Paste into FUND_ANALYSIS array */\n';
-  funds.forEach(function(a){ out += JSON.stringify(a,null,2)+',\n'; });
-  code.value = out;
+  var out = '/* ── Paste into ARTICLES array ── */\n';
+  arts.forEach(function(a){ out+=JSON.stringify(a,null,2)+',\n\n'; });
+  out += '\n/* ── Paste into FUND_ANALYSIS array ── */\n';
+  funds.forEach(function(a){ out+=JSON.stringify(a,null,2)+',\n\n'; });
+  box.textContent = out;
+  box.style.display = box.style.display==='none'?'block':'none';
 }
 
 /* ── Keyboard shortcuts ── */
@@ -9693,85 +9918,230 @@ document.addEventListener('keydown', function(e){
 
 
 <!-- ── Admin Panel (ZNF Admin — Ctrl+Shift+A to open) ── -->
-<div id="znfAdminOverlay" style="display:none;position:fixed;inset:0;background:rgba(10,10,14,.85);backdrop-filter:blur(10px);z-index:10000;align-items:center;justify-content:center">
-  <div style="background:var(--bgw);border:1px solid var(--rule);border-radius:var(--r);width:100%;max-width:720px;margin:0 16px;box-shadow:0 32px 80px rgba(0,0,0,.5);overflow:hidden;max-height:90vh;display:flex;flex-direction:column">
+<style>
+/* ── Admin Panel Styles ── */
+#znfAdminOverlay{display:none;position:fixed;inset:0;background:rgba(10,10,14,.82);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:10000;align-items:center;justify-content:center;padding:16px}
+#znfAdminBox{background:var(--bgp);border:1px solid var(--rule);border-radius:18px;width:100%;max-width:680px;box-shadow:0 40px 100px rgba(0,0,0,.45);display:flex;flex-direction:column;max-height:92vh;overflow:hidden}
+.adm-hdr{display:flex;align-items:center;justify-content:space-between;padding:18px 24px;border-bottom:1px solid var(--rule);flex-shrink:0}
+.adm-tabs{display:flex;gap:4px;padding:14px 24px 0;flex-shrink:0}
+.adm-tab{padding:8px 18px;border-radius:10px 10px 0 0;font-size:.8rem;font-weight:700;cursor:pointer;border:none;transition:all .2s;background:var(--bgw);color:var(--ink-l);border-bottom:2.5px solid transparent}
+.adm-tab.on{background:var(--bgp);color:var(--pink);border-bottom-color:var(--pink)}
+.adm-scroll{flex:1;overflow-y:auto;padding:20px 24px 28px}
+.adm-field{margin-bottom:16px}
+.adm-lbl{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-l);margin-bottom:6px;display:block}
+.adm-inp{width:100%;padding:10px 13px;border:1.5px solid var(--rule);border-radius:9px;font-size:.88rem;background:var(--bgw);color:var(--ink);outline:none;transition:border-color .2s,box-shadow .2s;font-family:inherit}
+.adm-inp:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(212,43,81,.07)}
+.adm-inp::placeholder{color:var(--ink-l);opacity:.7}
+.adm-textarea{resize:vertical;min-height:120px;line-height:1.65}
+.adm-paste-area{resize:vertical;min-height:200px;font-size:.85rem;line-height:1.7;font-family:inherit}
+.adm-row{display:grid;gap:12px}
+.adm-row-2{grid-template-columns:1fr 1fr}
+.adm-row-3{grid-template-columns:1fr 1fr 1fr}
+.adm-img-row{display:flex;gap:10px;align-items:center}
+.adm-img-preview{width:56px;height:56px;border-radius:9px;border:1.5px solid var(--rule);object-fit:cover;background:var(--bgw);display:none;flex-shrink:0}
+.adm-btn{width:100%;padding:13px;border-radius:10px;font-size:.9rem;font-weight:700;cursor:pointer;border:none;transition:all .2s;font-family:inherit}
+.adm-btn-primary{background:var(--pink);color:#fff;box-shadow:0 2px 12px rgba(212,43,81,.22)}
+.adm-btn-primary:hover{background:#b8244a;transform:translateY(-1px);box-shadow:0 4px 18px rgba(212,43,81,.3)}
+.adm-btn-ghost{background:var(--bgw);color:var(--teal);border:1.5px solid var(--teal)}
+.adm-btn-ghost:hover{background:var(--teal-s)}
+.adm-msg{font-size:.78rem;padding:9px 13px;border-radius:8px;margin-bottom:12px;display:none}
+.adm-msg.ok{background:#ecfdf5;color:#065f46;border:1px solid #a7f3d0;display:block}
+.adm-msg.err{background:#fef2f2;color:#991b1b;border:1px solid #fca5a5;display:block}
+.adm-sep{height:1px;background:var(--rule);margin:18px 0}
+.adm-manage-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--rule);border-radius:10px;margin-bottom:8px;background:var(--bgw);transition:border-color .2s}
+.adm-manage-item:hover{border-color:rgba(212,43,81,.2)}
+.adm-manage-emoji{font-size:1.4rem;flex-shrink:0;width:36px;text-align:center}
+.adm-manage-info{flex:1;min-width:0}
+.adm-manage-title{font-size:.85rem;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.adm-manage-sub{font-size:.7rem;color:var(--ink-l);margin-top:2px}
+.adm-manage-actions{display:flex;gap:6px;flex-shrink:0}
+.adm-del-btn{font-size:.72rem;color:var(--pink);padding:4px 10px;border:1px solid rgba(212,43,81,.3);border-radius:6px;cursor:pointer;transition:all .2s;background:transparent;font-family:inherit}
+.adm-del-btn:hover{background:var(--pink);color:#fff}
+.adm-edit-btn{font-size:.72rem;color:var(--teal);padding:4px 10px;border:1px solid rgba(26,107,107,.3);border-radius:6px;cursor:pointer;transition:all .2s;background:transparent;font-family:inherit}
+.adm-edit-btn:hover{background:var(--teal-s)}
+.adm-hint{font-size:.73rem;color:var(--ink-l);line-height:1.5;margin-top:6px}
+.adm-preview-box{border:1.5px solid var(--rule);border-radius:10px;padding:18px;background:var(--bgw);margin-top:12px;font-size:.88rem;color:var(--ink-m);line-height:1.85;max-height:220px;overflow-y:auto;display:none}
+.adm-preview-box h2{font-family:var(--fs);font-size:1.05rem;font-weight:700;margin:16px 0 8px;color:var(--ink)}
+.adm-preview-box p{margin-bottom:10px}
+.adm-preview-box ul{padding-left:18px;margin-bottom:10px}
+.adm-preview-box li{margin-bottom:4px}
+.adm-smart-tag{display:inline-flex;align-items:center;gap:5px;font-size:.72rem;padding:4px 10px;border-radius:8px;background:var(--teal-s);color:var(--teal);border:1px solid rgba(26,107,107,.2);margin-bottom:10px;font-weight:600}
+.adm-export-box{background:var(--bgw);border:1px solid var(--rule);border-radius:9px;padding:12px;font-family:monospace;font-size:.72rem;color:var(--ink-m);max-height:180px;overflow-y:auto;white-space:pre-wrap;word-break:break-all;margin-top:10px;display:none}
+</style>
+
+<div id="znfAdminOverlay" onclick="if(event.target===this)closeAdmin()">
+  <div id="znfAdminBox">
     <!-- Header -->
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 22px;border-bottom:1px solid var(--rule);background:var(--bgp);flex-shrink:0">
+    <div class="adm-hdr">
       <div style="display:flex;align-items:center;gap:10px">
-        <span style="font-size:1.2rem">🔐</span>
+        <div style="width:36px;height:36px;background:var(--pink);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem">✍️</div>
         <div>
-          <div style="font-weight:700;font-size:.95rem;color:var(--ink)">ZNF Admin Panel</div>
-          <div style="font-size:.7rem;color:var(--ink-l)">Add articles without touching code</div>
+          <div style="font-weight:700;font-size:.95rem;color:var(--ink)">Article Studio</div>
+          <div style="font-size:.68rem;color:var(--ink-l);margin-top:1px">Zero Noise Finance — Content Manager</div>
         </div>
       </div>
-      <button onclick="closeAdmin()" style="color:var(--ink-l);font-size:1.1rem;padding:4px 10px;border-radius:6px">✕</button>
+      <button onclick="closeAdmin()" style="width:32px;height:32px;border-radius:8px;background:var(--bgw);border:1px solid var(--rule);color:var(--ink-l);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s" onmouseover="this.style.background='var(--rule)'" onmouseout="this.style.background='var(--bgw)'">✕</button>
     </div>
+
     <!-- Auth gate -->
-    <div id="adminAuthGate" style="padding:32px 24px;text-align:center">
-      <div style="font-size:2rem;margin-bottom:12px">🔑</div>
-      <div style="font-weight:600;font-size:.95rem;color:var(--ink);margin-bottom:6px">Enter admin password</div>
-      <div style="font-size:.78rem;color:var(--ink-l);margin-bottom:18px">Only Nishant can access this panel</div>
-      <input id="adminPassInp" type="password" placeholder="Password" style="padding:10px 16px;border:1.5px solid var(--rule);border-radius:var(--rs);font-size:.9rem;width:100%;max-width:280px;background:var(--bgw);color:var(--ink);outline:none;display:block;margin:0 auto 12px" onkeydown="if(event.key==='Enter')checkAdminPass()">
-      <button onclick="checkAdminPass()" style="padding:10px 28px;background:var(--pink);color:#fff;border-radius:var(--rs);font-weight:700;font-size:.88rem">Enter</button>
-      <div id="adminPassErr" style="color:var(--pink);font-size:.78rem;margin-top:10px;display:none">Incorrect password</div>
+    <div id="adminAuthGate" style="padding:40px 24px;text-align:center">
+      <div style="width:56px;height:56px;border-radius:16px;background:var(--bgw);border:1.5px solid var(--rule);display:flex;align-items:center;justify-content:center;font-size:1.6rem;margin:0 auto 16px">🔑</div>
+      <div style="font-weight:700;font-size:1rem;color:var(--ink);margin-bottom:6px">Enter your password</div>
+      <div style="font-size:.8rem;color:var(--ink-l);margin-bottom:20px">Only you can access this panel</div>
+      <input id="adminPassInp" type="password" placeholder="Password" class="adm-inp" style="max-width:260px;display:block;margin:0 auto 14px;text-align:center" onkeydown="if(event.key==='Enter')checkAdminPass()">
+      <button onclick="checkAdminPass()" class="adm-btn adm-btn-primary" style="max-width:160px;margin:0 auto;display:block">Unlock →</button>
+      <div id="adminPassErr" style="color:var(--pink);font-size:.78rem;margin-top:12px;display:none">Wrong password. Try again.</div>
     </div>
-    <!-- Admin content (shown after auth) -->
-    <div id="adminContent" style="display:none;overflow-y:auto;flex:1">
-      <div style="padding:20px 22px">
-        <!-- Tabs -->
-        <div style="display:flex;gap:6px;margin-bottom:18px">
-          <button onclick="adminTab('articles')" id="aTab_articles" style="padding:7px 16px;border-radius:var(--rs);font-size:.8rem;font-weight:700;background:var(--pink);color:#fff;border:1.5px solid var(--pink)">✍️ My Articles</button>
-          <button onclick="adminTab('funds')" id="aTab_funds" style="padding:7px 16px;border-radius:var(--rs);font-size:.8rem;font-weight:700;background:var(--bgw);color:var(--ink-m);border:1.5px solid var(--rule)">📊 Fund Analysis</button>
-          <button onclick="adminTab('manage')" id="aTab_manage" style="padding:7px 16px;border-radius:var(--rs);font-size:.8rem;font-weight:700;background:var(--bgw);color:var(--ink-m);border:1.5px solid var(--rule)">📋 Manage</button>
-        </div>
-        <!-- Article form (My Articles + Fund Analysis share same form) -->
-        <div id="adminForm">
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
-            <div><div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-l);margin-bottom:5px">Title *</div>
-              <input id="aFTitle" type="text" placeholder="Article title" style="width:100%;padding:8px 12px;border:1.5px solid var(--rule);border-radius:var(--rs);font-size:.85rem;background:var(--bgw);color:var(--ink)"></div>
-            <div><div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-l);margin-bottom:5px">Tag/Category *</div>
-              <input id="aFTag" type="text" placeholder="e.g. Investing, Tax, Equity" style="width:100%;padding:8px 12px;border:1.5px solid var(--rule);border-radius:var(--rs);font-size:.85rem;background:var(--bgw);color:var(--ink)"></div>
-          </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px">
-            <div><div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-l);margin-bottom:5px">Emoji</div>
-              <input id="aFEmoji" type="text" placeholder="📈" style="width:100%;padding:8px 12px;border:1.5px solid var(--rule);border-radius:var(--rs);font-size:.85rem;background:var(--bgw);color:var(--ink)"></div>
-            <div><div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-l);margin-bottom:5px">Date</div>
-              <input id="aFDate" type="text" placeholder="20 Apr 2026" style="width:100%;padding:8px 12px;border:1.5px solid var(--rule);border-radius:var(--rs);font-size:.85rem;background:var(--bgw);color:var(--ink)"></div>
-            <div><div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-l);margin-bottom:5px">Read Time</div>
-              <input id="aFReadTime" type="text" placeholder="6 min read" style="width:100%;padding:8px 12px;border:1.5px solid var(--rule);border-radius:var(--rs);font-size:.85rem;background:var(--bgw);color:var(--ink)"></div>
-          </div>
-          <div style="margin-bottom:12px"><div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-l);margin-bottom:5px">Excerpt (1-2 sentences shown on card) *</div>
-            <textarea id="aFExcerpt" rows="2" placeholder="Short preview shown on article card..." style="width:100%;padding:8px 12px;border:1.5px solid var(--rule);border-radius:var(--rs);font-size:.85rem;background:var(--bgw);color:var(--ink);resize:vertical"></textarea></div>
-          <div style="margin-bottom:12px">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">
-              <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-l)">Article Content (HTML or plain text) *</div>
-              <button onclick="adminPreviewBody()" style="font-size:.7rem;color:var(--teal);padding:2px 8px;border:1px solid var(--teal);border-radius:8px">Preview</button>
-            </div>
-            <div style="font-size:.72rem;color:var(--ink-l);margin-bottom:6px">Paste plain text — it will auto-format. Or use HTML: &lt;h2&gt;, &lt;p&gt;, &lt;ul&gt;&lt;li&gt;, &lt;strong&gt;, &lt;blockquote&gt;</div>
-            <textarea id="aFBody" rows="10" placeholder="Paste your article content here. Plain text will be auto-formatted into paragraphs. You can also use HTML tags for headers, lists, etc." style="width:100%;padding:8px 12px;border:1.5px solid var(--rule);border-radius:var(--rs);font-size:.82rem;background:var(--bgw);color:var(--ink);resize:vertical;font-family:monospace"></textarea>
-          </div>
-          <!-- Cover image URL (optional) -->
-          <div style="margin-bottom:16px"><div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-l);margin-bottom:5px">Cover Image URL <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional — paste any image URL)</span></div>
-            <input id="aFImg" type="text" placeholder="https://..." style="width:100%;padding:8px 12px;border:1.5px solid var(--rule);border-radius:var(--rs);font-size:.85rem;background:var(--bgw);color:var(--ink)"></div>
-          <!-- Preview pane -->
-          <div id="adminBodyPreview" style="display:none;border:1px solid var(--rule);border-radius:var(--rs);padding:16px;background:var(--bgp);margin-bottom:14px;font-size:.88rem;color:var(--ink-m);line-height:1.8;max-height:260px;overflow-y:auto"></div>
-          <!-- Submit -->
-          <div id="adminFormErr" style="color:var(--pink);font-size:.78rem;margin-bottom:8px;display:none"></div>
-          <button onclick="adminSaveArticle()" style="width:100%;padding:12px;background:var(--pink);color:#fff;border-radius:var(--rs);font-weight:700;font-size:.9rem">✅ Publish Article</button>
-        </div>
-        <!-- Manage tab -->
-        <div id="adminManage" style="display:none">
-          <div style="margin-bottom:14px"><div style="font-size:.78rem;font-weight:600;color:var(--ink);margin-bottom:8px">My Articles (from admin panel)</div><div id="adminManageList"></div></div>
-          <div><div style="font-size:.78rem;font-weight:600;color:var(--ink);margin-bottom:8px">Fund Analyses (from admin panel)</div><div id="adminManageFundList"></div></div>
-          <div style="margin-top:16px;padding:12px;background:var(--pink-s);border:1px solid rgba(212,43,81,.15);border-radius:var(--rs);font-size:.76rem;color:var(--ink-m)">
-            💡 <strong>Tip:</strong> To permanently embed articles (survive localStorage clear), open the HTML file and paste the generated article object into the ARTICLES or FUND_ANALYSIS array. The export button below generates the code.
-          </div>
-          <button onclick="adminExportCode()" style="margin-top:12px;width:100%;padding:10px;background:var(--teal-s);color:var(--teal);border:1px solid var(--teal);border-radius:var(--rs);font-weight:700;font-size:.82rem">📋 Export JS Code for Permanent Embed</button>
-          <div id="adminExportBox" style="display:none;margin-top:10px"><textarea id="adminExportCode" rows="8" readonly style="width:100%;padding:10px;border:1px solid var(--rule);border-radius:var(--rs);font-size:.75rem;font-family:monospace;background:var(--bgp);color:var(--ink);resize:vertical"></textarea></div>
-        </div>
+
+    <!-- Main content (after auth) -->
+    <div id="adminContent" style="display:none;flex-direction:column;flex:1;overflow:hidden;min-height:0">
+      <!-- Tabs -->
+      <div class="adm-tabs">
+        <button class="adm-tab on" id="aTab_write" onclick="adminSwitchTab('write')">✍️ Write</button>
+        <button class="adm-tab" id="aTab_manage" onclick="adminSwitchTab('manage')">📋 Manage</button>
+        <button class="adm-tab" id="aTab_funds" onclick="adminSwitchTab('funds')">📊 Funds</button>
       </div>
-    </div>
-  </div>
+
+      <!-- Scrollable body -->
+      <div class="adm-scroll" id="adminScroll">
+
+        <!-- ── WRITE TAB ── -->
+        <div id="adm-pane-write">
+          <div id="adminMsg" class="adm-msg"></div>
+
+          <!-- PASTE BOX — the star of the show -->
+          <div class="adm-field">
+            <label class="adm-lbl">📋 Paste your article here</label>
+            <textarea id="aFBody" class="adm-inp adm-textarea adm-paste-area" placeholder="Just paste your article text here — plain text, markdown, or HTML. I'll auto-format it into a proper article with headings, paragraphs, and everything. No manual HTML needed.&#10;&#10;Tip: Include a clear headline at the very top for best results."></textarea>
+            <div class="adm-hint">Works with plain text, markdown-style (## headings, **bold**, - bullets), or raw HTML. Auto-formats everything.</div>
+          </div>
+
+          <!-- Smart extract row -->
+          <div style="display:flex;gap:8px;margin-bottom:16px">
+            <button onclick="adminSmartExtract()" class="adm-btn adm-btn-ghost" style="flex:1;padding:10px">⚡ Auto-fill from content</button>
+            <button onclick="adminPreview()" class="adm-btn" style="flex:1;padding:10px;background:var(--bgw);color:var(--ink-m);border:1.5px solid var(--rule)">👁 Preview</button>
+          </div>
+
+          <!-- Preview -->
+          <div id="adminBodyPreview" class="adm-preview-box"></div>
+
+          <div class="adm-sep"></div>
+
+          <!-- Meta fields -->
+          <div class="adm-field">
+            <label class="adm-lbl">Title *</label>
+            <input id="aFTitle" class="adm-inp" type="text" placeholder="Article headline">
+          </div>
+
+          <div class="adm-row adm-row-2" style="margin-bottom:16px">
+            <div class="adm-field" style="margin:0">
+              <label class="adm-lbl">Category / Tag *</label>
+              <input id="aFTag" class="adm-inp" type="text" placeholder="Tax, Investing, Planning…">
+            </div>
+            <div class="adm-field" style="margin:0">
+              <label class="adm-lbl">Emoji</label>
+              <input id="aFEmoji" class="adm-inp" type="text" placeholder="📈">
+            </div>
+          </div>
+
+          <div class="adm-field">
+            <label class="adm-lbl">Excerpt <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--ink-l)">(shown on card — 1-2 sentences)</span></label>
+            <textarea id="aFExcerpt" class="adm-inp adm-textarea" rows="2" placeholder="Short teaser shown on the article card…"></textarea>
+          </div>
+
+          <div class="adm-row adm-row-2" style="margin-bottom:16px">
+            <div class="adm-field" style="margin:0">
+              <label class="adm-lbl">Date</label>
+              <input id="aFDate" class="adm-inp" type="text" placeholder="19 Apr 2026">
+            </div>
+            <div class="adm-field" style="margin:0">
+              <label class="adm-lbl">Read time</label>
+              <input id="aFReadTime" class="adm-inp" type="text" placeholder="5 min read">
+            </div>
+          </div>
+
+          <!-- Image upload / URL -->
+          <div class="adm-field">
+            <label class="adm-lbl">Cover image <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--ink-l)">(optional)</span></label>
+            <div class="adm-img-row">
+              <img id="aImgPreview" class="adm-img-preview" alt="preview">
+              <div style="flex:1">
+                <input id="aFImg" class="adm-inp" type="text" placeholder="Paste image URL…" oninput="adminImgPreview()" style="margin-bottom:8px">
+                <label style="display:inline-flex;align-items:center;gap:7px;font-size:.78rem;font-weight:600;color:var(--teal);cursor:pointer;padding:6px 12px;border:1.5px solid var(--teal);border-radius:8px;background:var(--teal-s);transition:background .2s">
+                  📁 Upload image file
+                  <input id="aFImgFile" type="file" accept="image/*" style="display:none" onchange="adminHandleImgUpload(this)">
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hidden field for editing mode -->
+          <input id="aFEditId" type="hidden" value="">
+
+          <div id="adminFormErr" class="adm-msg err" style="margin-top:4px"></div>
+          <button onclick="adminSaveArticle()" class="adm-btn adm-btn-primary" id="adminPublishBtn">✅ Publish Article</button>
+          <button onclick="adminCancelEdit()" id="adminCancelEditBtn" class="adm-btn" style="display:none;margin-top:8px;background:var(--bgw);color:var(--ink-m);border:1.5px solid var(--rule)">Cancel edit</button>
+        </div>
+
+        <!-- ── MANAGE TAB ── -->
+        <div id="adm-pane-manage" style="display:none">
+          <div style="font-size:.8rem;font-weight:600;color:var(--ink);margin-bottom:12px">Published Articles</div>
+          <div id="adminManageList">
+            <div style="color:var(--ink-l);font-size:.82rem;padding:20px 0 10px;text-align:center">Nothing published via admin yet.</div>
+          </div>
+          <div class="adm-sep"></div>
+          <button onclick="adminShowExport()" class="adm-btn adm-btn-ghost" style="width:100%;padding:10px;font-size:.82rem">📋 Export code to embed permanently</button>
+          <div id="adm-export-box" class="adm-export-box"></div>
+        </div>
+
+        <!-- ── FUNDS TAB ── -->
+        <div id="adm-pane-funds" style="display:none">
+          <div id="adminMsgF" class="adm-msg"></div>
+          <div class="adm-field">
+            <label class="adm-lbl">📋 Paste fund analysis content</label>
+            <textarea id="aFFBody" class="adm-inp adm-textarea adm-paste-area" placeholder="Paste your fund analysis here. Plain text, markdown, or HTML — all work."></textarea>
+          </div>
+          <div style="display:flex;gap:8px;margin-bottom:16px">
+            <button onclick="adminSmartExtractFund()" class="adm-btn adm-btn-ghost" style="flex:1;padding:10px">⚡ Auto-fill from content</button>
+            <button onclick="adminPreviewFund()" class="adm-btn" style="flex:1;padding:10px;background:var(--bgw);color:var(--ink-m);border:1.5px solid var(--rule)">👁 Preview</button>
+          </div>
+          <div id="adminFundPreview" class="adm-preview-box"></div>
+          <div class="adm-sep"></div>
+          <div class="adm-field">
+            <label class="adm-lbl">Fund / Title *</label>
+            <input id="aFFTitle" class="adm-inp" type="text" placeholder="e.g. Nifty 50 Index Fund Deep Dive">
+          </div>
+          <div class="adm-row adm-row-2" style="margin-bottom:16px">
+            <div class="adm-field" style="margin:0">
+              <label class="adm-lbl">Category</label>
+              <input id="aFFTag" class="adm-inp" type="text" placeholder="Equity, Debt, Hybrid…">
+            </div>
+            <div class="adm-field" style="margin:0">
+              <label class="adm-lbl">Emoji</label>
+              <input id="aFFEmoji" class="adm-inp" type="text" placeholder="📊">
+            </div>
+          </div>
+          <div class="adm-field">
+            <label class="adm-lbl">Excerpt</label>
+            <textarea id="aFFExcerpt" class="adm-inp adm-textarea" rows="2" placeholder="1-2 sentence summary for the card…"></textarea>
+          </div>
+          <div class="adm-row adm-row-2" style="margin-bottom:16px">
+            <div class="adm-field" style="margin:0">
+              <label class="adm-lbl">Date</label>
+              <input id="aFFDate" class="adm-inp" type="text" placeholder="19 Apr 2026">
+            </div>
+            <div class="adm-field" style="margin:0">
+              <label class="adm-lbl">Read time</label>
+              <input id="aFFReadTime" class="adm-inp" type="text" placeholder="7 min read">
+            </div>
+          </div>
+          <div id="adminFundFormErr" class="adm-msg err"></div>
+          <button onclick="adminSaveFund()" class="adm-btn adm-btn-primary">✅ Publish Fund Analysis</button>
+        </div>
+
+      </div><!-- /adm-scroll -->
+    </div><!-- /adminContent -->
+  </div><!-- /znfAdminBox -->
 </div>
 </body>
 
