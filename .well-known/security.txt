@@ -1,0 +1,4 @@
+Contact: mailto:info@zeronoisefinance.com
+Expires: 2027-01-01T00:00:00z
+Preferred-Languages: en
+Canonical: https://zeronoisefinance.com/.well-known/security.txt
