@@ -36,7 +36,7 @@
 <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
 <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
 <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval'; font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://api.anthropic.com https://api.web3forms.com https://cdnjs.cloudflare.com https://unpkg.com https://www.googletagmanager.com https://www.google-analytics.com; connect-src 'self' https://api.anthropic.com https://api.web3forms.com https://api.mfapi.in https://www.google-analytics.com https://analytics.google.com; img-src 'self' data: https://www.google-analytics.com;">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval'; font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://api.anthropic.com https://api.web3forms.com https://cdnjs.cloudflare.com https://unpkg.com https://www.googletagmanager.com https://www.google-analytics.com https://challenges.cloudflare.com; connect-src 'self' https://api.anthropic.com https://api.web3forms.com https://api.mfapi.in https://www.google-analytics.com https://analytics.google.com https://challenges.cloudflare.com; img-src 'self' data: https://www.google-analytics.com; frame-src https://challenges.cloudflare.com;">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Source+Sans+3:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <!-- Structured Data — Organization schema for Google logo in search results -->
@@ -73,6 +73,8 @@
 </script>
 <!-- EmailJS — for contact form email delivery. Sign up free at emailjs.com -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<!-- Cloudflare Turnstile — bot protection for contact form -->
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <script>
   // Initialize EmailJS with your public key once you have it
   // emailjs.init('YOUR_PUBLIC_KEY');
@@ -2957,6 +2959,10 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
               <option>Tax Planning</option><option>Something else</option>
             </select></div>
           <div class="fl" style="grid-column:1/-1"><div class="fl-lbl">Goals &amp; Questions</div><textarea class="fi-inp" style="min-height:100px;resize:vertical" id="c_msg" placeholder="Describe your financial situation and what you would like to achieve..."></textarea></div>
+          <!-- Cloudflare Turnstile bot protection -->
+          <div style="grid-column:1/-1;margin-top:6px">
+            <div class="cf-turnstile" data-sitekey="0x4AAAAAAC_vPJQLuLVz5heO" data-theme="light"></div>
+          </div>
         </div>
         <button class="calbtn" style="margin-top:10px" onclick="submitContact()">Send Message →</button>
         <div style="font-size:.7rem;color:var(--ink-l);margin-top:10px;line-height:1.6">Your information is kept confidential and will never be shared with any third party.</div>
@@ -9196,13 +9202,16 @@ async function submitContact(){
   var msg=sanitize(document.getElementById('c_msg').value);
   var err=isSpam(name,email,msg);
   if(err){showContactError(err);return;}
+  // Cloudflare Turnstile verification
+  var tsToken=document.querySelector('[name="cf-turnstile-response"]');
+  if(!tsToken||!tsToken.value){showContactError('Please complete the security check above.');return;}
   btn.textContent='Sending\u2026';btn.disabled=true;clearContactError();
   if(W3F_KEY==='YOUR_WEB3FORMS_KEY'){
     showContactError('Form not connected yet. Go to web3forms.com, enter info@zeronoisefinance.com, and paste the access key into W3F_KEY in the script.');
     btn.textContent='Send Message \u2192';btn.disabled=false;return;
   }
   try{
-    var res=await fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({access_key:W3F_KEY,subject:'ZNF Enquiry \u2014 '+plan+' \u2014 '+name,from_name:name,replyto:email,name:name,phone:phone||'Not provided',email:email,plan:plan,message:msg,botcheck:''})});
+    var res=await fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({access_key:W3F_KEY,subject:'ZNF Enquiry \u2014 '+plan+' \u2014 '+name,from_name:name,replyto:email,name:name,phone:phone||'Not provided',email:email,plan:plan,message:msg,botcheck:'','cf-turnstile-response':tsToken.value})});
     var data=await res.json();
     if(data.success){
       btn.textContent='Sent \u2713';btn.style.background='#1e7e4f';
