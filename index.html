@@ -7073,10 +7073,22 @@ function calcTax() {
     var stdD = isSal?75000:0; dedTotal=stdD; taxable=Math.max(0,gross-stdD);
     var slabs=[[0,400000,0],[400000,800000,0.05],[800000,1200000,0.10],[1200000,1600000,0.15],[1600000,2000000,0.20],[2000000,2400000,0.25],[2400000,Infinity,0.30]];
     taxAmt = computeSlabTax(taxable, slabs);
-    var rebate87A = taxable<=1200000?Math.min(taxAmt,60000):0;
-    taxAmt = Math.max(0, taxAmt - rebate87A);
+    // Section 87A: Full rebate if taxable income ≤ ₹12,00,000
+    var rebate87A = 0;
+    if (taxable <= 1200000) {
+      rebate87A = taxAmt; // full rebate — zero tax
+      taxAmt = 0;
+    } else {
+      // Marginal relief: if taxable is between ₹12,00,001 and ₹12,75,000,
+      // tax (before cess) cannot exceed (taxable income − ₹12,00,000)
+      var marginalCap = taxable - 1200000;
+      if (taxAmt > marginalCap) {
+        taxAmt = marginalCap;
+      }
+    }
     breakdown = 'New Regime \u00b7 FY2025-26';
-    if (rebate87A>0) breakdown += ' \u00b7 87A rebate applied \u2014 zero tax up to \u20b912L';
+    if (taxable <= 1200000) breakdown += ' \u00b7 87A rebate applied \u2014 zero tax up to \u20b912L';
+    else if (taxable < 1275000) breakdown += ' \u00b7 Marginal relief applied';
     var note = 'Under new regime, no additional deductions. Income above \u20b912L: compare both regimes.';
     var ne = document.getElementById('tx_note'); if(ne) ne.textContent=note;
   } else {
@@ -7106,15 +7118,60 @@ function calcTax() {
     if(rebOld>0) breakdown+=' \u00b7 87A rebate applied';
     var ne2=document.getElementById('tx_note'); if(ne2) ne2.textContent='Total deductions claimed: '+fmt(dedTotal)+'. Maximise 80C, NPS, 80D for best savings.';
   }
-  var surcharge=0;
-  if(taxable>10000000) surcharge=taxAmt*(taxRegime==='new'?0.25:0.37);
-  else if(taxable>5000000) surcharge=taxAmt*0.25;
-  else if(taxable>2000000) surcharge=taxAmt*0.15;
-  else if(taxable>1000000) surcharge=taxAmt*0.10;
+  // ── SURCHARGE (FY 2025-26) ──────────────────────────────────────────
+  // Surcharge is on income tax (taxAmt), NOT on total income.
+  // Thresholds: >50L @10%, >1Cr @15%, >2Cr @25%, >5Cr @25%(New)/37%(Old)
+  // Marginal relief applies at every surcharge band boundary.
+  // Surcharge thresholds (on taxable income), rates on income tax payable:
+  // >₹50L: 10% | >₹1Cr: 15% | >₹2Cr: 25% | >₹5Cr: 25%(New)/37%(Old)
+  var surchargeRate = 0;
+  if      (taxable > 50000000) surchargeRate = (taxRegime==='new') ? 0.25 : 0.37;
+  else if (taxable > 20000000) surchargeRate = 0.25;
+  else if (taxable > 10000000) surchargeRate = 0.15;
+  else if (taxable > 5000000)  surchargeRate = 0.10;
+  var surcharge = taxAmt * surchargeRate;
+
+  // Marginal relief on surcharge at each band boundary:
+  // Extra tax+surcharge over the threshold must not exceed (income − threshold)
+  if (surchargeRate > 0) {
+    var bands = [5000000, 10000000, 20000000, 50000000]; // ₹50L, ₹1Cr, ₹2Cr, ₹5Cr
+    // Find the previous (lower) band threshold for this income
+    var prevBand = 0;
+    for (var bi = bands.length - 1; bi >= 0; bi--) {
+      if (taxable > bands[bi]) { prevBand = bands[bi]; break; }
+    }
+    // Tax+surcharge at the lower band threshold (with its lower surcharge rate)
+    var prevSurchargeRate = 0;
+    if      (prevBand >= 50000000) prevSurchargeRate = (taxRegime==='new') ? 0.25 : 0.37;
+    else if (prevBand >= 20000000) prevSurchargeRate = 0.25;
+    else if (prevBand >= 10000000) prevSurchargeRate = 0.15;
+    else if (prevBand >= 5000000)  prevSurchargeRate = 0.10;
+    // Compute what tax would have been at the lower threshold exactly
+    var taxAtBand = 0;
+    if (taxRegime === 'new') {
+      var sN=[[0,400000,0],[400000,800000,0.05],[800000,1200000,0.10],[1200000,1600000,0.15],[1600000,2000000,0.20],[2000000,2400000,0.25],[2400000,Infinity,0.30]];
+      taxAtBand = computeSlabTax(prevBand - (isSal ? 75000 : 0), sN);
+    } else {
+      var sO;
+      if(ageGrp==='supersenior') sO=[[0,500000,0],[500000,1000000,0.20],[1000000,Infinity,0.30]];
+      else if(ageGrp==='senior') sO=[[0,300000,0],[300000,500000,0.05],[500000,1000000,0.20],[1000000,Infinity,0.30]];
+      else                       sO=[[0,250000,0],[250000,500000,0.05],[500000,1000000,0.20],[1000000,Infinity,0.30]];
+      taxAtBand = computeSlabTax(Math.max(0, prevBand - dedTotal), sO);
+    }
+    var taxPlusSurchargeAtBand = taxAtBand * (1 + prevSurchargeRate);
+    var taxPlusSurchargeNow    = taxAmt + surcharge;
+    var excessOverBand         = taxable - prevBand;
+    // If additional tax+surcharge exceeds the additional income, cap it
+    if ((taxPlusSurchargeNow - taxPlusSurchargeAtBand) > excessOverBand) {
+      surcharge = taxPlusSurchargeAtBand + excessOverBand - taxAmt;
+      if (surcharge < 0) surcharge = 0;
+    }
+  }
   var cess=(taxAmt+surcharge)*0.04;
   var totalTax=Math.round(taxAmt+surcharge+cess);
   var effRate=gross>0?(totalTax/gross*100).toFixed(2):0;
   var margRate=getMarginalRate(taxable,taxRegime,ageGrp);
+  if (surcharge > 0) { var srPct = Math.round(surchargeRate*100)+'%'; breakdown += ' \u00b7 Surcharge '+srPct+' applied (income >₹50L)'; }
   document.getElementById('tx_total').textContent=fmt(totalTax);
   document.getElementById('tx_sub').textContent='Effective: '+effRate+'% \u00b7 Marginal: '+margRate+'%';
   document.getElementById('tx_rows').innerHTML='<div class="rb"><div class="rb-v">'+fmt(gross)+'</div><div class="rb-k">Gross Income</div></div><div class="rb"><div class="rb-v">'+fmt(taxable)+'</div><div class="rb-k">Taxable Income</div></div><div class="rb"><div class="rb-v">'+fmt(taxAmt)+'</div><div class="rb-k">Income Tax</div></div><div class="rb"><div class="rb-v">'+(surcharge>0?fmt(surcharge):'Nil')+'</div><div class="rb-k">Surcharge</div></div><div class="rb"><div class="rb-v">'+fmt(cess)+'</div><div class="rb-k">Cess (4%)</div></div>';
