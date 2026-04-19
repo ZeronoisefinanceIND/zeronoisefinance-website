@@ -322,6 +322,44 @@ nav.visible{opacity:1;pointer-events:all}
   100%{opacity:0;background-position:-60% 0}
 }
 .nav-links{display:flex;align-items:center;gap:2px}
+/* ── Global search pill ── */
+#global-search-btn{
+  display:flex;align-items:center;gap:8px;
+  padding:7px 14px 7px 12px;
+  border-radius:20px;
+  border:1.5px solid var(--rule);
+  background:var(--bgp);
+  color:var(--ink-l);
+  font-size:.78rem;font-weight:500;
+  cursor:pointer;
+  transition:all .2s;
+  white-space:nowrap;
+  margin:0 10px;
+}
+#global-search-btn:hover{
+  border-color:var(--pink);
+  color:var(--ink);
+  background:var(--bgw);
+  box-shadow:0 0 0 3px rgba(212,43,81,.08);
+}
+#global-search-btn svg{opacity:.6;flex-shrink:0}
+#global-search-btn:hover svg{opacity:1;color:var(--pink)}
+#global-search-btn .gsb-text{color:inherit}
+#global-search-btn kbd{
+  display:inline-flex;align-items:center;
+  padding:1px 6px;
+  border-radius:5px;
+  border:1px solid var(--rule);
+  background:var(--bgw);
+  font-size:.65rem;font-family:inherit;
+  color:var(--ink-l);
+  line-height:1.5;
+}
+@media(max-width:900px){
+  #global-search-btn .gsb-text,#global-search-btn kbd{display:none}
+  #global-search-btn{padding:7px 10px;margin:0 6px}
+}
+@media(max-width:700px){#global-search-btn{display:none}}
 .nav-links a{padding:6px 12px;border-radius:var(--rs);font-size:.82rem;font-weight:500;color:var(--ink-m);transition:background .18s,color .18s;border-bottom:2.5px solid transparent}
 .nav-links a:hover,.nav-links a.active{background:var(--bgw);color:var(--ink);text-decoration:none}
 .nav-links a.active{border-bottom-color:var(--pink);color:var(--pink);font-weight:600}
@@ -1266,6 +1304,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
 <!-- NAVBAR -->
 <nav id="navbar">
   <div class="nav-inner">
+    <!-- Logo -->
     <div class="nav-logo" onclick="nav('home')">
       <div class="logo-mark">
         <span class="logo-zero">ZERO</span>
@@ -1273,6 +1312,13 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
       </div>
       <span class="logo-fin">FINANCE<sup style="font-size:.45em;vertical-align:super;margin-left:1px;color:var(--ink-l);font-weight:400">™</sup></span>
     </div>
+    <!-- Search pill — between logo and nav links -->
+    <button id="global-search-btn" onclick="openGlobalSearch()" title="Search (Ctrl+K)" aria-label="Search">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <span class="gsb-text">Search</span>
+      <kbd>⌘K</kbd>
+    </button>
+    <!-- Nav links -->
     <div class="nav-links">
       <a href="#home" onclick="event.preventDefault();nav('home')">Home</a>
       <a href="#articles" onclick="event.preventDefault();nav('articles')">Articles</a>
@@ -1284,7 +1330,6 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
       <a href="#faq" onclick="event.preventDefault();nav('faq')">FAQ</a>
       <a href="#contact" onclick="event.preventDefault();nav('contact')" class="nav-cta">Consult Us</a>
     </div>
-    <button id="global-search-btn" onclick="openGlobalSearch()" title="Search anything on ZNF" style="display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:var(--rs);border:1.5px solid var(--rule);background:var(--bgw);color:var(--ink-m);font-size:.8rem;font-weight:600;cursor:pointer;transition:all .2s;margin-left:4px"><span style="font-size:.85rem">🔍</span><span class="search-label">Search</span></button>
     <button class="mob-btn" onclick="toggleMob()"><span></span><span></span><span></span></button>
   </div>
 </nav>
