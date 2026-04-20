@@ -10241,9 +10241,13 @@ document.addEventListener('keydown', function(e){
       <span class="zmd-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 10h2M12 10h2M16 10h.01M8 14h2M12 14h2M16 14h2M8 18h2M12 18h2M16 18h2"/></svg></span>
       <div><div class="zmd-label">Calculators</div><div class="zmd-sub">SIP, Tax, EMI & more</div></div>
     </button>
-    <button class="zmd-item" onclick="zfbCloseMore();zfbNav('finplan')">
+    <button class="zmd-item" onclick="zfbCloseMore();zfbNav('goals')">
+      <span class="zmd-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span>
+      <div><div class="zmd-label">Goals</div><div class="zmd-sub">Financial goal planner</div></div>
+    </button>
+    <button class="zmd-item" onclick="zfbCloseMore();zfbNav('ratios')">
       <span class="zmd-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10M12 20V4M6 20v-6"/></svg></span>
-      <div><div class="zmd-label">Finance Hub</div><div class="zmd-sub">Loans, Goals, Ratios</div></div>
+      <div><div class="zmd-label">Ratio Analysis</div><div class="zmd-sub">Financial health check</div></div>
     </button>
     <button class="zmd-item" onclick="zfbCloseMore();zfbNav('articles')">
       <span class="zmd-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/><path d="M8 7h8M8 11h6"/></svg></span>
@@ -10333,7 +10337,7 @@ document.addEventListener('keydown', function(e){
       if(hb) hb.classList.add('zfb-active');
     }
     // For all other pages, "More" gets a subtle active dot
-    var secondary = ['planning','insurance','calculators','finplan','articles','faq'];
+    var secondary = ['planning','insurance','calculators','goals','ratios','articles','faq'];
     if(secondary.indexOf(page) >= 0){
       var mb = document.getElementById('zfb-more');
       if(mb) mb.classList.add('zfb-active');
