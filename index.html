@@ -1077,7 +1077,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
   .why-grid{grid-template-columns:1fr 1fr}
   .rc,.ratio-rp{position:static}
   nav .nav-links,.nav-cta{display:none}
-  .mob-btn{display:flex}
+  .mob-btn{display:none} /* hidden — bottom bar replaces it */
   .mob-nav{display:flex}
   .hero{padding-top:88px;gap:28px}
   .hero > div:last-child{max-width:100%;overflow:hidden}
@@ -1265,6 +1265,172 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
   .znf-goal-banner{grid-template-columns:1fr;padding:24px 22px}
   .zgb-cta{width:100%;justify-content:center}
   .zgb-icon{display:none}
+}
+
+/* ─────────────────────────────────────
+   MOBILE BOTTOM NAV BAR
+───────────────────────────────────── */
+#znf-bottom-nav,
+#znf-more-drawer,
+#znf-more-overlay {
+  display: none;
+}
+@media(max-width:920px) {
+  /* Show bottom nav */
+  #znf-bottom-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    z-index: 1001;
+    background: var(--bgp);
+    border-top: 1px solid var(--rule);
+    padding: 0 4px;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    box-shadow: 0 -4px 24px rgba(0,0,0,.08);
+    align-items: stretch;
+    height: 62px;
+  }
+
+  /* Drawer and overlay — mobile only */
+  #znf-more-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.45);
+    z-index: 1002;
+    backdrop-filter: blur(3px);
+  }
+  #znf-more-overlay.open { display: block; }
+  #znf-more-drawer {
+    display: block;
+    position: fixed;
+    bottom: 62px; left: 0; right: 0;
+    z-index: 1003;
+    background: var(--bgp);
+    border-radius: 20px 20px 0 0;
+    border-top: 1px solid var(--rule);
+    padding: 16px 20px 24px;
+    transform: translateY(100%);
+    transition: transform .3s cubic-bezier(.22,1,.36,1);
+    box-shadow: 0 -8px 40px rgba(0,0,0,.12);
+  }
+  #znf-more-drawer.open { transform: translateY(0); }
+
+  /* Each tab item */
+  .zbn-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    padding: 6px 4px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-family: inherit;
+    -webkit-tap-highlight-color: transparent;
+    position: relative;
+    transition: color .18s;
+    color: var(--ink-l);
+    text-decoration: none;
+  }
+  .zbn-item:hover, .zbn-item.zbn-active { color: var(--pink); }
+
+  /* Active indicator dot */
+  .zbn-item.zbn-active::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 24px; height: 2.5px;
+    background: var(--pink);
+    border-radius: 0 0 3px 3px;
+  }
+
+  .zbn-icon { font-size: 1.25rem; line-height: 1; }
+  .zbn-label {
+    font-size: .58rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    line-height: 1;
+  }
+
+  /* Push page content above the bar */
+  .page.active { padding-bottom: 70px; }
+
+  /* Drawer handle */
+  .zbn-drawer-handle {
+    width: 36px; height: 4px;
+    background: var(--rule);
+    border-radius: 2px;
+    margin: 0 auto 18px;
+  }
+
+  /* Drawer title */
+  .zbn-drawer-title {
+    font-size: .65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: var(--ink-l);
+    margin-bottom: 12px;
+    padding-left: 4px;
+  }
+
+  /* Drawer grid of items */
+  .zbn-drawer-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .zbn-drawer-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    background: var(--bgw);
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    cursor: pointer;
+    font-family: inherit;
+    text-decoration: none;
+    transition: all .18s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .zbn-drawer-item:hover,
+  .zbn-drawer-item:active {
+    border-color: var(--pink);
+    background: var(--pink-s);
+  }
+  .zbn-drawer-item-icon { font-size: 1.3rem; flex-shrink: 0; }
+  .zbn-drawer-item-label {
+    font-size: .82rem;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+  .zbn-drawer-item-sub {
+    font-size: .65rem;
+    color: var(--ink-l);
+    margin-top: 2px;
+    line-height: 1.2;
+  }
+
+  /* Dark mode bottom bar */
+  body.dark-mode #znf-bottom-nav {
+    background: var(--d-bg3);
+    border-top-color: var(--d-border);
+  }
+  body.dark-mode #znf-more-drawer {
+    background: var(--d-bg2);
+    border-top-color: var(--d-border);
+  }
+  body.dark-mode .zbn-drawer-item {
+    background: var(--d-surface);
+    border-color: var(--d-border);
+  }
+  body.dark-mode .zbn-drawer-item-label { color: var(--d-ink); }
 }
 </style>
 </head>
@@ -3855,7 +4021,7 @@ function jyStep1Answer(ans){
 function jyStep2Answer(ans){
   var r=document.getElementById('jym_result');if(!r)return;
   if(ans==='yes'){
-    r.innerHTML='<div class="jy-modal-result" style="background:#f0fdf4;border:1px solid #86efac;color:#166534">\ud83c\udf89 <strong>Smart move!</strong> Quick checks: Is there a co-pay clause? Room rent limit? Is cover at least \u20b910\u201315 lakh? Medical inflation is 10-14% per year. If any of these are issues, consider upgrading.</div>'
+    r.innerHTML='<div class="jy-modal-result" style="background:#f0fdf4;border:1px solid #86efac;color:#166534">\ud83c\udf89 <strong>Smart move!</strong> Quick checks: Is there a co-pay clause? Room rent limit? Is cover at least \u20b910\u201315 lakh? Medical inflation is 10201314% per year. If any of these are issues, consider upgrading.</div>'
       +'<button class="btn-p" style="width:100%;justify-content:center;margin-top:12px" onclick="jyComplete(2)">Got it! Next Step \u2192</button>';
   } else {
     r.innerHTML='<div class="jy-modal-result" style="background:#fef2f2;border:1px solid #fca5a5;color:#991b1b">\ud83d\udea8 <strong>Critical gap!</strong> One hospitalisation costs \u20b92\u201310 lakh. Get at least \u20b910 lakh cover. Premium is just \u20b98,000\u201315,000/year for a 30-year-old.</div>'
@@ -10028,6 +10194,137 @@ document.addEventListener('keydown', function(e){
     </div><!-- /adminContent -->
   </div><!-- /znfAdminBox -->
 </div>
+
+<!-- ══════════════════════════════════
+     MOBILE BOTTOM NAVIGATION BAR
+══════════════════════════════════ -->
+
+<!-- More drawer backdrop -->
+<div id="znf-more-overlay" onclick="closeMobMore()"></div>
+
+<!-- More drawer sheet -->
+<div id="znf-more-drawer">
+  <div class="zbn-drawer-handle"></div>
+  <div class="zbn-drawer-title">More sections</div>
+  <div class="zbn-drawer-grid">
+    <button class="zbn-drawer-item" onclick="closeMobMore();nav('planning')">
+      <span class="zbn-drawer-item-icon">📅</span>
+      <div><div class="zbn-drawer-item-label">Planning</div><div class="zbn-drawer-item-sub">Life stage roadmap</div></div>
+    </button>
+    <button class="zbn-drawer-item" onclick="closeMobMore();nav('insurance')">
+      <span class="zbn-drawer-item-icon">🛡️</span>
+      <div><div class="zbn-drawer-item-label">Insurance</div><div class="zbn-drawer-item-sub">IRR & term cover</div></div>
+    </button>
+    <button class="zbn-drawer-item" onclick="closeMobMore();nav('faq')">
+      <span class="zbn-drawer-item-icon">💬</span>
+      <div><div class="zbn-drawer-item-label">FAQ</div><div class="zbn-drawer-item-sub">Common questions</div></div>
+    </button>
+    <button class="zbn-drawer-item" onclick="closeMobMore();nav('contact')">
+      <span class="zbn-drawer-item-icon">🤝</span>
+      <div><div class="zbn-drawer-item-label">Consult Us</div><div class="zbn-drawer-item-sub">Get guidance</div></div>
+    </button>
+  </div>
+</div>
+
+<!-- Bottom nav bar -->
+<nav id="znf-bottom-nav" role="navigation" aria-label="Main navigation">
+  <button class="zbn-item zbn-active" id="zbn-home" onclick="zbnNav('home')" aria-label="Home">
+    <span class="zbn-icon">🏠</span>
+    <span class="zbn-label">Home</span>
+  </button>
+  <button class="zbn-item" id="zbn-calculators" onclick="zbnNav('calculators')" aria-label="Calculators">
+    <span class="zbn-icon">🧮</span>
+    <span class="zbn-label">Calculate</span>
+  </button>
+  <button class="zbn-item" id="zbn-articles" onclick="zbnNav('articles')" aria-label="Articles">
+    <span class="zbn-icon">📖</span>
+    <span class="zbn-label">Articles</span>
+  </button>
+  <button class="zbn-item" id="zbn-finplan" onclick="zbnNav('finplan')" aria-label="Finance Hub">
+    <span class="zbn-icon">📊</span>
+    <span class="zbn-label">Finance Hub</span>
+  </button>
+  <button class="zbn-item" id="zbn-more" onclick="toggleMobMore()" aria-label="More">
+    <span class="zbn-icon">⋯</span>
+    <span class="zbn-label">More</span>
+  </button>
+</nav>
+
+<script>
+/* ── Mobile Bottom Nav Logic ── */
+var _zbnPages = ['home','calculators','articles','finplan']; // tabs that have direct buttons
+
+function zbnNav(page) {
+  closeMobMore();
+  nav(page);
+  zbnSetActive(page);
+}
+
+function zbnSetActive(page) {
+  // Clear all active states
+  _zbnPages.forEach(function(p) {
+    var btn = document.getElementById('zbn-'+p);
+    if (btn) btn.classList.remove('zbn-active');
+  });
+  var moreBtn = document.getElementById('zbn-more');
+  if (moreBtn) moreBtn.classList.remove('zbn-active');
+
+  // Set active on matching tab (or "more" for secondary pages)
+  var btn = document.getElementById('zbn-'+page);
+  if (btn) {
+    btn.classList.add('zbn-active');
+  } else if (['planning','insurance','faq','contact'].indexOf(page) >= 0) {
+    // Secondary pages — highlight "more" button
+    if (moreBtn) moreBtn.classList.add('zbn-active');
+  }
+}
+
+function toggleMobMore() {
+  var drawer  = document.getElementById('znf-more-drawer');
+  var overlay = document.getElementById('znf-more-overlay');
+  var isOpen  = drawer.classList.contains('open');
+  if (isOpen) {
+    closeMobMore();
+  } else {
+    drawer.classList.add('open');
+    overlay.classList.add('open');
+  }
+}
+
+function closeMobMore() {
+  var drawer  = document.getElementById('znf-more-drawer');
+  var overlay = document.getElementById('znf-more-overlay');
+  if (drawer)  drawer.classList.remove('open');
+  if (overlay) overlay.classList.remove('open');
+}
+
+// Patch the global nav() so the bottom bar always reflects the current page
+(function patchNavForBottomBar() {
+  var _realNav = window.nav;
+  window.nav = function(p, skipHash) {
+    _realNav(p, skipHash);
+    zbnSetActive(p);
+  };
+})();
+
+// Set initial active state on load
+document.addEventListener('DOMContentLoaded', function() {
+  var hash = (window.location.hash || '#home').replace('#','');
+  zbnSetActive(hash);
+});
+
+// Swipe down on drawer to close
+(function addDrawerSwipe() {
+  var drawer = document.getElementById('znf-more-drawer');
+  if (!drawer) return;
+  var startY = 0;
+  drawer.addEventListener('touchstart', function(e) { startY = e.touches[0].clientY; }, {passive:true});
+  drawer.addEventListener('touchend', function(e) {
+    if (e.changedTouches[0].clientY - startY > 60) closeMobMore();
+  }, {passive:true});
+})();
+</script>
+
 </body>
 
 <!-- ══════════════════════════════════
