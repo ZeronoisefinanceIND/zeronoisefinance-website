@@ -1270,15 +1270,24 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
 /* ─────────────────────────────────────
    MOBILE BOTTOM NAV BAR
 ───────────────────────────────────── */
-#znf-bottom-nav,
-#znf-more-drawer,
-#znf-more-overlay {
-  display: none;
-}
+/* Hidden on desktop */
+#znf-bottom-nav  { display: none !important; }
+#znf-more-drawer { visibility: hidden; pointer-events: none;
+                   position: fixed; bottom: 62px; left: 0; right: 0; z-index: 1003;
+                   transform: translateY(110%);
+                   transition: transform .3s cubic-bezier(.22,1,.36,1), visibility .3s;
+                   background: var(--bgp); border-radius: 20px 20px 0 0;
+                   border-top: 1px solid var(--rule); padding: 16px 20px 24px;
+                   box-shadow: 0 -8px 40px rgba(0,0,0,.12); }
+#znf-more-drawer.open { visibility: visible; transform: translateY(0); pointer-events: all; }
+#znf-more-overlay { display: none; position: fixed; inset: 0; z-index: 1002;
+                    background: rgba(0,0,0,.45); backdrop-filter: blur(3px); }
+#znf-more-overlay.open { display: block; }
+
 @media(max-width:920px) {
   /* Show bottom nav */
   #znf-bottom-nav {
-    display: flex;
+    display: flex !important;
     position: fixed;
     bottom: 0; left: 0; right: 0;
     z-index: 1001;
@@ -1290,29 +1299,6 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
     align-items: stretch;
     height: 62px;
   }
-
-  /* Drawer and overlay — mobile only */
-  #znf-more-overlay {
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,.45);
-    z-index: 1002;
-    backdrop-filter: blur(3px);
-  }
-  #znf-more-overlay.open { display: block; }
-  #znf-more-drawer {
-    display: block;
-    position: fixed;
-    bottom: 62px; left: 0; right: 0;
-    z-index: 1003;
-    background: var(--bgp);
-    border-radius: 20px 20px 0 0;
-    border-top: 1px solid var(--rule);
-    padding: 16px 20px 24px;
-    transform: translateY(100%);
-    transition: transform .3s cubic-bezier(.22,1,.36,1);
-    box-shadow: 0 -8px 40px rgba(0,0,0,.12);
-  }
-  #znf-more-drawer.open { transform: translateY(0); }
 
   /* Each tab item */
   .zbn-item {
