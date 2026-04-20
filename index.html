@@ -373,7 +373,7 @@ nav.visible{opacity:1;pointer-events:all}
 /* ─────────────────────────────────────
    MOBILE NAV
 ───────────────────────────────────── */
-.mob-nav{display:none;position:fixed;inset:0;background:var(--bg);z-index:999;flex-direction:column;align-items:center;justify-content:center;gap:8px;transform:translateY(-100%);transition:transform .38s cubic-bezier(.77,0,.18,1)}
+.mob-nav{display:none !important;position:fixed;top:0;right:0;bottom:0;left:0;background:var(--bg);z-index:999;flex-direction:column;align-items:center;justify-content:center;gap:8px;transform:translateY(-100%);transition:transform .38s cubic-bezier(.77,0,.18,1)}
 .mob-nav.open{transform:translateY(0)}
 .mob-nav a{font-family:var(--fs);font-size:1.55rem;font-weight:600;color:var(--ink);padding:8px 20px;transition:color .2s}
 .mob-nav a:hover{color:var(--pink);text-decoration:none}
@@ -1078,7 +1078,8 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
   .rc,.ratio-rp{position:static}
   nav .nav-links,.nav-cta{display:none}
   .mob-btn{display:none} /* hidden — bottom bar replaces it */
-  .mob-nav{display:flex}
+  .mob-nav{display:none !important}
+  .mob-btn{display:none !important}
   .hero{padding-top:88px;gap:28px}
   .hero > div:last-child{max-width:100%;overflow:hidden}
   .hero::after{display:none}
