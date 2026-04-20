@@ -12,7 +12,7 @@
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="apple-touch-icon" href="favicon.png">
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Zero Noise Finance™ — Clarity Without Compromise</title>
 <meta name="description" content="Free SIP, retirement, EMI, income tax calculators for India. Insurance IRR analysis, debt health check, ratio analysis. Clear, honest financial education — no jargon, no product pushing.">
 <meta name="keywords" content="SIP calculator India, retirement calculator, EMI calculator, income tax calculator FY2025-26, insurance IRR, mutual fund, personal finance India, financial planning, debt management, ratio analysis, SEBI, Zero Noise Finance">
@@ -1387,7 +1387,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
 
   /* ════ MORE OVERLAY ════ */
   #znf-more-overlay {
-    position:fixed;inset:0;
+    position:fixed;top:0;right:0;bottom:0;left:0;
     background:rgba(0,0,0,.5);
     z-index:1998;
     backdrop-filter:blur(4px);
@@ -5633,7 +5633,7 @@ function adminSmartExtract(){
   }
   // Extract excerpt: first plain paragraph
   var plain = body.replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim();
-  var sentences = plain.split(/(?<=[.!?])\s+/);
+  var sentences = plain.split(/[.!?]+\s+/);
   var excerpt = sentences.slice(0,2).join(' ').trim().substring(0,200);
   // Guess tag
   var tags = ['Tax','Investing','Insurance','Debt','Planning','Equity','Comparison','Basics','Mutual Fund','NPS','PPF','ELSS','SIP'];
@@ -5667,7 +5667,7 @@ function adminSmartExtractFund(){
   var lines = body.split('\n').map(function(l){return l.trim();}).filter(Boolean);
   var title = lines[0].replace(/^#+\s+/,'').replace(/<[^>]+>/g,'').trim().substring(0,100);
   var plain = body.replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim();
-  var sentences = plain.split(/(?<=[.!?])\s+/);
+  var sentences = plain.split(/[.!?]+\s+/);
   var excerpt = sentences.slice(0,2).join(' ').trim().substring(0,200);
   var words = plain.split(/\s+/).length;
   var rt = Math.max(2,Math.round(words/200))+' min read';
