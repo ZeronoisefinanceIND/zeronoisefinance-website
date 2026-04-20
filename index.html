@@ -1267,156 +1267,197 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
   .zgb-icon{display:none}
 }
 
-/* ─────────────────────────────────────
-   MOBILE BOTTOM NAV BAR
-───────────────────────────────────── */
-/* Hidden on desktop */
-#znf-bottom-nav  { display: none !important; }
-#znf-more-drawer { visibility: hidden; pointer-events: none;
-                   position: fixed; bottom: 62px; left: 0; right: 0; z-index: 1003;
-                   transform: translateY(110%);
-                   transition: transform .3s cubic-bezier(.22,1,.36,1), visibility .3s;
-                   background: var(--bgp); border-radius: 20px 20px 0 0;
-                   border-top: 1px solid var(--rule); padding: 16px 20px 24px;
-                   box-shadow: 0 -8px 40px rgba(0,0,0,.12); }
-#znf-more-drawer.open { visibility: visible; transform: translateY(0); pointer-events: all; }
-#znf-more-overlay { display: none; position: fixed; inset: 0; z-index: 1002;
-                    background: rgba(0,0,0,.45); backdrop-filter: blur(3px); }
-#znf-more-overlay.open { display: block; }
 
-@media(max-width:920px) {
-  /* Show bottom nav */
-  #znf-bottom-nav {
-    display: flex !important;
-    position: fixed;
-    bottom: 0; left: 0; right: 0;
-    z-index: 1001;
-    background: var(--bgp);
-    border-top: 1px solid var(--rule);
-    padding: 0 4px;
-    padding-bottom: env(safe-area-inset-bottom, 0px);
-    box-shadow: 0 -4px 24px rgba(0,0,0,.08);
-    align-items: stretch;
-    height: 62px;
+/* ═══════════════════════════════════════════
+   FLOATING PILL TAB BAR — Mobile only
+═══════════════════════════════════════════ */
+
+/* Force-hide ALL three on desktop — no exceptions */
+#znf-float-bar,
+#znf-more-drawer,
+#znf-more-overlay { display:none !important; }
+
+@media(max-width:920px){
+  /* Re-enable on mobile */
+  #znf-float-bar    { display:flex  !important; }
+  #znf-more-drawer  { display:block !important; }
+  #znf-more-overlay { display:none  !important; }
+  #znf-more-overlay.open { display:block !important; }
+
+
+  /* ── Hamburger gone ── */
+  .mob-btn { display:none !important; }
+
+  /* ── Page bottom padding so content clears bar ── */
+  .page.active { padding-bottom:88px; }
+
+  /* ════ FLOATING BAR ════ */
+  #znf-float-bar {
+    position:fixed;
+    bottom:18px;
+    left:50%;
+    transform:translateX(-50%) translateY(0);
+    z-index:2000;
+    display:flex;
+    align-items:center;
+    gap:2px;
+    background:rgba(255,255,255,.94);
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+    border:1px solid rgba(0,0,0,.07);
+    border-radius:50px;
+    padding:5px 6px;
+    box-shadow:0 8px 30px rgba(0,0,0,.16),0 2px 8px rgba(0,0,0,.08);
+    transition:transform .35s cubic-bezier(.4,0,.2,1), opacity .35s;
+    opacity:1;
+    will-change:transform,opacity;
+    min-width:280px;
   }
-
-  /* Each tab item */
-  .zbn-item {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 3px;
-    padding: 6px 4px;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    font-family: inherit;
-    -webkit-tap-highlight-color: transparent;
-    position: relative;
-    transition: color .18s;
-    color: var(--ink-l);
-    text-decoration: none;
+  body.dark-mode #znf-float-bar {
+    background:rgba(17,24,39,.92);
+    border-color:rgba(255,255,255,.1);
+    box-shadow:0 8px 32px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.06);
   }
-  .zbn-item:hover, .zbn-item.zbn-active { color: var(--pink); }
-
-  /* Active indicator dot */
-  .zbn-item.zbn-active::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 50%;
-    transform: translateX(-50%);
-    width: 24px; height: 2.5px;
-    background: var(--pink);
-    border-radius: 0 0 3px 3px;
+  #znf-float-bar.bar-hidden {
+    transform:translateX(-50%) translateY(120px);
+    opacity:0;
+    pointer-events:none;
   }
 
-  .zbn-icon { font-size: 1.25rem; line-height: 1; }
-  .zbn-label {
-    font-size: .58rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: .04em;
-    line-height: 1;
+  /* ── Each tab pill button ── */
+  .zfb-btn {
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:3px;
+    min-width:58px;
+    padding:7px 12px;
+    border:none;
+    background:transparent;
+    border-radius:44px;
+    cursor:pointer;
+    font-family:inherit;
+    color:#999;
+    transition:all .22s cubic-bezier(.34,1.56,.64,1);
+    -webkit-tap-highlight-color:transparent;
+    position:relative;
+  }
+  .zfb-icon { display:flex; align-items:center; justify-content:center; transition:transform .2s; }
+  .zfb-label {
+    font-size:.48rem;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    line-height:1;
+    white-space:nowrap;
   }
 
-  /* Push page content above the bar */
-  .page.active { padding-bottom: 70px; }
-
-  /* Drawer handle */
-  .zbn-drawer-handle {
-    width: 36px; height: 4px;
-    background: var(--rule);
-    border-radius: 2px;
-    margin: 0 auto 18px;
+  /* Active — filled pill */
+  .zfb-btn.zfb-active {
+    background:var(--pink);
+    color:#fff;
+    padding:7px 18px;
+    box-shadow:0 2px 14px rgba(212,43,81,.35);
   }
+  .zfb-btn.zfb-active .zfb-icon { transform:scale(1.06); }
+  .zfb-btn:not(.zfb-active):active { transform:scale(.88); }
 
-  /* Drawer title */
-  .zbn-drawer-title {
-    font-size: .65rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: .1em;
-    color: var(--ink-l);
-    margin-bottom: 12px;
-    padding-left: 4px;
+  /* Contact button — always distinct */
+  #zfb-contact {
+    background:#1a1a24;
+    color:#fff;
+    padding:7px 16px;
+    border-radius:44px;
+    box-shadow:0 2px 8px rgba(0,0,0,.22);
   }
-
-  /* Drawer grid of items */
-  .zbn-drawer-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
+  body.dark-mode #zfb-contact {
+    background:#fff;
+    color:#1a1a24;
   }
 
-  .zbn-drawer-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 14px 16px;
-    background: var(--bgw);
-    border: 1px solid var(--rule);
-    border-radius: 12px;
-    cursor: pointer;
-    font-family: inherit;
-    text-decoration: none;
-    transition: all .18s;
-    -webkit-tap-highlight-color: transparent;
+  /* Divider */
+  .zfb-divider {
+    width:1px; height:20px;
+    background:rgba(0,0,0,.09);
+    margin:0 2px;
+    flex-shrink:0;
   }
-  .zbn-drawer-item:hover,
-  .zbn-drawer-item:active {
-    border-color: var(--pink);
-    background: var(--pink-s);
-  }
-  .zbn-drawer-item-icon { font-size: 1.3rem; flex-shrink: 0; }
-  .zbn-drawer-item-label {
-    font-size: .82rem;
-    font-weight: 600;
-    color: var(--ink);
-    line-height: 1.2;
-  }
-  .zbn-drawer-item-sub {
-    font-size: .65rem;
-    color: var(--ink-l);
-    margin-top: 2px;
-    line-height: 1.2;
+  body.dark-mode .zfb-divider { background:rgba(255,255,255,.12); }
+
+  /* ════ MORE OVERLAY ════ */
+  #znf-more-overlay {
+    position:fixed;inset:0;
+    background:rgba(0,0,0,.5);
+    z-index:1998;
+    backdrop-filter:blur(4px);
   }
 
-  /* Dark mode bottom bar */
-  body.dark-mode #znf-bottom-nav {
-    background: var(--d-bg3);
-    border-top-color: var(--d-border);
+  /* ════ MORE DRAWER ════ */
+  #znf-more-drawer {
+    position:fixed;
+    bottom:0;left:0;right:0;
+    z-index:1999;
+    background:var(--bgp);
+    border-radius:22px 22px 0 0;
+    padding:10px 16px 24px;
+    transform:translateY(100%);
+    transition:transform .32s cubic-bezier(.22,1,.36,1);
+    box-shadow:0 -12px 48px rgba(0,0,0,.15);
+    visibility:hidden;
+    /* ensure drawer is tall enough for all 6 items */
+    max-height:80vh;
+    overflow-y:auto;
   }
-  body.dark-mode #znf-more-drawer {
-    background: var(--d-bg2);
-    border-top-color: var(--d-border);
+  #znf-more-drawer.open {
+    transform:translateY(0);
+    visibility:visible;
   }
-  body.dark-mode .zbn-drawer-item {
-    background: var(--d-surface);
-    border-color: var(--d-border);
+  body.dark-mode #znf-more-drawer { background:var(--d-bg2); }
+
+  .zmd-handle {
+    width:36px;height:3.5px;
+    background:var(--rule);
+    border-radius:2px;
+    margin:0 auto 12px;
   }
-  body.dark-mode .zbn-drawer-item-label { color: var(--d-ink); }
+  .zmd-title {
+    font-size:.62rem;font-weight:700;
+    text-transform:uppercase;letter-spacing:.1em;
+    color:var(--ink-l);margin-bottom:10px;
+  }
+  .zmd-grid {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+  }
+  .zmd-item {
+    display:flex;align-items:center;gap:10px;
+    padding:11px 14px;
+    background:var(--bgw);
+    border:1.5px solid var(--rule);
+    border-radius:14px;
+    cursor:pointer;font-family:inherit;
+    transition:all .18s;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .zmd-item:active { border-color:var(--pink);background:var(--pink-s);transform:scale(.97); }
+  body.dark-mode .zmd-item { background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.1); }
+  .zmd-icon  { display:flex;align-items:center;justify-content:center;flex-shrink:0;
+               width:34px;height:34px;background:var(--pink-s);border-radius:9px;
+               color:var(--pink); }
+  .zmd-label { font-size:.82rem;font-weight:700;color:var(--ink);line-height:1.2; }
+  .zmd-sub   { font-size:.62rem;color:var(--ink-l);margin-top:1px; }
+  body.dark-mode .zmd-label { color:var(--d-ink); }
+
+  /* SVG icon sizing */
+  .zfb-icon svg { width:20px;height:20px;display:block; }
+  .zmd-icon svg { width:17px;height:17px;display:block; }
+  /* Active tab — white icons */
+  .zfb-btn.zfb-active .zfb-icon svg { stroke:#fff; }
+  /* Contact button always white */
+  #zfb-contact .zfb-icon svg { stroke:#fff; }
+  body.dark-mode #zfb-contact .zfb-icon svg { stroke:#1a1a24; }
 }
 </style>
 </head>
@@ -10181,137 +10222,166 @@ document.addEventListener('keydown', function(e){
   </div><!-- /znfAdminBox -->
 </div>
 
+
 <!-- ══════════════════════════════════
-     MOBILE BOTTOM NAVIGATION BAR
+     FLOATING PILL TAB BAR — Mobile
 ══════════════════════════════════ -->
 
-<!-- More drawer backdrop -->
-<div id="znf-more-overlay" onclick="closeMobMore()"></div>
+<!-- Overlay backdrop -->
+<div id="znf-more-overlay" onclick="zfbCloseMore()"></div>
 
-<!-- More drawer sheet -->
+<!-- More drawer -->
 <div id="znf-more-drawer">
-  <div class="zbn-drawer-handle"></div>
-  <div class="zbn-drawer-title">More sections</div>
-  <div class="zbn-drawer-grid">
-    <button class="zbn-drawer-item" onclick="closeMobMore();nav('planning')">
-      <span class="zbn-drawer-item-icon">📅</span>
-      <div><div class="zbn-drawer-item-label">Planning</div><div class="zbn-drawer-item-sub">Life stage roadmap</div></div>
+  <div class="zmd-handle"></div>
+  <div class="zmd-title">All Sections</div>
+  <div class="zmd-grid">
+    <button class="zmd-item" onclick="zfbCloseMore();zfbNav('planning')">
+      <span class="zmd-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg></span>
+      <div><div class="zmd-label">Planning</div><div class="zmd-sub">Life stage roadmap</div></div>
     </button>
-    <button class="zbn-drawer-item" onclick="closeMobMore();nav('insurance')">
-      <span class="zbn-drawer-item-icon">🛡️</span>
-      <div><div class="zbn-drawer-item-label">Insurance</div><div class="zbn-drawer-item-sub">IRR & term cover</div></div>
+    <button class="zmd-item" onclick="zfbCloseMore();zfbNav('insurance')">
+      <span class="zmd-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l7 4v6c0 5-4 9-7 10C9 21 5 17 5 12V6z"/></svg></span>
+      <div><div class="zmd-label">Insurance</div><div class="zmd-sub">Policy IRR & cover</div></div>
     </button>
-    <button class="zbn-drawer-item" onclick="closeMobMore();nav('faq')">
-      <span class="zbn-drawer-item-icon">💬</span>
-      <div><div class="zbn-drawer-item-label">FAQ</div><div class="zbn-drawer-item-sub">Common questions</div></div>
+    <button class="zmd-item" onclick="zfbCloseMore();zfbNav('calculators')">
+      <span class="zmd-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 10h2M12 10h2M16 10h.01M8 14h2M12 14h2M16 14h2M8 18h2M12 18h2M16 18h2"/></svg></span>
+      <div><div class="zmd-label">Calculators</div><div class="zmd-sub">SIP, Tax, EMI & more</div></div>
     </button>
-    <button class="zbn-drawer-item" onclick="closeMobMore();nav('contact')">
-      <span class="zbn-drawer-item-icon">🤝</span>
-      <div><div class="zbn-drawer-item-label">Consult Us</div><div class="zbn-drawer-item-sub">Get guidance</div></div>
+    <button class="zmd-item" onclick="zfbCloseMore();zfbNav('finplan')">
+      <span class="zmd-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10M12 20V4M6 20v-6"/></svg></span>
+      <div><div class="zmd-label">Finance Hub</div><div class="zmd-sub">Loans, Goals, Ratios</div></div>
+    </button>
+    <button class="zmd-item" onclick="zfbCloseMore();zfbNav('articles')">
+      <span class="zmd-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/><path d="M8 7h8M8 11h6"/></svg></span>
+      <div><div class="zmd-label">Articles</div><div class="zmd-sub">Honest finance reads</div></div>
+    </button>
+    <button class="zmd-item" onclick="zfbCloseMore();zfbNav('faq')">
+      <span class="zmd-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg></span>
+      <div><div class="zmd-label">FAQ</div><div class="zmd-sub">Common questions</div></div>
     </button>
   </div>
 </div>
 
-<!-- Bottom nav bar -->
-<nav id="znf-bottom-nav" role="navigation" aria-label="Main navigation">
-  <button class="zbn-item zbn-active" id="zbn-home" onclick="zbnNav('home')" aria-label="Home">
-    <span class="zbn-icon">🏠</span>
-    <span class="zbn-label">Home</span>
+<!-- Floating pill tab bar -->
+<div id="znf-float-bar">
+  <!-- Home -->
+  <button class="zfb-btn zfb-active" id="zfb-home" onclick="zfbNav('home')" aria-label="Home">
+    <span class="zfb-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H15v-5h-6v5H4a1 1 0 01-1-1z"/></svg></span>
+    <span class="zfb-label">Home</span>
   </button>
-  <button class="zbn-item" id="zbn-calculators" onclick="zbnNav('calculators')" aria-label="Calculators">
-    <span class="zbn-icon">🧮</span>
-    <span class="zbn-label">Calculate</span>
+  <!-- Search -->
+  <button class="zfb-btn" id="zfb-search" onclick="openGlobalSearch()" aria-label="Search">
+    <span class="zfb-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg></span>
+    <span class="zfb-label">Search</span>
   </button>
-  <button class="zbn-item" id="zbn-articles" onclick="zbnNav('articles')" aria-label="Articles">
-    <span class="zbn-icon">📖</span>
-    <span class="zbn-label">Articles</span>
+  <!-- More -->
+  <button class="zfb-btn" id="zfb-more" onclick="zfbToggleMore()" aria-label="More">
+    <span class="zfb-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="1.2" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.2" fill="currentColor" stroke="none"/></svg></span>
+    <span class="zfb-label">More</span>
   </button>
-  <button class="zbn-item" id="zbn-finplan" onclick="zbnNav('finplan')" aria-label="Finance Hub">
-    <span class="zbn-icon">📊</span>
-    <span class="zbn-label">Finance Hub</span>
+  <!-- Divider -->
+  <div class="zfb-divider"></div>
+  <!-- Contact Us -->
+  <button class="zfb-btn" id="zfb-contact" onclick="zfbNav('contact')" aria-label="Contact Us">
+    <span class="zfb-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+    <span class="zfb-label">Consult</span>
   </button>
-  <button class="zbn-item" id="zbn-more" onclick="toggleMobMore()" aria-label="More">
-    <span class="zbn-icon">⋯</span>
-    <span class="zbn-label">More</span>
-  </button>
-</nav>
+</div>
 
 <script>
-/* ── Mobile Bottom Nav Logic ── */
-var _zbnPages = ['home','calculators','articles','finplan']; // tabs that have direct buttons
-
-function zbnNav(page) {
-  closeMobMore();
-  nav(page);
-  zbnSetActive(page);
-}
-
-function zbnSetActive(page) {
-  // Clear all active states
-  _zbnPages.forEach(function(p) {
-    var btn = document.getElementById('zbn-'+p);
-    if (btn) btn.classList.remove('zbn-active');
-  });
-  var moreBtn = document.getElementById('zbn-more');
-  if (moreBtn) moreBtn.classList.remove('zbn-active');
-
-  // Set active on matching tab (or "more" for secondary pages)
-  var btn = document.getElementById('zbn-'+page);
-  if (btn) {
-    btn.classList.add('zbn-active');
-  } else if (['planning','insurance','faq','contact'].indexOf(page) >= 0) {
-    // Secondary pages — highlight "more" button
-    if (moreBtn) moreBtn.classList.add('zbn-active');
-  }
-}
-
-function toggleMobMore() {
-  var drawer  = document.getElementById('znf-more-drawer');
+/* ══════════════════════════════════
+   FLOATING TAB BAR ENGINE
+══════════════════════════════════ */
+(function(){
+  var bar     = document.getElementById('znf-float-bar');
   var overlay = document.getElementById('znf-more-overlay');
-  var isOpen  = drawer.classList.contains('open');
-  if (isOpen) {
-    closeMobMore();
-  } else {
-    drawer.classList.add('open');
-    overlay.classList.add('open');
-  }
-}
-
-function closeMobMore() {
   var drawer  = document.getElementById('znf-more-drawer');
-  var overlay = document.getElementById('znf-more-overlay');
-  if (drawer)  drawer.classList.remove('open');
-  if (overlay) overlay.classList.remove('open');
-}
+  if(!bar) return; // not mobile / bar missing
 
-// Patch the global nav() so the bottom bar always reflects the current page
-(function patchNavForBottomBar() {
-  var _realNav = window.nav;
-  window.nav = function(p, skipHash) {
-    _realNav(p, skipHash);
-    zbnSetActive(p);
-  };
-})();
-
-// Set initial active state on load
-document.addEventListener('DOMContentLoaded', function() {
-  var hash = (window.location.hash || '#home').replace('#','');
-  zbnSetActive(hash);
-});
-
-// Swipe down on drawer to close
-(function addDrawerSwipe() {
-  var drawer = document.getElementById('znf-more-drawer');
-  if (!drawer) return;
-  var startY = 0;
-  drawer.addEventListener('touchstart', function(e) { startY = e.touches[0].clientY; }, {passive:true});
-  drawer.addEventListener('touchend', function(e) {
-    if (e.changedTouches[0].clientY - startY > 60) closeMobMore();
+  /* ── Show / hide on scroll ── */
+  var lastY = 0, ticking = false;
+  window.addEventListener('scroll', function(){
+    if(ticking) return;
+    ticking = true;
+    requestAnimationFrame(function(){
+      var y = window.scrollY;
+      if(y > lastY && y > 80){
+        bar.classList.add('bar-hidden');    // scrolling down → hide
+        zfbCloseMore();
+      } else {
+        bar.classList.remove('bar-hidden'); // scrolling up → show
+      }
+      lastY = y;
+      ticking = false;
+    });
   }, {passive:true});
+
+  /* ── Navigate ── */
+  window.zfbNav = function(page){
+    zfbCloseMore();
+    nav(page);
+    zfbSetActive(page);
+  };
+
+  /* ── Set active tab ── */
+  var _zfbMap = {home:'zfb-home', contact:'zfb-contact'};
+  window.zfbSetActive = function(page){
+    // reset
+    document.querySelectorAll('.zfb-btn').forEach(function(b){
+      b.classList.remove('zfb-active');
+    });
+    // contact always keeps its own distinct style — just remove active from others
+    if(page === 'contact'){
+      var cb = document.getElementById('zfb-contact');
+      if(cb) cb.classList.add('zfb-active');
+    } else if(page === 'home'){
+      var hb = document.getElementById('zfb-home');
+      if(hb) hb.classList.add('zfb-active');
+    }
+    // For all other pages, "More" gets a subtle active dot
+    var secondary = ['planning','insurance','calculators','finplan','articles','faq'];
+    if(secondary.indexOf(page) >= 0){
+      var mb = document.getElementById('zfb-more');
+      if(mb) mb.classList.add('zfb-active');
+    }
+  };
+
+  /* ── More drawer toggle ── */
+  window.zfbToggleMore = function(){
+    var open = drawer.classList.contains('open');
+    if(open){ zfbCloseMore(); }
+    else {
+      overlay.classList.add('open');
+      drawer.classList.add('open');
+    }
+  };
+  window.zfbCloseMore = function(){
+    overlay.classList.remove('open');
+    drawer.classList.remove('open');
+  };
+
+  /* ── Swipe drawer down to close ── */
+  var startY = 0;
+  drawer.addEventListener('touchstart',function(e){ startY = e.touches[0].clientY; },{passive:true});
+  drawer.addEventListener('touchend',function(e){
+    if(e.changedTouches[0].clientY - startY > 60) zfbCloseMore();
+  },{passive:true});
+
+  /* ── Patch nav() so active state always syncs ── */
+  var _realNav = window.nav;
+  window.nav = function(p, skipHash){
+    _realNav(p, skipHash);
+    zfbSetActive(p);
+  };
+
+  /* ── Set initial state from URL hash ── */
+  var initPage = (window.location.hash||'#home').replace('#','');
+  zfbSetActive(initPage);
+
 })();
 </script>
-
 </body>
+
 
 <!-- ══════════════════════════════════
      COPY & SOURCE PROTECTION
