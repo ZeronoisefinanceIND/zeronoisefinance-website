@@ -3143,7 +3143,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
       <div class="fi">
         <h3 style="font-family:var(--fs);font-size:1.25rem;font-weight:600;margin-bottom:12px">Get in touch</h3>
         <p style="font-size:.88rem;color:var(--ink-l);line-height:1.82;margin-bottom:22px">Whether it is a specific question or a complete financial plan — reach out. The first conversation is always free, and always honest.</p>
-        <div class="cc"><div class="cc-ico">📧</div><div><div class="cc-lbl">Email</div><div class="cc-val"><a href="/cdn-cgi/l/email-protection#7910171f1639031c0b161716100a1c1f101718171a1c571a1614"><span class="__cf_email__" data-cfemail="7e171018113e041b0c111011170d1b1817101f101d1b501d1113">[email&#160;protected]</span></a></div></div></div>
+        <div class="cc"><div class="cc-ico">📧</div><div><div class="cc-lbl">Email</div><div class="cc-val"><a href="mailto:info@zeronoisefinance.com">info@zeronoisefinance.com</a></div></div></div>
         <div class="cc"><div class="cc-ico">📱</div><div><div class="cc-lbl">Phone / WhatsApp</div><div class="cc-val">+91 91156 00369</div></div></div>
         <div class="cc"><div class="cc-ico">📍</div><div><div class="cc-lbl">Location</div><div class="cc-val">Chandigarh, available across India</div></div></div>
         <div class="cc"><div class="cc-ico">⏰</div><div><div class="cc-lbl">Availability</div><div class="cc-val">Monday – Saturday, 9 AM – 7 PM</div></div></div>
@@ -3170,7 +3170,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
             <div class="cf-turnstile" data-sitekey="0x4AAAAAAC_vPJQLuLVz5heO" data-theme="light"></div>
           </div>
         </div>
-        <button class="calbtn" style="margin-top:10px" onclick="submitContact()">Send Message →</button>
+        <button class="calbtn" style="margin-top:10px" id="contact-submit-btn" onclick="submitContact(this)">Send Message →</button>
         <div style="font-size:.7rem;color:var(--ink-l);margin-top:10px;line-height:1.6">Your information is kept confidential and will never be shared with any third party.</div>
       </div>
     </div>
@@ -9548,8 +9548,9 @@ function isSpam(name,email,msg){
   if((msg.match(/http/gi)||[]).length>2) return 'Too many links. Please write a genuine enquiry.';
   return null;
 }
-async function submitContact(){
-  var btn=event.currentTarget;
+async function submitContact(btnEl){
+  var btn=btnEl||document.getElementById('contact-submit-btn');
+  if(!btn)return;
   var name=sanitize(document.getElementById('c_name').value);
   var phone=sanitize(document.getElementById('c_ph').value);
   var email=sanitize(document.getElementById('c_em').value);
@@ -9557,27 +9558,38 @@ async function submitContact(){
   var msg=sanitize(document.getElementById('c_msg').value);
   var err=isSpam(name,email,msg);
   if(err){showContactError(err);return;}
-  // Cloudflare Turnstile verification
-  var tsToken=document.querySelector('[name="cf-turnstile-response"]');
-  if(!tsToken||!tsToken.value){showContactError('Please complete the security check above.');return;}
-  btn.textContent='Sending\u2026';btn.disabled=true;clearContactError();
+  var tsEl=document.querySelector('[name="cf-turnstile-response"]');
+  var tsToken=(tsEl&&tsEl.value)?tsEl.value:'';
   if(W3F_KEY==='YOUR_WEB3FORMS_KEY'){
-    showContactError('Form not connected yet. Go to web3forms.com, enter info@zeronoisefinance.com, and paste the access key into W3F_KEY in the script.');
-    btn.textContent='Send Message \u2192';btn.disabled=false;return;
+    showContactError('Form not connected yet — paste your Web3Forms access key into W3F_KEY.');
+    return;
   }
+  btn.textContent='Sending\u2026';btn.disabled=true;clearContactError();
+  var payload={access_key:W3F_KEY,subject:'ZNF Enquiry \u2014 '+plan+' \u2014 '+name,from_name:name,replyto:email,name:name,phone:phone||'Not provided',email:email,plan:plan,message:msg,botcheck:''};
+  if(tsToken)payload['cf-turnstile-response']=tsToken;
   try{
-    var res=await fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({access_key:W3F_KEY,subject:'ZNF Enquiry \u2014 '+plan+' \u2014 '+name,from_name:name,replyto:email,name:name,phone:phone||'Not provided',email:email,plan:plan,message:msg,botcheck:'','cf-turnstile-response':tsToken.value})});
+    var res=await fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(payload)});
     var data=await res.json();
     if(data.success){
       btn.textContent='Sent \u2713';btn.style.background='#1e7e4f';
       ['c_name','c_ph','c_em','c_msg'].forEach(function(id){var e=document.getElementById(id);if(e)e.value='';});
+      if(window.turnstile)window.turnstile.reset();
       showContactSuccess();
-    }else throw new Error(data.message||'Failed');
+      setTimeout(function(){btn.textContent='Send Message \u2192';btn.style.background='';btn.disabled=false;},4000);
+    }else{
+      throw new Error(data.message||'Failed');
+    }
   }catch(e){
-    showContactError('Could not send. Email info@zeronoisefinance.com directly.');
-    btn.textContent='Send Message \u2192';btn.style.background='';
+    /* Only show error if we haven't already shown success */
+    if(btn.textContent!=='Sent ✓'){
+      showContactError('Could not send. Please email info@zeronoisefinance.com directly.');
+      btn.textContent='Send Message \u2192';btn.style.background='';btn.disabled=false;
+    }
   }
-  setTimeout(function(){btn.textContent='Send Message \u2192';btn.style.background='';btn.disabled=false;},4000);
+}
+function clearContactError(){
+  var el=document.getElementById('contact-msg');
+  if(el&&el.parentNode)el.parentNode.removeChild(el);
 }
 function showContactError(msg){
   var el=document.getElementById('contact-msg');
