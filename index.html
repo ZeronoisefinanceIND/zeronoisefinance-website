@@ -9567,21 +9567,27 @@ async function submitContact(btnEl){
   btn.textContent='Sending\u2026';btn.disabled=true;clearContactError();
   var payload={access_key:W3F_KEY,subject:'ZNF Enquiry \u2014 '+plan+' \u2014 '+name,from_name:name,replyto:email,name:name,phone:phone||'Not provided',email:email,plan:plan,message:msg,botcheck:''};
   if(tsToken)payload['cf-turnstile-response']=tsToken;
+  var _sent=false;
   try{
     var res=await fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(payload)});
-    var data=await res.json();
-    if(data.success){
+    var rawText=await res.text();
+    var data={success:false};
+    try{data=JSON.parse(rawText);}catch(_){
+      /* Web3Forms returned non-JSON — treat HTTP 200 as success */
+      if(res.ok)data={success:true};
+    }
+    if(data.success||res.ok){
+      _sent=true;
       btn.textContent='Sent \u2713';btn.style.background='#1e7e4f';
       ['c_name','c_ph','c_em','c_msg'].forEach(function(id){var e=document.getElementById(id);if(e)e.value='';});
       if(window.turnstile)window.turnstile.reset();
       showContactSuccess();
       setTimeout(function(){btn.textContent='Send Message \u2192';btn.style.background='';btn.disabled=false;},4000);
     }else{
-      throw new Error(data.message||'Failed');
+      throw new Error(data.message||'Submission failed');
     }
   }catch(e){
-    /* Only show error if we haven't already shown success */
-    if(btn.textContent!=='Sent ✓'){
+    if(!_sent){
       showContactError('Could not send. Please email info@zeronoisefinance.com directly.');
       btn.textContent='Send Message \u2192';btn.style.background='';btn.disabled=false;
     }
