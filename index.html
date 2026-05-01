@@ -1797,8 +1797,8 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
   </div>
 
 <!-- JOURNEY MODAL POPUP -->
-  <div id="jyModal" style="display:none;position:fixed;inset:0;z-index:8000;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);animation:jyModalBg .25s ease;display:none;place-items:center;padding:16px;overflow-y:auto;">
-    <div id="jyModalInner" style="background:var(--bgp);border-radius:16px;width:100%;max-width:520px;max-height:calc(100dvh - 32px);overflow-y:auto;-webkit-overflow-scrolling:touch;box-shadow:0 20px 60px rgba(0,0,0,.3);animation:jyModalIn .3s cubic-bezier(.22,1,.36,1);">
+  <div id="jyModal" style="display:none;position:fixed;inset:0;z-index:8000;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);">
+    <div id="jyModalInner" style="background:var(--bgp);overflow-y:auto;-webkit-overflow-scrolling:touch;box-shadow:0 20px 60px rgba(0,0,0,.3);animation:jyModalIn .3s cubic-bezier(.22,1,.36,1);">
       <div style="display:flex;justify-content:space-between;align-items:center;padding:18px 22px 0">
         <div id="jyModalTitle" style="font-family:var(--fs);font-size:1.1rem;font-weight:600;color:var(--ink)"></div>
         <button onclick="closeJyModal()" style="font-size:1.1rem;color:var(--ink-l);padding:4px 8px;line-height:1;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;transition:background .15s" onmouseover="this.style.background='var(--rule)'" onmouseout="this.style.background='none'">✕</button>
@@ -3961,52 +3961,44 @@ function openJyModal(step){
   var inner = document.getElementById('jyModalInner');
 
   if(isMobile && card){
-    // Read card's exact position on screen RIGHT NOW (viewport-relative)
     var cardRect = card.getBoundingClientRect();
     var viewH = window.innerHeight;
     var floatBarH = 72;
-
-    // Place popup top at card's top edge. Clamp so it stays on screen.
     var topPx = Math.max(68, Math.min(cardRect.top, viewH - floatBarH - 120));
     var maxH = viewH - topPx - floatBarH - 8;
 
-    // The overlay covers full viewport (inset:0). 
-    // Remove all padding/alignment from overlay — inner is absolutely positioned instead.
     modal.style.display = 'block';
     modal.style.padding = '0';
     modal.style.overflow = 'hidden';
 
     if(inner){
       inner.style.position = 'absolute';
+      inner.style.top = topPx + 'px';
       inner.style.left = '12px';
       inner.style.right = '12px';
-      inner.style.top = topPx + 'px';
       inner.style.width = 'auto';
       inner.style.maxWidth = '100%';
       inner.style.maxHeight = maxH + 'px';
       inner.style.borderRadius = '16px';
       inner.style.overflowY = 'auto';
-      inner.style.marginTop = '';
       inner.scrollTop = 0;
     }
 
   } else {
-    // Desktop: centered
     modal.style.display = 'grid';
-    modal.style.alignItems = 'center';
-    modal.style.justifyContent = 'center';
+    modal.style.placeItems = 'center';
     modal.style.padding = '16px';
-    modal.style.overflow = '';
+    modal.style.overflow = 'auto';
+
     if(inner){
-      inner.style.position = '';
+      inner.style.position = 'relative';
+      inner.style.top = '';
       inner.style.left = '';
       inner.style.right = '';
-      inner.style.top = '';
-      inner.style.maxWidth = '520px';
-      inner.style.borderRadius = '16px';
-      inner.style.maxHeight = 'calc(100dvh - 32px)';
       inner.style.width = '100%';
-      inner.style.marginTop = '';
+      inner.style.maxWidth = '520px';
+      inner.style.maxHeight = 'calc(100dvh - 32px)';
+      inner.style.borderRadius = '16px';
       inner.scrollTop = 0;
     }
   }
