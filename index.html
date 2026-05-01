@@ -3956,51 +3956,35 @@ function openJyModal(step){
   title.innerHTML=content.title;
   body.innerHTML=content.body;
 
-  var isMobile = window.innerWidth <= 920;
-  var card = document.getElementById('jyg'+step);
   var inner = document.getElementById('jyModalInner');
+  var isMobile = window.innerWidth <= 920;
+  var floatBarH = isMobile ? 72 : 0;
+  var navH = 62;
+  var viewH = window.innerHeight;
+  var availH = viewH - navH - floatBarH;
+  var maxH = Math.min(availH - 24, 600);
 
-  if(isMobile && card){
-    var cardRect = card.getBoundingClientRect();
-    var viewH = window.innerHeight;
-    var floatBarH = 72;
-    var topPx = Math.max(68, Math.min(cardRect.top, viewH - floatBarH - 120));
-    var maxH = viewH - topPx - floatBarH - 8;
+  // Always: fixed overlay, popup centered in the visible viewport area
+  modal.style.display = 'flex';
+  modal.style.alignItems = 'center';
+  modal.style.justifyContent = 'center';
+  modal.style.padding = '0';
+  modal.style.overflow = 'hidden';
+  // Offset the centering to account for navbar top and float bar bottom
+  modal.style.paddingTop = navH + 'px';
+  modal.style.paddingBottom = floatBarH + 'px';
 
-    modal.style.display = 'block';
-    modal.style.padding = '0';
-    modal.style.overflow = 'hidden';
-
-    if(inner){
-      inner.style.position = 'absolute';
-      inner.style.top = topPx + 'px';
-      inner.style.left = '12px';
-      inner.style.right = '12px';
-      inner.style.width = 'auto';
-      inner.style.maxWidth = '100%';
-      inner.style.maxHeight = maxH + 'px';
-      inner.style.borderRadius = '16px';
-      inner.style.overflowY = 'auto';
-      inner.scrollTop = 0;
-    }
-
-  } else {
-    modal.style.display = 'grid';
-    modal.style.placeItems = 'center';
-    modal.style.padding = '16px';
-    modal.style.overflow = 'auto';
-
-    if(inner){
-      inner.style.position = 'relative';
-      inner.style.top = '';
-      inner.style.left = '';
-      inner.style.right = '';
-      inner.style.width = '100%';
-      inner.style.maxWidth = '520px';
-      inner.style.maxHeight = 'calc(100dvh - 32px)';
-      inner.style.borderRadius = '16px';
-      inner.scrollTop = 0;
-    }
+  if(inner){
+    inner.style.position = 'relative';
+    inner.style.top = '';
+    inner.style.left = '';
+    inner.style.right = '';
+    inner.style.width = isMobile ? 'calc(100vw - 24px)' : '520px';
+    inner.style.maxWidth = isMobile ? '100%' : '520px';
+    inner.style.maxHeight = maxH + 'px';
+    inner.style.borderRadius = '16px';
+    inner.style.overflowY = 'auto';
+    inner.scrollTop = 0;
   }
 }
 function closeJyModal(){
