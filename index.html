@@ -3956,68 +3956,49 @@ function openJyModal(step){
   title.innerHTML=content.title;
   body.innerHTML=content.body;
 
-  // On mobile: anchor popup near the tapped card
   var isMobile = window.innerWidth <= 920;
   var card = document.getElementById('jyg'+step);
   var inner = document.getElementById('jyModalInner');
 
   if(isMobile && card){
-    var floatBarH = 80; // height of floating tab bar
+    // Read card position NOW — before any DOM changes or scrolling
+    var cardRect = card.getBoundingClientRect();
+    var viewH = window.innerHeight;
+    var floatBarH = 72; // floating tab bar height
 
-    // First, show the modal as a transparent overlay so we can measure
-    modal.style.display = 'grid';
+    // Popup top = card's current top edge on screen (aligned with card)
+    var popupTop = cardRect.top;
+
+    // Clamp: must be at least below navbar (62px) and must leave floatBarH at bottom
+    var minTop = 68;
+    var maxTop = viewH - floatBarH - 100; // at least 100px popup visible
+    popupTop = Math.max(minTop, Math.min(popupTop, maxTop));
+
+    var popupMaxH = viewH - popupTop - floatBarH - 8;
+
+    // Style the overlay: fixed, full screen, flex-start so marginTop controls position
+    modal.style.display = 'flex';
     modal.style.alignItems = 'flex-start';
     modal.style.justifyContent = 'center';
-    modal.style.paddingTop = '0';
-    modal.style.paddingBottom = floatBarH + 'px';
-    modal.style.paddingLeft = '12px';
-    modal.style.paddingRight = '12px';
+    modal.style.padding = '0 12px';
     modal.style.overflow = 'hidden';
 
     if(inner){
-      inner.style.maxWidth = '100%';
       inner.style.width = '100%';
+      inner.style.maxWidth = '100%';
       inner.style.borderRadius = '16px';
-      inner.style.maxHeight = 'calc(100dvh - ' + (floatBarH + 24) + 'px)';
-      inner.style.marginTop = '0';
-    }
-
-    // After the modal is visible, position the inner sheet just below the card
-    setTimeout(function(){
-      var cardRect = card.getBoundingClientRect();
-      var viewH = window.innerHeight;
-
-      // Desired top: just below the card (card bottom + 10px gap)
-      var desiredTop = cardRect.bottom + 10;
-
-      // Make sure it doesn't overflow into the float bar
-      var maxTop = viewH - floatBarH - 120; // at least 120px visible
-      var topOffset = Math.min(desiredTop, maxTop);
-
-      // Clamp to not go above the navbar (62px)
-      topOffset = Math.max(topOffset, 70);
-
-      if(inner){
-        inner.style.marginTop = topOffset + 'px';
-        inner.style.maxHeight = (viewH - topOffset - floatBarH - 12) + 'px';
-      }
-
-      // Scroll so the card is near the top of the screen, then the popup is right below it
-      card.scrollIntoView({behavior:'smooth', block:'start'});
-
-      // Scroll inner to top
+      inner.style.marginTop = popupTop + 'px';
+      inner.style.maxHeight = popupMaxH + 'px';
+      inner.style.overflowY = 'auto';
       inner.scrollTop = 0;
-    }, 20);
+    }
 
   } else {
     // Desktop: centered
     modal.style.display = 'grid';
     modal.style.alignItems = 'center';
     modal.style.justifyContent = 'center';
-    modal.style.paddingBottom = '16px';
-    modal.style.paddingTop = '16px';
-    modal.style.paddingLeft = '16px';
-    modal.style.paddingRight = '16px';
+    modal.style.padding = '16px';
     modal.style.overflow = '';
     if(inner){
       inner.style.maxWidth = '520px';
@@ -4025,12 +4006,9 @@ function openJyModal(step){
       inner.style.maxHeight = 'calc(100dvh - 32px)';
       inner.style.width = '100%';
       inner.style.marginTop = '';
+      inner.scrollTop = 0;
     }
   }
-
-  if(modal.scrollTop !== undefined) modal.scrollTop = 0;
-  var innerEl = document.getElementById('jyModalInner');
-  if(innerEl && !isMobile) innerEl.scrollTop = 0;
 }
 function closeJyModal(){
   var modal=document.getElementById('jyModal');
