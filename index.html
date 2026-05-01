@@ -1619,34 +1619,31 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
       <div class="feature-carousel" id="featureCarousel">
         <div class="carousel-track" id="carouselTrack">
 
-          <!-- Slide 0: Live Market Data -->
+          <!-- Slide 0: Key Policy Rates -->
           <div class="carousel-slide cs-0">
             <div>
-              <div class="cs-label">Live — India Market</div>
-              <div class="cs-title">Key Rates &amp;<br>Economic Indicators</div>
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px">
-                <div style="background:rgba(255,255,255,.07);border-radius:8px;padding:10px 12px" id="dp-repo">
-                  <div class="dp-val" style="font-family:var(--fm);font-size:1.1rem;font-weight:500;color:#fff;line-height:1">5.25%</div>
-                  <div class="dp-key" style="font-size:.65rem;color:rgba(255,255,255,.5);margin-top:3px">RBI Repo Rate</div>
-                  <div class="dp-chg dn" style="font-size:.62rem;margin-top:2px;color:#6ee7b7">Rate cut cycle</div>
+              <div class="cs-label">RBI Policy Rates</div>
+              <div class="cs-title">Know the rates that<br>move your money</div>
+              <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px">
+                <div style="background:rgba(255,255,255,.07);border-radius:8px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between">
+                  <div>
+                    <div class="dp-key" style="font-size:.65rem;color:rgba(255,255,255,.5);margin-bottom:3px">RBI Repo Rate</div>
+                    <div style="font-size:.72rem;color:#6ee7b7">Active rate-cut cycle · Apr 2025</div>
+                  </div>
+                  <div class="dp-val" style="font-family:var(--fm);font-size:1.5rem;font-weight:700;color:#4ade80;line-height:1">5.25%</div>
                 </div>
-                <div style="background:rgba(255,255,255,.07);border-radius:8px;padding:10px 12px" id="dp-gsec">
-                  <div class="dp-val" style="font-family:var(--fm);font-size:1.1rem;font-weight:500;color:#fff">6.93%</div>
-                  <div class="dp-key" style="font-size:.65rem;color:rgba(255,255,255,.5);margin-top:3px">10-Yr G-Sec Yield</div>
-                  <div class="dp-chg up" style="font-size:.62rem;margin-top:2px;color:#fca5a5">16-month high</div>
+                <div style="background:rgba(255,255,255,.07);border-radius:8px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between">
+                  <div>
+                    <div class="dp-key" style="font-size:.65rem;color:rgba(255,255,255,.5);margin-bottom:3px">10-Year G-Sec Yield</div>
+                    <div style="font-size:.72rem;color:rgba(255,255,255,.45)">Benchmark for all long-term debt</div>
+                  </div>
+                  <div class="dp-val" style="font-family:var(--fm);font-size:1.5rem;font-weight:700;color:#f9a8d4;line-height:1">6.93%</div>
                 </div>
-                <div style="background:rgba(255,255,255,.07);border-radius:8px;padding:10px 12px" id="dp-gdp">
-                  <div class="dp-val" style="font-family:var(--fm);font-size:1.1rem;font-weight:500;color:#fff">7.4%</div>
-                  <div class="dp-key" style="font-size:.65rem;color:rgba(255,255,255,.5);margin-top:3px">GDP Growth FY26</div>
-                  <div class="dp-chg dn" style="font-size:.62rem;margin-top:2px;color:#6ee7b7">RBI projection</div>
-                </div>
-                <div style="background:rgba(255,255,255,.07);border-radius:8px;padding:10px 12px" id="dp-fii">
-                  <div class="dp-val" style="font-family:var(--fm);font-size:1.0rem;font-weight:500;color:#fff">−₹11,000 Cr</div>
-                  <div class="dp-key" style="font-size:.65rem;color:rgba(255,255,255,.5);margin-top:3px">FII Net (Mar 2026)</div>
-                  <div class="dp-chg up" style="font-size:.62rem;margin-top:2px;color:#fca5a5">Heavy outflow</div>
+                <div style="background:rgba(255,255,255,.05);border-radius:8px;padding:10px 14px">
+                  <div style="font-size:.72rem;color:rgba(255,255,255,.55);line-height:1.6">Any FD or debt fund returning <strong style="color:#fbbf24">below 6.93%</strong> is underperforming the risk-free rate. Use this as your benchmark.</div>
                 </div>
               </div>
-              <div style="font-size:.62rem;color:rgba(255,255,255,.3)">Sources: RBI MPC · NSE · <span id="dp-timestamp" style="color:rgba(100,231,183,.7)"></span></div>
+              <div style="font-size:.62rem;color:rgba(255,255,255,.28)">Source: RBI Monetary Policy Committee</div>
             </div>
             <div class="cs-icon">📊</div>
           </div>
@@ -1799,7 +1796,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
     </div>
   </div>
 
-  <!-- JOURNEY MODAL POPUP -->
+<!-- JOURNEY MODAL POPUP -->
   <div id="jyModal" style="display:none;position:fixed;inset:0;z-index:8000;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);animation:jyModalBg .25s ease;display:none;place-items:center;padding:16px;overflow-y:auto;">
     <div id="jyModalInner" style="background:var(--bgp);border-radius:16px;width:100%;max-width:520px;max-height:calc(100dvh - 32px);overflow-y:auto;-webkit-overflow-scrolling:touch;box-shadow:0 20px 60px rgba(0,0,0,.3);animation:jyModalIn .3s cubic-bezier(.22,1,.36,1);">
       <div style="display:flex;justify-content:space-between;align-items:center;padding:18px 22px 0">
@@ -2000,7 +1997,14 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
     <div class="cl">
       <div class="fc">
         <div class="fl">
-          <div class="fl-lbl">Monthly Investment (₹)</div>
+          <div class="fl-lbl">Investment Frequency</div>
+          <div class="fchips" id="sip_freq_chips">
+            <button class="fchip sel" id="sip_freq_monthly" onclick="setSIPFreq('monthly',this)">Monthly SIP</button>
+            <button class="fchip" id="sip_freq_annual" onclick="setSIPFreq('annual',this)">Annual / Lump-Sum</button>
+          </div>
+        </div>
+        <div class="fl">
+          <div class="fl-lbl" id="s_amt_lbl">Monthly Investment (₹)</div>
           <input class="fi-inp" type="number" id="s_amt" placeholder="e.g. 10,000" min="100" oninput="calcSIP()">
         </div>
         <div class="fl">
@@ -2051,7 +2055,14 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
     <div class="cl">
       <div class="fc">
         <div class="fl">
-          <div class="fl-lbl">Starting Monthly SIP (₹)</div>
+          <div class="fl-lbl">Investment Frequency</div>
+          <div class="fchips" id="su_freq_chips">
+            <button class="fchip sel" id="su_base_monthly" onclick="setSUFreqBase('monthly',this)">Monthly SIP</button>
+            <button class="fchip" id="su_base_annual" onclick="setSUFreqBase('annual',this)">Annual / Lump-Sum</button>
+          </div>
+        </div>
+        <div class="fl">
+          <div class="fl-lbl" id="su_amt_lbl">Starting Monthly SIP (₹)</div>
           <input class="fi-inp" type="number" id="su_amt" placeholder="e.g. 10,000" oninput="calcSU()">
         </div>
         <div class="fl">
@@ -3944,9 +3955,57 @@ function openJyModal(step){
   var content=getJyContent(step);
   title.innerHTML=content.title;
   body.innerHTML=content.body;
+
+  // On mobile: anchor sheet to just below the tapped card
+  var isMobile = window.innerWidth <= 920;
+  var card = document.getElementById('jyg'+step);
+  if(isMobile && card){
+    var rect = card.getBoundingClientRect();
+    var floatBarH = 80; // height of floating tab bar
+    var viewH = window.innerHeight;
+    var availableBelow = viewH - rect.bottom - floatBarH - 12;
+    var inner = document.getElementById('jyModalInner');
+
+    // Override overlay to be non-centered on mobile — position as bottom sheet starting near card
+    modal.style.alignItems = 'flex-end';
+    modal.style.paddingBottom = floatBarH + 'px';
+    modal.style.paddingTop = '0';
+    modal.style.paddingLeft = '0';
+    modal.style.paddingRight = '0';
+    if(inner){
+      inner.style.maxWidth = '100%';
+      inner.style.borderRadius = '20px 20px 0 0';
+      inner.style.maxHeight = 'min(80dvh, calc(100dvh - ' + (rect.top + 20) + 'px - ' + floatBarH + 'px))';
+      inner.style.width = '100%';
+    }
+  } else {
+    // Desktop: centered
+    modal.style.alignItems = 'center';
+    modal.style.paddingBottom = '16px';
+    modal.style.paddingTop = '16px';
+    modal.style.paddingLeft = '16px';
+    modal.style.paddingRight = '16px';
+    var inner = document.getElementById('jyModalInner');
+    if(inner){
+      inner.style.maxWidth = '520px';
+      inner.style.borderRadius = '16px';
+      inner.style.maxHeight = 'calc(100dvh - 32px)';
+      inner.style.width = '100%';
+    }
+  }
+
   modal.style.display='grid';
-  modal.scrollTop=0;
-  // Body scroll is NOT locked — the modal overlay itself is scrollable
+  if(modal.scrollTop !== undefined) modal.scrollTop=0;
+  var innerEl=document.getElementById('jyModalInner');
+  if(innerEl) innerEl.scrollTop=0;
+
+  // On mobile, scroll the modal inner to top after render
+  if(isMobile){
+    setTimeout(function(){
+      var innerEl2=document.getElementById('jyModalInner');
+      if(innerEl2) innerEl2.scrollTop=0;
+    },50);
+  }
 }
 function closeJyModal(){
   var modal=document.getElementById('jyModal');
@@ -4787,13 +4846,7 @@ carouselInit();
   });
 })();
 
-/* ── MARKET DATA ── */
-function refreshMarketData() {
-  var ts = document.getElementById('dp-timestamp');
-  if (ts) ts.textContent = 'Updated ' + new Date().toLocaleTimeString('en-IN', {hour:'2-digit', minute:'2-digit'});
-}
-refreshMarketData();
-setInterval(refreshMarketData, 60000);
+/* ── MARKET DATA (timestamp removed — static rates shown) ── */
 
 /* ══════════════════════════════════════════════
    ARTICLES SYSTEM
@@ -6701,26 +6754,64 @@ function switchCalc(id, btn) {
   }
 }
 
+/* ── SIP Frequency Toggle ── */
+var sipMode = 'monthly'; // 'monthly' | 'annual'
+var suBaseMode = 'monthly';
+
+function setSIPFreq(mode, btn){
+  sipMode = mode;
+  document.querySelectorAll('#sip_freq_chips .fchip').forEach(function(b){b.classList.remove('sel');});
+  btn.classList.add('sel');
+  var lbl = document.getElementById('s_amt_lbl');
+  var inp = document.getElementById('s_amt');
+  if(mode === 'annual'){
+    if(lbl) lbl.textContent = 'Annual Investment (₹)';
+    if(inp) inp.placeholder = 'e.g. 1,20,000';
+  } else {
+    if(lbl) lbl.textContent = 'Monthly Investment (₹)';
+    if(inp) inp.placeholder = 'e.g. 10,000';
+  }
+  calcSIP();
+}
+
+function setSUFreqBase(mode, btn){
+  suBaseMode = mode;
+  document.querySelectorAll('#su_freq_chips .fchip').forEach(function(b){b.classList.remove('sel');});
+  btn.classList.add('sel');
+  var lbl = document.getElementById('su_amt_lbl');
+  var inp = document.getElementById('su_amt');
+  if(mode === 'annual'){
+    if(lbl) lbl.textContent = 'Starting Annual Investment (₹)';
+    if(inp) inp.placeholder = 'e.g. 1,20,000';
+  } else {
+    if(lbl) lbl.textContent = 'Starting Monthly SIP (₹)';
+    if(inp) inp.placeholder = 'e.g. 10,000';
+  }
+  calcSU();
+}
+
 /* ── SIP CALCULATOR ── */
 function calcSIP() {
-  var amt  = parseFloat(document.getElementById('s_amt').value) || 0;
+  var rawAmt = parseFloat(document.getElementById('s_amt').value) || 0;
   var yrs  = parseFloat(document.getElementById('s_yr').value)  || 0;
   var rt   = parseFloat(document.getElementById('s_rt').value)  || 0;
   var ls   = parseFloat(document.getElementById('s_ls').value)  || 0;
   var goal = parseFloat(document.getElementById('s_goal').value)|| 0;
   document.getElementById('s_yr_r').value = yrs || 15;
-  if (!amt || !yrs || !rt) return;
+  if (!rawAmt || !yrs || !rt) return;
+
+  // Convert annual to monthly for calculation
+  var amt = sipMode === 'annual' ? rawAmt / 12 : rawAmt;
   var r = rt/100/12, n = yrs*12;
-  // Excel FV: =FV(rate,nper,-pmt,0,1) for SIP (beginning of period)
   var sipFV  = amt * ((Math.pow(1+r,n)-1)/r);
-  // Lump sum: =FV(rate,nper,0,-pv) — compounds monthly
   var lumpFV = ls * Math.pow(1+r, n);
   var total  = sipFV + lumpFV;
-  var invested = amt*n + ls;
+  var invested = (sipMode === 'annual' ? rawAmt * yrs : amt*n) + ls;
   document.getElementById('s_corpus').textContent = fmt(total);
   document.getElementById('s_inv').textContent   = fmt(invested);
   document.getElementById('s_gain').textContent  = fmt(total - invested);
-  document.getElementById('s_sub').textContent   = 'at ' + rt + '% for ' + yrs + ' yrs';
+  var modeLabel = sipMode === 'annual' ? '₹'+Math.round(rawAmt/1000)+'K/yr' : '₹'+Math.round(amt/1000)+'K/mo';
+  document.getElementById('s_sub').textContent   = modeLabel + ' at ' + rt + '% for ' + yrs + ' yrs';
   var mult=invested>0?(total/invested).toFixed(1):'—';
   document.getElementById('s_mult').textContent  = mult + '×';
   drawDonut('sip_donut', invested, total-invested);
@@ -6733,16 +6824,20 @@ function calcSIP() {
 
 /* ── STEP-UP SIP ── */
 function calcSU() {
-  var amt = parseFloat(document.getElementById('su_amt').value)||0;
+  var rawAmt = parseFloat(document.getElementById('su_amt').value)||0;
   var yrs = parseFloat(document.getElementById('su_yr').value)||0;
   var rt  = parseFloat(document.getElementById('su_rt').value)||0;
   var su  = parseFloat(document.getElementById('su_sr').value)||0;
   var ls  = parseFloat(document.getElementById('su_ls').value)||0;
   var goal= parseFloat(document.getElementById('su_goal').value)||0;
   var freq= stepUpFreq||12;
-  document.getElementById('su_yr_r').value = yrs || 20;
-  document.getElementById('su_sr_r').value = su  || 10;
-  if (!amt||!yrs||!rt) return;
+  document.getElementById('su_yr_r').value = yrs  || 20;
+  document.getElementById('su_sr_r').value = su   || 10;
+  if (!rawAmt||!yrs||!rt) return;
+
+  // Convert annual to monthly for calculation
+  var amt = suBaseMode === 'annual' ? rawAmt / 12 : rawAmt;
+
   var r = rt/100/12, corpus=0, s=amt, totalInv=0;
   var periods = yrs * 12;
   var stepInterval = Math.max(1,Math.round(12/freq));
@@ -6753,16 +6848,25 @@ function calcSU() {
   }
   var lumpFV = ls * Math.pow(1+r, periods);
   var total = corpus + lumpFV;
+
+  // For flat comparison, use same starting monthly amt
+  var flatTotal = amt*((Math.pow(1+r,periods)-1)/r) + lumpFV;
+  var flatInv   = suBaseMode === 'annual' ? rawAmt * yrs : amt * periods;
   totalInv += ls;
-  var flat = amt*((Math.pow(1+r,periods)-1)/r) + lumpFV;
+
   document.getElementById('su_corpus').textContent = fmt(total);
   document.getElementById('su_inv').textContent    = fmt(totalInv);
   document.getElementById('su_gain').textContent   = fmt(total-totalInv);
-  document.getElementById('su_flat').textContent   = fmt(flat);
+  document.getElementById('su_flat').textContent   = fmt(flatTotal);
   document.getElementById('su_last').textContent   = fmt(s);
-  document.getElementById('su_sub').textContent    = 'starting ' + fmt(amt) + '/mo, +' + su + '% p.a.';
+
+  var modeLabel = suBaseMode === 'annual'
+    ? 'starting ' + fmt(rawAmt) + '/yr, +' + su + '% p.a.'
+    : 'starting ' + fmt(amt) + '/mo, +' + su + '% p.a.';
+  document.getElementById('su_sub').textContent = modeLabel;
+
   var bb=document.getElementById('su_benefit_box'),bf=document.getElementById('su_benefit');
-  if(bb&&bf&&total>flat){bb.style.display='block';bf.textContent=fmt(total-flat);}
+  if(bb&&bf&&total>flatTotal){bb.style.display='block';bf.textContent=fmt(total-flatTotal);}
   else if(bb) bb.style.display='none';
   var gb=document.getElementById('su_goal_box');
   if(goal>0&&gb){
