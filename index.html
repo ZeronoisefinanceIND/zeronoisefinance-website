@@ -3958,32 +3958,27 @@ function openJyModal(step){
 
   var inner = document.getElementById('jyModalInner');
   var isMobile = window.innerWidth <= 920;
-  var floatBarH = isMobile ? 72 : 0;
-  var navH = 62;
-  var viewH = window.innerHeight;
-  var availH = viewH - navH - floatBarH;
-  var maxH = Math.min(availH - 24, 600);
 
-  // Always: fixed overlay, popup centered in the visible viewport area
   modal.style.display = 'flex';
   modal.style.alignItems = 'center';
   modal.style.justifyContent = 'center';
   modal.style.padding = '0';
-  modal.style.overflow = 'hidden';
-  // Offset the centering to account for navbar top and float bar bottom
-  modal.style.paddingTop = navH + 'px';
-  modal.style.paddingBottom = floatBarH + 'px';
+  modal.style.overflow = 'visible';
 
   if(inner){
-    inner.style.position = 'relative';
-    inner.style.top = '';
-    inner.style.left = '';
-    inner.style.right = '';
-    inner.style.width = isMobile ? 'calc(100vw - 24px)' : '520px';
-    inner.style.maxWidth = isMobile ? '100%' : '520px';
-    inner.style.maxHeight = maxH + 'px';
+    inner.style.position = 'fixed';
+    inner.style.left = isMobile ? '12px' : '50%';
+    inner.style.right = isMobile ? '12px' : 'auto';
+    inner.style.top = '50%';
+    inner.style.transform = isMobile ? 'translateY(-50%)' : 'translate(-50%, -50%)';
+    inner.style.width = isMobile ? 'auto' : '520px';
+    inner.style.maxWidth = isMobile ? 'calc(100vw - 24px)' : '520px';
+    inner.style.maxHeight = isMobile
+      ? (window.innerHeight - 150) + 'px'
+      : 'calc(100vh - 32px)';
     inner.style.borderRadius = '16px';
     inner.style.overflowY = 'auto';
+    inner.style.zIndex = '8001';
     inner.scrollTop = 0;
   }
 }
@@ -3996,6 +3991,11 @@ function closeJyModal(){
     inner.style.top='';
     inner.style.left='';
     inner.style.right='';
+    inner.style.transform='';
+    inner.style.zIndex='';
+    inner.style.width='';
+    inner.style.maxWidth='';
+    inner.style.maxHeight='';
     inner.style.marginTop='';
   }
 }
