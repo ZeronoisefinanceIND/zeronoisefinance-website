@@ -3961,35 +3961,32 @@ function openJyModal(step){
   var inner = document.getElementById('jyModalInner');
 
   if(isMobile && card){
-    // Read card position NOW — before any DOM changes or scrolling
+    // Read card's exact position on screen RIGHT NOW (viewport-relative)
     var cardRect = card.getBoundingClientRect();
     var viewH = window.innerHeight;
-    var floatBarH = 72; // floating tab bar height
+    var floatBarH = 72;
 
-    // Popup top = card's current top edge on screen (aligned with card)
-    var popupTop = cardRect.top;
+    // Place popup top at card's top edge. Clamp so it stays on screen.
+    var topPx = Math.max(68, Math.min(cardRect.top, viewH - floatBarH - 120));
+    var maxH = viewH - topPx - floatBarH - 8;
 
-    // Clamp: must be at least below navbar (62px) and must leave floatBarH at bottom
-    var minTop = 68;
-    var maxTop = viewH - floatBarH - 100; // at least 100px popup visible
-    popupTop = Math.max(minTop, Math.min(popupTop, maxTop));
-
-    var popupMaxH = viewH - popupTop - floatBarH - 8;
-
-    // Style the overlay: fixed, full screen, flex-start so marginTop controls position
-    modal.style.display = 'flex';
-    modal.style.alignItems = 'flex-start';
-    modal.style.justifyContent = 'center';
-    modal.style.padding = '0 12px';
+    // The overlay covers full viewport (inset:0). 
+    // Remove all padding/alignment from overlay — inner is absolutely positioned instead.
+    modal.style.display = 'block';
+    modal.style.padding = '0';
     modal.style.overflow = 'hidden';
 
     if(inner){
-      inner.style.width = '100%';
+      inner.style.position = 'absolute';
+      inner.style.left = '12px';
+      inner.style.right = '12px';
+      inner.style.top = topPx + 'px';
+      inner.style.width = 'auto';
       inner.style.maxWidth = '100%';
+      inner.style.maxHeight = maxH + 'px';
       inner.style.borderRadius = '16px';
-      inner.style.marginTop = popupTop + 'px';
-      inner.style.maxHeight = popupMaxH + 'px';
       inner.style.overflowY = 'auto';
+      inner.style.marginTop = '';
       inner.scrollTop = 0;
     }
 
@@ -4001,6 +3998,10 @@ function openJyModal(step){
     modal.style.padding = '16px';
     modal.style.overflow = '';
     if(inner){
+      inner.style.position = '';
+      inner.style.left = '';
+      inner.style.right = '';
+      inner.style.top = '';
       inner.style.maxWidth = '520px';
       inner.style.borderRadius = '16px';
       inner.style.maxHeight = 'calc(100dvh - 32px)';
@@ -4014,7 +4015,13 @@ function closeJyModal(){
   var modal=document.getElementById('jyModal');
   if(modal) modal.style.display='none';
   var inner=document.getElementById('jyModalInner');
-  if(inner) inner.style.marginTop='';
+  if(inner){
+    inner.style.position='';
+    inner.style.top='';
+    inner.style.left='';
+    inner.style.right='';
+    inner.style.marginTop='';
+  }
 }
 // Close on backdrop click
 document.addEventListener('click',function(e){
