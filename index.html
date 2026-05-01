@@ -3956,60 +3956,87 @@ function openJyModal(step){
   title.innerHTML=content.title;
   body.innerHTML=content.body;
 
-  // On mobile: anchor sheet to just below the tapped card
+  // On mobile: anchor popup near the tapped card
   var isMobile = window.innerWidth <= 920;
   var card = document.getElementById('jyg'+step);
-  if(isMobile && card){
-    var rect = card.getBoundingClientRect();
-    var floatBarH = 80; // height of floating tab bar
-    var viewH = window.innerHeight;
-    var availableBelow = viewH - rect.bottom - floatBarH - 12;
-    var inner = document.getElementById('jyModalInner');
+  var inner = document.getElementById('jyModalInner');
 
-    // Override overlay to be non-centered on mobile — position as bottom sheet starting near card
-    modal.style.alignItems = 'flex-end';
-    modal.style.paddingBottom = floatBarH + 'px';
+  if(isMobile && card){
+    var floatBarH = 80; // height of floating tab bar
+
+    // First, show the modal as a transparent overlay so we can measure
+    modal.style.display = 'grid';
+    modal.style.alignItems = 'flex-start';
+    modal.style.justifyContent = 'center';
     modal.style.paddingTop = '0';
-    modal.style.paddingLeft = '0';
-    modal.style.paddingRight = '0';
+    modal.style.paddingBottom = floatBarH + 'px';
+    modal.style.paddingLeft = '12px';
+    modal.style.paddingRight = '12px';
+    modal.style.overflow = 'hidden';
+
     if(inner){
       inner.style.maxWidth = '100%';
-      inner.style.borderRadius = '20px 20px 0 0';
-      inner.style.maxHeight = 'min(80dvh, calc(100dvh - ' + (rect.top + 20) + 'px - ' + floatBarH + 'px))';
       inner.style.width = '100%';
+      inner.style.borderRadius = '16px';
+      inner.style.maxHeight = 'calc(100dvh - ' + (floatBarH + 24) + 'px)';
+      inner.style.marginTop = '0';
     }
+
+    // After the modal is visible, position the inner sheet just below the card
+    setTimeout(function(){
+      var cardRect = card.getBoundingClientRect();
+      var viewH = window.innerHeight;
+
+      // Desired top: just below the card (card bottom + 10px gap)
+      var desiredTop = cardRect.bottom + 10;
+
+      // Make sure it doesn't overflow into the float bar
+      var maxTop = viewH - floatBarH - 120; // at least 120px visible
+      var topOffset = Math.min(desiredTop, maxTop);
+
+      // Clamp to not go above the navbar (62px)
+      topOffset = Math.max(topOffset, 70);
+
+      if(inner){
+        inner.style.marginTop = topOffset + 'px';
+        inner.style.maxHeight = (viewH - topOffset - floatBarH - 12) + 'px';
+      }
+
+      // Scroll so the card is near the top of the screen, then the popup is right below it
+      card.scrollIntoView({behavior:'smooth', block:'start'});
+
+      // Scroll inner to top
+      inner.scrollTop = 0;
+    }, 20);
+
   } else {
     // Desktop: centered
+    modal.style.display = 'grid';
     modal.style.alignItems = 'center';
+    modal.style.justifyContent = 'center';
     modal.style.paddingBottom = '16px';
     modal.style.paddingTop = '16px';
     modal.style.paddingLeft = '16px';
     modal.style.paddingRight = '16px';
-    var inner = document.getElementById('jyModalInner');
+    modal.style.overflow = '';
     if(inner){
       inner.style.maxWidth = '520px';
       inner.style.borderRadius = '16px';
       inner.style.maxHeight = 'calc(100dvh - 32px)';
       inner.style.width = '100%';
+      inner.style.marginTop = '';
     }
   }
 
-  modal.style.display='grid';
-  if(modal.scrollTop !== undefined) modal.scrollTop=0;
-  var innerEl=document.getElementById('jyModalInner');
-  if(innerEl) innerEl.scrollTop=0;
-
-  // On mobile, scroll the modal inner to top after render
-  if(isMobile){
-    setTimeout(function(){
-      var innerEl2=document.getElementById('jyModalInner');
-      if(innerEl2) innerEl2.scrollTop=0;
-    },50);
-  }
+  if(modal.scrollTop !== undefined) modal.scrollTop = 0;
+  var innerEl = document.getElementById('jyModalInner');
+  if(innerEl && !isMobile) innerEl.scrollTop = 0;
 }
 function closeJyModal(){
   var modal=document.getElementById('jyModal');
   if(modal) modal.style.display='none';
+  var inner=document.getElementById('jyModalInner');
+  if(inner) inner.style.marginTop='';
 }
 // Close on backdrop click
 document.addEventListener('click',function(e){
